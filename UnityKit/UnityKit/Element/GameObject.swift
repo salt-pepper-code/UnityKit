@@ -2,20 +2,7 @@ import Foundation
 import SceneKit
 
 public final class GameObject: Object {
-    
-    public enum Layers: Int {
-        
-        case _default = 0
-        case ignoreRayCast = 1
-        case UI = 2
-    }
-    
-    public enum Tags: String {
-        
-        case untagged = "Untagged"
-        case mainCamera = "MainCamera"
-    }
-    
+
     public override var name: String? {
         
         didSet {
@@ -24,7 +11,7 @@ public final class GameObject: Object {
             }
         }
     }
-    public var tag: String = Tags.untagged.rawValue
+    public var tag: Tag = .untagged
     public let node: SCNNode
     private(set) public var transform: Transform!
     private(set) public var renderer: Renderer?
@@ -37,13 +24,14 @@ public final class GameObject: Object {
     private var didAwake: Bool = false
     private var didStart: Bool = false
     
-    public var layer: Int {
+    public var layer: Layer {
         
         get {
-            return self.node.categoryBitMask
+            return Layer(rawValue: self.node.categoryBitMask)
         }
         set {
-            self.node.categoryBitMask = newValue
+            self.node.categoryBitMask = newValue.rawValue
+            self.childs.forEach { $0.layer = newValue }
         }
     }
     
@@ -79,7 +67,7 @@ public final class GameObject: Object {
         super.init()
         
         self.name = node.name
-        self.layer = node.categoryBitMask
+        self.layer = Layer(rawValue: node.categoryBitMask)
         
         self.transform = self.addComponent(monoBehaviourOnly: false, type: Transform.self)
         

@@ -18,7 +18,7 @@ class CubeScript: MonoBehaviour {
     
         if let gameObject = self.gameObject {
             
-            //gameObject.transform.position = Vector3.lerp(gameObject.transform.position, Vector3(0, 20, 0), Time.deltaTime)
+            gameObject.transform.position = Vector3.lerp(gameObject.transform.position, Vector3(0, 20, 0), Time.deltaTime)
         }
     }
 }

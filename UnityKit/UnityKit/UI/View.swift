@@ -3,16 +3,16 @@ import SceneKit
 
 open class View: SCNView {
     
-    public static func makeView(onView superview: UIView? = nil, sceneFilename filename: String? = nil) -> View {
+    public static func makeView(on superview: UIView? = nil, sceneFilename filename: String? = nil, option: Scene.Option = .singleton) -> View {
         
         let view = View()
         
         if let filename = filename {
-            view.sceneHolder = Scene(filename: filename)
+            view.sceneHolder = Scene(filename: filename, option: option)
         } else {
-            view.sceneHolder = Scene()
+            view.sceneHolder = Scene(option: option)
         }
-        
+
         if let superview = superview {
             
             view.frame = superview.bounds
@@ -30,7 +30,11 @@ open class View: SCNView {
     public var sceneHolder: Scene? {
         
         didSet {
-            self.scene = sceneHolder?.scnScene
+            guard let scene = sceneHolder
+                else { return }
+
+            self.scene = scene.scnScene
+            self.pointOfView = Camera.main(in: scene)?.gameObject?.node
         }
     }
     
@@ -41,7 +45,8 @@ open class View: SCNView {
         Screen.width = self.frame.size.width
         Screen.height = self.frame.size.height
         
-        if let scene = self.sceneHolder, let camera = Camera.main(scene) {
+        if let scene = self.sceneHolder,
+            let camera = Camera.main(in: scene) {
             
             camera.calculateFieldOfViews()
         }

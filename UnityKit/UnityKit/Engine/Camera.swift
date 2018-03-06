@@ -115,30 +115,27 @@ public class Camera: Behaviour {
         }
     }
 
+    /*!
+     @property cullingMask
+     @abstract This is used to render parts of the scene selectively.
+     */
+    public var cullingMask: GameObject.Layer {
+
+        get {
+            return GameObject.Layer(rawValue: self.scnCamera.categoryBitMask)
+        }
+        set {
+            self.scnCamera.categoryBitMask = newValue.rawValue
+        }
+    }
+
     public override var gameObject: GameObject? {
 
         didSet {
-            guard let node = self.gameObject?.node
+            guard let node = self.gameObject?.node, node.camera != self.scnCamera
                 else { return }
 
-            if let scnCamera = node.camera {
-                self.scnCamera = scnCamera
-                return
-            }
-
-            let scnCamera = SCNCamera()
-            node.camera = scnCamera
-
-            if var rootParent = self.gameObject?.parent {
-
-                while rootParent.parent != nil {
-                    rootParent = rootParent.parent!
-                }
-
-                self.target = rootParent
-            }
-
-            self.scnCamera = scnCamera
+            node.camera = self.scnCamera
             self.calculateFieldOfViews()
         }
     }
@@ -149,6 +146,7 @@ public class Camera: Behaviour {
         
         self.scnCamera = SCNCamera()
         super.init()
+        self.cullingMask = GameObject.Layer.UI
         self.calculateFieldOfViews()
     }
     
@@ -156,8 +154,11 @@ public class Camera: Behaviour {
         self.fieldOfView = self.hFieldOfView
     }
     
-    public static func main(_ inScene: Scene) -> Camera? {
-        return GameObject.find(.tag(GameObject.Tags.mainCamera.rawValue), inScene: inScene)?.getComponent(Camera.self)
+    public static func main(in scene: Scene? = Scene.sharedInstance) -> Camera? {
+        guard let scene = scene
+            else { return nil }
+
+        return GameObject.find(.tag(.mainCamera), in: scene)?.getComponent(Camera.self)
     }
     
     public class Constraints {
@@ -168,57 +169,50 @@ public class Camera: Behaviour {
     public func followTarget(target: GameObject?, distanceRange: (minimum: Float, maximum: Float)? = nil) {
         
         self.target = target
-        
-        self.gameObject?.node.constraints = nil
-        
-        if let target = self.target {
-            
-            let targetConstraint = SCNLookAtConstraint(target: target.node)
-            targetConstraint.isGimbalLockEnabled = true
-            
-            var constraints = [SCNConstraint]()
-            
-            constraints.append(targetConstraint)
-            
-            if let distanceRange = distanceRange, let gameObject = self.gameObject {
 
-                let distanceConstraint = SCNTransformConstraint(inWorldSpace: true) { (node, transform) -> SCNMatrix4 in
-                    
-                    let distance = Vector3.distance(target.transform.position, gameObject.transform.position)
-                    
-                    let normalizedDistance: Float
-                    
-                    switch distance {
-                    case ...distanceRange.minimum:
-                        normalizedDistance = normalize(distanceRange.minimum, in: 0 ... distance)
-                    case distanceRange.maximum...:
-                        normalizedDistance = normalize(distanceRange.maximum, in: 0 ... distance)
-                    default:
-                        return transform
-                    }
-                    
-                    gameObject.transform.position.x = interpolate(from: target.transform.position.x, to: gameObject.transform.position.x, alpha: normalizedDistance)
-                    gameObject.transform.position.y = target.transform.position.y
-                    gameObject.transform.position.z = interpolate(from: target.transform.position.z, to: gameObject.transform.position.z, alpha: normalizedDistance)
-                    
-                    return transform
-                }
-                
-                constraints.append(distanceConstraint)
-            }
-            
-            self.gameObject?.node.constraints = constraints
+        guard let target = self.target,
+            let gameObject = self.gameObject
+            else { return }
+
+        let targetConstraint = SCNLookAtConstraint(target: target.node)
+        targetConstraint.isGimbalLockEnabled = true
+
+        guard let distanceRange = distanceRange else {
+            gameObject.node.constraints = [targetConstraint]
+            return
         }
+
+        let distanceConstraint = SCNTransformConstraint(inWorldSpace: true) { (node, transform) -> SCNMatrix4 in
+
+            let distance = Vector3.distance(target.transform.position, gameObject.transform.position)
+
+            let normalizedDistance: Float
+
+            switch distance {
+            case ...distanceRange.minimum:
+                normalizedDistance = normalize(distanceRange.minimum, in: 0 ... distance)
+            case distanceRange.maximum...:
+                normalizedDistance = normalize(distanceRange.maximum, in: 0 ... distance)
+            default:
+                return transform
+            }
+
+            gameObject.transform.position.x = interpolate(from: target.transform.position.x, to: gameObject.transform.position.x, alpha: normalizedDistance)
+            gameObject.transform.position.y = target.transform.position.y
+            gameObject.transform.position.z = interpolate(from: target.transform.position.z, to: gameObject.transform.position.z, alpha: normalizedDistance)
+
+            return transform
+        }
+
+        gameObject.node.constraints = [targetConstraint, distanceConstraint]
     }
     
     public func lookAt(_ gameObject: GameObject) {
-        
         self.lookAt(gameObject.transform)
     }
     
     public func lookAt(_ target: Transform) {
-        
-        self.followTarget(target: nil)
+        self.gameObject?.node.constraints = nil
         self.transform?.lookAt(target)
     }
 }

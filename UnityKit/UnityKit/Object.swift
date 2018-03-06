@@ -17,17 +17,14 @@ open class Object {
     public let uuid: String
     
     public required init() {
-        
         self.uuid = UUID().uuidString
     }
     
     public class func destroy(_ gameObject: GameObject) {
-        
         gameObject.destroy()
     }
     
     open func destroy() {
-        
         self.removeAllComponents()
     }
     
@@ -51,7 +48,6 @@ open class Object {
     public func removeComponentsOfType(_ type: Component.Type) {
                 
         while let index = self.components.index(where: { $0.self === type }) {
-            
             self.components.remove(at: index)
         }
     }
@@ -59,39 +55,32 @@ open class Object {
     public func removeComponent(_ component: Component) {
         
         if let index = self.components.index(where: { $0 === component }) {
-            
             self.components.remove(at: index)
         }
     }
     
     open func getComponent<T: Component>(_ type: T.Type) -> T? {
-        
         return self.components.flatMap { $0 as? T }.first
     }
     
     open func getComponents<T: Component>(_ type: T.Type) -> [T]? {
-        
         return self.components.flatMap { $0 as? T }
     }
     
     open func addComponent<T: Component>(_ type: T.Type) -> T? {
-        
         return self.addComponent(monoBehaviourOnly: true, type: type)
     }
     
     internal func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type) -> T? {
         
         if monoBehaviourOnly && (T.self === Renderer.self || T.self === Transform.self) {
-            
             return nil
         }
         
         let component = T()
-
         self.components.append(component)
-        
         component.awake()
-        
+
         return component
     }
 }

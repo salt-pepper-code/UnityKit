@@ -2,36 +2,43 @@ import Foundation
 import SceneKit
 
 open class Scene {
-    
+
+    public enum Option {
+        case instantiate
+        case singleton
+    }
+
     private var displayLink : CADisplayLink?
     public let scnScene: SCNScene
     public let rootGameObject: GameObject
-    
-    public convenience init?(filename: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main) {
+
+    private(set) public static var sharedInstance: Scene?
+
+    public convenience init?(filename: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, option: Option) {
         
         guard let sceneUrl = searchPathForResource(forResource: filename, withExtension: nil, bundle: bundle)
             else { return nil }
 
-        self.init(sceneUrl: sceneUrl)
+        self.init(sceneUrl: sceneUrl, option: option)
     }
     
-    public convenience init?(scenePath: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main) {
+    public convenience init?(scenePath: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, option: Option) {
         
         guard let sceneUrl = bundle.url(forResource: scenePath, withExtension: nil)
             else { return nil }
 
-        self.init(sceneUrl: sceneUrl)
+        self.init(sceneUrl: sceneUrl, option: option)
     }
     
-    public convenience init?(sceneUrl: URL, options: [SCNSceneSource.LoadingOption : Any]? = nil) {
+    public convenience init?(sceneUrl: URL, options: [SCNSceneSource.LoadingOption : Any]? = nil, option: Option) {
         
         guard let scene = try? SCNScene(url: sceneUrl, options: options)
             else { return nil }
 
-        self.init(scene)
+        self.init(scene, option: option)
     }
     
-    public init(_ scene: SCNScene? = nil) {
+    public init(_ scene: SCNScene? = nil, option: Option) {
         
         self.scnScene = scene ?? SCNScene()
         
@@ -39,19 +46,26 @@ open class Scene {
         
         self.rootGameObject.setScene(self)
         
-        if scene == nil || Camera.main(self) == nil {
+        if scene == nil || Camera.main(in: self) == nil {
             
             let cameraObject = GameObject()
-            cameraObject.name = GameObject.Tags.mainCamera.rawValue
-            cameraObject.tag = GameObject.Tags.mainCamera.rawValue
-            
+            cameraObject.tag = .mainCamera
+            cameraObject.name = cameraObject.tag.name
+
             self.rootGameObject.addChild(cameraObject)
             
             cameraObject.transform.position = Vector3(0, 10, 20)
             
             _ = cameraObject.addComponent(Camera.self)
         }
-        
+
+        switch option {
+        case .singleton:
+            Scene.sharedInstance = self
+        case .instantiate:
+            Scene.sharedInstance = nil
+        }
+
         self.intialize()
     }
     
@@ -104,11 +118,11 @@ open class Scene {
     }
     
     public func find(_ type: GameObject.SearchType) -> GameObject? {
-        return GameObject.find(type, inScene: self)
+        return GameObject.find(type, in: self)
     }
     
     public func findGameObjects(_ type: GameObject.SearchType) -> [GameObject] {
-        return GameObject.findGameObjects(type, inScene: self)
+        return GameObject.findGameObjects(type, in: self)
     }
 }
 

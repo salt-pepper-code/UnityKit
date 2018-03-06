@@ -2,17 +2,20 @@ extension GameObject {
     
     public enum SearchType {
         case name(String)
-        case tag(String)
-        case layer(Int)
-        case nameAndTag(String, String)
+        case tag(Tag)
+        case layer(Layer)
+        case nameAndTag(String, Tag)
         case any
     }
     
-    public static func find(_ type: SearchType, inScene scene: Scene) -> GameObject? {
-        return GameObject.find(type, inGameObject: scene.rootGameObject)
+    public static func find(_ type: SearchType, in scene: Scene? = Scene.sharedInstance) -> GameObject? {
+        guard let scene = scene
+            else { return nil }
+
+        return GameObject.find(type, in: scene.rootGameObject)
     }
     
-    public static func find(_ type: SearchType, inGameObject gameObject: GameObject) -> GameObject? {
+    public static func find(_ type: SearchType, in gameObject: GameObject) -> GameObject? {
 
         switch type {
         case let .name(name) where gameObject.name == name:
@@ -30,18 +33,21 @@ extension GameObject {
         }
 
         for child in gameObject.getChilds() {
-            if let found = GameObject.find(type, inGameObject: child) {
+            if let found = GameObject.find(type, in: child) {
                 return found
             }
         }
         return nil
     }
     
-    public static func findGameObjects(_ type: SearchType, inScene scene: Scene) -> [GameObject] {
-        return GameObject.findGameObjects(type, inGameObject: scene.rootGameObject)
+    public static func findGameObjects(_ type: SearchType, in scene: Scene? = Scene.sharedInstance) -> [GameObject] {
+        guard let scene = scene
+            else { return [] }
+
+        return GameObject.findGameObjects(type, in: scene.rootGameObject)
     }
     
-    public static func findGameObjects(_ type: SearchType, inGameObject gameObject: GameObject) -> [GameObject] {
+    public static func findGameObjects(_ type: SearchType, in gameObject: GameObject) -> [GameObject] {
         
         var list = [GameObject]()
         
@@ -61,7 +67,7 @@ extension GameObject {
         }
 
         list.append(contentsOf: gameObject.getChilds().flatMap {
-            GameObject.findGameObjects(type, inGameObject: $0)
+            GameObject.findGameObjects(type, in: $0)
         })
         return list
     }
