@@ -6,7 +6,7 @@ public class Renderer: Component {
     public var materials = [Material]() {
         
         didSet {
-            self.gameObject?.node.geometry?.materials = self.materials.map { (material) -> SCNMaterial in material.scnMaterial }
+            gameObject?.node.geometry?.materials = materials.map { (material) -> SCNMaterial in material.scnMaterial }
         }
     }
     
@@ -17,7 +17,7 @@ public class Renderer: Component {
         }
         set {
             if let newMaterial = newValue {
-                self.materials = [newMaterial]
+                materials = [newMaterial]
             }
         }
     }
@@ -25,33 +25,33 @@ public class Renderer: Component {
     public var shadowCasting: Bool {
         
         get {
-            guard let gameObject = self.gameObject
+            guard let gameObject = gameObject
                 else { return false }
 
             return gameObject.node.castsShadow
         }
         set {
-            self.gameObject?.node.castsShadow = newValue
+            gameObject?.node.castsShadow = newValue
         }
     }
     
     public var sortingOrder: Int {
         
         get {
-            guard let gameObject = self.gameObject
+            guard let gameObject = gameObject
                 else { return 0 }
 
             return gameObject.node.renderingOrder
         }
         set {
-            self.gameObject?.node.renderingOrder = newValue
+            gameObject?.node.renderingOrder = newValue
         }
     }
     
     open override func awake() {
 
-        if let scnMaterials = self.gameObject?.node.geometry?.materials {
-            self.materials = scnMaterials.map { (scnMaterial) -> Material in Material(scnMaterial) }
+        if let scnMaterials = gameObject?.node.geometry?.materials {
+            materials = scnMaterials.map { (scnMaterial) -> Material in Material(scnMaterial) }
         }
     }
 }

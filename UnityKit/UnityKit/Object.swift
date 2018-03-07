@@ -25,7 +25,7 @@ open class Object {
     }
     
     open func destroy() {
-        self.removeAllComponents()
+        removeAllComponents()
     }
     
     open func awake() {
@@ -35,40 +35,40 @@ open class Object {
     open func start() {
         
     }
-    
+
     open func update() {
         
     }
     
     internal func removeAllComponents() {
         
-        self.components.removeAll()
+        components.removeAll()
     }
     
     public func removeComponentsOfType(_ type: Component.Type) {
                 
-        while let index = self.components.index(where: { $0.self === type }) {
-            self.components.remove(at: index)
+        while let index = components.index(where: { $0.self === type }) {
+            components.remove(at: index)
         }
     }
     
     public func removeComponent(_ component: Component) {
         
-        if let index = self.components.index(where: { $0 === component }) {
-            self.components.remove(at: index)
+        if let index = components.index(where: { $0 === component }) {
+            components.remove(at: index)
         }
     }
     
     open func getComponent<T: Component>(_ type: T.Type) -> T? {
-        return self.components.flatMap { $0 as? T }.first
+        return components.flatMap { $0 as? T }.first
     }
     
-    open func getComponents<T: Component>(_ type: T.Type) -> [T]? {
-        return self.components.flatMap { $0 as? T }
+    open func getComponents<T: Component>(_ type: T.Type) -> [T] {
+        return components.flatMap { $0 as? T }
     }
     
     open func addComponent<T: Component>(_ type: T.Type) -> T? {
-        return self.addComponent(monoBehaviourOnly: true, type: type)
+        return addComponent(monoBehaviourOnly: true, type: type)
     }
     
     internal func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type) -> T? {
@@ -78,7 +78,7 @@ open class Object {
         }
         
         let component = T()
-        self.components.append(component)
+        components.append(component)
         component.awake()
 
         return component

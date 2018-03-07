@@ -42,10 +42,10 @@ open class View: SCNView {
         
         super.layoutSubviews()
         
-        Screen.width = self.frame.size.width
-        Screen.height = self.frame.size.height
+        Screen.width = frame.size.width
+        Screen.height = frame.size.height
         
-        if let scene = self.sceneHolder,
+        if let scene = sceneHolder,
             let camera = Camera.main(in: scene) {
             
             camera.calculateFieldOfViews()

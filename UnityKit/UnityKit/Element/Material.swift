@@ -45,10 +45,10 @@ public class Material: Object {
     public var doubleSidedGI: Bool {
         
         get {
-            return self.scnMaterial.isDoubleSided
+            return scnMaterial.isDoubleSided
         }
         set {
-            self.scnMaterial.isDoubleSided = newValue
+            scnMaterial.isDoubleSided = newValue
         }
     }
     
@@ -109,13 +109,13 @@ public class Material: Object {
         
         switch shading {
         case .diffuse:
-            return self.scnMaterial.diffuse.contents as? UIColor
+            return scnMaterial.diffuse.contents as? UIColor
         case .specular:
-            return self.scnMaterial.specular.contents as? UIColor
+            return scnMaterial.specular.contents as? UIColor
         case .emission:
-            return self.self.scnMaterial.emission.contents as? UIColor
+            return scnMaterial.emission.contents as? UIColor
         case .reflective:
-            return self.self.scnMaterial.reflective.contents as? UIColor
+            return scnMaterial.reflective.contents as? UIColor
         default:
             return nil
         }
@@ -141,13 +141,13 @@ public class Material: Object {
         
         switch shading {
         case .diffuse:
-            self.scnMaterial.diffuse.contents = color
+            scnMaterial.diffuse.contents = color
         case .specular:
-            self.scnMaterial.specular.contents = color
+            scnMaterial.specular.contents = color
         case .emission:
-            self.self.scnMaterial.emission.contents = color
+            scnMaterial.emission.contents = color
         case .reflective:
-            self.self.scnMaterial.reflective.contents = color
+            scnMaterial.reflective.contents = color
         case .unknown:
             break
         }
@@ -173,11 +173,11 @@ public class Material: Object {
         
         switch shading {
         case .diffuse:
-            return self.scnMaterial.diffuse.contents as? UIImage
+            return scnMaterial.diffuse.contents as? UIImage
         case .normal:
-            return self.scnMaterial.normal.contents as? UIImage
+            return scnMaterial.normal.contents as? UIImage
         case .reflective:
-            return self.self.scnMaterial.reflective.contents as? UIImage
+            return scnMaterial.reflective.contents as? UIImage
         default:
             return nil
         }
@@ -201,11 +201,11 @@ public class Material: Object {
         
         switch shading {
         case .diffuse:
-            self.scnMaterial.diffuse.contents = color
+            scnMaterial.diffuse.contents = color
         case .normal:
-            self.scnMaterial.normal.contents = color
+            scnMaterial.normal.contents = color
         case .reflective:
-            self.self.scnMaterial.reflective.contents = color
+            scnMaterial.reflective.contents = color
         case .unknown:
             break
         }

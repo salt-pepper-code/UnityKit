@@ -6,7 +6,7 @@ open class Behaviour: Component {
     
     public var isActiveAndEnabled: Bool {
         get {
-            return self.enabled
+            return enabled
         }
     }
 }

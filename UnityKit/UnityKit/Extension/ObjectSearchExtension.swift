@@ -13,10 +13,6 @@ extension Object {
     
     public static func findObjectsOfType<T: Component>(_ type: T.Type, inScene scene: Scene) -> [T]? {
         
-        if let components = scene.rootGameObject.getComponents(type) { return components }
-        
-        if let components = scene.rootGameObject.getComponentsInChild(type) { return components }
-        
-        return nil
+        return scene.rootGameObject.getComponents(type) + scene.rootGameObject.getComponentsInChild(type)
     }
 }

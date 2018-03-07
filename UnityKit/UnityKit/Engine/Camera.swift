@@ -16,23 +16,23 @@ public class Camera: Behaviour {
         
         get {
             if #available(iOS 11.0, *) {
-                return self.scnCamera.fieldOfView
+                return scnCamera.fieldOfView
             }
-            return CGFloat(self.scnCamera.xFov)
+            return CGFloat(scnCamera.xFov)
         }
         set {
-            self.hFieldOfView = newValue
+            hFieldOfView = newValue
             
             if #available(iOS 11.0, *) {
                 
-                self.scnCamera.fieldOfView = newValue
-                self.scnCamera.projectionDirection = .horizontal
+                scnCamera.fieldOfView = newValue
+                scnCamera.projectionDirection = .horizontal
             }
 
             let screenPlaneDistance = (Screen.width.toDouble() / 2.0) / tan(newValue.toDouble().degreesToRadians / 2.0)
 
-            self.scnCamera.xFov = newValue.toDouble()
-            self.scnCamera.yFov = (atan((Screen.height.toDouble() / 2.0) / screenPlaneDistance) * 2.0).radiansToDegrees
+            scnCamera.xFov = newValue.toDouble()
+            scnCamera.yFov = (atan((Screen.height.toDouble() / 2.0) / screenPlaneDistance) * 2.0).radiansToDegrees
         }
     }
     
@@ -44,10 +44,10 @@ public class Camera: Behaviour {
     public var zNear: Double {
         
         get {
-            return self.scnCamera.zNear
+            return scnCamera.zNear
         }
         set {
-            self.scnCamera.zNear = newValue
+            scnCamera.zNear = newValue
         }
     }
     
@@ -59,10 +59,10 @@ public class Camera: Behaviour {
     public var zFar: Double {
         
         get {
-            return self.scnCamera.zFar
+            return scnCamera.zFar
         }
         set {
-            self.scnCamera.zFar = newValue
+            scnCamera.zFar = newValue
         }
     }
     
@@ -73,10 +73,10 @@ public class Camera: Behaviour {
     public var orthographic: Bool {
         
         get {
-            return self.scnCamera.usesOrthographicProjection
+            return scnCamera.usesOrthographicProjection
         }
         set {
-            self.scnCamera.usesOrthographicProjection = newValue
+            scnCamera.usesOrthographicProjection = newValue
         }
     }
 
@@ -89,10 +89,10 @@ public class Camera: Behaviour {
     public var orthographicSize: Double {
         
         get {
-            return self.scnCamera.orthographicScale
+            return scnCamera.orthographicScale
         }
         set {
-            self.scnCamera.orthographicScale = newValue
+            scnCamera.orthographicScale = newValue
         }
     }
     
@@ -104,13 +104,13 @@ public class Camera: Behaviour {
         
         get {
             if #available(iOS 10.0, *) {
-                return self.scnCamera.wantsHDR
+                return scnCamera.wantsHDR
             }
             return false
         }
         set {
             if #available(iOS 10.0, *) {
-                self.scnCamera.wantsHDR = newValue
+                scnCamera.wantsHDR = newValue
             }
         }
     }
@@ -122,21 +122,21 @@ public class Camera: Behaviour {
     public var cullingMask: GameObject.Layer {
 
         get {
-            return GameObject.Layer(rawValue: self.scnCamera.categoryBitMask)
+            return GameObject.Layer(rawValue: scnCamera.categoryBitMask)
         }
         set {
-            self.scnCamera.categoryBitMask = newValue.rawValue
+            scnCamera.categoryBitMask = newValue.rawValue
         }
     }
 
     public override var gameObject: GameObject? {
 
         didSet {
-            guard let node = self.gameObject?.node, node.camera != self.scnCamera
+            guard let node = gameObject?.node, node.camera != scnCamera
                 else { return }
 
-            node.camera = self.scnCamera
-            self.calculateFieldOfViews()
+            node.camera = scnCamera
+            calculateFieldOfViews()
         }
     }
     
@@ -147,11 +147,11 @@ public class Camera: Behaviour {
         self.scnCamera = SCNCamera()
         super.init()
         self.cullingMask = GameObject.Layer.UI
-        self.calculateFieldOfViews()
+        calculateFieldOfViews()
     }
     
     public func calculateFieldOfViews() {
-        self.fieldOfView = self.hFieldOfView
+        fieldOfView = hFieldOfView
     }
     
     public static func main(in scene: Scene? = Scene.sharedInstance) -> Camera? {
@@ -170,8 +170,8 @@ public class Camera: Behaviour {
         
         self.target = target
 
-        guard let target = self.target,
-            let gameObject = self.gameObject
+        guard let target = target,
+            let gameObject = gameObject
             else { return }
 
         let targetConstraint = SCNLookAtConstraint(target: target.node)
@@ -222,11 +222,11 @@ public class Camera: Behaviour {
     }
     
     public func lookAt(_ gameObject: GameObject) {
-        self.lookAt(gameObject.transform)
+        lookAt(gameObject.transform)
     }
     
     public func lookAt(_ target: Transform) {
-        self.gameObject?.node.constraints = nil
-        self.transform?.lookAt(target)
+        gameObject?.node.constraints = nil
+        transform?.lookAt(target)
     }
 }

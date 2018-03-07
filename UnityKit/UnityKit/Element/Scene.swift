@@ -66,7 +66,7 @@ open class Scene {
             Scene.sharedInstance = nil
         }
 
-        self.intialize()
+        intialize()
     }
     
     private func intialize() {
@@ -91,25 +91,23 @@ open class Scene {
     
     @objc private func handleDisplayLink(_ sender: CADisplayLink) {
         
-        if let lastTimeStamp = self.lastTimeStamp {
-            
-            Time.deltaTime = sender.timestamp - lastTimeStamp
-
-            self.rootGameObject.update()
-            self.lastTimeStamp = sender.timestamp
-            
-        } else {
+        guard let lastTimeStamp = lastTimeStamp else {
             
             self.lastTimeStamp = sender.timestamp
-            self.rootGameObject.start()
+            rootGameObject.start()
+            return
         }
+
+        Time.deltaTime = sender.timestamp - lastTimeStamp
+        rootGameObject.update()
+        self.lastTimeStamp = sender.timestamp
     }
     
     //
     
     public func clearScene() {
         
-        let copy = self.rootGameObject.getChilds()
+        let copy = rootGameObject.getChilds()
         copy.forEach { destroy($0) }
     }
     

@@ -6,7 +6,7 @@ open class Component: Object {
     
     public var transform: Transform? {
         get {
-            return self.gameObject?.transform
+            return gameObject?.transform
         }
     }
     
@@ -21,7 +21,7 @@ open class Component: Object {
     open override func destroy() {
         
         super.destroy()
-        self.gameObject?.removeComponent(self)
+        gameObject?.removeComponent(self)
     }
     
     open func onDestroy() {
@@ -29,18 +29,18 @@ open class Component: Object {
     }
     
     public func remove() {
-        self.gameObject?.removeComponent(self)
+        gameObject?.removeComponent(self)
     }
     
     open override func getComponent<T: Component>(_ type: T.Type) -> T? {
-        return self.gameObject?.getComponent(type)
+        return gameObject?.getComponent(type)
     }
     
-    open override func getComponents<T: Component>(_ type: T.Type) -> [T]? {
-        return self.gameObject?.getComponents(type)
+    open override func getComponents<T: Component>(_ type: T.Type) -> [T] {
+        return gameObject?.getComponents(type) ?? []
     }
     
     open override func addComponent<T: Component>(_ type: T.Type) -> T? {
-        return self.gameObject?.addComponent(type)
+        return gameObject?.addComponent(type)
     }
 }
