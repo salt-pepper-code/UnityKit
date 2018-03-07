@@ -141,7 +141,7 @@ extension Vector3 {
     /**
      * Calculates the SCNVector from lerping between two Vector3 vectors
      */
-    public static func lerp(_ v0: Vector3, _ v1: Vector3, _ t: TimeInterval) -> Vector3 {
+    public static func lerp(from v0: Vector3, to v1: Vector3, time t: TimeInterval) -> Vector3 {
         return Float(1 - t) * v0 + Float(t) * v1
     }
 }

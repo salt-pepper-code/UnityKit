@@ -29,7 +29,8 @@ class ViewController: UIViewController {
         guard let scene = sceneView.sceneHolder
             else { return }
 
-        if let ship = GameObject.find(.name("ship")), let camera = Camera.main() {
+        if let ship = GameObject.find(.name("ship")),
+            let camera = Camera.main() {
 
             ship.tag = .custom("Ship")
             ship.layer = GameObject.Layer.addLayer(with: "Ship")

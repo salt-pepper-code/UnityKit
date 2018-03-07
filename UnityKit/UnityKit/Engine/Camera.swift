@@ -182,7 +182,21 @@ public class Camera: Behaviour {
             return
         }
 
-        let distanceConstraint = SCNTransformConstraint(inWorldSpace: true) { (node, transform) -> SCNMatrix4 in
+        let constraint = distanceConstraint(gameObject: gameObject, target: target, distanceRange: distanceRange)
+        gameObject.node.constraints = [targetConstraint, constraint]
+    }
+
+    private func distanceConstraint(gameObject: GameObject, target: GameObject, distanceRange: (minimum: Float, maximum: Float)) -> SCNConstraint {
+
+        if #available(iOS 11.0, *) {
+
+            let distanceConstraint = SCNDistanceConstraint(target: target.node)
+            distanceConstraint.minimumDistance = CGFloat(distanceRange.minimum)
+            distanceConstraint.maximumDistance = CGFloat(distanceRange.maximum)
+            return distanceConstraint
+        }
+
+        return SCNTransformConstraint(inWorldSpace: true) { (node, transform) -> SCNMatrix4 in
 
             let distance = Vector3.distance(target.transform.position, gameObject.transform.position)
 
@@ -197,14 +211,14 @@ public class Camera: Behaviour {
                 return transform
             }
 
-            gameObject.transform.position.x = interpolate(from: target.transform.position.x, to: gameObject.transform.position.x, alpha: normalizedDistance)
-            gameObject.transform.position.y = target.transform.position.y
-            gameObject.transform.position.z = interpolate(from: target.transform.position.z, to: gameObject.transform.position.z, alpha: normalizedDistance)
+            let to = Vector3(interpolate(from: target.transform.position.x, to: gameObject.transform.position.x, alpha: normalizedDistance),
+                             target.transform.position.y,
+                             interpolate(from: target.transform.position.z, to: gameObject.transform.position.z, alpha: normalizedDistance))
+
+            gameObject.transform.position = to
 
             return transform
         }
-
-        gameObject.node.constraints = [targetConstraint, distanceConstraint]
     }
     
     public func lookAt(_ gameObject: GameObject) {
