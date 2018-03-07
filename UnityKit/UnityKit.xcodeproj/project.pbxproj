@@ -21,7 +21,6 @@
 		0AD605CD2003969100908043 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD605CC2003969100908043 /* Camera.swift */; };
 		0AD605CF2003978300908043 /* Behaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD605CE2003978300908043 /* Behaviour.swift */; };
 		0AD605D120039E9500908043 /* ObjectSearchExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD605D020039E9500908043 /* ObjectSearchExtension.swift */; };
-		0AE6ACF220041FAB00764C16 /* UnityTween.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE6ACF120041FAB00764C16 /* UnityTween.swift */; };
 		493545C11FE857B7003440E3 /* UnityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493545B71FE857B6003440E3 /* UnityKit.framework */; };
 		493545C61FE857B7003440E3 /* UnityKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493545C51FE857B7003440E3 /* UnityKitTests.swift */; };
 		493545C81FE857B7003440E3 /* UnityKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 493545BA1FE857B6003440E3 /* UnityKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -34,7 +33,6 @@
 		493545F91FE8639B003440E3 /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493545F81FE8639B003440E3 /* GameObject.swift */; };
 		49B5EA1A1FE87DFA002ED074 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B5EA191FE87DFA002ED074 /* File.swift */; };
 		49B5EA1D1FE8836D002ED074 /* SCNVector3Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B5EA1C1FE8836D002ED074 /* SCNVector3Extension.swift */; };
-		FC1A7C25CFF698C5CEA77651 /* Pods_UnityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 790BCA9D79C855C2E514321F /* Pods_UnityKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,9 +61,6 @@
 		0AD605CE2003978300908043 /* Behaviour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Behaviour.swift; sourceTree = "<group>"; };
 		0AD605D020039E9500908043 /* ObjectSearchExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSearchExtension.swift; sourceTree = "<group>"; };
 		0AE6ACDD20041ED400764C16 /* MKTween.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MKTween.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0AE6ACF120041FAB00764C16 /* UnityTween.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnityTween.swift; sourceTree = "<group>"; };
-		20FCA08DECD921304723CDE6 /* Pods-UnityKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnityKit.release.xcconfig"; path = "../Pods/Target Support Files/Pods-UnityKit/Pods-UnityKit.release.xcconfig"; sourceTree = "<group>"; };
-		3C926AE91BC4A6C1E5E70210 /* Pods-UnityKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnityKit.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-UnityKit/Pods-UnityKit.debug.xcconfig"; sourceTree = "<group>"; };
 		493545B71FE857B6003440E3 /* UnityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UnityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		493545BA1FE857B6003440E3 /* UnityKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnityKit.h; sourceTree = "<group>"; };
 		493545BB1FE857B6003440E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -81,7 +76,6 @@
 		493545F81FE8639B003440E3 /* GameObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
 		49B5EA191FE87DFA002ED074 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		49B5EA1C1FE8836D002ED074 /* SCNVector3Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNVector3Extension.swift; sourceTree = "<group>"; };
-		790BCA9D79C855C2E514321F /* Pods_UnityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +83,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC1A7C25CFF698C5CEA77651 /* Pods_UnityKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,27 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				0AE6ACDD20041ED400764C16 /* MKTween.framework */,
-				790BCA9D79C855C2E514321F /* Pods_UnityKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		0AE6ACF020041FAB00764C16 /* Tween */ = {
-			isa = PBXGroup;
-			children = (
-				0AE6ACF120041FAB00764C16 /* UnityTween.swift */,
-			);
-			name = Tween;
-			path = UnityKit/Tween;
-			sourceTree = SOURCE_ROOT;
-		};
-		4150C1C6B72FBBBFAD38D42E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3C926AE91BC4A6C1E5E70210 /* Pods-UnityKit.debug.xcconfig */,
-				20FCA08DECD921304723CDE6 /* Pods-UnityKit.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		493545AD1FE857B6003440E3 = {
@@ -138,7 +112,6 @@
 				493545C41FE857B7003440E3 /* UnityKitTests */,
 				493545B81FE857B6003440E3 /* Products */,
 				0AE6ACDB20041ED400764C16 /* Frameworks */,
-				4150C1C6B72FBBBFAD38D42E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,7 +137,6 @@
 				493545ED1FE861A9003440E3 /* Engine */,
 				493545DD1FE85D4D003440E3 /* UI */,
 				493545DB1FE85D4D003440E3 /* Element */,
-				0AE6ACF020041FAB00764C16 /* Tween */,
 			);
 			path = UnityKit;
 			sourceTree = "<group>";
@@ -251,12 +223,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 493545CB1FE857B7003440E3 /* Build configuration list for PBXNativeTarget "UnityKit" */;
 			buildPhases = (
-				FAB048C5C74916AA1C6E21E3 /* [CP] Check Pods Manifest.lock */,
 				493545B21FE857B6003440E3 /* Sources */,
 				493545B31FE857B6003440E3 /* Frameworks */,
 				493545B41FE857B6003440E3 /* Headers */,
 				493545B51FE857B6003440E3 /* Resources */,
-				0ABE8D2B63E239BA3D2711FF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -341,42 +311,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		0ABE8D2B63E239BA3D2711FF /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-UnityKit/Pods-UnityKit-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FAB048C5C74916AA1C6E21E3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-UnityKit-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		493545B21FE857B6003440E3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -393,7 +327,6 @@
 				49B5EA1D1FE8836D002ED074 /* SCNVector3Extension.swift in Sources */,
 				493545F11FE861BE003440E3 /* Object.swift in Sources */,
 				0A4A54401FE962F600DA4F22 /* MathExtension.swift in Sources */,
-				0AE6ACF220041FAB00764C16 /* UnityTween.swift in Sources */,
 				0AD605CF2003978300908043 /* Behaviour.swift in Sources */,
 				0A3E16842003F3F3001E3C7F /* SCNQuaternionExtension.swift in Sources */,
 				0A4A54421FE96ED300DA4F22 /* Time.swift in Sources */,
@@ -543,7 +476,6 @@
 		};
 		493545CC1FE857B7003440E3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C926AE91BC4A6C1E5E70210 /* Pods-UnityKit.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -568,7 +500,6 @@
 		};
 		493545CD1FE857B7003440E3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 20FCA08DECD921304723CDE6 /* Pods-UnityKit.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";

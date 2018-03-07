@@ -1,4 +1,5 @@
 import UnityKit
+import MKTween
 
 class ShipScript: MonoBehaviour {
 
@@ -8,7 +9,7 @@ class ShipScript: MonoBehaviour {
             
             gameObject.transform.position.x = 10
             
-            _ = UnityTween.move(gameObject, to: Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 80), duration: 4).set(timingMode: .cubicInOut)
+            //_ = Tween.move(gameObject, to: Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 80), duration: 4).set(timingMode: .cubicInOut)
         }
     }
 }

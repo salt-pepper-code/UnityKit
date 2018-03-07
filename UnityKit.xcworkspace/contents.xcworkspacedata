@@ -8,6 +8,9 @@
       location = "group:UnityKit/UnityKit.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:UnityKitDemo/UnityKitDemo.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
