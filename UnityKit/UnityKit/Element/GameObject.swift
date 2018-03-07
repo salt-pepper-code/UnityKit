@@ -18,10 +18,30 @@ public final class GameObject: Object {
     
     private(set) public weak var parent: GameObject?
     private(set) public weak var scene: Scene?
-    
+
     private var didAwake: Bool = false
     private var didStart: Bool = false
-    
+
+    public var activeInHierarchy: Bool {
+
+        get {
+            if let parent = parent {
+                return activeSelf && parent.activeInHierarchy
+            }
+            return activeSelf
+        }
+    }
+
+    private(set) public var activeSelf: Bool {
+
+        get {
+            return !node.isHidden
+        }
+        set {
+            node.isHidden = !newValue
+        }
+    }
+
     public var layer: Layer {
         
         get {
@@ -32,10 +52,10 @@ public final class GameObject: Object {
             childs.forEach { $0.layer = newValue }
         }
     }
-    
-    public convenience init?(modelName: String, withExtension: String? = nil, bundle: Bundle = Bundle.main) {
+
+    public convenience init?(modelName: String, extension ext: String? = nil, bundle: Bundle = Bundle.main) {
         
-        guard let modelUrl = searchPathForResource(forResource: modelName, withExtension: withExtension, bundle: bundle)
+        guard let modelUrl = searchPathForResource(for: modelName, extension: ext, bundle: bundle)
             else { return nil }
         
         self.init(modelUrl: modelUrl)
@@ -117,7 +137,11 @@ public final class GameObject: Object {
             $0.setScene(scene)
         }
     }
-    
+
+    public func setActive(_ active: Bool) {
+        self.activeSelf = active
+    }
+
     //Update
     
     public override func awake() {

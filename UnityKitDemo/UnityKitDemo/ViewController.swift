@@ -22,23 +22,21 @@ class ViewController: UIViewController {
         
         self.view.backgroundColor = UIColor.blue
 
-        let sceneView = View.makeView(on: self.view, sceneFilename: "ship.scn")
+        let sceneView = View.makeView(on: self.view, sceneName: "ship.scn")
         
         sceneView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - 0)
-        
-        guard let scene = sceneView.sceneHolder
+
+        guard let scene = sceneView.sceneHolder,
+            let ship = GameObject.find(.name("ship")),
+            let camera = Camera.main()
             else { return }
 
-        if let ship = GameObject.find(.name("ship")),
-            let camera = Camera.main() {
+        ship.tag = .custom("Ship")
+        ship.layer = GameObject.Layer.addLayer(with: "Ship")
+        _ = ship.addComponent(ShipScript.self)
 
-            ship.tag = .custom("Ship")
-            ship.layer = GameObject.Layer.addLayer(with: "Ship")
-            _ = ship.addComponent(ShipScript.self)
-
-            camera.cullingMask = ship.layer
-            camera.followTarget(target: ship, distanceRange: (10, 10))
-        }
+        camera.cullingMask = ship.layer
+        camera.followTarget(target: ship, distanceRange: (10, 10))
 
         let cube = GameObject.createPrimitive(.cube(width: 1, height: 1, length: 1, chamferRadius: 0, name: "Cube")).setColor(UIColor(red: 1, green: 0, blue: 0, alpha: 1))
         _ = cube.addComponent(CubeScript.self)

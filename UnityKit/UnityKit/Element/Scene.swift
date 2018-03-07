@@ -3,42 +3,41 @@ import SceneKit
 
 open class Scene {
 
-    public enum Option {
+    public enum Allocation {
         case instantiate
         case singleton
     }
 
-    private var displayLink : CADisplayLink?
     public let scnScene: SCNScene
     public let rootGameObject: GameObject
 
     private(set) public static var sharedInstance: Scene?
 
-    public convenience init?(filename: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, option: Option) {
-        
-        guard let sceneUrl = searchPathForResource(forResource: filename, withExtension: nil, bundle: bundle)
+    public convenience init?(sceneName: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, allocation: Allocation) {
+
+        guard let sceneUrl = searchPathForResource(for: sceneName, extension: nil, bundle: bundle)
             else { return nil }
 
-        self.init(sceneUrl: sceneUrl, option: option)
+        self.init(sceneUrl: sceneUrl, allocation: allocation)
     }
     
-    public convenience init?(scenePath: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, option: Option) {
+    public convenience init?(scenePath: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, allocation: Allocation) {
         
         guard let sceneUrl = bundle.url(forResource: scenePath, withExtension: nil)
             else { return nil }
 
-        self.init(sceneUrl: sceneUrl, option: option)
+        self.init(sceneUrl: sceneUrl, allocation: allocation)
     }
     
-    public convenience init?(sceneUrl: URL, options: [SCNSceneSource.LoadingOption : Any]? = nil, option: Option) {
+    public convenience init?(sceneUrl: URL, options: [SCNSceneSource.LoadingOption : Any]? = nil, allocation: Allocation) {
         
         guard let scene = try? SCNScene(url: sceneUrl, options: options)
             else { return nil }
 
-        self.init(scene, option: option)
+        self.init(scene, allocation: allocation)
     }
     
-    public init(_ scene: SCNScene? = nil, option: Option) {
+    public init(_ scene: SCNScene? = nil, allocation: Allocation) {
         
         self.scnScene = scene ?? SCNScene()
         
@@ -59,50 +58,32 @@ open class Scene {
             _ = cameraObject.addComponent(Camera.self)
         }
 
-        switch option {
+        switch allocation {
         case .singleton:
             Scene.sharedInstance = self
         case .instantiate:
             Scene.sharedInstance = nil
         }
-
-        intialize()
     }
-    
-    private func intialize() {
-        
-        guard let displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(Scene.handleDisplayLink(_:)))
-            else { return }
-            
-        if #available(iOS 10.0, *) {
-            displayLink.preferredFramesPerSecond = 60
-        } else {
-            displayLink.frameInterval = 1
-        }
 
-        displayLink.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
-
-        self.displayLink = displayLink
-    }
-    
     //
     
     private var lastTimeStamp: TimeInterval?
-    
-    @objc private func handleDisplayLink(_ sender: CADisplayLink) {
-        
+
+    internal func update(updateAtTime time: TimeInterval) {
+
         guard let lastTimeStamp = lastTimeStamp else {
-            
-            self.lastTimeStamp = sender.timestamp
+
+            self.lastTimeStamp = time
             rootGameObject.start()
             return
         }
 
-        Time.deltaTime = sender.timestamp - lastTimeStamp
+        Time.deltaTime = time - lastTimeStamp
         rootGameObject.update()
-        self.lastTimeStamp = sender.timestamp
+        self.lastTimeStamp = time
     }
-    
+
     //
     
     public func clearScene() {
