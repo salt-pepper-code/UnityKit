@@ -16,15 +16,17 @@ class ViewController: UIViewController {
         return button
     }()
 
+    override func loadView() {
+        self.view = View.makeView(sceneName: "ship.scn")
+    }
+
+    var sceneView: View {
+        return self.view as! View
+    }
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        self.view.backgroundColor = UIColor.blue
-
-        let sceneView = View.makeView(on: self.view, sceneName: "ship.scn")
-        
-        sceneView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - 0)
 
         guard let scene = sceneView.sceneHolder,
             let ship = GameObject.find(.name("ship")),
@@ -38,7 +40,7 @@ class ViewController: UIViewController {
         camera.cullingMask = ship.layer
         camera.followTarget(target: ship, distanceRange: (10, 10))
 
-        let cube = GameObject.createPrimitive(.cube(width: 1, height: 1, length: 1, chamferRadius: 0, name: "Cube")).setColor(UIColor(red: 1, green: 0, blue: 0, alpha: 1))
+        let cube = GameObject.createPrimitive(.cube(width: 1, height: 1, length: 1, chamferRadius: 0, name: "Cube")).setColor(.red)
         _ = cube.addComponent(CubeScript.self)
         cube.layer = GameObject.Layer.addLayer(with: "Cube")
         cube.addToScene(scene)
@@ -58,11 +60,11 @@ class ViewController: UIViewController {
             cubeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
             ])
 
-        shipButton.addTarget(self, action: #selector(showShip), for: .touchUpInside)
-        cubeButton.addTarget(self, action: #selector(showCube), for: .touchUpInside)
+        shipButton.addTarget(self, action: #selector(showShipUsingMask), for: .touchUpInside)
+        cubeButton.addTarget(self, action: #selector(showCubeUsingMask), for: .touchUpInside)
     }
 
-    @objc private func showShip() {
+    @objc private func showShipUsingMask() {
 
         guard let camera = Camera.main(), let ship = GameObject.find(.name("ship"))
             else { return }
@@ -71,7 +73,7 @@ class ViewController: UIViewController {
         camera.followTarget(target: ship, distanceRange: (10, 10))
     }
 
-    @objc private func showCube() {
+    @objc private func showCubeUsingMask() {
 
         guard let camera = Camera.main(), let cube = GameObject.find(.name("Cube"))
             else { return }

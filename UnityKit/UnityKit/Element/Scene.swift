@@ -1,15 +1,18 @@
 import Foundation
 import SceneKit
 
-open class Scene {
+open class Scene: Identifiable {
 
     public enum Allocation {
         case instantiate
         case singleton
     }
 
+    private var lastTimeStamp: TimeInterval?
     public let scnScene: SCNScene
     public let rootGameObject: GameObject
+
+    public let uuid: String
 
     private(set) public static var sharedInstance: Scene?
 
@@ -38,6 +41,8 @@ open class Scene {
     }
     
     public init(_ scene: SCNScene? = nil, allocation: Allocation) {
+
+        self.uuid = UUID().uuidString
         
         self.scnScene = scene ?? SCNScene()
         
@@ -67,8 +72,10 @@ open class Scene {
     }
 
     //
-    
-    private var lastTimeStamp: TimeInterval?
+
+    public static func ==(lhs: Scene, rhs: Scene) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
 
     internal func update(updateAtTime time: TimeInterval) {
 

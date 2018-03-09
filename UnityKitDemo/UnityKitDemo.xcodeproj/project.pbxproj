@@ -36,13 +36,13 @@
 
 /* Begin PBXFileReference section */
 		0A4A543D1FE9409800DA4F22 /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
-		0AD605CA2002C5B700908043 /* CubeScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeScript.swift; sourceTree = "<group>"; };
-		0AE6AD132004F48800764C16 /* ShipScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipScript.swift; sourceTree = "<group>"; };
+		0AD605CA2002C5B700908043 /* CubeScript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubeScript.swift; sourceTree = "<group>"; };
+		0AE6AD132004F48800764C16 /* ShipScript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShipScript.swift; sourceTree = "<group>"; };
 		0AFB89AC2036F7E700211E07 /* UnityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F5159BC4A4B99B871FD0C8E /* Pods_UnityKitDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnityKitDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		493545981FE85703003440E3 /* UnityKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnityKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4935459B1FE85703003440E3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4935459D1FE85703003440E3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4935459B1FE85703003440E3 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4935459D1FE85703003440E3 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		493545A01FE85703003440E3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		493545A21FE85703003440E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		493545A51FE85703003440E3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };

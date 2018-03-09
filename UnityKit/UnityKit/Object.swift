@@ -5,8 +5,12 @@ public func destroy(_ gameObject: GameObject) {
     Object.destroy(gameObject)
 }
 
-open class Object {
-    
+protocol Identifiable: Equatable {
+    var uuid: String { get }
+}
+
+open class Object: Identifiable {
+
     /*!
      @property name
      @abstract Determines the name of the receiver.
@@ -19,7 +23,11 @@ open class Object {
     public required init() {
         self.uuid = UUID().uuidString
     }
-    
+
+    public static func ==(lhs: Object, rhs: Object) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
+
     public class func destroy(_ gameObject: GameObject) {
         gameObject.destroy()
     }
@@ -54,7 +62,7 @@ open class Object {
     
     public func removeComponent(_ component: Component) {
         
-        if let index = components.index(where: { $0 === component }) {
+        if let index = components.index(where: { $0 == component }) {
             components.remove(at: index)
         }
     }

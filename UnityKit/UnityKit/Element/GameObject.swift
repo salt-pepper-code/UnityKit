@@ -17,7 +17,19 @@ public final class GameObject: Object {
     private(set) internal var childs = [GameObject]()
     
     private(set) public weak var parent: GameObject?
-    private(set) public weak var scene: Scene?
+    private(set) public weak var scene: Scene? {
+        didSet {
+            guard let oldScene = oldValue,
+                let newScene = scene,
+                let parent = parent,
+                oldScene != newScene
+                else { return }
+
+            if parent == oldScene.rootGameObject {
+                scene?.rootGameObject.addChild(self)
+            }
+        }
+    }
 
     private var didAwake: Bool = false
     private var didStart: Bool = false
@@ -129,13 +141,10 @@ public final class GameObject: Object {
         return clone
     }
     
-    public func setScene(_ scene: Scene) {
+    internal func setScene(_ scene: Scene) {
         
         self.scene = scene
-        
-        childs.forEach {
-            $0.setScene(scene)
-        }
+        childs.forEach { $0.setScene(scene) }
     }
 
     public func setActive(_ active: Bool) {
@@ -150,8 +159,8 @@ public final class GameObject: Object {
             else { return }
 
         didAwake = true
-        components.forEach { (component) in component.awake() }
-        childs.forEach { (child) in child.awake() }
+        components.forEach { $0.awake() }
+        childs.forEach { $0.awake() }
     }
     
     public override func start() {
@@ -163,8 +172,8 @@ public final class GameObject: Object {
             else { return }
 
         didStart = true
-        components.forEach { (component) in component.start() }
-        childs.forEach { (child) in child.start() }
+        components.forEach { $0.start() }
+        childs.forEach { $0.start() }
     }
     
     public override func update() {
@@ -177,8 +186,8 @@ public final class GameObject: Object {
             return
         }
 
-        components.forEach { (component) in component.update() }
-        childs.forEach { (child) in child.update() }
+        components.forEach { $0.update() }
+        childs.forEach { $0.update() }
     }
     
     //Component
@@ -223,24 +232,23 @@ public final class GameObject: Object {
     //Child
     
     public func addToScene(_ scene: Scene) {
-        
-        self.scene = scene
-        parent = scene.rootGameObject
-        
+
         setScene(scene)
+        parent = scene.rootGameObject
         
         scene.rootGameObject.addChild(self)
     }
     
     public func addChild(_ child: GameObject) {
-        
-        child.scene = scene
+
+        if let scene = scene {
+            child.setScene(scene)
+        }
         child.parent = self
         
-        if childs.index(where: { $0 === child }) == nil {
+        if childs.index(where: { $0 == child }) == nil {
             
             childs.append(child)
-            
             node.addChildNode(child.node)
         }
     }
@@ -262,7 +270,7 @@ public final class GameObject: Object {
     
     public func removeChild(_ child: GameObject) {
         
-        if let index = childs.index(where: { $0 === child }) {
+        if let index = childs.index(where: { $0 == child }) {
             
             if let gameObject = getChild(index) {
                 
