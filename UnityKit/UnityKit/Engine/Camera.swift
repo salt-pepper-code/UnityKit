@@ -220,13 +220,23 @@ public class Camera: Behaviour {
             return transform
         }
     }
-    
-    public func lookAt(_ gameObject: GameObject) {
-        lookAt(gameObject.transform)
+
+    @available(iOS 11.0, *)
+    public func lookAt(_ gameObject: GameObject, animated: Bool = false, duration: TimeInterval = 1) {
+        lookAt(gameObject.transform, animated: animated, duration: duration)
     }
-    
-    public func lookAt(_ target: Transform) {
+
+    @available(iOS 11.0, *)
+    public func lookAt(_ target: Transform, animated: Bool = false, duration: TimeInterval = 1) {
         gameObject?.node.constraints = nil
+        guard animated else {
+            transform?.lookAt(target)
+            return
+        }
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = 1
+        SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transform?.lookAt(target)
+        SCNTransaction.commit()
     }
 }

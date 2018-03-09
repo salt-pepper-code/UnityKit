@@ -66,20 +66,27 @@ class ViewController: UIViewController {
 
     @objc private func showShipUsingMask() {
 
-        guard let camera = Camera.main(), let ship = GameObject.find(.name("ship"))
+        guard let camera = Camera.main(),
+            let ship = GameObject.find(.name("ship"))
             else { return }
 
         camera.cullingMask = GameObject.Layer.layer(for: "Ship")
-        camera.followTarget(target: ship, distanceRange: (10, 10))
+        //camera.followTarget(target: ship, distanceRange: (10, 10))
+        if #available(iOS 11.0, *) {
+            camera.lookAt(ship, animated: true)
+        }
     }
 
     @objc private func showCubeUsingMask() {
 
-        guard let camera = Camera.main(), let cube = GameObject.find(.name("Cube"))
+        guard let camera = Camera.main(),
+            let cube = GameObject.find(.name("Cube"))
             else { return }
 
         camera.cullingMask = GameObject.Layer.layer(for: "Cube")
-        camera.followTarget(target: cube, distanceRange: (10, 10))
+        if #available(iOS 11.0, *) {
+            camera.lookAt(cube, animated: true)
+        }
     }
 }
 

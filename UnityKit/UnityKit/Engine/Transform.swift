@@ -102,18 +102,9 @@ public class Transform: Component {
             gameObject?.node.scale = newValue
         }
     }
-    
-    public func lookAt(_ target: Transform) {
-        
-        guard target.position != position else {
-            print ("position vectors are equal. No rotation needed")
-            return
-        }
 
-        guard #available(iOS 11.0, *) else {
-            print("lookAt needs ios 11")
-            return
-        }
+    @available(iOS 11.0, *)
+    public func lookAt(_ target: Transform) {
 
         if let constraints = gameObject?.node.constraints, constraints.count > 0 {
             print("remove constraints on node before using lookAt")
