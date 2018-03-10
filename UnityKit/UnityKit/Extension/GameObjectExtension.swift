@@ -33,7 +33,7 @@ extension GameObject {
         return gameObject
     }
     
-    public func setColor(_ color: UIColor, lightingModel: SCNMaterial.LightingModel = .phong) -> GameObject {
+    public func setColor(_ color: Color, lightingModel: SCNMaterial.LightingModel = .phong) -> GameObject {
         
         renderer?.material = Material(color, lightingModel: lightingModel)
         

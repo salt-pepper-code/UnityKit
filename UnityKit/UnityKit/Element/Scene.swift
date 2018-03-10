@@ -12,7 +12,7 @@ open class Scene: Identifiable {
     public let scnScene: SCNScene
     public let rootGameObject: GameObject
 
-    public let uuid: String
+    internal let uuid: String
 
     private(set) public static var sharedInstance: Scene?
 
@@ -73,10 +73,10 @@ open class Scene: Identifiable {
 
     //
 
-    public static func ==(lhs: Scene, rhs: Scene) -> Bool {
-        return lhs.uuid == rhs.uuid
+    public func getInstanceID() -> String {
+        return uuid
     }
-
+    
     internal func update(updateAtTime time: TimeInterval) {
 
         guard let lastTimeStamp = lastTimeStamp else {

@@ -22,7 +22,7 @@ public class Material: Object {
     
     public let scnMaterial: SCNMaterial
     
-    public var color: UIColor? {
+    public var color: Color? {
         
         get {
             return getColor(.diffuse)
@@ -62,7 +62,7 @@ public class Material: Object {
         super.init()
     }
     
-    public required init(_ color: UIColor, lightingModel: SCNMaterial.LightingModel = .phong) {
+    public required init(_ color: Color, lightingModel: SCNMaterial.LightingModel = .phong) {
         
         self.scnMaterial = SCNMaterial()
         self.scnMaterial.lightingModel = lightingModel
@@ -89,7 +89,7 @@ public class Material: Object {
     
     //Color
     
-    public func getColor(_ name: String) -> UIColor? {
+    public func getColor(_ name: String) -> Color? {
         
         switch name {
         case BasicColorShading.diffuse.rawValue:
@@ -105,23 +105,23 @@ public class Material: Object {
         }
     }
     
-    public func getColor(_ shading: BasicColorShading) -> UIColor? {
+    public func getColor(_ shading: BasicColorShading) -> Color? {
         
         switch shading {
         case .diffuse:
-            return scnMaterial.diffuse.contents as? UIColor
+            return scnMaterial.diffuse.contents as? Color
         case .specular:
-            return scnMaterial.specular.contents as? UIColor
+            return scnMaterial.specular.contents as? Color
         case .emission:
-            return scnMaterial.emission.contents as? UIColor
+            return scnMaterial.emission.contents as? Color
         case .reflective:
-            return scnMaterial.reflective.contents as? UIColor
+            return scnMaterial.reflective.contents as? Color
         default:
             return nil
         }
     }
     
-    public func setColor(_ name: String, color: UIColor?) {
+    public func setColor(_ name: String, color: Color?) {
         
         switch name {
         case BasicColorShading.diffuse.rawValue:
@@ -137,7 +137,7 @@ public class Material: Object {
         }
     }
     
-    public func setColor(_ shading: BasicColorShading, color: UIColor?) {
+    public func setColor(_ shading: BasicColorShading, color: Color?) {
         
         switch shading {
         case .diffuse:

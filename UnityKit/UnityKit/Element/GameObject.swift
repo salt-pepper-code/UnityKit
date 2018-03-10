@@ -89,6 +89,13 @@ public final class GameObject: Object {
         node.load()
         self.init(node)
     }
+
+    public convenience init(name: String) {
+
+        let node = SCNNode()
+        node.name = name
+        self.init(node)
+    }
     
     public init(_ node: SCNNode) {
         

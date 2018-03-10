@@ -10,7 +10,7 @@ open class View: SCNView {
         let antialiasingMode: SCNAntialiasingMode?
         let preferredRenderingAPI: SCNRenderingAPI?
         let showsStatistics: Bool?
-        let backgroundColor: UIColor?
+        let backgroundColor: Color?
         let rendersContinuously: Bool?
 
         init(allowsCameraControl: Bool? = nil,
@@ -18,7 +18,7 @@ open class View: SCNView {
              antialiasingMode: SCNAntialiasingMode? = nil,
              preferredRenderingAPI: SCNRenderingAPI? = nil,
              showsStatistics: Bool? = nil,
-             backgroundColor: UIColor? = nil,
+             backgroundColor: Color? = nil,
              rendersContinuously: Bool? = true) {
 
             self.allowsCameraControl = allowsCameraControl

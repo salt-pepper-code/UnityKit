@@ -5,10 +5,6 @@ public func destroy(_ gameObject: GameObject) {
     Object.destroy(gameObject)
 }
 
-protocol Identifiable: Equatable {
-    var uuid: String { get }
-}
-
 open class Object: Identifiable {
 
     /*!
@@ -18,14 +14,14 @@ open class Object: Identifiable {
     open var name: String?
     
     private(set) internal var components = [Component]()
-    public let uuid: String
+    internal let uuid: String
     
     public required init() {
         self.uuid = UUID().uuidString
     }
 
-    public static func ==(lhs: Object, rhs: Object) -> Bool {
-        return lhs.uuid == rhs.uuid
+    public func getInstanceID() -> String {
+        return uuid
     }
 
     public class func destroy(_ gameObject: GameObject) {
