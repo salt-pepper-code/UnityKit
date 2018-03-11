@@ -55,6 +55,8 @@ public class Touch {
 
 public class Input {
 
+    internal static var touches: [Touch]?
+
     public static var touchCount: Int {
 
         guard let touches = touches
@@ -62,8 +64,6 @@ public class Input {
 
         return touches.count
     }
-
-    internal static var touches: [Touch]?
 
     internal static func preUpdateTouches(_ phase: TouchPhase) {
 
@@ -82,7 +82,9 @@ public class Input {
     internal static func endUpdateTouches() {
 
         var shouldClear = false
+
         touches?.forEach { touch in
+
             guard let phase = touch.phase
                 else { return }
 

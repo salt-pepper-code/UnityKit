@@ -1,11 +1,12 @@
-import Foundation
+
 import SceneKit
 
+public typealias Vector4 = SCNVector4
 public typealias Quaternion = SCNQuaternion
 
-extension Quaternion {
+extension Vector4 {
     
-    public static var zero: Quaternion {
+    public static var zero: Vector4 {
         return SCNQuaternion.zero
     }
 }
