@@ -1,4 +1,4 @@
-import Foundation
+
 import SceneKit
 
 public typealias Vector3 = SCNVector3

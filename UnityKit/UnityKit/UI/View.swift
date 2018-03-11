@@ -112,5 +112,34 @@ extension View: SCNSceneRendererDelegate {
 
     public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         sceneHolder?.update(updateAtTime: time)
+        Input.endUpdateTouches()
+    }
+}
+
+extension View {
+
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+        Input.setTouches(
+            touches.enumerated().map { (index, uitouch) -> Touch in
+                Touch(uitouch, index: index)
+        })
+
+        Input.preUpdateTouches(.began)
+    }
+
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+        Input.preUpdateTouches(.moved)
+    }
+
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+        Input.preUpdateTouches(.ended)
+    }
+
+    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+        Input.preUpdateTouches(.cancelled)
     }
 }

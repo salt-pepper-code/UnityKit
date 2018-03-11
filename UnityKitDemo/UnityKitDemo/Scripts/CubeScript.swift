@@ -16,5 +16,9 @@ class CubeScript: MonoBehaviour {
         if let gameObject = self.gameObject {
             gameObject.transform.position = Vector3.lerp(from: gameObject.transform.position, to: Vector3(0, 20, 0), time: Time.deltaTime)
         }
+
+        if let touch = Input.getTouch(0) {
+            print(touch.deltaPosition)
+        }
     }
 }
