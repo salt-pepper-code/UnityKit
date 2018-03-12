@@ -21,7 +21,7 @@ open class Scene: Identifiable {
         guard let sceneUrl = searchPathForResource(for: sceneName, extension: nil, bundle: bundle)
             else { return nil }
 
-        self.init(sceneUrl: sceneUrl, allocation: allocation)
+        self.init(sceneUrl: sceneUrl, options: options, allocation: allocation)
     }
     
     public convenience init?(scenePath: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, allocation: Allocation) {
@@ -29,7 +29,7 @@ open class Scene: Identifiable {
         guard let sceneUrl = bundle.url(forResource: scenePath, withExtension: nil)
             else { return nil }
 
-        self.init(sceneUrl: sceneUrl, allocation: allocation)
+        self.init(sceneUrl: sceneUrl, options: options, allocation: allocation)
     }
     
     public convenience init?(sceneUrl: URL, options: [SCNSceneSource.LoadingOption : Any]? = nil, allocation: Allocation) {

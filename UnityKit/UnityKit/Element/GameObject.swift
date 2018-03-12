@@ -71,29 +71,39 @@ public final class GameObject: Object {
         }
     }
 
-    public convenience init?(modelName: String, extension ext: String? = nil, bundle: Bundle = Bundle.main) {
+    public convenience init?(fileName: String, nodeName: String?, bundle: Bundle = Bundle.main) {
         
-        guard let modelUrl = searchPathForResource(for: modelName, extension: ext, bundle: bundle)
+        guard let modelUrl = searchPathForResource(for: fileName, extension: nil, bundle: bundle)
             else { return nil }
         
-        self.init(modelUrl: modelUrl)
+        self.init(modelUrl: modelUrl, nodeName: nodeName)
     }
     
-    public convenience init?(modelPath: String, bundle: Bundle = Bundle.main) {
+    public convenience init?(modelPath: String, nodeName: String?, bundle: Bundle = Bundle.main) {
         
         guard let modelUrl = bundle.url(forResource: modelPath, withExtension: nil)
             else { return nil }
         
-        self.init(modelUrl: modelUrl)
+        self.init(modelUrl: modelUrl, nodeName: nodeName)
     }
     
-    public convenience init?(modelUrl: URL) {
+    public convenience init?(modelUrl: URL, nodeName: String?) {
         
-        guard let node = SCNReferenceNode(url: modelUrl)
+        guard let referenceNode = SCNReferenceNode(url: modelUrl)
             else { return nil }
         
-        node.load()
-        self.init(node)
+        referenceNode.load()
+
+        if let nodeName = nodeName {
+            guard let node = referenceNode.childNodes.filter({ $0.name == nodeName }).first
+                else { return nil }
+
+            self.init(node)
+
+        } else {
+
+            self.init(referenceNode)
+        }
     }
 
     public convenience init(name: String) {

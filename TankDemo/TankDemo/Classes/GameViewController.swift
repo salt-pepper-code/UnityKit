@@ -16,14 +16,11 @@ class GameViewController: UIViewController {
 
         super.viewDidLoad()
 
-        guard let _ = sceneView.sceneHolder,
-            let camera = Camera.main()
+        guard let scene = sceneView.sceneHolder,
+            let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
             else { return }
 
-        camera.transform?.position = Vector3(43, 41, -23)
-        camera.transform?.localEulerAngles = Vector3(-40, 120, 0)
-
-        print("boom")
+        scene.addGameObject(tank)
     }
     
     override var shouldAutorotate: Bool {
