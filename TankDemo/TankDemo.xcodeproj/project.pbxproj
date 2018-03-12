@@ -95,8 +95,16 @@
 			children = (
 				0A4D0E072055B70800C119B6 /* GameViewController.swift */,
 				0A4D0E082055B70800C119B6 /* AppDelegate.swift */,
+				0A4D0E1B2057497700C119B6 /* Scripts */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		0A4D0E1B2057497700C119B6 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
