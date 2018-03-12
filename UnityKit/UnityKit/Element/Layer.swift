@@ -9,12 +9,13 @@ extension GameObject {
             self.rawValue = rawValue
         }
 
-        public static let all = Layer(rawValue: -1)
         public static let `default` = Layer(rawValue: 1 << 0)
         public static let ignoreRayCast = Layer(rawValue: 1 << 1)
         public static let UI = Layer(rawValue: 1 << 2)
 
-        private(set) public static var layers = ["all": all, "default": `default`, "ignoreRayCast": ignoreRayCast, "UI": UI]
+        public static let all: Layer = [.`default`, .ignoreRayCast, .UI]
+
+        private(set) public static var layers = ["default": `default`, "ignoreRayCast": ignoreRayCast, "UI": UI]
 
         public static func layer(for name: String) -> Layer {
 

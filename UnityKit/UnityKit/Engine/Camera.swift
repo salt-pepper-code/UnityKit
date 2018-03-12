@@ -7,7 +7,7 @@ public class Camera: Behaviour {
     
     internal(set) public var scnCamera = SCNCamera() {
         didSet {
-            self.cullingMask = GameObject.Layer.UI
+            cullingMask = GameObject.Layer.all
             calculateFieldOfViews()
         }
     }
@@ -144,7 +144,8 @@ public class Camera: Behaviour {
     public override var gameObject: GameObject? {
 
         didSet {
-            guard let node = gameObject?.node, node.camera != scnCamera
+            guard let node = gameObject?.node,
+                node.camera != scnCamera
                 else { return }
 
             node.camera.map { scnCamera = $0 }
