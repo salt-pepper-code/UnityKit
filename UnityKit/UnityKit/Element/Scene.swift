@@ -49,18 +49,27 @@ open class Scene: Identifiable {
         self.rootGameObject = GameObject(self.scnScene.rootNode)
         
         self.rootGameObject.setScene(self)
-        
-        if scene == nil || Camera.main(in: self) == nil {
+
+        if let camera = GameObject.find(.camera(.any), in: self) {
+
+            camera.tag = .mainCamera
+            camera.name = camera.tag.name
+        }
+
+        if Camera.main(in: self) == nil {
             
             let cameraObject = GameObject()
+
+            if let cameraComponent = cameraObject.addComponent(Camera.self) {
+                cameraObject.node.camera = cameraComponent.scnCamera
+            }
+
             cameraObject.tag = .mainCamera
             cameraObject.name = cameraObject.tag.name
 
             self.rootGameObject.addChild(cameraObject)
             
             cameraObject.transform.position = Vector3(0, 10, 20)
-            
-            _ = cameraObject.addComponent(Camera.self)
         }
 
         switch allocation {

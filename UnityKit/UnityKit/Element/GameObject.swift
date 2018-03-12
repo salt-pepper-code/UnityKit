@@ -9,8 +9,25 @@ public final class GameObject: Object {
             node.name = name
         }
     }
+
+    public var layer: Layer {
+
+        get {
+            return Layer(rawValue: node.categoryBitMask)
+        }
+        set {
+            guard node.camera == nil,
+                node.light == nil
+                else { return }
+
+            node.categoryBitMask = newValue.rawValue
+            childs.forEach { $0.layer = newValue }
+        }
+    }
+
     public var tag: Tag = .untagged
     public let node: SCNNode
+
     private(set) public var transform: Transform!
     private(set) public var renderer: Renderer?
     
@@ -54,17 +71,6 @@ public final class GameObject: Object {
         }
     }
 
-    public var layer: Layer {
-        
-        get {
-            return Layer(rawValue: node.categoryBitMask)
-        }
-        set {
-            node.categoryBitMask = newValue.rawValue
-            childs.forEach { $0.layer = newValue }
-        }
-    }
-
     public convenience init?(modelName: String, extension ext: String? = nil, bundle: Bundle = Bundle.main) {
         
         guard let modelUrl = searchPathForResource(for: modelName, extension: ext, bundle: bundle)
@@ -103,7 +109,7 @@ public final class GameObject: Object {
         
         super.init()
         
-        self.name = node.name
+        self.name = node.name ?? "No name"
         self.layer = Layer(rawValue: node.categoryBitMask)
         self.transform = addComponent(monoBehaviourOnly: false, type: Transform.self)
         
@@ -115,6 +121,12 @@ public final class GameObject: Object {
                 self.renderer?.materials.append(Material($0))
             }
         }
+
+        if let camera = node.camera,
+            let cameraComponent = addComponent(Camera.self) {
+
+            cameraComponent.scnCamera = camera
+        }
         
         GameObject.convertAllChildToGameObjects(self)
         awake()
@@ -124,7 +136,7 @@ public final class GameObject: Object {
         
         self.node = SCNNode()
         super.init()
-        self.transform = self.addComponent(monoBehaviourOnly: false, type: Transform.self)
+        self.transform = addComponent(monoBehaviourOnly: false, type: Transform.self)
         awake()
     }
     

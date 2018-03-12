@@ -5,7 +5,12 @@ public class Camera: Behaviour {
     
     private var hFieldOfView: CGFloat = 60
     
-    private(set) public var scnCamera: SCNCamera
+    internal(set) public var scnCamera = SCNCamera() {
+        didSet {
+            self.cullingMask = GameObject.Layer.UI
+            calculateFieldOfViews()
+        }
+    }
     
     /*!
      @property fieldOfView
@@ -15,6 +20,9 @@ public class Camera: Behaviour {
     public var fieldOfView: CGFloat {
         
         get {
+            guard orthographic
+                else { return 0 }
+
             if #available(iOS 11.0, *) {
                 return scnCamera.fieldOfView
             }
@@ -22,7 +30,10 @@ public class Camera: Behaviour {
         }
         set {
             hFieldOfView = newValue
-            
+
+            guard orthographic
+                else { return }
+
             if #available(iOS 11.0, *) {
                 
                 scnCamera.fieldOfView = newValue
@@ -126,6 +137,7 @@ public class Camera: Behaviour {
         }
         set {
             scnCamera.categoryBitMask = newValue.rawValue
+            gameObject?.node.categoryBitMask = newValue.rawValue
         }
     }
 
@@ -135,7 +147,7 @@ public class Camera: Behaviour {
             guard let node = gameObject?.node, node.camera != scnCamera
                 else { return }
 
-            node.camera = scnCamera
+            node.camera.map { scnCamera = $0 }
             calculateFieldOfViews()
         }
     }
@@ -143,10 +155,9 @@ public class Camera: Behaviour {
     private(set) public var target: GameObject?
     
     public required init() {
-        
-        self.scnCamera = SCNCamera()
+
         super.init()
-        self.cullingMask = GameObject.Layer.UI
+        self.cullingMask = GameObject.Layer.all
         calculateFieldOfViews()
     }
     

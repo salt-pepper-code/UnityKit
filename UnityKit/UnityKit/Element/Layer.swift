@@ -9,16 +9,17 @@ extension GameObject {
             self.rawValue = rawValue
         }
 
-        public static let _default = Layer(rawValue: 1 << 0)
+        public static let all = Layer(rawValue: -1)
+        public static let `default` = Layer(rawValue: 1 << 0)
         public static let ignoreRayCast = Layer(rawValue: 1 << 1)
         public static let UI = Layer(rawValue: 1 << 2)
 
-        private(set) public static var layers = ["default": _default, "ignoreRayCast": ignoreRayCast, "UI": UI]
+        private(set) public static var layers = ["all": all, "default": `default`, "ignoreRayCast": ignoreRayCast, "UI": UI]
 
         public static func layer(for name: String) -> Layer {
 
             guard let layer = layers[name]
-                else { return _default }
+                else { return `default` }
 
             return layer
         }

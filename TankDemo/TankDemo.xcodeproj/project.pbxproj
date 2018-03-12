@@ -12,7 +12,23 @@
 		0A4D0E0B2055B70800C119B6 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A4D0E052055B70800C119B6 /* art.scnassets */; };
 		0A4D0E0C2055B70800C119B6 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E072055B70800C119B6 /* GameViewController.swift */; };
 		0A4D0E0D2055B70800C119B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E082055B70800C119B6 /* AppDelegate.swift */; };
+		0A4D0E172056BE3D00C119B6 /* UnityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A4D0E162056BE3C00C119B6 /* UnityKit.framework */; };
+		0A4D0E182056BE3D00C119B6 /* UnityKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A4D0E162056BE3C00C119B6 /* UnityKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0A4D0E192056BE3D00C119B6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0A4D0E182056BE3D00C119B6 /* UnityKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0A4D0DEA2055B56800C119B6 /* TankDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,6 +38,7 @@
 		0A4D0E052055B70800C119B6 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		0A4D0E072055B70800C119B6 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		0A4D0E082055B70800C119B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		0A4D0E162056BE3C00C119B6 /* UnityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A4D0E172056BE3D00C119B6 /* UnityKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +56,7 @@
 		0A4D0DE12055B56800C119B6 = {
 			isa = PBXGroup;
 			children = (
+				0A4D0E162056BE3C00C119B6 /* UnityKit.framework */,
 				0A4D0DEC2055B56800C119B6 /* TankDemo */,
 				0A4D0DEB2055B56800C119B6 /* Products */,
 			);
@@ -90,6 +109,7 @@
 				0A4D0DE62055B56800C119B6 /* Sources */,
 				0A4D0DE72055B56800C119B6 /* Frameworks */,
 				0A4D0DE82055B56800C119B6 /* Resources */,
+				0A4D0E192056BE3D00C119B6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

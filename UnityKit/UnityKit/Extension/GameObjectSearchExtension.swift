@@ -1,46 +1,113 @@
 extension GameObject {
     
     public enum SearchType {
-        case name(String)
+        public enum Name {
+            case contains(String)
+            case startWith(String)
+            case exact(String)
+            case any
+        }
+        case name(Name)
         case tag(Tag)
         case layer(Layer)
-        case nameAndTag(String, Tag)
-        case any
+        case nameAndTag(Name, Tag)
+        case camera(Name)
+        case light(Name)
     }
-    
+
+    private static func compare(_ compareType: SearchType.Name, to other: String) -> Bool {
+
+        switch compareType {
+        case let .contains(name):
+            return other.contains(name)
+
+        case let .startWith(name):
+            return other.starts(with: name)
+
+        case let .exact(name):
+            return other == name
+
+        case .any:
+            return true
+        }
+    }
+
+    private static func compare(_ type: SearchType, gameObject: GameObject) -> Bool {
+
+        switch type {
+        case let .name(compareType):
+            guard let name = gameObject.name,
+                GameObject.compare(compareType, to: name)
+                else { break }
+
+            return true
+
+        case let .tag(tag) where gameObject.tag == tag:
+            return true
+
+        case let .nameAndTag(compareType, tag):
+
+            guard let name = gameObject.name,
+                GameObject.compare(compareType, to: name),
+                gameObject.tag == tag
+                else { break }
+
+            return true
+
+        case let .layer(layer) where gameObject.layer == layer:
+            return true
+
+        case let .camera(compareType):
+
+            guard let _ = gameObject.node.camera,
+                let name = gameObject.name,
+                GameObject.compare(compareType, to: name)
+                else { break }
+
+            return true
+
+        case let .light(compareType):
+
+            guard let _ = gameObject.node.light,
+                let name = gameObject.name,
+                GameObject.compare(compareType, to: name)
+                else { break }
+
+            return true
+
+        default:
+            break
+        }
+
+        return false
+    }
+
     public static func find(_ type: SearchType, in scene: Scene? = Scene.sharedInstance) -> GameObject? {
+
         guard let scene = scene
             else { return nil }
 
         return GameObject.find(type, in: scene.rootGameObject)
     }
-    
+
     public static func find(_ type: SearchType, in gameObject: GameObject) -> GameObject? {
 
-        switch type {
-        case let .name(name) where gameObject.name == name:
-            return gameObject
-        case let .tag(tag) where gameObject.tag == tag:
-            return gameObject
-        case let .nameAndTag(name, tag) where gameObject.name == name && gameObject.tag == tag:
-            return gameObject
-        case let .layer(layer) where gameObject.layer == layer:
-            return gameObject
-        case .any:
-            return gameObject.getChilds().first
-        default:
-            break
-        }
-
         for child in gameObject.getChilds() {
+
+            if GameObject.compare(type, gameObject: child) {
+                return child
+            }
+
             if let found = GameObject.find(type, in: child) {
                 return found
             }
         }
+
         return nil
     }
-    
+
     public static func findGameObjects(_ type: SearchType, in scene: Scene? = Scene.sharedInstance) -> [GameObject] {
+
         guard let scene = scene
             else { return [] }
 
@@ -48,28 +115,13 @@ extension GameObject {
     }
     
     public static func findGameObjects(_ type: SearchType, in gameObject: GameObject) -> [GameObject] {
-        
-        var list = [GameObject]()
-        
-        switch type {
-        case let .name(name) where gameObject.name == name:
-            list.append(gameObject)
-        case let .tag(tag) where gameObject.tag == tag:
-            list.append(gameObject)
-        case let .nameAndTag(name, tag) where gameObject.name == name && gameObject.tag == tag:
-            list.append(gameObject)
-        case let .layer(layer) where gameObject.layer == layer:
-            list.append(gameObject)
-        case .any:
-            list.append(gameObject)
-        default:
-            break
-        }
 
-        list.append(contentsOf: gameObject.getChilds().flatMap {
-            GameObject.findGameObjects(type, in: $0)
-        })
-        return list
+        return gameObject.getChilds().flatMap { (child) -> [GameObject] in
+            if GameObject.compare(type, gameObject: child) {
+                return [child] + GameObject.findGameObjects(type, in: child)
+            }
+            return GameObject.findGameObjects(type, in: child)
+        }
     }
 }
 
