@@ -1,6 +1,14 @@
 
 import SceneKit
 
+extension Array {
+    public mutating func appendContentsOf(newElements: [Element]) {
+        newElements.forEach {
+            self.append($0)
+        }
+    }
+}
+
 public class Collider: Component {
 
     private var colliderGameObject: GameObject?
@@ -11,13 +19,13 @@ public class Collider: Component {
     }
     private var physicsShape: SCNPhysicsShape?
     internal var physicsBodyType: SCNPhysicsBodyType = .kinematic
-    internal static let colliderTypes = [BoxCollider.self, PlaneCollider.self]
 
     internal static func getAllColliders(in gameObject: GameObject) -> [Collider] {
 
-        return Collider.colliderTypes
-            .flatMap { (type) -> [Collider] in gameObject.getComponents(type) }
-            .flatMap { $0 }
+        var colliders = [Collider]()
+        colliders.appendContentsOf(newElements: gameObject.getComponents(BoxCollider.self))
+        colliders.appendContentsOf(newElements: gameObject.getComponents(PlaneCollider.self))
+        return colliders
     }
 
     private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
@@ -29,8 +37,12 @@ public class Collider: Component {
             .flatMap { (collider) -> SCNPhysicsShape? in collider.physicsShape }
     }
 
-    internal func constructBody() {
+    public override func awake() {
+        constructBody()
+    }
 
+    internal func constructBody() {
+        fatalError("constructBody has not been implemented")
     }
 
     internal func createVisibleCollider(_ geometry: SCNGeometry) {
@@ -54,7 +66,9 @@ public class Collider: Component {
 
         var physicsShape = physicsShape
 
-        if let physicsShapes = getAllPhysicsShapes() {
+        if let physicsShapes = getAllPhysicsShapes(),
+            physicsShapes.count > 1 {
+
             physicsShape = SCNPhysicsShape(shapes: physicsShapes, transforms: nil)
         }
 
@@ -76,16 +90,12 @@ public class Collider: Component {
 
 public class BoxCollider: Collider {
 
-    public override func awake() {
-        constructBody()
-    }
-
     override func constructBody() {
 
         guard let gameObject = gameObject
             else { return }
 
-        let boundingBox = gameObject.node.boundingBox
+        let boundingBox = gameObject.node.boundingBox * gameObject.transform.localScale
         let vertices = [Vector3(boundingBox.min.x, boundingBox.min.y, boundingBox.min.z),
                         Vector3(boundingBox.min.x, boundingBox.max.y, boundingBox.min.z),
                         Vector3(boundingBox.max.x, boundingBox.max.y, boundingBox.min.z),
@@ -154,24 +164,24 @@ public class BoxCollider: Collider {
 
 public class PlaneCollider: Collider {
 
-    public override func awake() {
+    override func constructBody() {
 
         guard let gameObject = gameObject
             else { return }
 
-        let boundingBox = gameObject.node.boundingBox
+        let boundingBox = gameObject.node.boundingBox * gameObject.transform.localScale
         let vertices = [Vector3(boundingBox.min.x, boundingBox.max.y, boundingBox.min.z), //1 //0
                         Vector3(boundingBox.max.x, boundingBox.max.y, boundingBox.min.z), //2 //1
                         Vector3(boundingBox.max.x, boundingBox.max.y, boundingBox.max.z), //5 //2
                         Vector3(boundingBox.min.x, boundingBox.max.y, boundingBox.max.z)] //6 //3
 
-        let indices: [Int16] = [0, 1, 2,
-                                0, 2, 3]
+        let indices: [Int16] = [2, 1, 0,
+                                3, 2, 0]
 
-        let normals = [Vector3(0, 0, 1),
-                       Vector3(0, 0, 1),
-                       Vector3(0, 0, 1),
-                       Vector3(0, 0, 1)]
+        let normals = [Vector3(0, 1, 1),
+                       Vector3(0, 1, 1),
+                       Vector3(0, 1, 1),
+                       Vector3(0, 1, 1)]
 
         let vertexData = Data(bytes: vertices, count: vertices.count * MemoryLayout<Vector3>.size)
         let vertexSource = SCNGeometrySource(data: vertexData,

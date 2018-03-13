@@ -24,10 +24,13 @@ public final class RigidBody: Component {
                 else { return false }
 
             let kinematic: Bool? = Collider.getAllColliders(in: gameObject).reduce(nil) { (previous, collider) -> Bool? in
-                guard let previous = previous
-                    else { return collider.physicsBodyType == .kinematic }
 
-                return previous && collider.physicsBodyType == .kinematic
+                let physicsBodyType = collider.physicsBodyType
+
+                guard let previous = previous
+                    else { return physicsBodyType == .kinematic }
+
+                return previous && physicsBodyType == .kinematic
             }
 
             return kinematic ?? false
@@ -36,8 +39,8 @@ public final class RigidBody: Component {
             guard let gameObject = gameObject
                 else { return }
 
-            Collider.getAllColliders(in: gameObject).forEach {
-                $0.physicsBodyType = newValue ? .kinematic : .dynamic
+            Collider.getAllColliders(in: gameObject).forEach { collider in
+                collider.physicsBodyType = newValue ? .kinematic : .dynamic
             }
         }
     }

@@ -37,3 +37,7 @@ internal func + (left: BoundingBox?, right: BoundingBox?) -> BoundingBox? {
 internal func += (left: inout BoundingBox?, right: BoundingBox?) {
     left = left + right
 }
+
+internal func * (left: BoundingBox, right: SCNVector3) -> BoundingBox {
+    return (min: left.min * right, max: left.max * right)
+}
