@@ -5,7 +5,8 @@ public class BoxCollider: Collider {
 
     override func constructBody() {
 
-        guard let gameObject = gameObject
+        guard let gameObject = gameObject,
+            let name = gameObject.name
             else { return }
 
         let boundingBox = gameObject.node.boundingBox * gameObject.transform.localScale
@@ -69,6 +70,7 @@ public class BoxCollider: Collider {
                                          bytesPerIndex: MemoryLayout<Int16>.size)
 
         let geometry = SCNGeometry(sources: [vertexSource, normalSource], elements: [element])
+        geometry.name = name + "BoxCollider"
 
         updatePhysicsShape(SCNPhysicsShape(geometry: geometry))
         createVisibleCollider(geometry)

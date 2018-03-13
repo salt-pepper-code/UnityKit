@@ -18,7 +18,6 @@ public class Collider: Component {
         }
     }
     private var physicsShape: SCNPhysicsShape?
-    internal var physicsBodyType: SCNPhysicsBodyType = .kinematic
 
     internal static func getAllColliders(in gameObject: GameObject) -> [Collider] {
 
@@ -51,20 +50,27 @@ public class Collider: Component {
         colliderGameObject = nil
 
         if displayCollider {
-            let collider = GameObject(SCNNode(geometry: geometry)).setColor(.blue).setOpacity(0.3)
-            gameObject?.addChild(collider)
+            let node = SCNNode(geometry: geometry)
+            node.name = geometry.name
+            let collider = GameObject(node).setColor(.blue).setOpacity(0.3)
+            gameObject?.parent?.addChild(collider)
             colliderGameObject = collider
         }
     }
 
-    internal func updatePhysicsShape(_ physicsShape: SCNPhysicsShape) {
+    internal func updatePhysicsShape(_ shape: SCNPhysicsShape? = nil) {
 
         guard let gameObject = gameObject
             else { return }
 
-        self.physicsShape = physicsShape
+        if let shape = shape {
+            self.physicsShape = shape
+        }
 
-        var physicsShape = physicsShape
+        guard let shape = self.physicsShape
+            else { return }
+
+        var physicsShape = shape
 
         if let physicsShapes = getAllPhysicsShapes(),
             physicsShapes.count > 1 {
@@ -73,15 +79,16 @@ public class Collider: Component {
         }
 
         let useGravity: Bool
-
+        let bodyType: SCNPhysicsBodyType
         if let rigidBody = gameObject.getComponent(RigidBody.self) {
             useGravity = rigidBody.useGravity
-            physicsBodyType = rigidBody.isKinematic ? .kinematic : .dynamic
+            bodyType = rigidBody.isKinematic ? .kinematic : .dynamic
         } else {
             useGravity = true
+            bodyType = .kinematic
         }
 
-        let physicsBody = SCNPhysicsBody(type: physicsBodyType, shape: physicsShape)
+        let physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
         physicsBody.isAffectedByGravity = useGravity
 
         gameObject.node.physicsBody = physicsBody

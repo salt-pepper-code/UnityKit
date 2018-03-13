@@ -17,31 +17,25 @@ public final class RigidBody: Component {
         }
     }
 
-    public var isKinematic: Bool {
+    public var isKinematic: Bool = true {
 
-        get {
-            guard let gameObject = gameObject
-                else { return false }
-
-            let kinematic: Bool? = Collider.getAllColliders(in: gameObject).reduce(nil) { (previous, collider) -> Bool? in
-
-                let physicsBodyType = collider.physicsBodyType
-
-                guard let previous = previous
-                    else { return physicsBodyType == .kinematic }
-
-                return previous && physicsBodyType == .kinematic
-            }
-
-            return kinematic ?? false
-        }
-        set {
+        didSet {
             guard let gameObject = gameObject
                 else { return }
 
             Collider.getAllColliders(in: gameObject).forEach { collider in
-                collider.physicsBodyType = newValue ? .kinematic : .dynamic
+                collider.updatePhysicsShape()
             }
         }
+    }
+
+    public func set(isKinematic: Bool) -> RigidBody {
+        self.isKinematic = isKinematic
+        return self
+    }
+
+    public func set(useGravity: Bool) -> RigidBody {
+        self.useGravity = useGravity
+        return self
     }
 }
