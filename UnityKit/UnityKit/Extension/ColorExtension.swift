@@ -1,4 +1,6 @@
 
+import UIKit
+
 public typealias Color = UIColor
 
 public extension Color {

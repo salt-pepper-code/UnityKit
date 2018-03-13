@@ -1,4 +1,6 @@
 
+import CoreGraphics
+
 extension CGPoint {
 
     func toVector2() -> Vector2 {

@@ -1,4 +1,6 @@
 
+import Foundation
+
 public enum Ease {
 
     case linear
