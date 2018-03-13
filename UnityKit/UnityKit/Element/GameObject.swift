@@ -228,11 +228,9 @@ public final class GameObject: Object {
         return component
     }
     
-    internal override func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type) -> T? {
+    internal override func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
         
-        let component = super.addComponent(monoBehaviourOnly: monoBehaviourOnly, type: type)
-        component?.gameObject = self
-        return component
+        return super.addComponent(monoBehaviourOnly: monoBehaviourOnly, type: type, gameObject: self)
     }
     
     public func getComponentInChild<T: Component>(_ type: T.Type) -> T? {

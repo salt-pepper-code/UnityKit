@@ -185,6 +185,22 @@ public func -= ( left: inout Vector3, right: Vector3) {
     left = left - right
 }
 
+public func + (left: Vector3, right: Float) -> Vector3 {
+    return Vector3(left.x + right, left.y + right, left.z + right)
+}
+
+public func += (left: inout Vector3, right: Float) {
+    left = left + right
+}
+
+public func - (left: Vector3, right: Float) -> Vector3 {
+    return Vector3(left.x - right, left.y - right, left.z - right)
+}
+
+public func -= (left: inout Vector3, right: Float) {
+    left = left - right
+}
+
 /**
  * Multiplies two Vector3 vectors and returns the result as a new Vector3.
  */

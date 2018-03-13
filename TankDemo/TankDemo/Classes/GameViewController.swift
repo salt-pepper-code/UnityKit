@@ -21,6 +21,14 @@ class GameViewController: UIViewController {
             else { return }
 
         scene.addGameObject(tank)
+        _ = tank.addComponent(BoxCollider.self)
+
+        guard let plane = GameObject.find(.name(.exact("GroundPlane")))
+            else { return }
+
+        _ = plane.addComponent(PlaneCollider.self)
+
+        Debug.displayCollider(true)
     }
     
     override var shouldAutorotate: Bool {

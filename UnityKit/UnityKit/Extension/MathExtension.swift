@@ -27,6 +27,10 @@ extension Float {
     public func toDouble() -> Double {
         return Double(self)
     }
+
+    public func toCGFloat() -> CGFloat {
+        return CGFloat(self)
+    }
 }
 
 extension CGFloat {

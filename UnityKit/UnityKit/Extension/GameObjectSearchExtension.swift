@@ -123,5 +123,22 @@ extension GameObject {
             return GameObject.findGameObjects(type, in: child)
         }
     }
+
+
+    public static func getComponents<T: Component>(_ type: T.Type, in scene: Scene? = Scene.sharedInstance) -> [T] {
+
+        guard let scene = scene
+            else { return [] }
+
+        return GameObject.getComponents(type, in: scene.rootGameObject)
+    }
+
+    public static func getComponents<T: Component>(_ type: T.Type, in gameObject: GameObject) -> [T] {
+
+        return gameObject.getChilds().flatMap { (child) -> [T] in
+
+            return child.getComponents(type) + GameObject.getComponents(type, in: child)
+        }
+    }
 }
 

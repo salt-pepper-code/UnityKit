@@ -1,7 +1,7 @@
 import Foundation
 import SceneKit
 
-public class Transform: Component {
+public final class Transform: Component {
     
     public required init() {
         super.init()

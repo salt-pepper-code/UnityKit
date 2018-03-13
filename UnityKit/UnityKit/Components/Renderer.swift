@@ -1,7 +1,7 @@
 import Foundation
 import SceneKit
 
-public class Renderer: Component {
+public final class Renderer: Component {
     
     public var materials = [Material]() {
         

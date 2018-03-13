@@ -75,7 +75,7 @@ open class Object: Identifiable {
         return addComponent(monoBehaviourOnly: true, type: type)
     }
     
-    internal func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type) -> T? {
+    internal func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
         
         if monoBehaviourOnly && (T.self === Renderer.self || T.self === Transform.self) {
             return nil
@@ -83,6 +83,7 @@ open class Object: Identifiable {
         
         let component = T()
         components.append(component)
+        component.gameObject = gameObject
         component.awake()
 
         return component

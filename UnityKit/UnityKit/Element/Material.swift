@@ -1,7 +1,7 @@
 import Foundation
 import SceneKit
 
-public class Material: Object {
+public final class Material: Object {
     
     public enum BasicColorShading: String {
         

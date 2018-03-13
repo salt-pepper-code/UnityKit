@@ -34,4 +34,11 @@ extension GameObject {
         
         return self
     }
+
+    public func setOpacity(_ opacity: Float, lightingModel: SCNMaterial.LightingModel = .phong) -> GameObject {
+
+        node.opacity = opacity.toCGFloat()
+
+        return self
+    }
 }
