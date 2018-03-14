@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A13A2CA2058A739005EEFE3 /* MeshCollider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A13A2C92058A738005EEFE3 /* MeshCollider.swift */; };
 		0A3E16842003F3F3001E3C7F /* Vector4QuaternionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3E16832003F3F3001E3C7F /* Vector4QuaternionExtension.swift */; };
 		0A4A543C1FE93B9800DA4F22 /* GameObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A543B1FE93B9800DA4F22 /* GameObjectExtension.swift */; };
 		0A4A54401FE962F600DA4F22 /* MathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A543F1FE962F600DA4F22 /* MathExtension.swift */; };
@@ -60,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A13A2C92058A738005EEFE3 /* MeshCollider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshCollider.swift; sourceTree = "<group>"; };
 		0A3E16832003F3F3001E3C7F /* Vector4QuaternionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector4QuaternionExtension.swift; sourceTree = "<group>"; };
 		0A4A543B1FE93B9800DA4F22 /* GameObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameObjectExtension.swift; sourceTree = "<group>"; };
 		0A4A543F1FE962F600DA4F22 /* MathExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathExtension.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				0A4D0E2A20574CD400C119B6 /* Collider.swift */,
 				0AF3166B20588AD700757E38 /* BoxCollider.swift */,
 				0AF3166D20588B2900757E38 /* PlaneCollider.swift */,
+				0A13A2C92058A738005EEFE3 /* MeshCollider.swift */,
 				0A4D0E2C2057513F00C119B6 /* RigidBody.swift */,
 			);
 			path = Components;
@@ -407,6 +410,7 @@
 				0AD45A4A20548B260055713A /* ColorExtension.swift in Sources */,
 				0A4D0E2820574A1400C119B6 /* Time.swift in Sources */,
 				0AD45A4C20548F790055713A /* Input.swift in Sources */,
+				0A13A2CA2058A739005EEFE3 /* MeshCollider.swift in Sources */,
 				0AF3166C20588AD700757E38 /* BoxCollider.swift in Sources */,
 				493545F51FE86334003440E3 /* Component.swift in Sources */,
 				0A4A54461FE97E0E00DA4F22 /* Material.swift in Sources */,

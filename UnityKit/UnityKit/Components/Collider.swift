@@ -67,10 +67,7 @@ public class Collider: Component {
             self.physicsShape = shape
         }
 
-        guard let shape = self.physicsShape
-            else { return }
-
-        var physicsShape = shape
+        var physicsShape = self.physicsShape
 
         if let physicsShapes = getAllPhysicsShapes(),
             physicsShapes.count > 1 {

@@ -3,17 +3,15 @@ import SceneKit
 
 public final class RigidBody: Component {
 
-    public var useGravity: Bool {
+    public var useGravity: Bool = true {
 
-        get {
-            guard let gameObject = gameObject,
-                let physicsBody = gameObject.node.physicsBody
-                else { return true }
+        didSet {
+            guard let physicsBody = gameObject?.node.physicsBody else {
 
-            return physicsBody.isAffectedByGravity
-        }
-        set {
-            gameObject?.node.physicsBody?.isAffectedByGravity = newValue
+                gameObject?.node.physicsBody = SCNPhysicsBody(type: isKinematic ? .kinematic : .dynamic , shape: nil)
+                return
+            }
+            physicsBody.isAffectedByGravity = useGravity
         }
     }
 
@@ -30,11 +28,13 @@ public final class RigidBody: Component {
     }
 
     public func set(isKinematic: Bool) -> RigidBody {
+
         self.isKinematic = isKinematic
         return self
     }
 
     public func set(useGravity: Bool) -> RigidBody {
+
         self.useGravity = useGravity
         return self
     }

@@ -22,7 +22,7 @@ class GameViewController: UIViewController {
 
         scene.addGameObject(tank)
         _ = tank.addComponent(RigidBody.self)?.set(isKinematic: false).set(useGravity: true)
-        _ = tank.addComponent(BoxCollider.self)
+        _ = tank.addComponent(MeshCollider.self)
 
         tank.transform.position = Vector3(0, 10, 0)
 
