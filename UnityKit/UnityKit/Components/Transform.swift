@@ -18,10 +18,35 @@ public final class Transform: Component {
         guard let node = gameObject?.node
             else { return .zero }
 
-        if #available(iOS 11.0, *) {
-            return Vector3(node.simdWorldFront)
-        }
-        return Vector3(node.worldTransform.m31, node.worldTransform.m32, node.worldTransform.m33)
+        return Vector3(node.simdWorldFront)
+    }
+
+    public var back: Vector3 {
+        return forward.negated()
+    }
+
+    public var up: Vector3 {
+
+        guard let node = gameObject?.node
+            else { return .zero }
+
+        return Vector3(node.simdWorldUp)
+    }
+
+    public var bottom: Vector3 {
+        return up.negated()
+    }
+
+    public var right: Vector3 {
+
+        guard let node = gameObject?.node
+            else { return .zero }
+
+        return Vector3(node.simdWorldRight)
+    }
+
+    public var left: Vector3 {
+        return right.negated()
     }
 
     public var lossyScale: Vector3 {
@@ -49,7 +74,7 @@ public final class Transform: Component {
             return node.position
         }
         set {
-            guard let node = gameObject?._node, let parent = gameObject?.parent else {
+            guard let node = gameObject?.node, let parent = gameObject?.parent else {
                 print("Object need to have a parent before setting a position")
                 return
             }

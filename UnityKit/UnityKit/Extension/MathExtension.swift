@@ -2,6 +2,26 @@
 import CoreGraphics
 import Foundation
 
+public typealias Degree = Float
+
+extension Degree {
+
+    public static func clamp(_ angle: Degree) -> Degree {
+        var angle = angle
+        if angle > 360 {
+            angle -= 360
+        }
+        if angle < 0 {
+            angle += 360
+        }
+        return angle
+    }
+
+    public func clamp() -> Degree {
+        return Degree.clamp(self)
+    }
+}
+
 extension FloatingPoint {
     
     public static func degToRad() -> Self { return .pi / 180 }

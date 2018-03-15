@@ -106,8 +106,8 @@ public final class Joystick: MonoBehaviour {
                 updatePosition(touch: touch)
             }
         case .cancelled, .ended:
-            resetPosition()
             onComplete?()
+            resetPosition()
         }
     }
 
@@ -147,8 +147,11 @@ public final class Joystick: MonoBehaviour {
         displacement = min(newDisplacement, 1.0)
         lastAngleRadians = newAngleRadians
 
-        self.angle = displacement != 0.0 ? (180.0 - newAngleRadians * 180.0 / Float.pi) : 0.0
-        onUpdate?(angle, displacement)
+        angle = displacement != 0.0 ? (180.0 - newAngleRadians * 180.0 / .pi) : 0.0
+
+        if displacement > 0 {
+            onUpdate?(angle, displacement)
+        }
     }
 }
 

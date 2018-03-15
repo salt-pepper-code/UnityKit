@@ -6,35 +6,27 @@ public final class GameObject: Object {
     public override var name: String? {
         
         didSet {
-            _node.name = name
+            node.name = name
         }
     }
 
     public var layer: Layer {
 
         get {
-            return Layer(rawValue: _node.categoryBitMask)
+            return Layer(rawValue: node.categoryBitMask)
         }
         set {
-            guard _node.camera == nil,
-                _node.light == nil
+            guard node.camera == nil,
+                node.light == nil
                 else { return }
 
-            _node.categoryBitMask = newValue.rawValue
+            node.categoryBitMask = newValue.rawValue
             childs.forEach { $0.layer = newValue }
         }
     }
 
     public var tag: Tag = .untagged
-    internal let _node: SCNNode
-    internal var node: SCNNode {
-        get {
-            if let _ = _node.physicsBody {
-                return _node.presentation
-            }
-            return _node
-        }
-    }
+    internal let node: SCNNode
 
     private(set) public var transform: Transform!
     private(set) public var renderer: Renderer?
@@ -72,10 +64,10 @@ public final class GameObject: Object {
     private(set) public var activeSelf: Bool {
 
         get {
-            return !_node.isHidden
+            return !node.isHidden
         }
         set {
-            _node.isHidden = !newValue
+            node.isHidden = !newValue
         }
     }
 
@@ -123,12 +115,12 @@ public final class GameObject: Object {
     
     public init(_ node: SCNNode) {
         
-        self._node = node
+        self.node = node
         
         super.init()
         
         self.name = node.name ?? "No name"
-        self.layer = Layer(rawValue: _node.categoryBitMask)
+        self.layer = Layer(rawValue: node.categoryBitMask)
         self.transform = addComponent(monoBehaviourOnly: false, type: Transform.self)
         
         if let geometry = node.geometry {
@@ -155,7 +147,7 @@ public final class GameObject: Object {
     
     public required init() {
         
-        self._node = SCNNode()
+        self.node = SCNNode()
         super.init()
         self.transform = addComponent(monoBehaviourOnly: false, type: Transform.self)
         awake()
@@ -169,7 +161,7 @@ public final class GameObject: Object {
     
     public func instantiate() -> GameObject {
         
-        let cloneNode = _node.clone()
+        let cloneNode = node.clone()
         let clone = GameObject(cloneNode)
         
         if let name = name {
@@ -291,7 +283,7 @@ public final class GameObject: Object {
         if childs.index(where: { $0 == child }) == nil {
             
             childs.append(child)
-            _node.addChildNode(child._node)
+            node.addChildNode(child.node)
         }
     }
     
@@ -302,7 +294,7 @@ public final class GameObject: Object {
     
     public func getChildNodes() -> [SCNNode] {
         
-        return _node.childNodes
+        return node.childNodes
     }
     
     public func getChild(_ index: Int) -> GameObject? {
@@ -316,7 +308,7 @@ public final class GameObject: Object {
             
             if let gameObject = getChild(index) {
                 
-                gameObject._node.removeFromParentNode()
+                gameObject.node.removeFromParentNode()
             }
             
             childs.remove(at: index)

@@ -23,10 +23,7 @@ public final class Camera: Component {
             guard orthographic
                 else { return 0 }
 
-            if #available(iOS 11.0, *) {
-                return scnCamera.fieldOfView
-            }
-            return CGFloat(scnCamera.xFov)
+            return scnCamera.fieldOfView
         }
         set {
             hFieldOfView = newValue
@@ -39,11 +36,6 @@ public final class Camera: Component {
                 scnCamera.fieldOfView = newValue
                 scnCamera.projectionDirection = .horizontal
             }
-
-            let screenPlaneDistance = (Screen.width.toDouble() / 2.0) / tan(newValue.toDouble().degreesToRadians / 2.0)
-
-            scnCamera.xFov = newValue.toDouble()
-            scnCamera.yFov = (atan((Screen.height.toDouble() / 2.0) / screenPlaneDistance) * 2.0).radiansToDegrees
         }
     }
     

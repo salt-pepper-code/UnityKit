@@ -42,10 +42,7 @@ class GameViewController: UIViewController {
         scene.addGameObject(tank)
         _ = tank.addComponent(RigidBody.self)?.set(isKinematic: false).set(useGravity: true)
         _ = tank.addComponent(BoxCollider.self)
-        let tankMovement = tank.addComponent(TankMovement.self)
-        tankMovement?.joystick = joystick
-
-        //tank.transform.position = Vector3(0, 1, 0)
+        _ = tank.addComponent(TankMovement.self)
 
         guard let ground = GameObject.find(.name(.exact("GroundPlane")))
             else { return }

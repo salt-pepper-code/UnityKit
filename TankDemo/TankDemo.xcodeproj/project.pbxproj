@@ -57,14 +57,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0A13A2D42059715A005EEFE3 /* Joystick */ = {
-			isa = PBXGroup;
-			children = (
-				0A13A2D62059715A005EEFE3 /* Joystick.swift */,
-			);
-			path = Joystick;
-			sourceTree = "<group>";
-		};
 		0A4D0DE12055B56800C119B6 = {
 			isa = PBXGroup;
 			children = (
@@ -107,7 +99,6 @@
 			children = (
 				0A4D0E072055B70800C119B6 /* GameViewController.swift */,
 				0A4D0E082055B70800C119B6 /* AppDelegate.swift */,
-				0A13A2D42059715A005EEFE3 /* Joystick */,
 				0A4D0E1B2057497700C119B6 /* Scripts */,
 			);
 			path = Classes;
@@ -117,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				0A13A2D2205962DA005EEFE3 /* TankMovement.swift */,
+				0A13A2D62059715A005EEFE3 /* Joystick.swift */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
