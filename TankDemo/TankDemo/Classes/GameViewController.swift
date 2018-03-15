@@ -4,6 +4,25 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
+    private lazy var joystick: JoyStickView = {
+        let size: CGFloat = 60
+        let joystick = JoyStickView(frame: .zero)
+        joystick.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(joystick)
+        NSLayoutConstraint.activate([
+            joystick.widthAnchor.constraint(equalToConstant: size),
+            joystick.heightAnchor.constraint(equalToConstant: size),
+            joystick.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+            joystick.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
+            ])
+
+        joystick.movable = false
+        joystick.alpha = 1.0
+        joystick.baseAlpha = 0.5
+        joystick.handleTintColor = .green
+        return joystick
+    }()
+
     override func loadView() {
         self.view = View.makeView(sceneName: "Scene.scn")
     }
@@ -22,9 +41,11 @@ class GameViewController: UIViewController {
 
         scene.addGameObject(tank)
         _ = tank.addComponent(RigidBody.self)?.set(isKinematic: false).set(useGravity: true)
-        _ = tank.addComponent(MeshCollider.self)
+        _ = tank.addComponent(BoxCollider.self)
+        let tankMovement = tank.addComponent(TankMovement.self)
+        tankMovement?.joystick = joystick
 
-        tank.transform.position = Vector3(0, 10, 0)
+        //tank.transform.position = Vector3(0, 1, 0)
 
         guard let ground = GameObject.find(.name(.exact("GroundPlane")))
             else { return }

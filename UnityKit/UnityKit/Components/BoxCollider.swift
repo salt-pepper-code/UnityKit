@@ -1,7 +1,7 @@
 
 import SceneKit
 
-public class BoxCollider: Collider {
+public final class BoxCollider: Collider {
 
     override func constructBody() {
 
@@ -9,7 +9,7 @@ public class BoxCollider: Collider {
             let name = gameObject.name
             else { return }
 
-        let boundingBox = gameObject.node.boundingBox * gameObject.transform.localScale
+        let boundingBox = gameObject.node.boundingBox
         let vertices = [Vector3(boundingBox.min.x, boundingBox.min.y, boundingBox.min.z),
                         Vector3(boundingBox.min.x, boundingBox.max.y, boundingBox.min.z),
                         Vector3(boundingBox.max.x, boundingBox.max.y, boundingBox.min.z),
@@ -72,7 +72,8 @@ public class BoxCollider: Collider {
         let geometry = SCNGeometry(sources: [vertexSource, normalSource], elements: [element])
         geometry.name = name + "BoxCollider"
 
-        updatePhysicsShape(SCNPhysicsShape(geometry: geometry))
-        createVisibleCollider(geometry)
+        updatePhysicsShape(SCNPhysicsShape(geometry: geometry,
+                                           options: [.type: SCNPhysicsShape.ShapeType.convexHull,
+                                                                        .scale: gameObject.transform.localScale.x]))
     }
 }

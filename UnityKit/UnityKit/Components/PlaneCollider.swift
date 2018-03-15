@@ -1,7 +1,7 @@
 
 import SceneKit
 
-public class PlaneCollider: Collider {
+public final class PlaneCollider: Collider {
 
     override func constructBody() {
 
@@ -9,7 +9,7 @@ public class PlaneCollider: Collider {
             let name = gameObject.name
             else { return }
 
-        let boundingBox = gameObject.node.boundingBox * gameObject.transform.localScale
+        let boundingBox = gameObject.node.boundingBox
         let vertices = [Vector3(boundingBox.min.x, boundingBox.max.y, boundingBox.min.z), //1 //0
             Vector3(boundingBox.max.x, boundingBox.max.y, boundingBox.min.z), //2 //1
             Vector3(boundingBox.max.x, boundingBox.max.y, boundingBox.max.z), //5 //2
@@ -52,7 +52,8 @@ public class PlaneCollider: Collider {
         let geometry = SCNGeometry(sources: [vertexSource, normalSource], elements: [element])
         geometry.name = name + "PlaneCollider"
 
-        updatePhysicsShape(SCNPhysicsShape(geometry: geometry))
-        createVisibleCollider(geometry)
+        updatePhysicsShape(SCNPhysicsShape(geometry: geometry,
+                                           options: [.type: SCNPhysicsShape.ShapeType.convexHull,
+                                                     .scale: gameObject.transform.localScale.x]))
     }
 }

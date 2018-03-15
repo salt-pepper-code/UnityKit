@@ -23,24 +23,12 @@ extension Float {
     public static func lerp(from v0: Float, to v1: Float, time t: TimeInterval) -> Float {
         return Float(1 - t) * v0 + Float(t) * v1
     }
-    
-    public func toDouble() -> Double {
-        return Double(self)
-    }
-
-    public func toCGFloat() -> CGFloat {
-        return CGFloat(self)
-    }
 }
 
 extension CGFloat {
 
     public static func lerp(from v0: CGFloat, to v1: CGFloat, time t: TimeInterval) -> CGFloat {
         return CGFloat(1 - t) * v0 + CGFloat(t) * v1
-    }
-
-    public func toDouble() -> Double {
-        return Double(self)
     }
 }
 

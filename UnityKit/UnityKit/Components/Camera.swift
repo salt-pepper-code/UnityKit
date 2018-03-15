@@ -1,7 +1,7 @@
 import Foundation
 import SceneKit
 
-public final class Camera: Behaviour {
+public final class Camera: Component {
     
     private var hFieldOfView: CGFloat = 60
     

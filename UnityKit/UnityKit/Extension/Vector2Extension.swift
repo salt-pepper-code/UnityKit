@@ -5,7 +5,7 @@ public struct Vector2 {
     let x: Float
     let y: Float
 
-    init(_ x: Float, _ y: Float) {
+    public init(_ x: Float, _ y: Float) {
         self.x = x
         self.y = y
     }

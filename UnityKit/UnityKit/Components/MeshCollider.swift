@@ -1,13 +1,13 @@
 
 import SceneKit
 
-public class MeshCollider: Collider {
+public final class MeshCollider: Collider {
 
-    private var geometry: SCNGeometry?
+    private var mesh: Mesh?
 
-    public func set(geometry: SCNGeometry) -> MeshCollider {
+    public func set(mesh: Mesh?) -> MeshCollider {
         
-        self.geometry = geometry
+        self.mesh = mesh
         constructBody()
         return self
     }
@@ -18,12 +18,14 @@ public class MeshCollider: Collider {
             let name = gameObject.name
             else { return }
 
-        if let geometry = geometry {
+        if let geometry = mesh?.geometry {
 
-            geometry.name = name + "PlaneCollider"
+            geometry.name = name + "MeshCollider"
 
-            updatePhysicsShape(SCNPhysicsShape(geometry: geometry))
-            createVisibleCollider(geometry)
+            let shape = SCNPhysicsShape(geometry: geometry,
+                                        options: [.type: SCNPhysicsShape.ShapeType.convexHull,
+                                                  .scale: gameObject.transform.localScale.x])
+            updatePhysicsShape(shape)
 
         } else {
 

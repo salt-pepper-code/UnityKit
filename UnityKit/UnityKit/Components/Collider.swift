@@ -1,30 +1,13 @@
 
 import SceneKit
 
-extension Array {
-    public mutating func appendContentsOf(newElements: [Element]) {
-        newElements.forEach {
-            self.append($0)
-        }
-    }
-}
-
 public class Collider: Component {
 
-    private var colliderGameObject: GameObject?
-    public var displayCollider: Bool = false {
-        didSet {
-            constructBody()
-        }
-    }
     private var physicsShape: SCNPhysicsShape?
-
-    internal static func getAllColliders(in gameObject: GameObject) -> [Collider] {
-
-        var colliders = [Collider]()
-        colliders.appendContentsOf(newElements: gameObject.getComponents(BoxCollider.self))
-        colliders.appendContentsOf(newElements: gameObject.getComponents(PlaneCollider.self))
-        return colliders
+    public var collideWithLayer: GameObject.Layer = .all {
+        didSet {
+            gameObject?.node.physicsBody?.collisionBitMask = collideWithLayer.rawValue
+        }
     }
 
     private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
@@ -32,7 +15,7 @@ public class Collider: Component {
         guard let gameObject = gameObject
             else { return nil }
 
-        return Collider.getAllColliders(in: gameObject)
+        return gameObject.getComponents(Collider.self)
             .flatMap { (collider) -> SCNPhysicsShape? in collider.physicsShape }
     }
 
@@ -40,25 +23,16 @@ public class Collider: Component {
         constructBody()
     }
 
+    public override func onDestroy() {
+        physicsShape = nil
+        updatePhysicsShape()
+    }
+
     internal func constructBody() {
-        fatalError("constructBody has not been implemented")
+        fatalError("Can't use Collider, please use subclasses")
     }
 
-    internal func createVisibleCollider(_ geometry: SCNGeometry) {
-
-        colliderGameObject?.destroy()
-        colliderGameObject = nil
-
-        if displayCollider {
-            let node = SCNNode(geometry: geometry)
-            node.name = geometry.name
-            let collider = GameObject(node).setColor(.blue).setOpacity(0.3)
-            gameObject?.parent?.addChild(collider)
-            colliderGameObject = collider
-        }
-    }
-
-    internal func updatePhysicsShape(_ shape: SCNPhysicsShape? = nil) {
+    internal final func updatePhysicsShape(_ shape: SCNPhysicsShape? = nil) {
 
         guard let gameObject = gameObject
             else { return }
@@ -77,6 +51,7 @@ public class Collider: Component {
 
         let useGravity: Bool
         let bodyType: SCNPhysicsBodyType
+
         if let rigidBody = gameObject.getComponent(RigidBody.self) {
             useGravity = rigidBody.useGravity
             bodyType = rigidBody.isKinematic ? .kinematic : .dynamic
@@ -85,9 +60,17 @@ public class Collider: Component {
             bodyType = .kinematic
         }
 
-        let physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
-        physicsBody.isAffectedByGravity = useGravity
+        if let physicsShape = physicsShape {
 
-        gameObject.node.physicsBody = physicsBody
+            let physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
+            physicsBody.isAffectedByGravity = useGravity
+            physicsBody.collisionBitMask = collideWithLayer.rawValue
+
+            gameObject.node.physicsBody = physicsBody
+
+        } else {
+
+            gameObject.node.physicsBody = nil
+        }
     }
 }

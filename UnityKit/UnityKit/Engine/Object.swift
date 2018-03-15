@@ -86,6 +86,10 @@ open class Object: Identifiable {
         component.gameObject = gameObject
         component.awake()
 
+        if let behaviour = component as? Behaviour {
+            behaviour.enabled = true
+        }
+
         return component
     }
 }
