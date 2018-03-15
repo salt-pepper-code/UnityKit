@@ -5,7 +5,8 @@ import SceneKit
 class GameViewController: UIViewController {
 
     override func loadView() {
-        self.view = View.makeView(sceneName: "Scene.scn")
+        self.view = View.makeView(sceneName: "Scene.scn",
+                                  extraLayers: ["Shell"])
     }
 
     var sceneView: View {
@@ -15,7 +16,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
 
         super.viewDidLoad()
-
+        
         guard let scene = sceneView.sceneHolder,
             let ground = GameObject.find(.name(.exact("GroundPlane"))),
             let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")

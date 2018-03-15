@@ -63,30 +63,45 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            if #available(iOS 11.0, *) {
-                return node.worldPosition
-            }
-            
-            if let parent = gameObject?.parent {
-                return parent.transform.position + node.position
-            }
-            
-            return node.position
+            return node.worldPosition
         }
         set {
-            guard let node = gameObject?.node, let parent = gameObject?.parent else {
+            guard let node = gameObject?.node,
+                let _ = gameObject?.parent else {
                 print("Object need to have a parent before setting a position")
                 return
             }
                 
-            if #available(iOS 11.0, *) {
-                node.worldPosition = newValue
-            } else {
-                node.position = newValue - parent.transform.position
-            }
+            node.worldPosition = newValue
         }
     }
-    
+
+    public var orientation: Quaternion {
+
+        get {
+            guard let node = gameObject?.node
+                else { return .zero }
+
+            return node.worldOrientation
+        }
+        set {
+            gameObject?.node.worldOrientation = newValue
+        }
+    }
+
+    public var localOrientation: Quaternion {
+
+        get {
+            guard let node = gameObject?.node
+                else { return .zero }
+
+            return node.orientation
+        }
+        set {
+            gameObject?.node.orientation = newValue
+        }
+    }
+
     public var localPosition: Vector3 {
         
         get {
@@ -100,11 +115,11 @@ public final class Transform: Component {
         }
     }
     
-    public var localRotation: Quaternion {
+    public var localRotation: Vector4 {
         
         get {
             guard let node = gameObject?.node
-                else { return Quaternion.zero }
+                else { return .zero }
             
             return node.rotation
         }

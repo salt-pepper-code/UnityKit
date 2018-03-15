@@ -56,10 +56,33 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
+    public var velocity: Vector3 {
+
+        get {
+            guard let physicsBody = gameObject?.node.physicsBody
+                else { return .zero }
+
+            return physicsBody.velocity
+        }
+        set {
+            guard let physicsBody = gameObject?.node.physicsBody
+                else { return }
+
+            return physicsBody.velocity = newValue
+        }
+    }
+
+    //
+
     private func updatePhysicsBody() {
 
         guard let physicsBody = gameObject?.node.physicsBody else {
-            gameObject?.node.physicsBody = SCNPhysicsBody(type: isKinematic ? .kinematic : .dynamic , shape: nil)
+            if let gameObject = gameObject {
+                let physicsBody = SCNPhysicsBody(type: isKinematic ? .kinematic : .dynamic , shape: nil)
+                physicsBody.collisionBitMask = gameObject.layer.rawValue
+                physicsBody.contactTestBitMask = gameObject.layer.rawValue
+                gameObject.node.physicsBody = physicsBody
+            }
             return
         }
 

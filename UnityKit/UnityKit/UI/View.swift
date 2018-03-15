@@ -44,7 +44,8 @@ open class View: SCNView {
     public static func makeView(on superview: UIView? = nil,
                                 sceneName: String? = nil,
                                 options: View.Options? = nil,
-                                allocation: Scene.Allocation = .singleton) -> View {
+                                allocation: Scene.Allocation = .singleton,
+                                extraLayers: [String]? = nil) -> View {
 
         #if (arch(i386) || arch(x86_64))
             let options = options ?? View.Options(antialiasingMode: .none,
@@ -53,6 +54,10 @@ open class View: SCNView {
             let options = options ?? View.Options(antialiasingMode: .multisampling4X,
                                 preferredRenderingAPI: .metal)
         #endif
+
+        extraLayers?.forEach {
+            GameObject.Layer.addLayer(with: $0)
+        }
 
         let view = View(frame: .zero, options: ["preferredRenderingAPI": options.preferredRenderingAPI ?? SCNRenderingAPI.metal])
 

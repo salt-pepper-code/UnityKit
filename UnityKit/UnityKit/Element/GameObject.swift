@@ -120,7 +120,7 @@ public final class GameObject: Object {
         super.init()
         
         self.name = node.name ?? "No name"
-        self.layer = Layer(rawValue: node.categoryBitMask)
+        self.layer = .`default`
         self.transform = addComponent(monoBehaviourOnly: false, type: Transform.self)
         
         if let geometry = node.geometry {

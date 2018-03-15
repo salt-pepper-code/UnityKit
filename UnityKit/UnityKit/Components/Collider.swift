@@ -8,7 +8,7 @@ public class Collider: Component, Instantiable {
     }
 
     private var physicsShape: SCNPhysicsShape?
-    public var collideWithLayer: GameObject.Layer = .all {
+    public var collideWithLayer: GameObject.Layer = .`default` {
         didSet {
             gameObject?.node.physicsBody?.collisionBitMask = collideWithLayer.rawValue
         }
@@ -69,12 +69,12 @@ public class Collider: Component, Instantiable {
             let physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
             physicsBody.isAffectedByGravity = useGravity
             physicsBody.collisionBitMask = collideWithLayer.rawValue
-
             gameObject.node.physicsBody = physicsBody
 
         } else {
 
             gameObject.node.physicsBody = SCNPhysicsBody(type: bodyType, shape: nil)
+            gameObject.node.physicsBody?.collisionBitMask = collideWithLayer.rawValue
         }
     }
 }

@@ -13,7 +13,11 @@ extension GameObject {
         public static let ignoreRayCast = Layer(rawValue: 1 << 1)
         public static let UI = Layer(rawValue: 1 << 2)
 
-        public static let all: Layer = [.`default`, .ignoreRayCast, .UI]
+        public static var all: Layer {
+            return layers.values.dropFirst().reduce(`default`) { (prev, layer) -> Layer in
+                [prev, layer]
+            }
+        }
 
         private(set) public static var layers = ["default": `default`, "ignoreRayCast": ignoreRayCast, "UI": UI]
 
@@ -33,7 +37,7 @@ extension GameObject {
             return layers.keys[index]
         }
 
-        public static func addLayer(with name: String) -> Layer {
+        @discardableResult internal static func addLayer(with name: String) -> Layer {
 
             if let layer = layers[name] {
                 return layer
