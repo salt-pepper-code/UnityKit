@@ -26,6 +26,13 @@ class TankMovement: MonoBehaviour {
         joystick.onUpdate = { [weak self] (angle, displacement) in
             self?.move(angle, displacement)
         }
+
+        joystick.onComplete = { [weak self] () in
+            guard let rigidbody = self?.rigidbody
+                else { return }
+            
+            rigidbody.clearAllForces()
+        }
     }
     
     private func move(_ angle: Degree, _ displacement: Float) {

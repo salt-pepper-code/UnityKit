@@ -104,7 +104,7 @@ open class Scene: Identifiable {
     
     public func clearScene() {
         
-        let copy = rootGameObject.getChilds()
+        let copy = rootGameObject.getChildren()
         copy.forEach { destroy($0) }
     }
     

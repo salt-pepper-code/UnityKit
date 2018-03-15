@@ -92,7 +92,7 @@ extension GameObject {
 
     public static func find(_ type: SearchType, in gameObject: GameObject) -> GameObject? {
 
-        for child in gameObject.getChilds() {
+        for child in gameObject.getChildren() {
 
             if GameObject.compare(type, gameObject: child) {
                 return child
@@ -116,7 +116,7 @@ extension GameObject {
     
     public static func findGameObjects(_ type: SearchType, in gameObject: GameObject) -> [GameObject] {
 
-        return gameObject.getChilds().flatMap { (child) -> [GameObject] in
+        return gameObject.getChildren().flatMap { (child) -> [GameObject] in
             if GameObject.compare(type, gameObject: child) {
                 return [child] + GameObject.findGameObjects(type, in: child)
             }
@@ -135,7 +135,7 @@ extension GameObject {
 
     public static func getComponents<T: Component>(_ type: T.Type, in gameObject: GameObject) -> [T] {
 
-        return gameObject.getChilds().flatMap { (child) -> [T] in
+        return gameObject.getChildren().flatMap { (child) -> [T] in
 
             return child.getComponents(type) + GameObject.getComponents(type, in: child)
         }

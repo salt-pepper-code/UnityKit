@@ -6,9 +6,9 @@ public final class Rigidbody: Component, Instantiable {
     public func instantiate(gameObject: GameObject) -> Rigidbody {
 
         let clone = type(of: self).init()
-        clone.gameObject = gameObject
         clone.isKinematic = isKinematic
         clone.useGravity = useGravity
+        clone.gameObject = gameObject
         return clone
     }
 
@@ -31,28 +31,14 @@ public final class Rigidbody: Component, Instantiable {
     public var useGravity: Bool = true {
 
         didSet {
-            updatePhysicsBody()
+            gameObject?.node.physicsBody?.isAffectedByGravity = useGravity
         }
     }
 
     public var isKinematic: Bool = true {
 
         didSet {
-            guard let gameObject = gameObject
-                else { return }
-
-            let colliders = gameObject.getComponents(Collider.self)
-
-            guard colliders.count > 0 else {
-
-                gameObject.node.physicsBody = nil
-                updatePhysicsBody()
-                return
-            }
-
-            gameObject.getComponents(Collider.self).forEach { collider in
-                collider.updatePhysicsShape()
-            }
+            gameObject?.updatePhysicsShape()
         }
     }
 
@@ -70,23 +56,6 @@ public final class Rigidbody: Component, Instantiable {
 
             return physicsBody.velocity = newValue
         }
-    }
-
-    //
-
-    private func updatePhysicsBody() {
-
-        guard let physicsBody = gameObject?.node.physicsBody else {
-            if let gameObject = gameObject {
-                let physicsBody = SCNPhysicsBody(type: isKinematic ? .kinematic : .dynamic , shape: nil)
-                physicsBody.collisionBitMask = gameObject.layer.rawValue
-                physicsBody.contactTestBitMask = gameObject.layer.rawValue
-                gameObject.node.physicsBody = physicsBody
-            }
-            return
-        }
-
-        physicsBody.isAffectedByGravity = useGravity
     }
 
     @discardableResult public func set(isKinematic: Bool) -> Rigidbody {

@@ -16,9 +16,12 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        
+        setupScene()
+    }
+
+    func setupScene() {
+
         guard let scene = sceneView.sceneHolder,
-            let ground = GameObject.find(.name(.exact("GroundPlane"))),
             let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
             else { return }
 
@@ -32,9 +35,40 @@ class GameViewController: UIViewController {
         setup(joystick: joystick)
         setup(fireButton: fireButton)
 
-        // Ground Setup
+        // Collider Setup
+        guard let militaries = GameObject.find(.name(.exact("Military"))),
+            let oilFields = GameObject.find(.name(.exact("OilField"))),
+            let rocks = GameObject.find(.name(.exact("Rocks"))),
+            let boundaries = GameObject.find(.name(.exact("Boundaries"))),
+            let ground = GameObject.find(.name(.exact("GroundPlane"))),
+            let helipad = GameObject.find(.name(.exact("Helipad")))
+            else { return }
+
+        militaries.getChildren().forEach {
+            $0.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
+            $0.addComponent(MeshCollider.self)
+        }
+
+        oilFields.getChildren().forEach {
+            $0.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
+            $0.addComponent(MeshCollider.self)
+        }
+
+        rocks.getChildren().forEach {
+            $0.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
+            $0.addComponent(MeshCollider.self)
+        }
+
+        boundaries.getChildren().forEach {
+            $0.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
+            $0.addComponent(MeshCollider.self)
+        }
+
         ground.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
         ground.addComponent(PlaneCollider.self)
+
+        helipad.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
+        helipad.addComponent(BoxCollider.self)
 
         // Tank Setup
         scene.addGameObject(tank)

@@ -35,7 +35,7 @@ class TankShooting: MonoBehaviour {
         chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime
     }
     
-    func fire() {
+    private func fire() {
 
         guard let shellRef = shellRef,
             let origin = weaponOrigin

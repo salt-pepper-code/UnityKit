@@ -7,7 +7,8 @@ public class Collider: Component, Instantiable {
         return type(of: self).init()
     }
 
-    private var physicsShape: SCNPhysicsShape?
+    internal var physicsShape: SCNPhysicsShape?
+
     public var collideWithLayer: GameObject.Layer = .`default` {
         didSet {
             gameObject?.node.physicsBody?.collisionBitMask = collideWithLayer.rawValue
@@ -29,52 +30,10 @@ public class Collider: Component, Instantiable {
 
     public override func onDestroy() {
         physicsShape = nil
-        updatePhysicsShape()
+        gameObject?.updatePhysicsShape()
     }
 
     internal func constructBody() {
         fatalError("Can't use Collider, please use subclasses")
-    }
-
-    internal final func updatePhysicsShape(_ shape: SCNPhysicsShape? = nil) {
-
-        guard let gameObject = gameObject
-            else { return }
-
-        if let shape = shape {
-            self.physicsShape = shape
-        }
-
-        var physicsShape = self.physicsShape
-
-        if let physicsShapes = getAllPhysicsShapes(),
-            physicsShapes.count > 1 {
-
-            physicsShape = SCNPhysicsShape(shapes: physicsShapes, transforms: nil)
-        }
-
-        let useGravity: Bool
-        let bodyType: SCNPhysicsBodyType
-
-        if let rigidBody = gameObject.getComponent(Rigidbody.self) {
-            useGravity = rigidBody.useGravity
-            bodyType = rigidBody.isKinematic ? .kinematic : .dynamic
-        } else {
-            useGravity = true
-            bodyType = .kinematic
-        }
-
-        if let physicsShape = physicsShape {
-
-            let physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
-            physicsBody.isAffectedByGravity = useGravity
-            physicsBody.collisionBitMask = collideWithLayer.rawValue
-            gameObject.node.physicsBody = physicsBody
-
-        } else {
-
-            gameObject.node.physicsBody = SCNPhysicsBody(type: bodyType, shape: nil)
-            gameObject.node.physicsBody?.collisionBitMask = collideWithLayer.rawValue
-        }
     }
 }

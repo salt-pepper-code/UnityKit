@@ -21,7 +21,7 @@ public final class GameObject: Object {
                 else { return }
 
             node.categoryBitMask = newValue.rawValue
-            childs.forEach { $0.layer = newValue }
+            children.forEach { $0.layer = newValue }
         }
     }
 
@@ -31,7 +31,7 @@ public final class GameObject: Object {
     private(set) public var transform: Transform!
     private(set) public var renderer: Renderer?
     
-    private(set) internal var childs = [GameObject]()
+    private(set) internal var children = [GameObject]()
     
     private(set) public weak var parent: GameObject?
     private(set) public weak var scene: Scene? {
@@ -182,7 +182,7 @@ public final class GameObject: Object {
     internal func setScene(_ scene: Scene) {
         
         self.scene = scene
-        childs.forEach { $0.setScene(scene) }
+        children.forEach { $0.setScene(scene) }
     }
 
     public func setActive(_ active: Bool) {
@@ -198,7 +198,7 @@ public final class GameObject: Object {
 
         didAwake = true
         components.forEach { $0.awake() }
-        childs.forEach { $0.awake() }
+        children.forEach { $0.awake() }
     }
     
     public override func start() {
@@ -211,7 +211,7 @@ public final class GameObject: Object {
 
         didStart = true
         components.forEach { $0.start() }
-        childs.forEach { $0.start() }
+        children.forEach { $0.start() }
     }
     
     public override func update() {
@@ -232,7 +232,7 @@ public final class GameObject: Object {
                 behaviour.update()
             }
         }
-        childs.forEach { $0.update() }
+        children.forEach { $0.update() }
     }
     
     //Component
@@ -251,7 +251,7 @@ public final class GameObject: Object {
     
     public func getComponentInChild<T: Component>(_ type: T.Type) -> T? {
 
-        for child in childs {
+        for child in children {
 
             if let component = child.getComponent(type) {
                 return component
@@ -267,7 +267,7 @@ public final class GameObject: Object {
     
     public func getComponentsInChild<T: Component>(_ type: T.Type) -> [T] {
 
-        return childs.flatMap { (child) -> [T] in
+        return children.flatMap { (child) -> [T] in
             child.getComponents(type) + child.getComponentsInChild(type)
         }
     }
@@ -289,38 +289,38 @@ public final class GameObject: Object {
         }
         child.parent = self
         
-        if childs.index(where: { $0 == child }) == nil {
+        if children.index(where: { $0 == child }) == nil {
             
-            childs.append(child)
+            children.append(child)
             node.addChildNode(child.node)
         }
     }
     
-    public func getChilds() -> [GameObject] {
+    public func getChildren() -> [GameObject] {
         
-        return childs
+        return children
     }
     
-    public func getChildNodes() -> [SCNNode] {
+    internal func getChildNodes() -> [SCNNode] {
         
         return node.childNodes
     }
     
     public func getChild(_ index: Int) -> GameObject? {
         
-        return childs[index]
+        return children[index]
     }
     
     public func removeChild(_ child: GameObject) {
         
-        if let index = childs.index(where: { $0 == child }) {
+        if let index = children.index(where: { $0 == child }) {
             
             if let gameObject = getChild(index) {
                 
                 gameObject.node.removeFromParentNode()
             }
             
-            childs.remove(at: index)
+            children.remove(at: index)
         }
     }
 }

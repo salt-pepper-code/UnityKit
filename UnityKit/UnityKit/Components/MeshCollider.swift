@@ -25,11 +25,10 @@ public final class MeshCollider: Collider {
             let shape = SCNPhysicsShape(geometry: geometry,
                                         options: [.type: SCNPhysicsShape.ShapeType.convexHull,
                                                   .scale: gameObject.transform.localScale.x])
-            updatePhysicsShape(shape)
 
-        } else {
-
-            updatePhysicsShape()
+            physicsShape = shape
         }
+
+        gameObject.updatePhysicsShape()
     }
 }

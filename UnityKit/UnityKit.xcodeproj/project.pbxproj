@@ -40,6 +40,7 @@
 		0AD605C62002B93D00908043 /* GameObjectSearchExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD605C52002B93D00908043 /* GameObjectSearchExtension.swift */; };
 		0AD605CF2003978300908043 /* Behaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD605CE2003978300908043 /* Behaviour.swift */; };
 		0AD605D120039E9500908043 /* ObjectSearchExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD605D020039E9500908043 /* ObjectSearchExtension.swift */; };
+		0AE74525205B376B00DA0051 /* GameObjectPhysicsBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74524205B376B00DA0051 /* GameObjectPhysicsBody.swift */; };
 		0AF3166C20588AD700757E38 /* BoxCollider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF3166B20588AD700757E38 /* BoxCollider.swift */; };
 		0AF3166E20588B2900757E38 /* PlaneCollider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF3166D20588B2900757E38 /* PlaneCollider.swift */; };
 		493545C11FE857B7003440E3 /* UnityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493545B71FE857B6003440E3 /* UnityKit.framework */; };
@@ -98,6 +99,7 @@
 		0AD605CE2003978300908043 /* Behaviour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Behaviour.swift; sourceTree = "<group>"; };
 		0AD605D020039E9500908043 /* ObjectSearchExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectSearchExtension.swift; sourceTree = "<group>"; };
 		0AE6ACDD20041ED400764C16 /* MKTween.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MKTween.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AE74524205B376B00DA0051 /* GameObjectPhysicsBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectPhysicsBody.swift; sourceTree = "<group>"; };
 		0AF3166B20588AD700757E38 /* BoxCollider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxCollider.swift; sourceTree = "<group>"; };
 		0AF3166D20588B2900757E38 /* PlaneCollider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneCollider.swift; sourceTree = "<group>"; };
 		493545B71FE857B6003440E3 /* UnityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UnityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -273,6 +275,7 @@
 				49B5EA1C1FE8836D002ED074 /* Vector3Extension.swift */,
 				0A3E16832003F3F3001E3C7F /* Vector4QuaternionExtension.swift */,
 				0A4A543B1FE93B9800DA4F22 /* GameObjectExtension.swift */,
+				0AE74524205B376B00DA0051 /* GameObjectPhysicsBody.swift */,
 				0AD605C52002B93D00908043 /* GameObjectSearchExtension.swift */,
 				0A4A54471FE9CC6100DA4F22 /* GeometryExtension.swift */,
 				0AA9FD502052A1BA004CCB0E /* GameObjectSCNActionable.swift */,
@@ -401,6 +404,7 @@
 				493545F91FE8639B003440E3 /* GameObject.swift in Sources */,
 				0A936914204EE46F009D04E4 /* Layer.swift in Sources */,
 				0A4A54481FE9CC6100DA4F22 /* GeometryExtension.swift in Sources */,
+				0AE74525205B376B00DA0051 /* GameObjectPhysicsBody.swift in Sources */,
 				0A4D0E312057550C00C119B6 /* Volume.swift in Sources */,
 				0AF3166E20588B2900757E38 /* PlaneCollider.swift in Sources */,
 				0A4D0E20205749AB00C119B6 /* Transform.swift in Sources */,
