@@ -2,7 +2,7 @@ import Foundation
 
 open class MonoBehaviour: Behaviour, Instantiable {
 
-    open func instantiate() -> Self {
+    open func instantiate(gameObject: GameObject) -> Self {
         return type(of: self).init()
     }
 

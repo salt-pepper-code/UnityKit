@@ -3,6 +3,8 @@ import UnityKit
 
 class TankShooting: MonoBehaviour {
 
+    public var fireButton: FireButton?
+
     public var shellRef: GameObject?
     public var playerNumber: Int = 1
     public var weaponOrigin: Transform?
@@ -15,23 +17,32 @@ class TankShooting: MonoBehaviour {
     private var chargeSpeed: Float = 0
     private var fired: Bool = false
 
-    override func start() {
+    override func awake() {
+
+        fireButton = GameObject.findObjectOfType(FireButton.self)
+        fireButton?.onTrigger = { [weak self] () in
+            self?.fire()
+        }
 
         if let shell = GameObject(fileName: "Shell.scn", nodeName: "Shell") {
             shellRef = shell
-
-            shell.addComponent(Rigidbody.self)
+            shell.addComponent(Rigidbody.self)?.set(isKinematic: false).set(useGravity: true)
             shell.addComponent(MeshCollider.self)
         }
-
-        let copy = shellRef?.instantiate()
 
         weaponOrigin = GameObject.find(.name(.exact("WeaponOrigin")))?.transform
         currentLaunchForce = minLaunchForce
         chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime
     }
     
-    override func update() {
-    
+    func fire() {
+
+        guard let shellRef = shellRef,
+            let origin = weaponOrigin
+            else { return }
+
+        let shell = GameObject.instantiate(original: shellRef)
+        shell.transform.position = origin.position
+
     }
 }

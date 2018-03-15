@@ -3,7 +3,7 @@ import SceneKit
 
 public class Collider: Component, Instantiable {
 
-    open func instantiate() -> Self {
+    open func instantiate(gameObject: GameObject) -> Self {
         return type(of: self).init()
     }
 
@@ -74,7 +74,7 @@ public class Collider: Component, Instantiable {
 
         } else {
 
-            gameObject.node.physicsBody = nil
+            gameObject.node.physicsBody = SCNPhysicsBody(type: bodyType, shape: nil)
         }
     }
 }

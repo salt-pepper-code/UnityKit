@@ -173,7 +173,7 @@ public final class GameObject: Object {
 
         components.forEach {
             if let component = $0 as? Component & Instantiable {
-                clone.addComponent(component.instantiate(), gameObject: clone)
+                clone.addComponent(component.instantiate(gameObject: clone), gameObject: clone)
             }
         }
         return clone

@@ -13,9 +13,11 @@ extension GameObject {
     public static func instantiate(original: GameObject) -> GameObject {
 
         let gameObject = original.instantiate()
-        
-        original.scene?.addGameObject(gameObject)
-        
+
+        let scene = original.scene ?? Scene.sharedInstance
+
+        scene?.addGameObject(gameObject)
+
         return gameObject
     }
     

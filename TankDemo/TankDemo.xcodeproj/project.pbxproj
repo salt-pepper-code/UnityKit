@@ -17,6 +17,7 @@
 		0A4D0E172056BE3D00C119B6 /* UnityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A4D0E162056BE3C00C119B6 /* UnityKit.framework */; };
 		0A4D0E182056BE3D00C119B6 /* UnityKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A4D0E162056BE3C00C119B6 /* UnityKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A81D19D205ACB150046AEDA /* TankShooting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81D19C205ACB150046AEDA /* TankShooting.swift */; };
+		0A81D1A1205AED4A0046AEDA /* FireButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81D1A0205AED4A0046AEDA /* FireButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +46,7 @@
 		0A4D0E082055B70800C119B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A4D0E162056BE3C00C119B6 /* UnityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A81D19C205ACB150046AEDA /* TankShooting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankShooting.swift; sourceTree = "<group>"; };
+		0A81D1A0205AED4A0046AEDA /* FireButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				0A13A2D2205962DA005EEFE3 /* TankMovement.swift */,
 				0A81D19C205ACB150046AEDA /* TankShooting.swift */,
 				0A13A2D62059715A005EEFE3 /* Joystick.swift */,
+				0A81D1A0205AED4A0046AEDA /* FireButton.swift */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 				0A4D0E0D2055B70800C119B6 /* AppDelegate.swift in Sources */,
 				0A13A2D82059715B005EEFE3 /* Joystick.swift in Sources */,
 				0A81D19D205ACB150046AEDA /* TankShooting.swift in Sources */,
+				0A81D1A1205AED4A0046AEDA /* FireButton.swift in Sources */,
 				0A13A2D3205962DA005EEFE3 /* TankMovement.swift in Sources */,
 				0A4D0E0C2055B70800C119B6 /* GameViewController.swift in Sources */,
 			);

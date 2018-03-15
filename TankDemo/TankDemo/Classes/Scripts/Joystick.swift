@@ -9,8 +9,8 @@ public final class Joystick: MonoBehaviour {
 
     let view: UIView
 
-    public var onUpdate: JoystickUpdate? = nil
-    public var onComplete: JoystickCompletion? = nil
+    public var onUpdate: JoystickUpdate? 
+    public var onComplete: JoystickCompletion?
 
     public var baseAlpha: CGFloat {
         get {
@@ -33,16 +33,16 @@ public final class Joystick: MonoBehaviour {
     private let baseImage = UIImage(named: "JoystickBase")!
     private let handleImage = UIImage(named: "JoystickHandle")!
 
-    private var baseImageView: UIImageView!
-    private var handleImageView: UIImageView!
+    private let baseImageView: UIImageView
+    private let handleImageView: UIImageView
 
     private var lastAngleRadians: Float = 0.0
     private var originalCenter: CGPoint?
 
-    private var tapGestureRecognizer: UITapGestureRecognizer!
-
     public required init() {
         self.view = UIView()
+        self.baseImageView = UIImageView(image: baseImage)
+        self.handleImageView = UIImageView(image: handleImage)
         super.init()
         initialize()
     }
@@ -54,14 +54,10 @@ public final class Joystick: MonoBehaviour {
 
     private func initialize() {
 
-        baseImageView = UIImageView(image: baseImage)
-
         baseImageView.alpha = baseAlpha
         view.addSubview(baseImageView)
         baseImageView.frame = view.bounds
         baseImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight];
-
-        handleImageView = UIImageView(image: handleImage)
 
         if !makeHandleImage() {
             fatalError("failed to create handle image")
@@ -74,8 +70,7 @@ public final class Joystick: MonoBehaviour {
 
     @discardableResult private func makeHandleImage() -> Bool {
 
-        guard let handleImageView = handleImageView,
-            let inputImage = CIImage(image: handleImage)
+        guard let inputImage = CIImage(image: handleImage)
             else { return false }
 
         let filterConfig: [String: Any] = [kCIInputIntensityKey: 1.0,
@@ -93,14 +88,13 @@ public final class Joystick: MonoBehaviour {
     public override func update() {
 
         guard let touch = Input.getTouch(0),
-            let phase = touch.phase
+            let phase = touch.phase,
+            touch.view == view
             else { return }
 
         switch phase {
         case .began, .moved, .stationary:
-            if touch.view == view {
-                updatePosition(touch: touch)
-            }
+            updatePosition(touch: touch)
         case .cancelled, .ended:
             onComplete?()
             resetPosition()

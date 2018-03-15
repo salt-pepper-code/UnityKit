@@ -35,7 +35,9 @@ public class Touch {
     public let fingerId: Int
     public let uitouch: UITouch
 
-    public var view: UIView? { return uitouch.view }
+    public var view: UIView? { return viewAtBegin }
+    fileprivate weak var viewAtBegin: UIView?
+
     public var phase: TouchPhase?
     public var altitudeAngle: Float { return uitouch.altitudeAngle.toFloat() }
     public var azimuthAngle: Float { return uitouch.azimuthAngle(in: uitouch.view).toFloat() }
@@ -98,9 +100,13 @@ public class Input {
                 else { return }
 
             switch phase {
-            case .moved, .began:
+            case .began:
+                touch.viewAtBegin = touch.uitouch.view
+                touch.phase = .stationary
+            case .moved:
                 touch.phase = .stationary
             case .ended, .cancelled:
+                touch.viewAtBegin = nil
                 touch.phase = nil
                 shouldClear = true
             case .stationary:

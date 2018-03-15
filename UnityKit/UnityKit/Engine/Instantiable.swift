@@ -2,5 +2,5 @@
 
 public protocol Instantiable {
 
-     func instantiate() -> Self
+    func instantiate(gameObject: GameObject) -> Self
 }

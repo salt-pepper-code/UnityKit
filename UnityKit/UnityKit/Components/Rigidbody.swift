@@ -3,8 +3,13 @@ import SceneKit
 
 public final class Rigidbody: Component, Instantiable {
 
-    public func instantiate() -> Self {
-        return type(of: self).init()
+    public func instantiate(gameObject: GameObject) -> Rigidbody {
+
+        let clone = type(of: self).init()
+        clone.gameObject = gameObject
+        clone.isKinematic = isKinematic
+        clone.useGravity = useGravity
+        return clone
     }
 
     public var position: Vector3 {

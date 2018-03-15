@@ -21,13 +21,15 @@ class GameViewController: UIViewController {
             let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
             else { return }
 
-        // Joystick Setup
-        let joystickGameObject = GameObject(name: "Joystick")
-        guard let joystick = joystickGameObject.addComponent(Joystick.self)
+        // Controls Setup
+        let controls = GameObject(name: "Controls")
+        guard let joystick = controls.addComponent(Joystick.self),
+            let fireButton = controls.addComponent(FireButton.self)
             else { return }
 
-        scene.addGameObject(joystickGameObject)
+        scene.addGameObject(controls)
         setup(joystick: joystick)
+        setup(fireButton: fireButton)
 
         // Ground Setup
         ground.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
@@ -55,6 +57,21 @@ class GameViewController: UIViewController {
 
         joystick.baseAlpha = 0.5
         joystick.handleTintColor = .green
+    }
+
+    func setup(fireButton: FireButton) {
+
+        let size: CGFloat = 60
+        fireButton.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(fireButton.view)
+        NSLayoutConstraint.activate([
+            fireButton.view.widthAnchor.constraint(equalToConstant: size),
+            fireButton.view.heightAnchor.constraint(equalToConstant: size),
+            fireButton.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+            fireButton.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30)
+            ])
+
+        fireButton.baseAlpha = 1
     }
     
     override var shouldAutorotate: Bool {
