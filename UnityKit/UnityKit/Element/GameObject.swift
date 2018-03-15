@@ -228,7 +228,6 @@ public final class GameObject: Object {
 
         for component in components {
             guard let behaviour = component as? Behaviour else {
-                component.update()
                 continue
             }
             if behaviour.enabled {

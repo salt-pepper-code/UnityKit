@@ -35,6 +35,7 @@ public class Touch {
     public let fingerId: Int
     public let uitouch: UITouch
 
+    public var view: UIView? { return uitouch.view }
     public var phase: TouchPhase?
     public var altitudeAngle: Float { return uitouch.altitudeAngle.toFloat() }
     public var azimuthAngle: Float { return uitouch.azimuthAngle(in: uitouch.view).toFloat() }
@@ -50,6 +51,14 @@ public class Touch {
         self.uitouch = uitouch
         self.fingerId = index
         self.updatedTime = uitouch.timestamp
+    }
+
+    public func position(in view: UIView?) -> Vector2 {
+        return uitouch.location(in: view).toVector2()
+    }
+
+    public func previousPosition(in view: UIView?) -> Vector2 {
+        return uitouch.previousLocation(in: view).toVector2()
     }
 }
 

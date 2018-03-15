@@ -39,12 +39,12 @@ extension SCNNode {
             else { return boundingBox }
         
         boundingBox += vertices.reduce(into: (min: first, max: first), { boundingBox, vertex in
-            if vertex.x < boundingBox.min.x { boundingBox.min.x = vertex.x }
-            if vertex.y < boundingBox.min.y { boundingBox.min.y = vertex.y }
-            if vertex.z < boundingBox.min.z { boundingBox.min.z = vertex.z }
-            if vertex.x > boundingBox.max.x { boundingBox.max.x = vertex.x }
-            if vertex.y > boundingBox.max.y { boundingBox.max.y = vertex.y }
-            if vertex.z > boundingBox.max.z { boundingBox.max.z = vertex.z }
+            boundingBox.min.x = min(boundingBox.min.x, vertex.x)
+            boundingBox.min.y = min(boundingBox.min.y, vertex.y)
+            boundingBox.min.z = min(boundingBox.min.z, vertex.z)
+            boundingBox.max.x = max(boundingBox.max.x, vertex.x)
+            boundingBox.max.y = max(boundingBox.max.y, vertex.y)
+            boundingBox.max.z = max(boundingBox.max.z, vertex.z)
         })
         return boundingBox
     }

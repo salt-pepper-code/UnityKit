@@ -2,12 +2,33 @@
 import UIKit
 
 public struct Vector2 {
-    let x: Float
-    let y: Float
+    public let x: Float
+    public let y: Float
 
     public init(_ x: Float, _ y: Float) {
         self.x = x
         self.y = y
+    }
+}
+
+extension Vector2 {
+
+    public func toCGPoint() -> CGPoint {
+        return CGPoint(x: self.x.toCGFloat(), y: self.y.toCGFloat())
+    }
+}
+
+extension CGSize {
+
+    public func toVector2() -> Vector2 {
+        return Vector2(self.width.toFloat(), self.height.toFloat())
+    }
+}
+
+extension CGPoint {
+
+    public func toVector2() -> Vector2 {
+        return Vector2(self.x.toFloat(), self.y.toFloat())
     }
 }
 

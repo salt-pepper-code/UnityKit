@@ -4,25 +4,6 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
-    private lazy var joystick: JoyStickView = {
-        let size: CGFloat = 60
-        let joystick = JoyStickView(frame: .zero)
-        joystick.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(joystick)
-        NSLayoutConstraint.activate([
-            joystick.widthAnchor.constraint(equalToConstant: size),
-            joystick.heightAnchor.constraint(equalToConstant: size),
-            joystick.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
-            joystick.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
-            ])
-
-        joystick.movable = false
-        joystick.alpha = 1.0
-        joystick.baseAlpha = 0.5
-        joystick.handleTintColor = .green
-        return joystick
-    }()
-
     override func loadView() {
         self.view = View.makeView(sceneName: "Scene.scn")
     }
@@ -38,6 +19,25 @@ class GameViewController: UIViewController {
         guard let scene = sceneView.sceneHolder,
             let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
             else { return }
+
+        let joystickGameObject = GameObject(name: "Joystick")
+        guard let joystick = joystickGameObject.addComponent(Joystick.self)
+            else { return }
+
+        scene.addGameObject(joystickGameObject)
+
+        let size: CGFloat = 60
+        joystick.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(joystick.view)
+        NSLayoutConstraint.activate([
+            joystick.view.widthAnchor.constraint(equalToConstant: size),
+            joystick.view.heightAnchor.constraint(equalToConstant: size),
+            joystick.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+            joystick.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
+            ])
+
+        joystick.baseAlpha = 0.5
+        joystick.handleTintColor = .green
 
         scene.addGameObject(tank)
         _ = tank.addComponent(RigidBody.self)?.set(isKinematic: false).set(useGravity: true)

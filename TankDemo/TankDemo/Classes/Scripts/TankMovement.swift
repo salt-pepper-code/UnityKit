@@ -4,7 +4,7 @@ import Foundation
 
 class TankMovement: MonoBehaviour {
 
-    public var joystick: JoyStickView? {
+    public var joystick: Joystick? {
         didSet {
             guard let joystick = joystick
                 else { return }

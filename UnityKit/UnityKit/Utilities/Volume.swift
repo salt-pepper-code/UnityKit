@@ -25,12 +25,12 @@ internal func + (left: BoundingBox?, right: BoundingBox?) -> BoundingBox? {
         return left
     }
     var add = left
-    if right.min.x < left.min.x { add.min.x = right.min.x }
-    if right.min.y < left.min.y { add.min.y = right.min.y }
-    if right.min.z < left.min.z { add.min.z = right.min.z }
-    if right.max.x > left.max.x { add.max.x = right.max.x }
-    if right.max.y > left.max.y { add.max.y = right.max.y }
-    if right.max.z > left.max.z { add.max.z = right.max.z }
+    add.min.x = min(left.min.x, right.min.x)
+    add.min.y = min(left.min.y, right.min.y)
+    add.min.z = min(left.min.z, right.min.z)
+    add.max.x = max(left.max.x, right.max.x)
+    add.max.y = max(left.max.y, right.max.y)
+    add.max.z = max(left.max.z, right.max.z)
     return add
 }
 

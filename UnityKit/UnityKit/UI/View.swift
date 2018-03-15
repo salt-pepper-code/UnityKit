@@ -111,8 +111,12 @@ open class View: SCNView {
 extension View: SCNSceneRendererDelegate {
 
     public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        sceneHolder?.update(updateAtTime: time)
-        Input.endUpdateTouches()
+
+        DispatchQueue.main.async { () -> Void in
+
+            self.sceneHolder?.update(updateAtTime: time)
+            Input.endUpdateTouches()
+        }
     }
 }
 
