@@ -40,7 +40,7 @@ open class Component: Object {
         return gameObject?.getComponents(type) ?? []
     }
     
-    open override func addComponent<T: Component>(_ type: T.Type) -> T? {
+    @discardableResult open override func addComponent<T: Component>(_ type: T.Type) -> T? {
         return gameObject?.addComponent(type)
     }
 }

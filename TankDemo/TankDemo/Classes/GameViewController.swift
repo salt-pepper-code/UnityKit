@@ -17,14 +17,31 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
 
         guard let scene = sceneView.sceneHolder,
+            let ground = GameObject.find(.name(.exact("GroundPlane"))),
             let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
             else { return }
 
+        // Joystick Setup
         let joystickGameObject = GameObject(name: "Joystick")
         guard let joystick = joystickGameObject.addComponent(Joystick.self)
             else { return }
 
         scene.addGameObject(joystickGameObject)
+        setup(joystick: joystick)
+
+        // Ground Setup
+        ground.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
+        ground.addComponent(PlaneCollider.self)
+
+        // Tank Setup
+        scene.addGameObject(tank)
+        tank.addComponent(Rigidbody.self)?.set(isKinematic: false).set(useGravity: true)
+        tank.addComponent(BoxCollider.self)
+        tank.addComponent(TankMovement.self)
+        tank.addComponent(TankShooting.self)
+    }
+
+    func setup(joystick: Joystick) {
 
         let size: CGFloat = 60
         joystick.view.translatesAutoresizingMaskIntoConstraints = false
@@ -38,17 +55,6 @@ class GameViewController: UIViewController {
 
         joystick.baseAlpha = 0.5
         joystick.handleTintColor = .green
-
-        scene.addGameObject(tank)
-        _ = tank.addComponent(RigidBody.self)?.set(isKinematic: false).set(useGravity: true)
-        _ = tank.addComponent(BoxCollider.self)
-        _ = tank.addComponent(TankMovement.self)
-
-        guard let ground = GameObject.find(.name(.exact("GroundPlane")))
-            else { return }
-
-        _ = ground.addComponent(RigidBody.self)?.set(isKinematic: true).set(useGravity: false)
-        _ = ground.addComponent(PlaneCollider.self)
     }
     
     override var shouldAutorotate: Bool {

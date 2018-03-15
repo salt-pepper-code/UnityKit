@@ -71,17 +71,21 @@ open class Object: Identifiable {
         return components.flatMap { $0 as? T }
     }
     
-    open func addComponent<T: Component>(_ type: T.Type) -> T? {
+    @discardableResult open func addComponent<T: Component>(_ type: T.Type) -> T? {
         return addComponent(monoBehaviourOnly: true, type: type)
     }
-    
-    internal func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
+
+    @discardableResult internal func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
         
         if monoBehaviourOnly && (T.self === Renderer.self || T.self === Transform.self) {
             return nil
         }
-        
-        let component = T()
+
+        return addComponent(T(), gameObject: gameObject)
+    }
+
+    @discardableResult internal func addComponent<T: Component>(_ component: T, gameObject: GameObject? = nil) -> T? {
+
         components.append(component)
         component.gameObject = gameObject
         component.awake()

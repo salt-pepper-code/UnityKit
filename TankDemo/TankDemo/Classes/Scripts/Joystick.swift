@@ -22,7 +22,7 @@ public final class Joystick: MonoBehaviour {
     }
 
     public var handleTintColor: UIColor = .blue {
-        didSet { _ = makeHandleImage() }
+        didSet { makeHandleImage() }
     }
 
     public private(set) var angle: Float = 0.0
@@ -70,13 +70,9 @@ public final class Joystick: MonoBehaviour {
         view.addSubview(handleImageView)
         handleImageView.frame = view.bounds.insetBy(dx: 0.15 * view.bounds.width, dy: 0.15 * view.bounds.height)
         handleImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
-        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(resetFrame))
-        tapGestureRecognizer!.numberOfTapsRequired = 2
-        view.addGestureRecognizer(tapGestureRecognizer!)
     }
 
-    private func makeHandleImage() -> Bool {
+    @discardableResult private func makeHandleImage() -> Bool {
 
         guard let handleImageView = handleImageView,
             let inputImage = CIImage(image: handleImage)
@@ -111,15 +107,6 @@ public final class Joystick: MonoBehaviour {
         }
     }
 
-    @objc public func resetFrame() {
-
-        if let originalCenter = originalCenter, displacement < 0.5 {
-
-            view.center = originalCenter
-            self.originalCenter = nil
-        }
-    }
-
     private func resetPosition() {
         update(position: Vector2(view.frame.midX.toFloat(), view.frame.midY.toFloat()))
     }
@@ -149,7 +136,7 @@ public final class Joystick: MonoBehaviour {
 
         angle = displacement != 0.0 ? (180.0 - newAngleRadians * 180.0 / .pi) : 0.0
 
-        if displacement > 0 {
+        if displacement != 0 {
             onUpdate?(angle, displacement)
         }
     }

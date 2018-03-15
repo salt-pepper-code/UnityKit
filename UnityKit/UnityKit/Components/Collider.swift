@@ -1,7 +1,11 @@
 
 import SceneKit
 
-public class Collider: Component {
+public class Collider: Component, Instantiable {
+
+    open func instantiate() -> Self {
+        return type(of: self).init()
+    }
 
     private var physicsShape: SCNPhysicsShape?
     public var collideWithLayer: GameObject.Layer = .all {
@@ -52,7 +56,7 @@ public class Collider: Component {
         let useGravity: Bool
         let bodyType: SCNPhysicsBodyType
 
-        if let rigidBody = gameObject.getComponent(RigidBody.self) {
+        if let rigidBody = gameObject.getComponent(Rigidbody.self) {
             useGravity = rigidBody.useGravity
             bodyType = rigidBody.isKinematic ? .kinematic : .dynamic
         } else {

@@ -169,7 +169,13 @@ public final class GameObject: Object {
         }
         
         clone.tag = tag
+        clone.layer = layer
 
+        components.forEach {
+            if let component = $0 as? Component & Instantiable {
+                clone.addComponent(component.instantiate(), gameObject: clone)
+            }
+        }
         return clone
     }
     
@@ -230,20 +236,23 @@ public final class GameObject: Object {
     }
     
     //Component
-    
-    public override func addComponent<T: Component>(_ type: T.Type) -> T? {
+    @discardableResult override func addComponent<T: Component>(_ component: T, gameObject: GameObject?) -> T? {
+        return super.addComponent(component, gameObject: self)
+    }
+
+    @discardableResult public override func addComponent<T: Component>(_ type: T.Type) -> T? {
         return super.addComponent(monoBehaviourOnly: true, type: type, gameObject: self)
     }
     
-    internal override func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
+    @discardableResult internal override func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
         
         return super.addComponent(monoBehaviourOnly: monoBehaviourOnly, type: type, gameObject: gameObject ?? self)
     }
     
     public func getComponentInChild<T: Component>(_ type: T.Type) -> T? {
-        
+
         for child in childs {
-            
+
             if let component = child.getComponent(type) {
                 return component
             }

@@ -1,7 +1,11 @@
 
 import SceneKit
 
-public final class RigidBody: Component {
+public final class Rigidbody: Component, Instantiable {
+
+    public func instantiate() -> Self {
+        return type(of: self).init()
+    }
 
     public var position: Vector3 {
 
@@ -57,13 +61,13 @@ public final class RigidBody: Component {
         physicsBody.isAffectedByGravity = useGravity
     }
 
-    public func set(isKinematic: Bool) -> RigidBody {
+    @discardableResult public func set(isKinematic: Bool) -> Rigidbody {
 
         self.isKinematic = isKinematic
         return self
     }
 
-    public func set(useGravity: Bool) -> RigidBody {
+    @discardableResult public func set(useGravity: Bool) -> Rigidbody {
 
         self.useGravity = useGravity
         return self

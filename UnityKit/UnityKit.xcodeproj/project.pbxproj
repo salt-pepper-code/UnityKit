@@ -23,10 +23,11 @@
 		0A4D0E2820574A1400C119B6 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E2620574A1400C119B6 /* Time.swift */; };
 		0A4D0E2920574A1400C119B6 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E2720574A1400C119B6 /* Screen.swift */; };
 		0A4D0E2B20574CD400C119B6 /* Collider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E2A20574CD400C119B6 /* Collider.swift */; };
-		0A4D0E2D2057513F00C119B6 /* RigidBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E2C2057513F00C119B6 /* RigidBody.swift */; };
+		0A4D0E2D2057513F00C119B6 /* Rigidbody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E2C2057513F00C119B6 /* Rigidbody.swift */; };
 		0A4D0E2F205754F900C119B6 /* SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E2E205754F900C119B6 /* SCNNode.swift */; };
 		0A4D0E312057550C00C119B6 /* Volume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E302057550C00C119B6 /* Volume.swift */; };
 		0A4D0E3620581EAB00C119B6 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E3520581EAB00C119B6 /* Debug.swift */; };
+		0A81D19F205ADD650046AEDA /* Instantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81D19E205ADD650046AEDA /* Instantiable.swift */; };
 		0A936912204EE43C009D04E4 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A936911204EE43C009D04E4 /* Tag.swift */; };
 		0A936914204EE46F009D04E4 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A936913204EE46F009D04E4 /* Layer.swift */; };
 		0AA9FD512052A1BA004CCB0E /* GameObjectSCNActionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA9FD502052A1BA004CCB0E /* GameObjectSCNActionable.swift */; };
@@ -79,10 +80,11 @@
 		0A4D0E2620574A1400C119B6 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		0A4D0E2720574A1400C119B6 /* Screen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		0A4D0E2A20574CD400C119B6 /* Collider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collider.swift; sourceTree = "<group>"; };
-		0A4D0E2C2057513F00C119B6 /* RigidBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RigidBody.swift; sourceTree = "<group>"; };
+		0A4D0E2C2057513F00C119B6 /* Rigidbody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rigidbody.swift; sourceTree = "<group>"; };
 		0A4D0E2E205754F900C119B6 /* SCNNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCNNode.swift; sourceTree = "<group>"; };
 		0A4D0E302057550C00C119B6 /* Volume.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Volume.swift; sourceTree = "<group>"; };
 		0A4D0E3520581EAB00C119B6 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
+		0A81D19E205ADD650046AEDA /* Instantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instantiable.swift; sourceTree = "<group>"; };
 		0A936911204EE43C009D04E4 /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		0A936913204EE46F009D04E4 /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
 		0AA9FD502052A1BA004CCB0E /* GameObjectSCNActionable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameObjectSCNActionable.swift; sourceTree = "<group>"; };
@@ -138,12 +140,12 @@
 				0A4D0E1D205749AB00C119B6 /* Transform.swift */,
 				0A4D0E1E205749AB00C119B6 /* Camera.swift */,
 				0A4D0E1F205749AB00C119B6 /* Renderer.swift */,
+				0A13A2D020595244005EEFE3 /* MeshFilter.swift */,
 				0A4D0E2A20574CD400C119B6 /* Collider.swift */,
 				0AF3166B20588AD700757E38 /* BoxCollider.swift */,
 				0AF3166D20588B2900757E38 /* PlaneCollider.swift */,
 				0A13A2C92058A738005EEFE3 /* MeshCollider.swift */,
-				0A4D0E2C2057513F00C119B6 /* RigidBody.swift */,
-				0A13A2D020595244005EEFE3 /* MeshFilter.swift */,
+				0A4D0E2C2057513F00C119B6 /* Rigidbody.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -248,6 +250,7 @@
 				0A4D0E23205749F000C119B6 /* Object.swift */,
 				0AD605CE2003978300908043 /* Behaviour.swift */,
 				493545F21FE86213003440E3 /* MonoBehaviour.swift */,
+				0A81D19E205ADD650046AEDA /* Instantiable.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -410,13 +413,14 @@
 				0A4D0E3620581EAB00C119B6 /* Debug.swift in Sources */,
 				0AD605CF2003978300908043 /* Behaviour.swift in Sources */,
 				0A3E16842003F3F3001E3C7F /* Vector4QuaternionExtension.swift in Sources */,
-				0A4D0E2D2057513F00C119B6 /* RigidBody.swift in Sources */,
+				0A4D0E2D2057513F00C119B6 /* Rigidbody.swift in Sources */,
 				0A936912204EE43C009D04E4 /* Tag.swift in Sources */,
 				0AD605D120039E9500908043 /* ObjectSearchExtension.swift in Sources */,
 				493545F31FE86213003440E3 /* MonoBehaviour.swift in Sources */,
 				0AD45A4A20548B260055713A /* ColorExtension.swift in Sources */,
 				0A4D0E2820574A1400C119B6 /* Time.swift in Sources */,
 				0AD45A4C20548F790055713A /* Input.swift in Sources */,
+				0A81D19F205ADD650046AEDA /* Instantiable.swift in Sources */,
 				0A13A2CA2058A739005EEFE3 /* MeshCollider.swift in Sources */,
 				0AF3166C20588AD700757E38 /* BoxCollider.swift in Sources */,
 				493545F51FE86334003440E3 /* Component.swift in Sources */,
