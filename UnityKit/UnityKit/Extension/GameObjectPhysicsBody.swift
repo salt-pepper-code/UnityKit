@@ -45,19 +45,17 @@ extension GameObject {
             bodyType = .dynamic
         }
 
+        let physicsBody: SCNPhysicsBody
+
         if let physicsShape = physicsShape {
-
-            let physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
-            physicsBody.isAffectedByGravity = useGravity
-            physicsBody.collisionBitMask = collisionLayer.rawValue
-            node.physicsBody = physicsBody
-
+            physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
         } else {
-
-            let physicsBody = SCNPhysicsBody(type: bodyType, shape: nil)
-            physicsBody.isAffectedByGravity = useGravity
-            physicsBody.collisionBitMask = collisionLayer.rawValue
-            node.physicsBody = physicsBody
+            physicsBody = SCNPhysicsBody(type: bodyType, shape: nil)
         }
+
+        physicsBody.isAffectedByGravity = useGravity
+        physicsBody.collisionBitMask = collisionLayer.rawValue
+        physicsBody.contactTestBitMask = collisionLayer.rawValue
+        node.physicsBody = physicsBody
     }
 }

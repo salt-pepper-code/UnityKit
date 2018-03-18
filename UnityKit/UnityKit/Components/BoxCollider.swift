@@ -75,6 +75,5 @@ public final class BoxCollider: Collider {
         physicsShape = SCNPhysicsShape(geometry: geometry,
                                        options: [.type: SCNPhysicsShape.ShapeType.boundingBox,
                                                  .scale: gameObject.transform.localScale.x])
-        gameObject.updatePhysicsShape()
     }
 }

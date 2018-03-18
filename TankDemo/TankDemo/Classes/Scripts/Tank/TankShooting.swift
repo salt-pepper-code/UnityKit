@@ -28,6 +28,8 @@ class TankShooting: MonoBehaviour {
             shellRef = shell
             shell.layer = GameObject.Layer.layer(for: "Shell")
             shell.addComponent(Rigidbody.self)?.set(isKinematic: false).set(useGravity: true)
+            let collider = shell.addComponent(MeshCollider.self)
+            collider?.collideWithLayer = .all
         }
 
         weaponOrigin = GameObject.find(.name(.exact("WeaponOrigin")))?.transform
@@ -48,6 +50,7 @@ class TankShooting: MonoBehaviour {
         guard let rigidbody = shell.getComponent(Rigidbody.self)
             else { return }
 
+        rigidbody.constraints = [.freezeRotationY]
         rigidbody.velocity = currentLaunchForce * origin.forward
     }
 }

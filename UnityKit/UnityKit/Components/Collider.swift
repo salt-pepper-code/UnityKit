@@ -4,7 +4,9 @@ import SceneKit
 public class Collider: Component, Instantiable {
 
     open func instantiate(gameObject: GameObject) -> Self {
-        return type(of: self).init()
+        let clone = type(of: self).init()
+        clone.collideWithLayer = collideWithLayer
+        return clone
     }
 
     internal var physicsShape: SCNPhysicsShape?
@@ -12,6 +14,7 @@ public class Collider: Component, Instantiable {
     public var collideWithLayer: GameObject.Layer = .`default` {
         didSet {
             gameObject?.node.physicsBody?.collisionBitMask = collideWithLayer.rawValue
+            gameObject?.node.physicsBody?.contactTestBitMask = collideWithLayer.rawValue
         }
     }
 
@@ -26,14 +29,14 @@ public class Collider: Component, Instantiable {
 
     public override func awake() {
         constructBody()
-    }
-
-    public override func onDestroy() {
-        physicsShape = nil
         gameObject?.updatePhysicsShape()
     }
 
+    public override func onDestroy() {
+
+    }
+
     internal func constructBody() {
-        fatalError("Can't use Collider, please use subclasses")
+        fatalError("Can't use Collider as a component, please use subclasses")
     }
 }

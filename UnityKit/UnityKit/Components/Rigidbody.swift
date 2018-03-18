@@ -31,8 +31,11 @@ public final class Rigidbody: Component, Instantiable {
         clone.useGravity = useGravity
         clone.gameObject = gameObject
         clone.constraints = constraints
-        gameObject.updatePhysicsShape()
         return clone
+    }
+
+    public override func awake() {
+        gameObject?.updatePhysicsShape()
     }
 
     public var constraints: RigidbodyConstraints = .none {
@@ -45,8 +48,6 @@ public final class Rigidbody: Component, Instantiable {
                 else if value > .pi/2 { return .pi }
                 else { return 0 }
             }
-
-            var nodeConstraints = [SCNConstraint]()
 
             if constraints.contains(.freezePositionX) ||
                 constraints.contains(.freezePositionY) ||
@@ -81,7 +82,7 @@ public final class Rigidbody: Component, Instantiable {
                     return position
                 }
 
-                nodeConstraints.append(positionConstraint)
+                gameObject.node.constraints = [positionConstraint]
             }
 
             if constraints.contains(.freezeRotationX) ||
@@ -100,8 +101,6 @@ public final class Rigidbody: Component, Instantiable {
                 }
                 angularVelocityFactor = factor
             }
-
-            gameObject.node.constraints = nodeConstraints
         }
     }
 

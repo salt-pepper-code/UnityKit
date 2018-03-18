@@ -9,6 +9,7 @@ public final class MeshCollider: Collider {
         
         self.mesh = mesh
         constructBody()
+        gameObject?.updatePhysicsShape()
         return self
     }
 
@@ -25,10 +26,7 @@ public final class MeshCollider: Collider {
             let shape = SCNPhysicsShape(geometry: geometry,
                                         options: [.type: SCNPhysicsShape.ShapeType.convexHull,
                                                   .scale: gameObject.transform.localScale.x])
-
             physicsShape = shape
         }
-
-        gameObject.updatePhysicsShape()
     }
 }
