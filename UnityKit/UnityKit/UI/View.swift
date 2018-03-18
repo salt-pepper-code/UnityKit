@@ -125,13 +125,39 @@ extension View: SCNSceneRendererDelegate {
             Input.endUpdateTouches()
         }
     }
+
+    public func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {
+
+        DispatchQueue.main.async { () -> Void in
+            self.sceneHolder?.fixedUpdate(updateAtTime: time)
+        }
+    }
 }
 
 extension View: SCNPhysicsContactDelegate {
 
     public func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
 
-        print(contact)
+        guard let sceneHolder = sceneHolder
+            else { return }
+
+        DispatchQueue.main.async { () -> Void in
+            GameObject.findObjectsOfType(Collider.self, in: sceneHolder).forEach {
+                $0.physicsWorld(world, didBegin: contact)
+            }
+        }
+    }
+
+    public func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
+
+        guard let sceneHolder = sceneHolder
+            else { return }
+
+        DispatchQueue.main.async { () -> Void in
+            GameObject.findObjectsOfType(Collider.self, in: sceneHolder).forEach {
+                $0.physicsWorld(world, didEnd: contact)
+            }
+        }
     }
 }
 

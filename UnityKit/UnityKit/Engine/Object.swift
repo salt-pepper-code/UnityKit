@@ -43,6 +43,10 @@ open class Object: Identifiable {
     open func update() {
         
     }
+
+    open func fixedUpdate() {
+
+    }
     
     internal func removeAllComponents() {
         

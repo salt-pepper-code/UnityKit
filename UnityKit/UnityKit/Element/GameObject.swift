@@ -226,14 +226,33 @@ public final class GameObject: Object {
         }
 
         for component in components {
-            guard let behaviour = component as? Behaviour else {
-                continue
-            }
-            if behaviour.enabled {
-                behaviour.update()
-            }
+
+            guard let behaviour = component as? Behaviour,
+                behaviour.enabled
+                else { continue }
+
+            behaviour.update()
         }
         children.forEach { $0.update() }
+    }
+
+    public override func fixedUpdate() {
+
+        guard didAwake
+            else { return }
+
+        guard didStart
+            else { return }
+
+        for component in components {
+
+            guard let behaviour = component as? Behaviour,
+                behaviour.enabled
+                else { continue }
+
+            behaviour.fixedUpdate()
+        }
+        children.forEach { $0.fixedUpdate() }
     }
     
     //Component

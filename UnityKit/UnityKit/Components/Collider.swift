@@ -1,6 +1,8 @@
 
 import SceneKit
 
+public typealias Collision = SCNPhysicsContact
+
 public class Collider: Component, Instantiable {
 
     open func instantiate(gameObject: GameObject) -> Self {
@@ -20,6 +22,9 @@ public class Collider: Component, Instantiable {
 
     public var isTrigger: Bool = false {
         didSet {
+            if isTrigger, triggerWithLayer == nil {
+                triggerWithLayer = collideWithLayer
+            }
             gameObject?.updatePhysicsBody()
         }
     }
@@ -30,8 +35,9 @@ public class Collider: Component, Instantiable {
         }
     }
 
-    public func execute(_ completionBlock: (Collider) -> ()) {
+    @discardableResult public func execute(_ completionBlock: (Collider) -> ()) -> Collider {
         completionBlock(self)
+        return self
     }
 
     private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
@@ -41,6 +47,40 @@ public class Collider: Component, Instantiable {
 
         return gameObject.getComponents(Collider.self)
             .flatMap { (collider) -> SCNPhysicsShape? in collider.physicsShape }
+    }
+
+    internal func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: Collision) {
+
+        guard isTrigger,
+            let gameObject = gameObject,
+            contact.nodeA.name == gameObject.name || contact.nodeB.name == gameObject.name
+            else { return }
+
+        for component in gameObject.components {
+            
+            guard let monoBehaviour = component as? MonoBehaviour
+                else { continue }
+
+            monoBehaviour.onCollisionEnter(contact)
+            monoBehaviour.OnTriggerEnter(self)
+        }
+    }
+
+    public func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: Collision) {
+
+        guard isTrigger,
+            let gameObject = gameObject,
+            contact.nodeA.name == gameObject.name || contact.nodeB.name == gameObject.name
+            else { return }
+
+        for component in gameObject.components {
+
+            guard let monoBehaviour = component as? MonoBehaviour
+                else { continue }
+
+            monoBehaviour.onCollisionExit(contact)
+            monoBehaviour.OnTriggerExit(self)
+        }
     }
 
     public override func awake() {

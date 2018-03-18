@@ -100,6 +100,14 @@ open class Scene: Identifiable {
         self.lastTimeStamp = time
     }
 
+    internal func fixedUpdate(updateAtTime time: TimeInterval) {
+
+        guard let _ = lastTimeStamp
+            else { return }
+
+        rootGameObject.fixedUpdate()
+    }
+
     //
     
     public func clearScene() {

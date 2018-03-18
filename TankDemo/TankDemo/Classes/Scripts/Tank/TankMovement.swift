@@ -8,6 +8,9 @@ class TankMovement: MonoBehaviour {
     public var rigidbody: Rigidbody?
     public var playerNumber: Int = 1
     public var speed: Float = 5
+    private var previousPosition: Vector3?
+    private var joystickUpdate: JoystickTuple?
+
     //public var movementAudio: AudioSource?          // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
     //public var engineIdling: AudioClip?             // Audio to play when the tank isn't moving.
     //public var engineDriving: AudioClip?            // Audio to play when the tank is moving.
@@ -23,8 +26,8 @@ class TankMovement: MonoBehaviour {
         guard let joystick = joystick
             else { return }
 
-        joystick.onUpdate = { [weak self] (angle, displacement) in
-            self?.move(angle, displacement)
+        joystick.onUpdate = { [weak self] (update) -> () in
+            self?.joystickUpdate = (angle: update.angle, displacement: update.displacement)
         }
 
         joystick.onComplete = { [weak self] () in
@@ -34,7 +37,16 @@ class TankMovement: MonoBehaviour {
             rigidbody.velocity = .zero
         }
     }
-    
+
+    override func fixedUpdate() {
+
+        guard let update = joystickUpdate
+            else { return }
+
+        joystickUpdate = nil
+        move(update.angle, update.displacement)
+    }
+
     private func move(_ angle: Degree, _ displacement: Float) {
 
         guard let rigidbody = rigidbody,
@@ -46,6 +58,19 @@ class TankMovement: MonoBehaviour {
         let movement = transform.forward * speed * Time.deltaTime.toFloat()
 
         rigidbody.moveRotation(rotation)
+        previousPosition = transform.position
         rigidbody.movePosition(transform.position + movement)
+    }
+
+    override func onCollisionEnter(_ collision: Collision) {
+
+        guard let rigidbody = rigidbody,
+            let transform = rigidbody.transform,
+            let position = previousPosition
+            else { return }
+
+        joystickUpdate = nil
+        transform.position = position
+        previousPosition = nil
     }
 }

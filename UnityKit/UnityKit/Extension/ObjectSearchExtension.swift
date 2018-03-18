@@ -14,10 +14,10 @@ extension Object {
         return nil
     }
     
-    public static func findObjectsOfType<T: Component>(_ type: T.Type, in scene: Scene? = Scene.sharedInstance) -> [T]? {
+    public static func findObjectsOfType<T: Component>(_ type: T.Type, in scene: Scene? = Scene.sharedInstance) -> [T] {
 
         guard let scene = scene
-            else { return nil }
+            else { return [] }
 
         return scene.rootGameObject.getComponents(type) + scene.rootGameObject.getComponentsInChild(type)
     }

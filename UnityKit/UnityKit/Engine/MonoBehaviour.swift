@@ -1,3 +1,4 @@
+
 import Foundation
 
 open class MonoBehaviour: Behaviour, Instantiable {
@@ -11,6 +12,22 @@ open class MonoBehaviour: Behaviour, Instantiable {
     }
 
     open override func onDisable() {
+
+    }
+
+    open func onCollisionEnter(_ collision: Collision) {
+
+    }
+
+    open func onCollisionExit(_ collision: Collision) {
+
+    }
+
+    open func OnTriggerEnter(_ collider: Collider) {
+
+    }
+
+    open func OnTriggerExit(_ collider: Collider) {
 
     }
 }

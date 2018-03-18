@@ -206,8 +206,9 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
-    public func execute(_ completionBlock: (Rigidbody) -> ()) {
+    @discardableResult public func execute(_ completionBlock: (Rigidbody) -> ()) -> Rigidbody {
         completionBlock(self)
+        return self
     }
 
     public func movePosition(_ position: Vector3) {

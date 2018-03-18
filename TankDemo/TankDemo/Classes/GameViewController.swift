@@ -55,9 +55,8 @@ class GameViewController: UIViewController {
         ground.addComponent(Rigidbody.self)?.execute { $0.useGravity = false }
 
         // Colliders
-        environments.forEach { $0.addComponent(MeshCollider.self)?.execute { $0.collideWithLayer = .player} }
-        ground.addComponent(PlaneCollider.self)
-
+        environments.forEach { $0.addComponent(MeshCollider.self)?.execute { $0.collideWithLayer = [.player, .projectile] } }
+        ground.addComponent(PlaneCollider.self)?.execute { $0.collideWithLayer = .projectile }
 
         // Tank Setup
         scene.addGameObject(tank)

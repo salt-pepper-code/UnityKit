@@ -2,7 +2,8 @@
 import UnityKit
 import UIKit
 
-public typealias JoystickUpdate = (_ angle: Float, _ displacement: Float) -> ()
+public typealias JoystickTuple = (angle: Float, displacement: Float)
+public typealias JoystickUpdate = (JoystickTuple) -> ()
 public typealias JoystickCompletion = () -> ()
 
 public final class Joystick: MonoBehaviour {
@@ -131,7 +132,7 @@ public final class Joystick: MonoBehaviour {
         angle = displacement != 0.0 ? (180.0 - newAngleRadians * 180.0 / .pi) : 0.0
 
         if displacement != 0 {
-            onUpdate?(angle, displacement)
+            onUpdate?((angle, displacement))
         }
     }
 }
