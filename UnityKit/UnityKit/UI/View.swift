@@ -74,6 +74,8 @@ open class View: SCNView {
             view.sceneHolder = Scene(allocation: allocation)
         }
 
+        view.scene?.physicsWorld.contactDelegate = view
+
         if let superview = superview {
             
             view.frame = superview.bounds
@@ -122,6 +124,14 @@ extension View: SCNSceneRendererDelegate {
             self.sceneHolder?.update(updateAtTime: time)
             Input.endUpdateTouches()
         }
+    }
+}
+
+extension View: SCNPhysicsContactDelegate {
+
+    public func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+
+        print(contact)
     }
 }
 

@@ -22,12 +22,25 @@ extension GameObject {
         }
     }
 
-    internal func updatePhysicsShape() {
+    private func getContactLayer() -> GameObject.Layer? {
+
+        return getComponents(Collider.self)
+            .flatMap { (collider) -> GameObject.Layer? in collider.triggerWithLayer }
+            .reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
+                guard prev.rawValue != 0,
+                    prev != layer
+                    else { return layer }
+
+                return [prev, layer]
+        }
+    }
+
+    internal func updatePhysicsBody() {
 
         var physicsShape: SCNPhysicsShape?
         var useGravity: Bool
         var bodyType: SCNPhysicsBodyType = .kinematic
-        let collisionLayer = getCollisionLayer() ?? layer
+        var isTrigger = false
 
         if let physicsShapes = getAllPhysicsShapes() {
             if physicsShapes.count > 1 {
@@ -40,6 +53,7 @@ extension GameObject {
         if let rigidBody = getComponent(Rigidbody.self) {
             useGravity = rigidBody.useGravity
             bodyType = rigidBody.isKinematic ? .kinematic : .dynamic
+            isTrigger = true
         } else {
             useGravity = false
             bodyType = .dynamic
@@ -53,9 +67,15 @@ extension GameObject {
             physicsBody = SCNPhysicsBody(type: bodyType, shape: nil)
         }
 
+        if let rigidBody = getComponent(Rigidbody.self) {
+            physicsBody.velocityFactor = rigidBody.velocityFactor
+            physicsBody.angularVelocityFactor = rigidBody.angularVelocityFactor
+        }
+
+        physicsBody.categoryBitMask = layer.rawValue
         physicsBody.isAffectedByGravity = useGravity
-        physicsBody.collisionBitMask = collisionLayer.rawValue
-        physicsBody.contactTestBitMask = collisionLayer.rawValue
+        physicsBody.collisionBitMask = getCollisionLayer()?.rawValue ?? layer.rawValue
+        physicsBody.contactTestBitMask = isTrigger ? (getContactLayer()?.rawValue ?? physicsBody.collisionBitMask) : 0
         node.physicsBody = physicsBody
     }
 }

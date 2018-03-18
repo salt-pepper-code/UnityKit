@@ -33,11 +33,6 @@ class TankMovement: MonoBehaviour {
 
             rigidbody.velocity = .zero
         }
-
-        guard let rigidbody = rigidbody
-            else { return }
-
-        rigidbody.constraints = [.freezeRotationX, .freezeRotationZ]
     }
     
     private func move(_ angle: Degree, _ displacement: Float) {

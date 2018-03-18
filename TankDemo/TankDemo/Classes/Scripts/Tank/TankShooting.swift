@@ -26,10 +26,15 @@ class TankShooting: MonoBehaviour {
 
         if let shell = GameObject(fileName: "Shell.scn", nodeName: "Shell") {
             shellRef = shell
-            shell.layer = GameObject.Layer.layer(for: "Shell")
-            shell.addComponent(Rigidbody.self)?.set(isKinematic: false).set(useGravity: true)
-            let collider = shell.addComponent(MeshCollider.self)
-            collider?.collideWithLayer = .all
+            shell.layer = GameObject.Layer.projectile
+            shell.addComponent(Rigidbody.self)?.execute {
+                $0.isKinematic = false
+                $0.useGravity = true
+            }
+            shell.addComponent(MeshCollider.self)?.execute {
+                $0.collideWithLayer = .all
+                $0.triggerWithLayer = .all
+            }
         }
 
         weaponOrigin = GameObject.find(.name(.exact("WeaponOrigin")))?.transform

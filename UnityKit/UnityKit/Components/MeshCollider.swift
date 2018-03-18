@@ -9,7 +9,7 @@ public final class MeshCollider: Collider {
         
         self.mesh = mesh
         constructBody()
-        gameObject?.updatePhysicsShape()
+        gameObject?.updatePhysicsBody()
         return self
     }
 

@@ -35,14 +35,11 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public override func awake() {
-        gameObject?.updatePhysicsShape()
+        gameObject?.updatePhysicsBody()
     }
 
     public var constraints: RigidbodyConstraints = .none {
         didSet {
-            guard let gameObject = gameObject
-                else { return }
-
             func freezeAxe(_ value: Float) -> Float {
                 if value < -.pi/2 { return -.pi }
                 else if value > .pi/2 { return .pi }
@@ -64,25 +61,6 @@ public final class Rigidbody: Component, Instantiable {
                     factor.z = 0
                 }
                 velocityFactor = factor
-
-                let positionFreeze = gameObject.transform.position
-
-                let positionConstraint = SCNTransformConstraint.positionConstraint(inWorldSpace: true) { (node, position) -> SCNVector3 in
-
-                    var position = position
-                    if self.constraints.contains(.freezePositionX) {
-                        position.x = positionFreeze.x
-                    }
-                    if self.constraints.contains(.freezePositionY) {
-                        position.y = positionFreeze.y
-                    }
-                    if self.constraints.contains(.freezePositionZ) {
-                        position.z = positionFreeze.z
-                    }
-                    return position
-                }
-
-                gameObject.node.constraints = [positionConstraint]
             }
 
             if constraints.contains(.freezeRotationX) ||
@@ -128,7 +106,7 @@ public final class Rigidbody: Component, Instantiable {
 
     public var isKinematic: Bool = true {
         didSet {
-            gameObject?.updatePhysicsShape()
+            gameObject?.updatePhysicsBody()
         }
     }
 
@@ -200,7 +178,7 @@ public final class Rigidbody: Component, Instantiable {
 
         get {
             guard let physicsBody = gameObject?.node.physicsBody
-                else { return .zero }
+                else { return .one }
 
             return physicsBody.velocityFactor
         }
@@ -216,7 +194,7 @@ public final class Rigidbody: Component, Instantiable {
 
         get {
             guard let physicsBody = gameObject?.node.physicsBody
-                else { return .zero }
+                else { return .one }
 
             return physicsBody.angularVelocityFactor
         }
@@ -228,16 +206,8 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
-    @discardableResult public func set(isKinematic: Bool) -> Rigidbody {
-
-        self.isKinematic = isKinematic
-        return self
-    }
-
-    @discardableResult public func set(useGravity: Bool) -> Rigidbody {
-
-        self.useGravity = useGravity
-        return self
+    public func execute(_ completionBlock: (Rigidbody) -> ()) {
+        completionBlock(self)
     }
 
     public func movePosition(_ position: Vector3) {

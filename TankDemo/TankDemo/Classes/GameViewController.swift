@@ -5,8 +5,7 @@ import SceneKit
 class GameViewController: UIViewController {
 
     override func loadView() {
-        self.view = View.makeView(sceneName: "Scene.scn",
-                                  extraLayers: ["Shell"])
+        self.view = View.makeView(sceneName: "Scene.scn")
     }
 
     var sceneView: View {
@@ -35,37 +34,41 @@ class GameViewController: UIViewController {
         setup(joystick: joystick)
         setup(fireButton: fireButton)
 
-        // Collider Setup
-        guard let militaries = GameObject.find(.name(.exact("Military"))),
-            let oilFields = GameObject.find(.name(.exact("OilField"))),
-            let rocks = GameObject.find(.name(.exact("Rocks"))),
-            let boundaries = GameObject.find(.name(.exact("Boundaries"))),
+        // Physics Setup
+        guard let militaries = GameObject.find(.name(.exact("Military")))?.getChildren(),
+            let oilFields = GameObject.find(.name(.exact("OilField")))?.getChildren(),
+            let rocks = GameObject.find(.name(.exact("Rocks")))?.getChildren(),
+            let boundaries = GameObject.find(.name(.exact("Boundaries")))?.getChildren(),
             let ground = GameObject.find(.name(.exact("GroundPlane"))),
             let helipad = GameObject.find(.name(.exact("Helipad")))
             else { return }
 
-        let gameObjects = militaries.getChildren() + oilFields.getChildren() + boundaries.getChildren()
+        let environments = militaries + oilFields + boundaries + rocks + [helipad]
 
-        gameObjects.forEach {
-            $0.addComponent(Rigidbody.self)?.set(useGravity: false)
-            $0.addComponent(MeshCollider.self)
-        }
+        // Layers
+        environments.forEach { $0.layer = .environment }
+        ground.layer = .ground
+        tank.layer = .player
 
-        rocks.getChildren().forEach {
-            $0.addComponent(Rigidbody.self)?.set(useGravity: false)
-            $0.addComponent(BoxCollider.self)
-        }
+        // Rigidbodies
+        environments.forEach { $0.addComponent(Rigidbody.self)?.execute { $0.useGravity = false } }
+        ground.addComponent(Rigidbody.self)?.execute { $0.useGravity = false }
 
-        ground.addComponent(Rigidbody.self)?.set(useGravity: false)
+        // Colliders
+        environments.forEach { $0.addComponent(MeshCollider.self)?.execute { $0.collideWithLayer = .player} }
         ground.addComponent(PlaneCollider.self)
 
-        helipad.addComponent(Rigidbody.self)?.set(useGravity: false)
-        helipad.addComponent(BoxCollider.self)
 
         // Tank Setup
         scene.addGameObject(tank)
-        tank.addComponent(Rigidbody.self)?.set(isKinematic: false)
-        tank.addComponent(BoxCollider.self)
+        tank.addComponent(Rigidbody.self)?.execute {
+            $0.isKinematic = false
+            $0.constraints = [.freezeRotationX, .freezeRotationZ, .freezePositionY]
+        }
+        tank.addComponent(BoxCollider.self)?.execute {
+            $0.collideWithLayer = .all
+            $0.triggerWithLayer = .environment
+        }
         tank.addComponent(TankMovement.self)
         tank.addComponent(TankShooting.self)
     }

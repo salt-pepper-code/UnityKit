@@ -6,6 +6,7 @@ public class Collider: Component, Instantiable {
     open func instantiate(gameObject: GameObject) -> Self {
         let clone = type(of: self).init()
         clone.collideWithLayer = collideWithLayer
+        clone.triggerWithLayer = triggerWithLayer
         return clone
     }
 
@@ -13,9 +14,24 @@ public class Collider: Component, Instantiable {
 
     public var collideWithLayer: GameObject.Layer = .`default` {
         didSet {
-            gameObject?.node.physicsBody?.collisionBitMask = collideWithLayer.rawValue
-            gameObject?.node.physicsBody?.contactTestBitMask = collideWithLayer.rawValue
+            gameObject?.updatePhysicsBody()
         }
+    }
+
+    public var isTrigger: Bool = false {
+        didSet {
+            gameObject?.updatePhysicsBody()
+        }
+    }
+
+    public var triggerWithLayer: GameObject.Layer? {
+        didSet {
+            isTrigger = triggerWithLayer != nil
+        }
+    }
+
+    public func execute(_ completionBlock: (Collider) -> ()) {
+        completionBlock(self)
     }
 
     private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
@@ -28,8 +44,9 @@ public class Collider: Component, Instantiable {
     }
 
     public override func awake() {
+        gameObject?.node.physicsBody?.contactTestBitMask = 0
         constructBody()
-        gameObject?.updatePhysicsShape()
+        gameObject?.updatePhysicsBody()
     }
 
     public override func onDestroy() {
