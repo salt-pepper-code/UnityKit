@@ -72,7 +72,10 @@ extension Vector3 {
     }
     
     public static func normalized(_ vector: Vector3) -> Vector3 {
-        return vector / vector.length()
+        let lenght = vector.length()
+        guard lenght != 0
+            else { return .zero }
+        return vector / lenght
     }
 
     mutating public func normalize() {
@@ -115,8 +118,8 @@ extension Vector3 {
     /**
      * Cross Product of two vectors.
      */
-    public func cross(vector: Vector3) -> Vector3 {
-        return Vector3(y * vector.z - z * vector.y, z * vector.x - x * vector.z, x * vector.y - y * vector.x)
+    public func cross(_ vector: Vector3) -> Vector3 {
+        return Vector3.cross(self, vector)
     }
     
     public static func cross(_ a: Vector3, _ b: Vector3) -> Vector3 {
@@ -143,6 +146,30 @@ extension Vector3 {
      */
     public static func lerp(from v0: Vector3, to v1: Vector3, time t: TimeInterval) -> Vector3 {
         return Float(1 - t) * v0 + Float(t) * v1
+    }
+
+    public func toQuaternion() -> Quaternion {
+
+        var angle: Float = 0
+
+        angle = x * 0.5
+        let sr = sin(angle)
+        let cr = cos(angle)
+
+        angle = y * 0.5
+        let sp = sin(angle)
+        let cp = cos(angle)
+
+        angle = z * 0.5
+        let sy = sin(angle)
+        let cy = cos(angle)
+
+        let cpcy = cp * cy
+        let spcy = sp * cy
+        let cpsy = cp * sy
+        let spsy = sp * sy
+
+        return Quaternion((sr * cpcy - cr * spsy), (cr * spcy + sr * cpsy), (cr * cpsy - sr * spcy), (cr * cpcy + sr * spsy)).normalized()
     }
 }
 
@@ -222,6 +249,7 @@ public func *= (left: inout Vector3, right: Vector3) {
 public func * (vector: Vector3, scalar: Float) -> Vector3 {
     return Vector3(vector.x * scalar, vector.y * scalar, vector.z * scalar)
 }
+
 public func * (scalar: Float, vector: Vector3) -> Vector3 {
     return Vector3(vector.x * scalar, vector.y * scalar, vector.z * scalar)
 }

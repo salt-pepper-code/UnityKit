@@ -30,22 +30,27 @@ class TankMovement: MonoBehaviour {
         joystick.onComplete = { [weak self] () in
             guard let rigidbody = self?.rigidbody
                 else { return }
-            
-            rigidbody.clearAllForces()
+
+            rigidbody.velocity = .zero
         }
+
+        guard let rigidbody = rigidbody
+            else { return }
+
+        rigidbody.constraints = [.freezeRotationX, .freezeRotationZ]
     }
     
     private func move(_ angle: Degree, _ displacement: Float) {
 
         guard let rigidbody = rigidbody,
-            let transform = transform
+            let transform = rigidbody.transform
             else { return }
 
         let angle = (360 - (angle - 90)).clamp()
-        let rotation = Vector4(0, 1, 0, angle.degreesToRadians)
+        let rotation = Vector3(0, angle, 0)
         let movement = transform.forward * speed * Time.deltaTime.toFloat()
 
         rigidbody.moveRotation(rotation)
-        rigidbody.movePosition(rigidbody.position + movement)
+        rigidbody.movePosition(transform.position + movement)
     }
 }

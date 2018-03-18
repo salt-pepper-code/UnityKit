@@ -26,6 +26,7 @@ public final class GameObject: Object {
     }
 
     public var tag: Tag = .untagged
+
     internal let node: SCNNode
 
     private(set) public var transform: Transform!

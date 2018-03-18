@@ -73,7 +73,7 @@ public final class BoxCollider: Collider {
         geometry.name = name + "BoxCollider"
 
         physicsShape = SCNPhysicsShape(geometry: geometry,
-                                       options: [.type: SCNPhysicsShape.ShapeType.convexHull,
+                                       options: [.type: SCNPhysicsShape.ShapeType.boundingBox,
                                                  .scale: gameObject.transform.localScale.x])
         gameObject.updatePhysicsShape()
     }

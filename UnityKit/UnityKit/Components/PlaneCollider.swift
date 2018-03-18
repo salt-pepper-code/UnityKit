@@ -53,8 +53,7 @@ public final class PlaneCollider: Collider {
         geometry.name = name + "PlaneCollider"
 
         physicsShape = SCNPhysicsShape(geometry: geometry,
-                                       options: [.type: SCNPhysicsShape.ShapeType.convexHull,
-                                                 .scale: gameObject.transform.localScale.x])
+                                       options: [.scale: gameObject.transform.localScale.x])
         gameObject.updatePhysicsShape()
     }
 }

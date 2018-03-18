@@ -44,35 +44,27 @@ class GameViewController: UIViewController {
             let helipad = GameObject.find(.name(.exact("Helipad")))
             else { return }
 
-        militaries.getChildren().forEach {
-            $0.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
-            $0.addComponent(MeshCollider.self)
-        }
+        let gameObjects = militaries.getChildren() + oilFields.getChildren() + boundaries.getChildren()
 
-        oilFields.getChildren().forEach {
-            $0.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
+        gameObjects.forEach {
+            $0.addComponent(Rigidbody.self)?.set(useGravity: false)
             $0.addComponent(MeshCollider.self)
         }
 
         rocks.getChildren().forEach {
-            $0.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
-            $0.addComponent(MeshCollider.self)
+            $0.addComponent(Rigidbody.self)?.set(useGravity: false)
+            $0.addComponent(BoxCollider.self)
         }
 
-        boundaries.getChildren().forEach {
-            $0.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
-            $0.addComponent(MeshCollider.self)
-        }
-
-        ground.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
+        ground.addComponent(Rigidbody.self)?.set(useGravity: false)
         ground.addComponent(PlaneCollider.self)
 
-        helipad.addComponent(Rigidbody.self)?.set(isKinematic: true).set(useGravity: false)
+        helipad.addComponent(Rigidbody.self)?.set(useGravity: false)
         helipad.addComponent(BoxCollider.self)
 
         // Tank Setup
         scene.addGameObject(tank)
-        tank.addComponent(Rigidbody.self)?.set(isKinematic: false).set(useGravity: true)
+        tank.addComponent(Rigidbody.self)?.set(isKinematic: false)
         tank.addComponent(BoxCollider.self)
         tank.addComponent(TankMovement.self)
         tank.addComponent(TankShooting.self)
