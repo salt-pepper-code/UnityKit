@@ -57,29 +57,36 @@ class GameViewController: UIViewController {
                 $0.isStatic = true
             }
         }
-        ground.addComponent(Rigidbody.self)?.execute { $0.useGravity = false }
+        ground.addComponent(Rigidbody.self)?.execute {
+            $0.useGravity = false
+            $0.isStatic = true
+        }
 
         // Colliders
         environments.forEach {
             $0.addComponent(MeshCollider.self)?.execute {
                 $0.collideWithLayer = [.player, .projectile]
-                $0.triggerWithLayer = [.player]
             }
         }
-        ground.addComponent(PlaneCollider.self)?.execute { $0.collideWithLayer = .projectile }
+        ground.addComponent(PlaneCollider.self)?.execute { $0.collideWithLayer = [.player, .projectile] }
 
         // Tank Setup
-        scene.addGameObject(tank)
         tank.addComponent(Rigidbody.self)?.execute {
             $0.isKinematic = false
-            $0.constraints = [.freezeRotationX, .freezeRotationZ, .freezePositionY]
+            $0.constraints = [.freezeRotationX, .freezeRotationZ]
+            $0.set(property: .allowsResting(false))
+            $0.set(property: .mass(80))
+            $0.set(property: .restitution(0.1))
+            $0.set(property: .friction(0.5))
+            $0.set(property: .rollingFriction(0))
         }
-        tank.addComponent(BoxCollider.self)?.execute {
-            $0.collideWithLayer = .environment
-            $0.triggerWithLayer = .environment
+        tank.addComponent(MeshCollider.self)?.execute {
+            $0.collideWithLayer = [.environment, .ground]
         }
+        tank.addComponent(Vehicle.self)
         tank.addComponent(TankMovement.self)
         tank.addComponent(TankShooting.self)
+        scene.addGameObject(tank)
     }
 
     func setup(joystick: Joystick) {

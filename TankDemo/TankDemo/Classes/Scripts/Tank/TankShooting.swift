@@ -52,6 +52,6 @@ class TankShooting: MonoBehaviour {
             $0.triggerWithLayer = .all
         }
 
-        rigidbody?.velocity = currentLaunchForce * origin.forward
+        rigidbody?.set(property: .velocity(currentLaunchForce * origin.forward))
     }
 }

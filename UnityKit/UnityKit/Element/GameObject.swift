@@ -312,7 +312,10 @@ public final class GameObject: Object {
         if children.index(where: { $0 == child }) == nil {
             
             children.append(child)
-            node.addChildNode(child.node)
+
+            if child.node.parent != node {
+                node.addChildNode(child.node)
+            }
         }
     }
     

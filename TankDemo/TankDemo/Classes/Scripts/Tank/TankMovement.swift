@@ -5,7 +5,7 @@ import Foundation
 class TankMovement: MonoBehaviour {
 
     public var joystick: Joystick?
-    public var rigidbody: Rigidbody?
+    public var vehicle: Vehicle?
     public var playerNumber: Int = 1
     public var speed: Float = 5
     private var previousPosition: Vector3?
@@ -19,7 +19,10 @@ class TankMovement: MonoBehaviour {
 
     override func awake() {
 
-        rigidbody = getComponent(Rigidbody.self)
+        guard let gameObject = gameObject
+            else { return }
+
+        vehicle = gameObject.getComponent(Vehicle.self)
         joystick = GameObject.findObjectOfType(Joystick.self)
 
         guard let joystick = joystick
@@ -30,36 +33,36 @@ class TankMovement: MonoBehaviour {
         }
 
         joystick.onComplete = { [weak self] () in
-            guard let rigidbody = self?.rigidbody
-                else { return }
-
-            rigidbody.velocity = .zero
+//            guard let vehicle = self?.vehicle
+//                else { return }
+//
         }
+
+        guard let vehicle = self.vehicle
+            else { return }
+
+        let wheels = ["Wheel_Back_L", "Wheel_Back_R", "Wheel_Front_L", "Wheel_Front_R"]
+
+        vehicle.set(wheelsNode: wheels)
     }
 
     private func move(_ angle: Degree, _ displacement: Float) {
 
-        guard let rigidbody = rigidbody,
-            let transform = rigidbody.transform
+        guard let vehicle = vehicle,
+            let transform = vehicle.transform
             else { return }
 
-        let angle = (360 - (angle - 90)).clamp()
-        let rotation = Vector3(0, angle, 0)
-        let movement = transform.forward * speed * Time.deltaTime.toFloat()
+//        let angle = (360 - (angle - 90)).clamp()
+//        let rotation = Vector3(0, angle, 0)
+//        let movement = transform.forward * speed * Time.deltaTime.toFloat()
+//
+//        rigidbody.moveRotation(rotation)
+//        previousPosition = transform.position
+//        rigidbody.movePosition(transform.position + movement)
 
-        rigidbody.moveRotation(rotation)
-        previousPosition = transform.position
-        rigidbody.movePosition(transform.position + movement)
-    }
-
-    override func onCollisionEnter(_ collision: Collision) {
-
-        guard let rigidbody = rigidbody,
-            let transform = rigidbody.transform,
-            let position = previousPosition
-            else { return }
-
-        transform.position = position
-        previousPosition = nil
+        vehicle.applyEngineForce(300, forWheelAt: 0)
+        vehicle.applyEngineForce(300, forWheelAt: 1)
+        vehicle.applyEngineForce(300, forWheelAt: 2)
+        vehicle.applyEngineForce(300, forWheelAt: 3)
     }
 }

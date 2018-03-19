@@ -74,8 +74,9 @@ public class Collider: Component, Instantiable {
             else { return false }
 
         let physicsWorld = scnScene.physicsWorld
-        let contacts = physicsWorld.contactTest(with: physicsBody, options: [SCNPhysicsWorld.TestOption.collisionBitMask: physicsBody.collisionBitMask,
-                                                                             SCNPhysicsWorld.TestOption.searchMode: SCNPhysicsWorld.TestSearchMode.all])
+
+        physicsWorld.updateCollisionPairs()
+        let contacts = physicsWorld.contactTest(with: physicsBody, options: [SCNPhysicsWorld.TestOption.searchMode: SCNPhysicsWorld.TestSearchMode.all])
 
         if contacts.count > 0 {
             print(contacts)

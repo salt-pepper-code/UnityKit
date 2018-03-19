@@ -41,6 +41,8 @@
 		0AD605CF2003978300908043 /* Behaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD605CE2003978300908043 /* Behaviour.swift */; };
 		0AD605D120039E9500908043 /* ObjectSearchExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD605D020039E9500908043 /* ObjectSearchExtension.swift */; };
 		0AE74525205B376B00DA0051 /* GameObjectPhysicsBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74524205B376B00DA0051 /* GameObjectPhysicsBody.swift */; };
+		0AE74528205FE34A00DA0051 /* Getteable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74527205FE34A00DA0051 /* Getteable.swift */; };
+		0AE7452A205FE93A00DA0051 /* Vehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74529205FE93A00DA0051 /* Vehicle.swift */; };
 		0AF3166C20588AD700757E38 /* BoxCollider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF3166B20588AD700757E38 /* BoxCollider.swift */; };
 		0AF3166E20588B2900757E38 /* PlaneCollider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF3166D20588B2900757E38 /* PlaneCollider.swift */; };
 		493545C11FE857B7003440E3 /* UnityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493545B71FE857B6003440E3 /* UnityKit.framework */; };
@@ -100,6 +102,8 @@
 		0AD605D020039E9500908043 /* ObjectSearchExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectSearchExtension.swift; sourceTree = "<group>"; };
 		0AE6ACDD20041ED400764C16 /* MKTween.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MKTween.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AE74524205B376B00DA0051 /* GameObjectPhysicsBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectPhysicsBody.swift; sourceTree = "<group>"; };
+		0AE74527205FE34A00DA0051 /* Getteable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Getteable.swift; sourceTree = "<group>"; };
+		0AE74529205FE93A00DA0051 /* Vehicle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicle.swift; sourceTree = "<group>"; };
 		0AF3166B20588AD700757E38 /* BoxCollider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxCollider.swift; sourceTree = "<group>"; };
 		0AF3166D20588B2900757E38 /* PlaneCollider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneCollider.swift; sourceTree = "<group>"; };
 		493545B71FE857B6003440E3 /* UnityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UnityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +152,7 @@
 				0AF3166D20588B2900757E38 /* PlaneCollider.swift */,
 				0A13A2C92058A738005EEFE3 /* MeshCollider.swift */,
 				0A4D0E2C2057513F00C119B6 /* Rigidbody.swift */,
+				0AE74529205FE93A00DA0051 /* Vehicle.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -166,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				0AD45A4720548A7A0055713A /* Identifiable.swift */,
+				0AE74527205FE34A00DA0051 /* Getteable.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -401,6 +407,7 @@
 				493545DF1FE85D4D003440E3 /* Scene.swift in Sources */,
 				0A13A2D120595244005EEFE3 /* MeshFilter.swift in Sources */,
 				0AA9FD552052C844004CCB0E /* Ease.swift in Sources */,
+				0AE74528205FE34A00DA0051 /* Getteable.swift in Sources */,
 				493545F91FE8639B003440E3 /* GameObject.swift in Sources */,
 				0A936914204EE46F009D04E4 /* Layer.swift in Sources */,
 				0A4A54481FE9CC6100DA4F22 /* GeometryExtension.swift in Sources */,
@@ -415,6 +422,7 @@
 				0A4D0E22205749AB00C119B6 /* Renderer.swift in Sources */,
 				0A4A54401FE962F600DA4F22 /* MathExtension.swift in Sources */,
 				0A4D0E3620581EAB00C119B6 /* Debug.swift in Sources */,
+				0AE7452A205FE93A00DA0051 /* Vehicle.swift in Sources */,
 				0AD605CF2003978300908043 /* Behaviour.swift in Sources */,
 				0A3E16842003F3F3001E3C7F /* Vector4QuaternionExtension.swift in Sources */,
 				0A4D0E2D2057513F00C119B6 /* Rigidbody.swift in Sources */,
