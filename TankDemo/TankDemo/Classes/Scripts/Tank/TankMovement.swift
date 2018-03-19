@@ -62,7 +62,5 @@ class TankMovement: MonoBehaviour {
 
         vehicle.applyEngineForce(300, forWheelAt: 0)
         vehicle.applyEngineForce(300, forWheelAt: 1)
-        vehicle.applyEngineForce(300, forWheelAt: 2)
-        vehicle.applyEngineForce(300, forWheelAt: 3)
     }
 }

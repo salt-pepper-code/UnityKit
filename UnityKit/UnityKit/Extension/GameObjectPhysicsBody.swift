@@ -69,7 +69,14 @@ extension GameObject {
         if let physicsShape = physicsShape {
             physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
         } else {
-            physicsBody = SCNPhysicsBody(type: bodyType, shape: nil)
+            switch bodyType {
+            case .`static`:
+                physicsBody = SCNPhysicsBody.static()
+            case .dynamic:
+                physicsBody = SCNPhysicsBody.dynamic()
+            case .kinematic:
+                physicsBody = SCNPhysicsBody.kinematic()
+            }
         }
 
         physicsBody.categoryBitMask = layer.rawValue
