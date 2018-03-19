@@ -120,9 +120,7 @@ extension View: SCNSceneRendererDelegate {
     public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
 
         DispatchQueue.main.async { () -> Void in
-
             self.sceneHolder?.update(updateAtTime: time)
-            Input.endUpdateTouches()
         }
     }
 
@@ -130,6 +128,7 @@ extension View: SCNSceneRendererDelegate {
 
         DispatchQueue.main.async { () -> Void in
             self.sceneHolder?.fixedUpdate(updateAtTime: time)
+            Input.endUpdateTouches()
         }
     }
 }

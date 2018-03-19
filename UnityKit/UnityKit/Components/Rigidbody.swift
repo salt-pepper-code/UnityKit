@@ -27,6 +27,7 @@ public final class Rigidbody: Component, Instantiable {
     public func instantiate(gameObject: GameObject) -> Rigidbody {
 
         let clone = type(of: self).init()
+        clone.isStatic = isStatic
         clone.isKinematic = isKinematic
         clone.useGravity = useGravity
         clone.gameObject = gameObject
@@ -104,9 +105,19 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
+    public var isStatic: Bool = false {
+        didSet {
+            if isStatic != oldValue {
+                gameObject?.updatePhysicsBody()
+            }
+        }
+    }
+
     public var isKinematic: Bool = true {
         didSet {
-            gameObject?.updatePhysicsBody()
+            if isKinematic != oldValue {
+                gameObject?.updatePhysicsBody()
+            }
         }
     }
 
@@ -217,6 +228,11 @@ public final class Rigidbody: Component, Instantiable {
             else { return }
 
         transform.position = position
+        
+        if let collider = gameObject?.getComponent(Collider.self) {
+
+            collider.testCollisions()
+        }
     }
 
     public func moveRotation(_ to: Vector3) {

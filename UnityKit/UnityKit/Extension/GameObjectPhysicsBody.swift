@@ -52,7 +52,7 @@ extension GameObject {
 
         if let rigidBody = getComponent(Rigidbody.self) {
             useGravity = rigidBody.useGravity
-            bodyType = rigidBody.isKinematic ? .kinematic : .dynamic
+            bodyType = rigidBody.isStatic ? .`static` : rigidBody.isKinematic ? .kinematic : .dynamic
             isTrigger = getContactLayer() != nil
         } else {
             useGravity = false

@@ -86,7 +86,7 @@ public final class Joystick: MonoBehaviour {
         return true
     }
 
-    public override func update() {
+    public override func fixedUpdate() {
 
         guard let touch = Input.getTouch(0),
             let phase = touch.phase,

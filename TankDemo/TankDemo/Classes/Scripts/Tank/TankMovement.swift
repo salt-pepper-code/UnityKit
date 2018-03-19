@@ -9,7 +9,6 @@ class TankMovement: MonoBehaviour {
     public var playerNumber: Int = 1
     public var speed: Float = 5
     private var previousPosition: Vector3?
-    private var joystickUpdate: JoystickTuple?
 
     //public var movementAudio: AudioSource?          // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
     //public var engineIdling: AudioClip?             // Audio to play when the tank isn't moving.
@@ -27,7 +26,7 @@ class TankMovement: MonoBehaviour {
             else { return }
 
         joystick.onUpdate = { [weak self] (update) -> () in
-            self?.joystickUpdate = (angle: update.angle, displacement: update.displacement)
+            self?.move(update.angle, update.displacement)
         }
 
         joystick.onComplete = { [weak self] () in
@@ -36,15 +35,6 @@ class TankMovement: MonoBehaviour {
 
             rigidbody.velocity = .zero
         }
-    }
-
-    override func fixedUpdate() {
-
-        guard let update = joystickUpdate
-            else { return }
-
-        joystickUpdate = nil
-        move(update.angle, update.displacement)
     }
 
     private func move(_ angle: Degree, _ displacement: Float) {
@@ -69,7 +59,6 @@ class TankMovement: MonoBehaviour {
             let position = previousPosition
             else { return }
 
-        joystickUpdate = nil
         transform.position = position
         previousPosition = nil
     }

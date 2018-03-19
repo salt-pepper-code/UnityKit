@@ -51,11 +51,21 @@ class GameViewController: UIViewController {
         tank.layer = .player
 
         // Rigidbodies
-        environments.forEach { $0.addComponent(Rigidbody.self)?.execute { $0.useGravity = false } }
+        environments.forEach {
+            $0.addComponent(Rigidbody.self)?.execute {
+                $0.useGravity = false
+                $0.isStatic = true
+            }
+        }
         ground.addComponent(Rigidbody.self)?.execute { $0.useGravity = false }
 
         // Colliders
-        environments.forEach { $0.addComponent(MeshCollider.self)?.execute { $0.collideWithLayer = [.player, .projectile] } }
+        environments.forEach {
+            $0.addComponent(MeshCollider.self)?.execute {
+                $0.collideWithLayer = [.player, .projectile]
+                $0.triggerWithLayer = [.player]
+            }
+        }
         ground.addComponent(PlaneCollider.self)?.execute { $0.collideWithLayer = .projectile }
 
         // Tank Setup
@@ -65,7 +75,7 @@ class GameViewController: UIViewController {
             $0.constraints = [.freezeRotationX, .freezeRotationZ, .freezePositionY]
         }
         tank.addComponent(BoxCollider.self)?.execute {
-            $0.collideWithLayer = .all
+            $0.collideWithLayer = .environment
             $0.triggerWithLayer = .environment
         }
         tank.addComponent(TankMovement.self)
