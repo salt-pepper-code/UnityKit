@@ -8,7 +8,7 @@ public class Collider: Component, Instantiable {
     open func instantiate(gameObject: GameObject) -> Self {
         let clone = type(of: self).init()
         clone.collideWithLayer = collideWithLayer
-        clone.triggerWithLayer = triggerWithLayer
+        clone.contactWithLayer = contactWithLayer
         return clone
     }
 
@@ -22,20 +22,21 @@ public class Collider: Component, Instantiable {
 
     public var isTrigger: Bool = false {
         didSet {
-            if isTrigger, triggerWithLayer == nil {
-                triggerWithLayer = collideWithLayer
+            if isTrigger, contactWithLayer == nil {
+                contactWithLayer = collideWithLayer
             }
             gameObject?.updatePhysicsBody()
         }
     }
 
-    public var triggerWithLayer: GameObject.Layer? {
+    public var contactWithLayer: GameObject.Layer? {
         didSet {
-            isTrigger = triggerWithLayer != nil
+            isTrigger = contactWithLayer != nil
         }
     }
 
     @discardableResult public func execute(_ completionBlock: (Collider) -> ()) -> Collider {
+        
         completionBlock(self)
         return self
     }

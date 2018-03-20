@@ -47,6 +47,10 @@ open class Object: Identifiable {
     open func fixedUpdate() {
 
     }
+
+    internal func movedToScene() {
+
+    }
     
     internal func removeAllComponents() {
         

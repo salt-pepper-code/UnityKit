@@ -3,6 +3,8 @@ import SceneKit
 
 public final class GameObject: Object {
 
+    internal var task: DispatchWorkItem?
+
     public override var name: String? {
         
         didSet {
@@ -37,15 +39,15 @@ public final class GameObject: Object {
     private(set) public weak var parent: GameObject?
     private(set) public weak var scene: Scene? {
         didSet {
-            guard let oldScene = oldValue,
-                let newScene = scene,
-                let parent = parent,
-                oldScene != newScene
+
+            guard oldValue != scene
                 else { return }
 
-            if parent == oldScene.rootGameObject {
+            if let parent = parent, let rootGameObject = oldValue?.rootGameObject, parent == rootGameObject {
                 scene?.rootGameObject.addChild(self)
             }
+
+            movedToScene()
         }
     }
 
@@ -184,6 +186,13 @@ public final class GameObject: Object {
         
         self.scene = scene
         children.forEach { $0.setScene(scene) }
+    }
+
+    internal override func movedToScene() {
+
+        components.forEach {
+            $0.movedToScene()
+        }
     }
 
     public func setActive(_ active: Bool) {

@@ -49,7 +49,7 @@ class TankShooting: MonoBehaviour {
         }
         shell.addComponent(MeshCollider.self)?.execute {
             $0.collideWithLayer = .all
-            $0.triggerWithLayer = .all
+            $0.contactWithLayer = .all
         }
 
         rigidbody?.set(property: .velocity(currentLaunchForce * origin.forward))

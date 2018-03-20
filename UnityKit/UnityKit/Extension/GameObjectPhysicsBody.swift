@@ -25,7 +25,7 @@ extension GameObject {
     private func getContactLayer() -> GameObject.Layer? {
 
         return getComponents(Collider.self)
-            .flatMap { (collider) -> GameObject.Layer? in collider.triggerWithLayer }
+            .flatMap { (collider) -> GameObject.Layer? in collider.contactWithLayer }
             .reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
                 guard prev.rawValue != 0,
                     prev != layer
@@ -36,7 +36,6 @@ extension GameObject {
     }
 
     internal func updatePhysicsBody() {
-
         createPhysicsBody()
     }
 
@@ -105,5 +104,9 @@ extension GameObject {
         }
 
         node.physicsBody = physicsBody
+
+        if let vehicle = getComponent(Vehicle.self) {
+            vehicle.updateVehicule()
+        }
     }
 }

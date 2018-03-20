@@ -21,8 +21,7 @@ class GameViewController: UIViewController {
     func setupScene() {
 
         guard let scene = sceneView.sceneHolder,
-            let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank"),
-            let tankRenderer = GameObject.find(.name(.exact("TankRenderer")), in: tank)
+            let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
             else { return }
 
         // Controls Setup
@@ -69,9 +68,13 @@ class GameViewController: UIViewController {
                 $0.collideWithLayer = [.player, .projectile]
             }
         }
-        ground.addComponent(PlaneCollider.self)?.execute { $0.collideWithLayer = [.player, .projectile] }
+        ground.addComponent(PlaneCollider.self)?.execute {
+            $0.collideWithLayer = [.player, .projectile]
+            $0.contactWithLayer = [.player, .projectile]
+        }
 
         // Tank Setup
+        scene.addGameObject(tank)
         tank.addComponent(Rigidbody.self)?.execute {
             $0.isKinematic = false
             $0.constraints = [.freezeRotationX, .freezeRotationZ]
@@ -82,14 +85,14 @@ class GameViewController: UIViewController {
             $0.set(property: .rollingFriction(0))
         }
         tank.addComponent(MeshCollider.self)?
-            .set(mesh: tankRenderer.getComponent(MeshFilter.self)?.mesh)
+            //.set(mesh: tank.getComponent(MeshFilter.self)?.mesh)
             .execute {
                 $0.collideWithLayer = [.environment, .ground]
+                $0.contactWithLayer = [.ground, .projectile]
         }
         tank.addComponent(Vehicle.self)
         tank.addComponent(TankMovement.self)
         tank.addComponent(TankShooting.self)
-        scene.addGameObject(tank)
     }
 
     func setup(joystick: Joystick) {

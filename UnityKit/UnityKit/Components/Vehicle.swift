@@ -7,8 +7,11 @@ public class Vehicle: Component {
 
     private(set) public var wheels = [Wheel]()
     private var vehicle: SCNPhysicsVehicle?
+    private var physicsWorld: SCNPhysicsWorld?
 
-    @discardableResult public func set(wheelsNode: [String]) -> Vehicle {
+    @discardableResult public func set(wheelsNode: [String], physicsWorld: SCNPhysicsWorld) -> Vehicle {
+
+        self.physicsWorld = physicsWorld
 
         guard let gameObject = gameObject
             else { return self }
@@ -21,7 +24,10 @@ public class Vehicle: Component {
                 else { return }
 
             let physicsWheel = Wheel(node: wheel.node)
-            physicsWheel.connectionPosition = wheel.transform.localPosition
+
+            let boundingBox = wheel.node.boundingBox
+            let size = Volume.boundingSize(boundingBox)
+            physicsWheel.connectionPosition = wheel.node.convertPosition(.zero, to: gameObject.node) + Vector3(size.x * 0.5, 0, 0)
             wheels.append(physicsWheel)
         }
 
@@ -32,30 +38,29 @@ public class Vehicle: Component {
 
     public override func onDestroy() {
 
-        guard let scnScene = gameObject?.scene?.scnScene,
+        guard let physicsWorld = physicsWorld,
             let vehicle = vehicle
             else { return }
 
-        scnScene.physicsWorld.removeBehavior(vehicle)
+        physicsWorld.removeBehavior(vehicle)
     }
 
     internal func updateVehicule() {
 
         guard let gameObject = gameObject,
             let physicsBody = gameObject.node.physicsBody,
-            let scnScene = gameObject.scene?.scnScene else { return }
+            let physicsWorld = physicsWorld
+            else { return }
 
         if let vehicle = self.vehicle {
-            scnScene.physicsWorld.removeBehavior(vehicle)
+            physicsWorld.removeBehavior(vehicle)
         }
 
         let vehicle = SCNPhysicsVehicle(chassisBody: physicsBody, wheels: wheels)
-        scnScene.physicsWorld.addBehavior(vehicle)
-        scnScene.physicsWorld.speed = 4.0
+        physicsWorld.addBehavior(vehicle)
+        physicsWorld.speed = 4.0
 
         self.vehicle = vehicle
-
-        gameObject.createPhysicsBody()
     }
 
     public func applyEngineForce(_ value: Float, forWheelAt index: Int) {
