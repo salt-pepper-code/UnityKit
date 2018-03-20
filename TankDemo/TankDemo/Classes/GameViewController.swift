@@ -46,16 +46,16 @@ class GameViewController: UIViewController {
         let environments = militaries + oilFields + boundaries + rocks + [helipad]
 
         // Layers
-        let groundSize = Volume.boundingSize(ground.boundingBox) * ground.transform.localScale
+        /*let groundSize = Volume.boundingSize(ground.boundingBox) * ground.transform.localScale
         let floor = GameObject.createPrimitive(.floor(width: groundSize.x, length: groundSize.z, name: nil))
         guard let materials = ground.getComponent(Renderer.self)?.materials
             else { return }
         
         floor.getComponent(Renderer.self)?.materials = materials
-        ground.destroy()
+        ground.destroy()*/
 
         environments.forEach { $0.layer = .environment }
-        floor.layer = .ground
+        ground.layer = .ground
         tank.layer = .player
 
         // Rigidbodies
@@ -65,7 +65,7 @@ class GameViewController: UIViewController {
                 $0.isKinematic = false
             }
         }
-        floor.addComponent(Rigidbody.self)?.execute {
+        ground.addComponent(Rigidbody.self)?.execute {
             $0.useGravity = false
             $0.isStatic = true
         }
@@ -76,7 +76,7 @@ class GameViewController: UIViewController {
                 $0.collideWithLayer = [.player, .projectile]
             }
         }
-        floor.addComponent(MeshCollider.self)?.execute {
+        ground.addComponent(MeshCollider.self)?.execute {
             $0.collideWithLayer = [.player, .projectile]
             $0.contactWithLayer = [.player, .projectile]
         }
@@ -104,7 +104,6 @@ class GameViewController: UIViewController {
 
         tank.transform.position = Vector3(0, 1, 0)
 
-        scene.addGameObject(floor)
         scene.addGameObject(tank)
     }
 
