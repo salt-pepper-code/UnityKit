@@ -5,31 +5,14 @@ public typealias Wheel = SCNPhysicsVehicleWheel
 
 public class Vehicle: Component {
 
-    private(set) public var wheels = [Wheel]()
+    private(set) public var wheelNames = [String]()
     private var vehicle: SCNPhysicsVehicle?
     private var physicsWorld: SCNPhysicsWorld?
 
-    @discardableResult public func set(wheelsNode: [String], physicsWorld: SCNPhysicsWorld) -> Vehicle {
+    @discardableResult public func set(wheelNames: [String], physicsWorld: SCNPhysicsWorld) -> Vehicle {
 
         self.physicsWorld = physicsWorld
-
-        guard let gameObject = gameObject
-            else { return self }
-
-        wheels = [Wheel]()
-
-        wheelsNode.forEach {
-
-            guard let wheel = GameObject.find(.name(.exact($0)), in: gameObject)
-                else { return }
-
-            let physicsWheel = Wheel(node: wheel.node)
-
-            let boundingBox = wheel.node.boundingBox
-            let size = Volume.boundingSize(boundingBox)
-            physicsWheel.connectionPosition = wheel.node.convertPosition(.zero, to: gameObject.node) + Vector3(size.x * 0.5, 0, 0)
-            wheels.append(physicsWheel)
-        }
+        self.wheelNames = wheelNames
 
         updateVehicule()
 
@@ -54,6 +37,21 @@ public class Vehicle: Component {
 
         if let vehicle = self.vehicle {
             physicsWorld.removeBehavior(vehicle)
+        }
+
+        var wheels = [Wheel]()
+
+        wheelNames.forEach {
+
+            guard let wheel = GameObject.find(.name(.exact($0)), in: gameObject)
+                else { return }
+
+            let physicsWheel = Wheel(node: wheel.node)
+
+            let boundingBox = wheel.node.boundingBox
+            let size = Volume.boundingSize(boundingBox)
+            physicsWheel.connectionPosition = wheel.node.convertPosition(.zero, to: gameObject.node) + Vector3(size.x * 0.5, 0, 0)
+            wheels.append(physicsWheel)
         }
 
         let vehicle = SCNPhysicsVehicle(chassisBody: physicsBody, wheels: wheels)

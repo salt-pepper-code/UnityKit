@@ -7,6 +7,7 @@ public enum PrimitiveType {
     case cylinder(radius: Float, height: Float, name: String?)
     case cube(width: Float, height: Float, length: Float, chamferRadius: Float, name: String?)
     case plane(width: Float, height: Float, name: String?)
+    case floor(width: Float, length: Float, name: String?)
 }
 
 extension GameObject {
@@ -31,6 +32,9 @@ extension GameObject {
             
         case let .plane(_, _, n):
             name = n ?? "Plane"
+
+        case let .floor(_, _, n):
+            name = n ?? "Floor"
         }
 
         geometry.firstMaterial?.lightingModel = .phong
@@ -64,6 +68,12 @@ extension SCNGeometry {
 
         case let .plane(x, y, _):
             geometry = SCNPlane(width: x.toCGFloat(), height: y.toCGFloat())
+
+        case let .floor(x, z, _):
+            let floor = SCNFloor()
+            floor.width = x.toCGFloat()
+            floor.length = z.toCGFloat()
+            geometry = floor
         }
 
         return geometry

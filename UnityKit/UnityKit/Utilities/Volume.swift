@@ -1,15 +1,15 @@
 
 import SceneKit
 
-typealias BoundingBox = (min: SCNVector3, max: SCNVector3)
+public typealias BoundingBox = (min: SCNVector3, max: SCNVector3)
 
-internal class Volume {
+public class Volume {
     
-    internal static func boundingSize(_ boundingBox: BoundingBox) -> SCNVector3 {
+    public static func boundingSize(_ boundingBox: BoundingBox) -> SCNVector3 {
         return SCNVector3(abs(boundingBox.max.x - boundingBox.min.x), abs(boundingBox.max.y - boundingBox.min.y), abs(boundingBox.max.z - boundingBox.min.z))
     }
     
-    internal static func boundingCenter(_ boundingBox: BoundingBox) -> SCNVector3 {
+    public static func boundingCenter(_ boundingBox: BoundingBox) -> SCNVector3 {
         let volumeSize = Volume.boundingSize(boundingBox)
         return SCNVector3(boundingBox.min.x + volumeSize.x / 2,
                           boundingBox.min.y + volumeSize.y / 2,
@@ -17,7 +17,7 @@ internal class Volume {
     }
 }
 
-internal func + (left: BoundingBox?, right: BoundingBox?) -> BoundingBox? {
+public func + (left: BoundingBox?, right: BoundingBox?) -> BoundingBox? {
     guard let left = left else {
         return right
     }
@@ -34,10 +34,14 @@ internal func + (left: BoundingBox?, right: BoundingBox?) -> BoundingBox? {
     return add
 }
 
-internal func += (left: inout BoundingBox?, right: BoundingBox?) {
+public func += (left: inout BoundingBox?, right: BoundingBox?) {
     left = left + right
 }
 
-internal func * (left: BoundingBox, right: SCNVector3) -> BoundingBox {
+public func * (left: BoundingBox, right: SCNVector3) -> BoundingBox {
+    return (min: left.min * right, max: left.max * right)
+}
+
+public func * (left: BoundingBox, right: Float) -> BoundingBox {
     return (min: left.min * right, max: left.max * right)
 }

@@ -66,11 +66,8 @@ public final class Transform: Component {
             return node.worldPosition
         }
         set {
-            guard let node = gameObject?.node,
-                let _ = gameObject?.parent else {
-                print("Object need to have a parent before setting a position")
-                return
-            }
+            guard let node = gameObject?.node
+                else { return }
                 
             node.worldPosition = newValue
         }

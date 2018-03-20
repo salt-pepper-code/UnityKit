@@ -46,20 +46,28 @@ class GameViewController: UIViewController {
         let environments = militaries + oilFields + boundaries + rocks + [helipad]
 
         // Layers
+        let groundSize = Volume.boundingSize(ground.boundingBox) * ground.transform.localScale
+        let floor = GameObject.createPrimitive(.floor(width: groundSize.x, length: groundSize.z, name: nil))
+        guard let materials = ground.getComponent(Renderer.self)?.materials
+            else { return }
+        
+        floor.getComponent(Renderer.self)?.materials = materials
+        ground.destroy()
+
         environments.forEach { $0.layer = .environment }
-        ground.layer = .ground
+        floor.layer = .ground
         tank.layer = .player
 
         // Rigidbodies
         environments.forEach {
             $0.addComponent(Rigidbody.self)?.execute {
                 $0.useGravity = false
-                $0.isStatic = true
+                $0.isKinematic = false
             }
         }
-        ground.addComponent(Rigidbody.self)?.execute {
+        floor.addComponent(Rigidbody.self)?.execute {
             $0.useGravity = false
-            $0.isKinematic = false
+            $0.isStatic = true
         }
 
         // Colliders
@@ -68,13 +76,12 @@ class GameViewController: UIViewController {
                 $0.collideWithLayer = [.player, .projectile]
             }
         }
-        ground.addComponent(PlaneCollider.self)?.execute {
+        floor.addComponent(MeshCollider.self)?.execute {
             $0.collideWithLayer = [.player, .projectile]
             $0.contactWithLayer = [.player, .projectile]
         }
 
         // Tank Setup
-        scene.addGameObject(tank)
         tank.addComponent(Rigidbody.self)?.execute {
             $0.isKinematic = false
             $0.constraints = [.freezeRotationX, .freezeRotationZ]
@@ -85,14 +92,20 @@ class GameViewController: UIViewController {
             $0.set(property: .rollingFriction(0))
         }
         tank.addComponent(MeshCollider.self)?
-            //.set(mesh: tank.getComponent(MeshFilter.self)?.mesh)
+            .set(mesh: tank.getComponent(MeshFilter.self)?.mesh)
             .execute {
                 $0.collideWithLayer = [.environment, .ground]
                 $0.contactWithLayer = [.ground, .projectile]
         }
-        tank.addComponent(Vehicle.self)
         tank.addComponent(TankMovement.self)
         tank.addComponent(TankShooting.self)
+        tank.addComponent(Vehicle.self)?
+            .set(wheelNames: ["Wheel_Back_L", "Wheel_Back_R", "Wheel_Front_L", "Wheel_Front_R"], physicsWorld: scene.scnScene.physicsWorld)
+
+        tank.transform.position = Vector3(0, 1, 0)
+
+        scene.addGameObject(floor)
+        scene.addGameObject(tank)
     }
 
     func setup(joystick: Joystick) {

@@ -11,40 +11,50 @@ extension GameObject {
 
     private func getCollisionLayer() -> GameObject.Layer? {
 
-        return getComponents(Collider.self)
+        let layers = getComponents(Collider.self)
             .flatMap { (collider) -> GameObject.Layer in collider.collideWithLayer }
-            .reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
-                guard prev.rawValue != 0,
-                    prev != layer
-                    else { return layer }
 
-                return [prev, layer]
+        let result = layers.reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
+            guard prev != layer
+                else { return layer }
+
+            let new: Layer = [prev, layer]
+            return new
         }
+
+        return result.rawValue == 0 ? nil : result
     }
 
     private func getContactLayer() -> GameObject.Layer? {
 
-        return getComponents(Collider.self)
+        let layers = getComponents(Collider.self)
             .flatMap { (collider) -> GameObject.Layer? in collider.contactWithLayer }
-            .reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
-                guard prev.rawValue != 0,
-                    prev != layer
-                    else { return layer }
 
-                return [prev, layer]
+        let result = layers.reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
+            guard prev != layer
+                else { return layer }
+
+            let new: Layer = [prev, layer]
+            return new
         }
+
+        return result.rawValue == 0 ? nil : result
+    }
+
+    internal func updateBitMask() {
+
+        guard let physicsBody = node.physicsBody
+            else { return }
+
+        physicsBody.collisionBitMask = getCollisionLayer()?.rawValue ?? layer.rawValue
+        physicsBody.contactTestBitMask = getContactLayer()?.rawValue ?? 0
     }
 
     internal func updatePhysicsBody() {
-        createPhysicsBody()
-    }
-
-    internal func createPhysicsBody() {
 
         var physicsShape: SCNPhysicsShape?
         var useGravity: Bool
         var bodyType: SCNPhysicsBodyType = .kinematic
-        var isTrigger = false
 
         if let physicsShapes = getAllPhysicsShapes() {
             if physicsShapes.count > 1 {
@@ -57,7 +67,6 @@ extension GameObject {
         if let rigidBody = getComponent(Rigidbody.self) {
             useGravity = rigidBody.useGravity
             bodyType = rigidBody.isStatic ? .`static` : rigidBody.isKinematic ? .kinematic : .dynamic
-            isTrigger = getContactLayer() != nil
         } else {
             useGravity = false
             bodyType = .dynamic
@@ -80,8 +89,8 @@ extension GameObject {
 
         physicsBody.categoryBitMask = layer.rawValue
         physicsBody.isAffectedByGravity = useGravity
-        physicsBody.collisionBitMask = getCollisionLayer()?.rawValue ?? layer.rawValue
-        physicsBody.contactTestBitMask = isTrigger ? (getContactLayer()?.rawValue ?? physicsBody.collisionBitMask) : 0
+
+        updateBitMask()
 
         if let old = node.physicsBody {
 

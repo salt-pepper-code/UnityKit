@@ -74,6 +74,11 @@ public final class GameObject: Object {
         }
     }
 
+    public var boundingBox: (min: SCNVector3, max: SCNVector3) {
+
+        return node.boundingBox
+    }
+
     public convenience init?(fileName: String, nodeName: String?, bundle: Bundle = Bundle.main) {
         
         guard let modelUrl = searchPathForResource(for: fileName, extension: nil, bundle: bundle)

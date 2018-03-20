@@ -19,8 +19,7 @@ class TankMovement: MonoBehaviour {
 
     override func awake() {
 
-        guard let gameObject = gameObject,
-            let physicsWorld = gameObject.scene?.scnScene.physicsWorld
+        guard let gameObject = gameObject
             else { return }
 
         vehicle = gameObject.getComponent(Vehicle.self)
@@ -38,13 +37,6 @@ class TankMovement: MonoBehaviour {
 //                else { return }
 //
         }
-
-        guard let vehicle = self.vehicle
-            else { return }
-
-        let wheels = ["Wheel_Back_L", "Wheel_Back_R", "Wheel_Front_L", "Wheel_Front_R"]
-
-        vehicle.set(wheelsNode: wheels, physicsWorld: physicsWorld)
     }
 
     private func move(_ angle: Degree, _ displacement: Float) {

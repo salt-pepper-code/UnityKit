@@ -16,7 +16,7 @@ public class Collider: Component, Instantiable {
 
     public var collideWithLayer: GameObject.Layer = .`default` {
         didSet {
-            gameObject?.updatePhysicsBody()
+            gameObject?.updateBitMask()
         }
     }
 
@@ -25,7 +25,7 @@ public class Collider: Component, Instantiable {
             if isTrigger, contactWithLayer == nil {
                 contactWithLayer = collideWithLayer
             }
-            gameObject?.updatePhysicsBody()
+            gameObject?.updateBitMask()
         }
     }
 
@@ -103,7 +103,6 @@ public class Collider: Component, Instantiable {
     }
 
     public override func awake() {
-        gameObject?.node.physicsBody?.contactTestBitMask = 0
         constructBody()
         gameObject?.updatePhysicsBody()
     }
