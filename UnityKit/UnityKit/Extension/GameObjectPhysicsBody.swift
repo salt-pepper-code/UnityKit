@@ -12,7 +12,7 @@ extension GameObject {
     private func getCollisionLayer() -> GameObject.Layer? {
 
         let layers = getComponents(Collider.self)
-            .flatMap { (collider) -> GameObject.Layer in collider.collideWithLayer }
+            .flatMap { (collider) -> GameObject.Layer? in collider.collideWithLayer }
 
         let result = layers.reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
             guard prev != layer
@@ -72,45 +72,26 @@ extension GameObject {
             bodyType = .dynamic
         }
 
-        let physicsBody: SCNPhysicsBody
-
-        if let physicsShape = physicsShape {
-            physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
-        } else {
-            switch bodyType {
-            case .`static`:
-                physicsBody = SCNPhysicsBody.static()
-            case .dynamic:
-                physicsBody = SCNPhysicsBody.dynamic()
-            case .kinematic:
-                physicsBody = SCNPhysicsBody.kinematic()
-            }
-        }
+        let physicsBody = SCNPhysicsBody(type: bodyType, shape: physicsShape)
 
         physicsBody.categoryBitMask = layer.rawValue
         physicsBody.isAffectedByGravity = useGravity
 
         updateBitMask()
 
-        if let old = node.physicsBody {
+        let rigidBody = getComponent(Rigidbody.self)
 
-            physicsBody.mass = old.mass
-            physicsBody.restitution = old.restitution
-            physicsBody.friction = old.friction
-            physicsBody.rollingFriction = old.rollingFriction
-            physicsBody.damping = old.damping
-            physicsBody.angularDamping = old.angularDamping
-            physicsBody.velocity = old.velocity
-            physicsBody.angularVelocity = old.angularVelocity
-            physicsBody.velocityFactor = old.velocityFactor
-            physicsBody.angularVelocityFactor = old.angularVelocityFactor
-            physicsBody.allowsResting = old.allowsResting
-
-        } else if let rigidBody = getComponent(Rigidbody.self) {
-            
-            rigidBody.get(property: .velocityFactor(.defaultValue)).map { physicsBody.velocityFactor = $0 }
-            rigidBody.get(property: .angularVelocityFactor(.defaultValue)).map { physicsBody.angularVelocityFactor = $0 }
-        }
+        rigidBody?.get(property: .mass).map { physicsBody.mass = $0 }
+        rigidBody?.get(property: .restitution).map { physicsBody.restitution = $0 }
+        rigidBody?.get(property: .friction).map { physicsBody.friction = $0 }
+        rigidBody?.get(property: .rollingFriction).map { physicsBody.rollingFriction = $0 }
+        rigidBody?.get(property: .damping).map { physicsBody.damping = $0 }
+        rigidBody?.get(property: .angularDamping).map { physicsBody.angularDamping = $0 }
+        rigidBody?.get(property: .velocity).map { physicsBody.velocity = $0 }
+        rigidBody?.get(property: .angularVelocity).map { physicsBody.angularVelocity = $0 }
+        rigidBody?.get(property: .velocityFactor).map { physicsBody.velocityFactor = $0 }
+        rigidBody?.get(property: .angularVelocityFactor).map { physicsBody.angularVelocityFactor = $0 }
+        rigidBody?.get(property: .allowsResting).map { physicsBody.allowsResting = $0 }
 
         node.physicsBody = physicsBody
 

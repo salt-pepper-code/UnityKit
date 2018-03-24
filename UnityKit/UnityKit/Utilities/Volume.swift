@@ -1,19 +1,29 @@
 
 import SceneKit
 
-public typealias BoundingBox = (min: SCNVector3, max: SCNVector3)
+public typealias BoundingBox = (min: Vector3, max: Vector3)
 
 public class Volume {
     
-    public static func boundingSize(_ boundingBox: BoundingBox) -> SCNVector3 {
-        return SCNVector3(abs(boundingBox.max.x - boundingBox.min.x), abs(boundingBox.max.y - boundingBox.min.y), abs(boundingBox.max.z - boundingBox.min.z))
+    public static func boundingSize(_ boundingBox: BoundingBox) -> Vector3 {
+        return Vector3(abs(boundingBox.max.x - boundingBox.min.x), abs(boundingBox.max.y - boundingBox.min.y), abs(boundingBox.max.z - boundingBox.min.z))
     }
     
-    public static func boundingCenter(_ boundingBox: BoundingBox) -> SCNVector3 {
+    public static func boundingCenter(_ boundingBox: BoundingBox) -> Vector3 {
         let volumeSize = Volume.boundingSize(boundingBox)
-        return SCNVector3(boundingBox.min.x + volumeSize.x / 2,
+        return Vector3(boundingBox.min.x + volumeSize.x / 2,
                           boundingBox.min.y + volumeSize.y / 2,
                           boundingBox.min.z + volumeSize.z / 2)
+    }
+
+    public static func moveCenter(_ boundingBox: BoundingBox, center: Vector3Nullable) -> BoundingBox {
+        let volumeSize = Volume.boundingSize(boundingBox)
+        var volumeCenter = Volume.boundingCenter(boundingBox)
+        if let x = center.x { volumeCenter.x = x }
+        if let y = center.y { volumeCenter.y = y }
+        if let z = center.z { volumeCenter.z = z }
+        return (min: Vector3(volumeCenter.x - (volumeSize.x / 2), volumeCenter.y - (volumeSize.y / 2), volumeCenter.z - (volumeSize.z / 2)),
+                max: Vector3(volumeCenter.x + (volumeSize.x / 2), volumeCenter.y + (volumeSize.y / 2), volumeCenter.z + (volumeSize.z / 2)))
     }
 }
 
@@ -38,7 +48,7 @@ public func += (left: inout BoundingBox?, right: BoundingBox?) {
     left = left + right
 }
 
-public func * (left: BoundingBox, right: SCNVector3) -> BoundingBox {
+public func * (left: BoundingBox, right: Vector3) -> BoundingBox {
     return (min: left.min * right, max: left.max * right)
 }
 

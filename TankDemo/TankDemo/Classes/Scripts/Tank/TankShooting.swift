@@ -26,7 +26,10 @@ class TankShooting: MonoBehaviour {
 
         shellRef = GameObject(fileName: "Shell.scn", nodeName: "Shell")
 
-        weaponOrigin = GameObject.find(.name(.exact("WeaponOrigin")))?.transform
+        guard let gameObject = gameObject
+            else { return }
+
+        weaponOrigin = GameObject.find(.name(.exact("WeaponOrigin")), in: gameObject)?.transform
         currentLaunchForce = minLaunchForce
         chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime
     }
@@ -37,20 +40,22 @@ class TankShooting: MonoBehaviour {
             let origin = weaponOrigin
             else { return }
 
-        let shell = GameObject.instantiate(original: shellRef)
+        let shell = GameObject.instantiate(original: shellRef, addToScene: false)
         shell.transform.orientation = origin.orientation
         shell.transform.position = origin.position
+        shell.layer = .projectile
 
-        shell.layer = GameObject.Layer.projectile
         let rigidbody: Rigidbody? = shell.addComponent(Rigidbody.self)?.execute {
-            $0.isKinematic = false
             $0.useGravity = true
+            $0.isKinematic = false
             $0.constraints = [.freezeRotationY]
         }
         shell.addComponent(MeshCollider.self)?.execute {
             $0.collideWithLayer = .all
             $0.contactWithLayer = .all
         }
+
+        gameObject?.scene?.addGameObject(shell)
 
         rigidbody?.set(property: .velocity(currentLaunchForce * origin.forward))
     }

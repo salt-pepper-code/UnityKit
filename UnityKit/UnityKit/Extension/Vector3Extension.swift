@@ -3,6 +3,20 @@ import SceneKit
 
 public typealias Vector3 = SCNVector3
 
+public struct Vector3Nullable {
+
+    public let x: Float?
+    public let y: Float?
+    public let z: Float?
+
+    public init(_ x: Float?, _ y: Float?, _ z: Float?) {
+        
+        self.x = x
+        self.y = y
+        self.z = z
+    }
+}
+
 extension Vector3 {
 
     public static var zero: Vector3 {

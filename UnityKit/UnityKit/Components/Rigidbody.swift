@@ -35,10 +35,6 @@ public final class Rigidbody: Component, Instantiable {
         return clone
     }
 
-    public override func awake() {
-        gameObject?.updatePhysicsBody()
-    }
-
     public var constraints: RigidbodyConstraints = .none {
         didSet {
             func freezeAxe(_ value: Float) -> Float {
@@ -105,103 +101,128 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
-    public var isStatic: Bool = false {
-        didSet {
-            if isStatic != oldValue {
-                gameObject?.updatePhysicsBody()
-            }
-        }
-    }
+    public var isStatic: Bool = false
 
-    public var isKinematic: Bool = true {
-        didSet {
-            if isKinematic != oldValue {
-                gameObject?.updatePhysicsBody()
-            }
-        }
-    }
+    public var isKinematic: Bool = true
 
     public enum Properties {
-        case mass(Float)
-        case restitution(Float)
-        case friction(Float)
-        case rollingFriction(Float)
-        case damping(Float)
-        case angularDamping(Float)
-        case velocity(Vector3)
-        case angularVelocity(Vector4)
-        case velocityFactor(Vector3)
-        case angularVelocityFactor(Vector3)
-        case allowsResting(Bool)
+
+        public enum Setter {
+
+            case mass(Float)
+            case restitution(Float)
+            case friction(Float)
+            case rollingFriction(Float)
+            case damping(Float)
+            case angularDamping(Float)
+            case velocity(Vector3)
+            case angularVelocity(Vector4)
+            case velocityFactor(Vector3)
+            case angularVelocityFactor(Vector3)
+            case allowsResting(Bool)
+        }
+
+        public enum Getter: Int {
+
+            case mass
+            case restitution
+            case friction
+            case rollingFriction
+            case damping
+            case angularDamping
+            case velocity
+            case angularVelocity
+            case velocityFactor
+            case angularVelocityFactor
+            case allowsResting
+        }
     }
 
-    public func set(property: Properties) {
+    internal var properties = [Properties.Getter: Any]()
 
-        guard let physicsBody = gameObject?.node.physicsBody
-            else { return }
+    public func set(property: Properties.Setter) {
+
+        let physicsBody = gameObject?.node.physicsBody
 
         switch property {
         case let .mass(value):
-            physicsBody.mass = value.toCGFloat()
+            properties[.mass] = value.toCGFloat()
+            physicsBody?.mass = value.toCGFloat()
         case let .restitution(value):
-            physicsBody.restitution = value.toCGFloat()
+            properties[.restitution] = value.toCGFloat()
+            physicsBody?.restitution = value.toCGFloat()
         case let .friction(value):
-            physicsBody.friction = value.toCGFloat()
+            properties[.friction] = value.toCGFloat()
+            physicsBody?.friction = value.toCGFloat()
         case let .rollingFriction(value):
-            physicsBody.rollingFriction = value.toCGFloat()
+            properties[.rollingFriction] = value.toCGFloat()
+            physicsBody?.rollingFriction = value.toCGFloat()
         case let .damping(value):
-            physicsBody.damping = value.toCGFloat()
+            properties[.damping] = value.toCGFloat()
+            physicsBody?.damping = value.toCGFloat()
         case let .angularDamping(value):
-            physicsBody.angularDamping = value.toCGFloat()
+            properties[.angularDamping] = value.toCGFloat()
+            physicsBody?.angularDamping = value.toCGFloat()
         case let .velocity(value):
-            physicsBody.velocity = value
+            properties[.velocity] = value
+            physicsBody?.velocity = value
         case let .angularVelocity(value):
-            physicsBody.angularVelocity = value
+            properties[.angularVelocity] = value
+            physicsBody?.angularVelocity = value
         case let .velocityFactor(value):
-            physicsBody.velocityFactor = value
+            properties[.velocityFactor] = value
+            physicsBody?.velocityFactor = value
         case let .angularVelocityFactor(value):
-            physicsBody.angularVelocityFactor = value
+            properties[.angularVelocityFactor] = value
+            physicsBody?.angularVelocityFactor = value
         case let .allowsResting(value):
-            physicsBody.allowsResting = value
+            properties[.allowsResting] = value
+            physicsBody?.allowsResting = value
         }
     }
 
-    public func get<T>(property: Properties) -> T? where T: Getteable {
+    public func get<T>(property: Properties.Getter) -> T? where T: Getteable {
 
-        guard let physicsBody = gameObject?.node.physicsBody
-            else { return nil }
+        let physicsBody = gameObject?.node.physicsBody
 
         switch property {
-        case .mass where T.self == Float.self:
-            return physicsBody.mass.toFloat() as? T
-        case .restitution where T.self == Float.self:
-            return physicsBody.restitution.toFloat() as? T
-        case .friction where T.self == Float.self:
-            return physicsBody.friction.toFloat() as? T
-        case .rollingFriction where T.self == Float.self:
-            return physicsBody.rollingFriction.toFloat() as? T
-        case .damping where T.self == Float.self:
-            return physicsBody.damping.toFloat() as? T
-        case .angularDamping where T.self == Float.self:
-            return physicsBody.angularDamping.toFloat() as? T
-        case .velocity where T.self == Vector3.self:
-            return physicsBody.velocity as? T
-        case .angularVelocity where T.self == Vector4.self:
-            return physicsBody.angularVelocity as? T
-        case .velocityFactor where T.self == Vector3.self:
-            return physicsBody.velocityFactor as? T
-        case .angularVelocityFactor where T.self == Vector3.self:
-            return physicsBody.angularVelocityFactor as? T
-        case .allowsResting where T.self == Bool.self:
-            return physicsBody.allowsResting as? T
-        default:
-            return nil
+        case .mass:
+            return properties[.mass] as? T ?? physicsBody?.mass.toFloat() as? T
+        case .restitution:
+            return properties[.restitution] as? T ?? physicsBody?.restitution.toFloat() as? T
+        case .friction:
+            return properties[.friction] as? T ?? physicsBody?.friction.toFloat() as? T
+        case .rollingFriction:
+            return properties[.rollingFriction] as? T ?? physicsBody?.rollingFriction.toFloat() as? T
+        case .damping:
+            return properties[.damping] as? T ?? physicsBody?.damping.toFloat() as? T
+        case .angularDamping:
+            return properties[.angularDamping] as? T ?? physicsBody?.angularDamping.toFloat() as? T
+        case .velocity:
+            return properties[.velocity] as? T ?? physicsBody?.velocity as? T
+        case .angularVelocity:
+            return properties[.angularVelocity] as? T ?? physicsBody?.angularVelocity as? T
+        case .velocityFactor:
+            return properties[.velocityFactor] as? T ?? physicsBody?.velocityFactor as? T
+        case .angularVelocityFactor:
+            return properties[.angularVelocityFactor] as? T ?? physicsBody?.angularVelocityFactor as? T
+        case .allowsResting:
+            return properties[.allowsResting] as? T ?? physicsBody?.allowsResting as? T
         }
     }
 
     @discardableResult public func execute(_ completionBlock: (Rigidbody) -> ()) -> Rigidbody {
+        
         completionBlock(self)
         return self
+    }
+
+    public override func start() {
+
+        if let _ = getComponent(Collider.self) {
+            return
+        }
+        gameObject?.updatePhysicsBody()
     }
 
     public func movePosition(_ position: Vector3) {
@@ -244,3 +265,4 @@ public final class Rigidbody: Component, Instantiable {
         physicsBody.clearAllForces()
     }
 }
+

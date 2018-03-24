@@ -19,11 +19,7 @@ class TankMovement: MonoBehaviour {
 
     override func awake() {
 
-        guard let gameObject = gameObject
-            else { return }
-
-        vehicle = gameObject.getComponent(Vehicle.self)
-        joystick = GameObject.findObjectOfType(Joystick.self)
+        fetchComponents()
 
         guard let joystick = joystick
             else { return }
@@ -39,11 +35,17 @@ class TankMovement: MonoBehaviour {
         }
     }
 
+    private func fetchComponents() {
+
+        vehicle = gameObject?.getComponent(Vehicle.self)
+        joystick = GameObject.findObjectOfType(Joystick.self)
+    }
+
     private func move(_ angle: Degree, _ displacement: Float) {
 
-        guard let vehicle = vehicle,
-            let transform = vehicle.transform
-            else { return }
+        if vehicle == nil {
+            fetchComponents()
+        }
 
 //        let angle = (360 - (angle - 90)).clamp()
 //        let rotation = Vector3(0, angle, 0)
@@ -53,7 +55,6 @@ class TankMovement: MonoBehaviour {
 //        previousPosition = transform.position
 //        rigidbody.movePosition(transform.position + movement)
 
-        vehicle.applyEngineForce(300, forWheelAt: 0)
-        vehicle.applyEngineForce(300, forWheelAt: 1)
+        vehicle?.applyEngineForce(100)
     }
 }

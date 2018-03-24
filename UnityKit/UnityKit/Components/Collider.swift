@@ -14,7 +14,7 @@ public class Collider: Component, Instantiable {
 
     internal var physicsShape: SCNPhysicsShape?
 
-    public var collideWithLayer: GameObject.Layer = .`default` {
+    public var collideWithLayer: GameObject.Layer? {
         didSet {
             gameObject?.updateBitMask()
         }
@@ -36,7 +36,7 @@ public class Collider: Component, Instantiable {
     }
 
     @discardableResult public func execute(_ completionBlock: (Collider) -> ()) -> Collider {
-        
+
         completionBlock(self)
         return self
     }
@@ -102,7 +102,8 @@ public class Collider: Component, Instantiable {
         }
     }
 
-    public override func awake() {
+    public override func start() {
+        
         constructBody()
         gameObject?.updatePhysicsBody()
     }

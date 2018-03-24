@@ -3,13 +3,11 @@ import SceneKit
 
 public final class MeshCollider: Collider {
 
-    private var mesh: Mesh?
+    private(set) public var mesh: Mesh?
 
     public func set(mesh: Mesh?) -> MeshCollider {
         
         self.mesh = mesh
-        constructBody()
-        gameObject?.updatePhysicsBody()
         return self
     }
 

@@ -46,14 +46,6 @@ class GameViewController: UIViewController {
         let environments = militaries + oilFields + boundaries + rocks + [helipad]
 
         // Layers
-        /*let groundSize = Volume.boundingSize(ground.boundingBox) * ground.transform.localScale
-        let floor = GameObject.createPrimitive(.floor(width: groundSize.x, length: groundSize.z, name: nil))
-        guard let materials = ground.getComponent(Renderer.self)?.materials
-            else { return }
-        
-        floor.getComponent(Renderer.self)?.materials = materials
-        ground.destroy()*/
-
         environments.forEach { $0.layer = .environment }
         ground.layer = .ground
         tank.layer = .player
@@ -62,7 +54,7 @@ class GameViewController: UIViewController {
         environments.forEach {
             $0.addComponent(Rigidbody.self)?.execute {
                 $0.useGravity = false
-                $0.isKinematic = false
+                $0.isStatic = true
             }
         }
         ground.addComponent(Rigidbody.self)?.execute {
@@ -76,9 +68,11 @@ class GameViewController: UIViewController {
                 $0.collideWithLayer = [.player, .projectile]
             }
         }
-        ground.addComponent(MeshCollider.self)?.execute {
-            $0.collideWithLayer = [.player, .projectile]
-            $0.contactWithLayer = [.player, .projectile]
+        ground.addComponent(BoxCollider.self)?
+            .set(size: Vector3Nullable(nil, 8, nil))
+            .set(center: Vector3Nullable(nil, -4, nil))
+            .execute {
+                $0.collideWithLayer = [.player, .projectile]
         }
 
         // Tank Setup
@@ -100,7 +94,7 @@ class GameViewController: UIViewController {
         tank.addComponent(TankMovement.self)
         tank.addComponent(TankShooting.self)
         tank.addComponent(Vehicle.self)?
-            .set(wheelNames: ["Wheel_Back_L", "Wheel_Back_R", "Wheel_Front_L", "Wheel_Front_R"], physicsWorld: scene.scnScene.physicsWorld)
+            .set(wheelNames: ["Wheel_Back_R", "Wheel_Back_L", "Wheel_Front_R", "Wheel_Front_L"], physicsWorld: scene.scnScene.physicsWorld)
 
         tank.transform.position = Vector3(0, 1, 0)
 

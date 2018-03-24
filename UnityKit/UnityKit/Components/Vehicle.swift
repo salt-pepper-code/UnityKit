@@ -48,40 +48,78 @@ public class Vehicle: Component {
 
             let physicsWheel = Wheel(node: wheel.node)
 
-            let boundingBox = wheel.node.boundingBox
-            let size = Volume.boundingSize(boundingBox)
-            physicsWheel.connectionPosition = wheel.node.convertPosition(.zero, to: gameObject.node) + Vector3(size.x * 0.5, 0, 0)
+            if $0.hasSuffix("_L") || $0.hasSuffix("_R") {
+
+                let boundingBox = wheel.node.boundingBox
+                let size = Volume.boundingSize(boundingBox)
+
+                if $0.hasSuffix("_R") {
+                    physicsWheel.connectionPosition = wheel.node.convertPosition(.zero, to: gameObject.node) + Vector3(size.x * 0.5, 0, 0)
+                    physicsWheel.axle = Vector3(1, 0, 0)
+                } else {
+                    physicsWheel.connectionPosition = wheel.node.convertPosition(.zero, to: gameObject.node) - Vector3(size.x * 0.5, 0, 0)
+                    physicsWheel.axle = Vector3(1, 0, 0)
+                }
+            }
             wheels.append(physicsWheel)
         }
 
         let vehicle = SCNPhysicsVehicle(chassisBody: physicsBody, wheels: wheels)
         physicsWorld.addBehavior(vehicle)
-        physicsWorld.speed = 4.0
 
         self.vehicle = vehicle
     }
 
-    public func applyEngineForce(_ value: Float, forWheelAt index: Int) {
+    public override func fixedUpdate() {
 
         guard let vehicle = vehicle
             else { return }
 
-        vehicle.applyEngineForce(value.toCGFloat(), forWheelAt: index)
+        //print(vehicle.speedInKilometersPerHour)
     }
 
-    public func setSteeringAngle(_ value: Float, forWheelAt index: Int) {
+    private func wheelStride(_ vehicle: SCNPhysicsVehicle, forWheelAt index: Int?) -> StrideThrough<Int>? {
 
-        guard let vehicle = vehicle
-            else { return }
+        guard vehicle.wheels.count > 0
+            else { return nil }
 
-        vehicle.setSteeringAngle(value.toCGFloat(), forWheelAt: index)
+        if let index = index {
+            return stride(from: index, through: index, by: 1)
+        }
+
+        return stride(from: 0, through: vehicle.wheels.count - 1, by: 1)
     }
 
-    public func applyBrakingForce(_ value: Float, forWheelAt index: Int) {
+    public func applyEngineForce(_ value: Float, forWheelAt index: Int? = nil) {
 
-        guard let vehicle = vehicle
+        guard let vehicle = vehicle,
+            let stride = wheelStride(vehicle, forWheelAt: index)
             else { return }
 
-        vehicle.applyBrakingForce(value.toCGFloat(), forWheelAt: index)
+        for i in stride {
+            vehicle.applyEngineForce(value.toCGFloat(), forWheelAt: i)
+        }
+    }
+
+    public func setSteeringAngle(_ value: Float, forWheelAt index: Int? = nil) {
+
+        guard let vehicle = vehicle,
+            let stride = wheelStride(vehicle, forWheelAt: index)
+            else { return }
+
+        for i in stride {
+            vehicle.setSteeringAngle(value.toCGFloat(), forWheelAt: i)
+        }
+    }
+
+    public func applyBrakingForce(_ value: Float, forWheelAt index: Int? = nil) {
+
+        guard let vehicle = vehicle,
+            let stride = wheelStride(vehicle, forWheelAt: index)
+            else { return }
+
+        for i in stride {
+            vehicle.applyBrakingForce(value.toCGFloat(), forWheelAt: i)
+        }
     }
 }

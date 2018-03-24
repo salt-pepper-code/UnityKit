@@ -241,11 +241,11 @@ public final class GameObject: Object {
 
         for component in components {
 
-            guard let behaviour = component as? Behaviour,
-                behaviour.enabled
-                else { continue }
+            if let behaviour = component as? Behaviour,
+                !behaviour.enabled
+            { continue }
 
-            behaviour.update()
+            component.update()
         }
         children.forEach { $0.update() }
     }
@@ -260,11 +260,11 @@ public final class GameObject: Object {
 
         for component in components {
 
-            guard let behaviour = component as? Behaviour,
-                behaviour.enabled
-                else { continue }
+            if let behaviour = component as? Behaviour,
+                !behaviour.enabled
+            { continue }
 
-            behaviour.fixedUpdate()
+            component.fixedUpdate()
         }
         children.forEach { $0.fixedUpdate() }
     }
