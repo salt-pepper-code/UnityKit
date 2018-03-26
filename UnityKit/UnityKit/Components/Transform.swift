@@ -18,7 +18,7 @@ public final class Transform: Component {
         guard let node = gameObject?.node
             else { return .zero }
 
-        return Vector3(node.simdWorldFront)
+        return Vector3(hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldFront : node.simdWorldFront)
     }
 
     public var back: Vector3 {
@@ -30,7 +30,7 @@ public final class Transform: Component {
         guard let node = gameObject?.node
             else { return .zero }
 
-        return Vector3(node.simdWorldUp)
+        return Vector3(hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldUp : node.simdWorldUp)
     }
 
     public var bottom: Vector3 {
@@ -42,7 +42,7 @@ public final class Transform: Component {
         guard let node = gameObject?.node
             else { return .zero }
 
-        return Vector3(node.simdWorldRight)
+        return Vector3(hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldRight : node.simdWorldRight)
     }
 
     public var left: Vector3 {
