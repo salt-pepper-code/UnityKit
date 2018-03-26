@@ -147,7 +147,11 @@ extension Vector3 {
     public func radiansToDegrees() -> Vector3 {
         return Vector3(x.radiansToDegrees, y.radiansToDegrees, z.radiansToDegrees)
     }
-    
+
+    public func angleClamp() -> Vector3 {
+        return Vector3(x.clamp(), y.clamp(), z.clamp())
+    }
+
     /**
      * Multiplies two vectors component-wise.
      */

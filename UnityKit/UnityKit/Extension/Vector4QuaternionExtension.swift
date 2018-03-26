@@ -45,9 +45,10 @@ extension Quaternion {
             let sqx = x * x
             let sqy = y * y
             let sqz = z * z
-            return Vector3(atan2(2.0 * (y * z + x * w), (-sqx - sqy + sqz + sqw)),
+            let result = Vector3(atan2(2.0 * (y * z + x * w), (-sqx - sqy + sqz + sqw)),
                            asin(min(max(-1, d), 1)),
                            atan2(2.0 * (x * y + z * w), (sqx - sqy - sqz + sqw)))
+            return result
         }
      }
 

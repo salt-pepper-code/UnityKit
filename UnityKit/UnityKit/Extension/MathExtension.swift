@@ -8,17 +8,33 @@ extension Degree {
 
     public static func clamp(_ angle: Degree) -> Degree {
         var angle = angle
-        if angle > 360 {
+        while angle >= 360 {
             angle -= 360
         }
-        if angle < 0 {
+        while angle < 0 {
             angle += 360
         }
         return angle
     }
 
     public func clamp() -> Degree {
-        return Degree.clamp(self)
+        return .clamp(self)
+    }
+
+    public static func differenceAngle(x: Degree, y: Degree) -> Degree {
+
+        var arg = fmod(y - x, 360)
+        if (arg < 0 ) {
+            arg = arg + 360
+        }
+        if (arg > 180) {
+            arg = arg - 360
+        }
+        return -arg
+    }
+
+    public func differenceAngle(_ other: Degree) -> Degree {
+        return Degree.differenceAngle(x: self, y: other)
     }
 }
 

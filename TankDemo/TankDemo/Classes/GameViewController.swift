@@ -52,20 +52,23 @@ class GameViewController: UIViewController {
 
         // Rigidbodies
         environments.forEach {
-            $0.addComponent(Rigidbody.self)?.configure {
-                $0.useGravity = false
-                $0.isStatic = true
+            $0.addComponent(Rigidbody.self)?
+                .configure {
+                    $0.useGravity = false
+                    $0.isStatic = true
             }
         }
-        ground.addComponent(Rigidbody.self)?.configure {
-            $0.useGravity = false
-            $0.isStatic = true
+        ground.addComponent(Rigidbody.self)?
+            .configure {
+                $0.useGravity = false
+                $0.isStatic = true
         }
 
         // Colliders
         environments.forEach {
-            $0.addComponent(MeshCollider.self)?.configure {
-                $0.collideWithLayer = [.player, .projectile]
+            $0.addComponent(MeshCollider.self)?
+                .configure {
+                    $0.collideWithLayer = [.player, .projectile]
             }
         }
         ground.addComponent(BoxCollider.self)?
@@ -78,13 +81,13 @@ class GameViewController: UIViewController {
         // Tank Setup
         tank.addComponent(Rigidbody.self)?
             .configure {
-            $0.isKinematic = false
-            $0.constraints = [.freezeRotationX, .freezeRotationZ]
-            $0.set(property: .allowsResting(false))
-            $0.set(property: .mass(80))
-            $0.set(property: .restitution(0.1))
-            $0.set(property: .friction(0.5))
-            $0.set(property: .rollingFriction(0))
+                $0.isKinematic = false
+                $0.constraints = [.freezeRotationX, .freezeRotationZ]
+                $0.set(property: .allowsResting(false))
+                $0.set(property: .mass(80))
+                $0.set(property: .restitution(0.1))
+                $0.set(property: .friction(0.5))
+                $0.set(property: .rollingFriction(0))
         }
         tank.addComponent(MeshCollider.self)?
             .set(mesh: tank.getComponent(MeshFilter.self)?.mesh)
@@ -97,7 +100,7 @@ class GameViewController: UIViewController {
         tank.addComponent(Vehicle.self)?
             .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
 
-        tank.transform.position = Vector3(0, 1, 0)
+        tank.transform.position = Vector3(0, 2, 0)
 
         scene.addGameObject(tank)
     }
@@ -158,12 +161,13 @@ class GameViewController: UIViewController {
 
         fireButton.baseAlpha = 1
     }
-    
+
     override var shouldAutorotate: Bool {
         return true
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
     }
 }
+

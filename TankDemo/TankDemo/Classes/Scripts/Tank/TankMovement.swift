@@ -7,7 +7,8 @@ class TankMovement: MonoBehaviour {
     public var joystick: Joystick?
     public var vehicle: Vehicle?
     public var playerNumber: Int = 1
-    public var speed: Float = 5
+    public let motorSpeed: Float = 100
+    public let turnSpeed: Float = 10
     private var previousPosition: Vector3?
 
     //public var movementAudio: AudioSource?          // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
@@ -53,21 +54,34 @@ class TankMovement: MonoBehaviour {
             fetchComponents()
         }
 
-        guard let vehicle = vehicle
+        guard let gameObject = gameObject,
+            let vehicle = vehicle
             else { return }
 
-//        let angle = (360 - (angle - 90)).clamp()
-//        let rotation = Vector3(0, angle, 0)
-//        let movement = transform.forward * speed * Time.deltaTime.toFloat()
-//
-//        rigidbody.moveRotation(rotation)
-//        previousPosition = transform.position
-//        rigidbody.movePosition(transform.position + movement)
+        let angle = 360 - angle - 180 - 45
+        let tankYRotation = (gameObject.transform.localRotation.y * gameObject.transform.localRotation.w).radiansToDegrees
+
+        let diffAngle = angle.differenceAngle(tankYRotation)
+        var turn = max(min(angle.differenceAngle(tankYRotation), turnSpeed), -turnSpeed)
+
+        if turn > -turnSpeed && turn < turnSpeed {
+            turn = 0
+        }
+
+        var speed = motorSpeed
+
+        if abs(diffAngle) > 90 {
+            speed = -motorSpeed
+            turn = -turn
+        }
+
+        vehicle.applySteeringAngle(turn, forWheelAt: 2)
+        vehicle.applySteeringAngle(turn, forWheelAt: 3)
 
         vehicle.applyBrakingForce(0, forWheelAt: 0)
         vehicle.applyBrakingForce(0, forWheelAt: 1)
 
-        vehicle.applyEngineForce(100, forWheelAt: 0)
-        vehicle.applyEngineForce(100, forWheelAt: 1)
+        vehicle.applyEngineForce(speed, forWheelAt: 0)
+        vehicle.applyEngineForce(speed, forWheelAt: 1)
     }
 }

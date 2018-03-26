@@ -130,7 +130,7 @@ public class Vehicle: Component {
         }
     }
 
-    public func setSteeringAngle(_ value: Float, forWheelAt index: Int? = nil) {
+    public func applySteeringAngle(_ value: Degree, forWheelAt index: Int? = nil) {
 
         guard let vehicle = vehicle,
             let stride = wheelStride(vehicle, forWheelAt: index)
