@@ -154,7 +154,7 @@ public final class Camera: Component {
         calculateFieldOfViews()
     }
 
-    @discardableResult public func execute(_ completionBlock: (Camera) -> ()) -> Camera {
+    @discardableResult public func configure(_ completionBlock: (Camera) -> ()) -> Camera {
 
         completionBlock(self)
         return self

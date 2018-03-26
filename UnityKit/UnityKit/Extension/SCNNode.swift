@@ -16,7 +16,7 @@ extension SCNNode {
         }
         return clone
     }
-    
+
     func boundingBoxFromBoundingSphere(relativeTo node: SCNNode) -> BoundingBox? {
         guard let _ = geometry else {
             return nil

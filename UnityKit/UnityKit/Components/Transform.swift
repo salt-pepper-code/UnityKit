@@ -56,14 +56,25 @@ public final class Transform: Component {
         
         return parent.transform.lossyScale * localScale
     }
-    
+
+    private func hasOrPartOfPhysicsBody() -> Bool {
+
+        guard let gameObject = gameObject
+            else { return false }
+
+        guard let parent = gameObject.parent
+            else { return gameObject.node.physicsBody != nil }
+
+        return gameObject.node.physicsBody != nil || parent.transform.hasOrPartOfPhysicsBody()
+    }
+
     public var position: Vector3 {
         
         get {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.physicsBody != nil ? node.presentation.worldPosition : node.worldPosition
+            return hasOrPartOfPhysicsBody() ? node.presentation.worldPosition : node.worldPosition
         }
         set {
             guard let node = gameObject?.node
@@ -79,7 +90,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
 
-            return node.physicsBody != nil ? node.presentation.worldOrientation : node.worldOrientation
+            return hasOrPartOfPhysicsBody() ? node.presentation.worldOrientation : node.worldOrientation
         }
         set {
             gameObject?.node.worldOrientation = newValue
@@ -92,7 +103,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
 
-            return node.physicsBody != nil ? node.presentation.orientation : node.orientation
+            return hasOrPartOfPhysicsBody() ? node.presentation.orientation : node.orientation
         }
         set {
             gameObject?.node.orientation = newValue
@@ -105,7 +116,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.physicsBody != nil ? node.presentation.position : node.position
+            return hasOrPartOfPhysicsBody() ? node.presentation.position : node.position
         }
         set {
             gameObject?.node.position = newValue
@@ -118,7 +129,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.physicsBody != nil ? node.presentation.rotation : node.rotation
+            return hasOrPartOfPhysicsBody() ? node.presentation.rotation : node.rotation
         }
         set {
             gameObject?.node.rotation = newValue
@@ -131,7 +142,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.physicsBody != nil ? node.presentation.eulerAngles.radiansToDegrees() : node.eulerAngles.radiansToDegrees()
+            return hasOrPartOfPhysicsBody() ? node.presentation.eulerAngles.radiansToDegrees() : node.eulerAngles.radiansToDegrees()
         }
         set {
             gameObject?.node.eulerAngles = newValue.degreesToRadians()
@@ -144,7 +155,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.physicsBody != nil ? node.presentation.scale : node.scale
+            return hasOrPartOfPhysicsBody() ? node.presentation.scale : node.scale
         }
         set {
             gameObject?.node.scale = newValue

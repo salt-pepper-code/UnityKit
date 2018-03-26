@@ -3,7 +3,7 @@ import SceneKit
 
 public final class PlaneCollider: Collider {
 
-    @discardableResult public func execute(_ completionBlock: (PlaneCollider) -> ()) -> PlaneCollider {
+    @discardableResult public func configure(_ completionBlock: (PlaneCollider) -> ()) -> PlaneCollider {
 
         completionBlock(self)
         return self

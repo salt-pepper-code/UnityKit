@@ -219,7 +219,7 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
-    @discardableResult public func execute(_ completionBlock: (Rigidbody) -> ()) -> Rigidbody {
+    @discardableResult public func configure(_ completionBlock: (Rigidbody) -> ()) -> Rigidbody {
         
         completionBlock(self)
         return self

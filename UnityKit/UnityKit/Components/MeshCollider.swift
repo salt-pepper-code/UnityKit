@@ -5,7 +5,7 @@ public final class MeshCollider: Collider {
 
     private(set) public var mesh: Mesh?
 
-    @discardableResult public func execute(_ completionBlock: (MeshCollider) -> ()) -> MeshCollider {
+    @discardableResult public func configure(_ completionBlock: (MeshCollider) -> ()) -> MeshCollider {
 
         completionBlock(self)
         return self

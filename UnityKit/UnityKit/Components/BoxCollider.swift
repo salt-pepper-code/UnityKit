@@ -18,7 +18,7 @@ public final class BoxCollider: Collider {
         return self
     }
 
-    @discardableResult public func execute(_ completionBlock: (BoxCollider) -> ()) -> BoxCollider {
+    @discardableResult public func configure(_ completionBlock: (BoxCollider) -> ()) -> BoxCollider {
 
         completionBlock(self)
         return self
@@ -31,9 +31,8 @@ public final class BoxCollider: Collider {
             else { return }
 
         var boundingBox = gameObject.node.boundingBox
-        print("original: \(boundingBox)")
         let boundingCenter = Volume.boundingCenter(boundingBox)
-        print("original center: \(boundingCenter)")
+
         if let x = size?.x {
             boundingBox.min.x = boundingCenter.x - (x / 2)
             boundingBox.max.x = boundingCenter.x + (x / 2)
@@ -46,12 +45,10 @@ public final class BoxCollider: Collider {
             boundingBox.min.z = boundingCenter.z - (z / 2)
             boundingBox.max.z = boundingCenter.z + (z / 2)
         }
-        print("new size: \(boundingBox)")
+
         if let center = center {
             boundingBox = Volume.moveCenter(boundingBox, center: center)
         }
-        print("new size center: \(boundingBox)")
-        print("new center: \(Volume.boundingCenter(boundingBox))")
 
         let vertices = [Vector3(boundingBox.min.x, boundingBox.min.y, boundingBox.min.z),
                         Vector3(boundingBox.min.x, boundingBox.max.y, boundingBox.min.z),

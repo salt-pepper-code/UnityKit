@@ -169,7 +169,7 @@ public final class GameObject: Object {
     
     public func instantiate() -> GameObject {
         
-        let cloneNode = node.clone()
+        let cloneNode = node.deepClone()
         let clone = GameObject(cloneNode)
         
         if let name = name {

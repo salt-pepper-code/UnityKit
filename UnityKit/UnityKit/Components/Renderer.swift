@@ -48,7 +48,7 @@ public final class Renderer: Component {
         }
     }
 
-    @discardableResult public func execute(_ completionBlock: (Renderer) -> ()) -> Renderer {
+    @discardableResult public func configure(_ completionBlock: (Renderer) -> ()) -> Renderer {
 
         completionBlock(self)
         return self

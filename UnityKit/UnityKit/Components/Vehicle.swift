@@ -56,7 +56,7 @@ public class Vehicle: Component {
     private var vehicle: SCNPhysicsVehicle?
     private var physicsWorld: SCNPhysicsWorld?
 
-    @discardableResult public func execute(_ completionBlock: (Vehicle) -> ()) -> Vehicle {
+    @discardableResult public func configure(_ completionBlock: (Vehicle) -> ()) -> Vehicle {
 
         completionBlock(self)
         return self

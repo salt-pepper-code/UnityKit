@@ -52,31 +52,32 @@ class GameViewController: UIViewController {
 
         // Rigidbodies
         environments.forEach {
-            $0.addComponent(Rigidbody.self)?.execute {
+            $0.addComponent(Rigidbody.self)?.configure {
                 $0.useGravity = false
                 $0.isStatic = true
             }
         }
-        ground.addComponent(Rigidbody.self)?.execute {
+        ground.addComponent(Rigidbody.self)?.configure {
             $0.useGravity = false
             $0.isStatic = true
         }
 
         // Colliders
         environments.forEach {
-            $0.addComponent(MeshCollider.self)?.execute {
+            $0.addComponent(MeshCollider.self)?.configure {
                 $0.collideWithLayer = [.player, .projectile]
             }
         }
         ground.addComponent(BoxCollider.self)?
             .set(size: Vector3Nullable(nil, 8, nil))
             .set(center: Vector3Nullable(nil, -4, nil))
-            .execute {
+            .configure {
                 $0.collideWithLayer = [.player, .projectile]
         }
 
         // Tank Setup
-        tank.addComponent(Rigidbody.self)?.execute {
+        tank.addComponent(Rigidbody.self)?
+            .configure {
             $0.isKinematic = false
             $0.constraints = [.freezeRotationX, .freezeRotationZ]
             $0.set(property: .allowsResting(false))
@@ -87,7 +88,7 @@ class GameViewController: UIViewController {
         }
         tank.addComponent(MeshCollider.self)?
             .set(mesh: tank.getComponent(MeshFilter.self)?.mesh)
-            .execute {
+            .configure {
                 $0.collideWithLayer = [.environment, .ground]
                 $0.contactWithLayer = [.ground, .projectile]
         }
