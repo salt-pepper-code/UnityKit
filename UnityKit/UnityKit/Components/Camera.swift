@@ -153,7 +153,13 @@ public final class Camera: Component {
         self.cullingMask = GameObject.Layer.all
         calculateFieldOfViews()
     }
-    
+
+    @discardableResult public func execute(_ completionBlock: (Camera) -> ()) -> Camera {
+
+        completionBlock(self)
+        return self
+    }
+
     public func calculateFieldOfViews() {
         fieldOfView = hFieldOfView
     }

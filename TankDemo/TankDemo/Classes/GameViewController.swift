@@ -94,11 +94,37 @@ class GameViewController: UIViewController {
         tank.addComponent(TankMovement.self)
         tank.addComponent(TankShooting.self)
         tank.addComponent(Vehicle.self)?
-            .set(wheelNames: ["Wheel_Back_R", "Wheel_Back_L", "Wheel_Front_R", "Wheel_Front_L"], physicsWorld: scene.scnScene.physicsWorld)
+            .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
 
         tank.transform.position = Vector3(0, 1, 0)
 
         scene.addGameObject(tank)
+    }
+
+    func createWheels() -> [Wheel.Parameters] {
+
+        let positionXZ: Float = 0.56
+        let positionY: Float = 0.352
+
+        let wheels: [Wheel.Parameters] =
+            [{ var wheel = Wheel.Parameters(nodeName: "Wheel_Back_R")
+                wheel.connectionPosition = Vector3(positionXZ, positionY, positionXZ)
+                wheel.axle = Vector3(1, 0, 0)
+                return wheel }(),
+             { var wheel = Wheel.Parameters(nodeName: "Wheel_Back_L")
+                wheel.connectionPosition = Vector3(-positionXZ, positionY, positionXZ)
+                wheel.axle = Vector3(1, 0, 0)
+                return wheel }(),
+             { var wheel = Wheel.Parameters(nodeName: "Wheel_Front_R")
+                wheel.connectionPosition = Vector3(positionXZ, positionY, -positionXZ)
+                wheel.axle = Vector3(1, 0, 0)
+                return wheel }(),
+             { var wheel = Wheel.Parameters(nodeName: "Wheel_Front_L")
+                wheel.connectionPosition = Vector3(-positionXZ, positionY, -positionXZ)
+                wheel.axle = Vector3(1, 0, 0)
+                return wheel }()]
+
+        return wheels
     }
 
     func setup(joystick: Joystick) {

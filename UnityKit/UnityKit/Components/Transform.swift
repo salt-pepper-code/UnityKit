@@ -63,12 +63,12 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.worldPosition
+            return node.physicsBody != nil ? node.presentation.worldPosition : node.worldPosition
         }
         set {
             guard let node = gameObject?.node
                 else { return }
-                
+
             node.worldPosition = newValue
         }
     }
@@ -79,7 +79,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
 
-            return node.worldOrientation
+            return node.physicsBody != nil ? node.presentation.worldOrientation : node.worldOrientation
         }
         set {
             gameObject?.node.worldOrientation = newValue
@@ -92,7 +92,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
 
-            return node.orientation
+            return node.physicsBody != nil ? node.presentation.orientation : node.orientation
         }
         set {
             gameObject?.node.orientation = newValue
@@ -105,7 +105,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.position
+            return node.physicsBody != nil ? node.presentation.position : node.position
         }
         set {
             gameObject?.node.position = newValue
@@ -118,7 +118,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.rotation
+            return node.physicsBody != nil ? node.presentation.rotation : node.rotation
         }
         set {
             gameObject?.node.rotation = newValue
@@ -131,7 +131,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.eulerAngles.radiansToDegrees()
+            return node.physicsBody != nil ? node.presentation.eulerAngles.radiansToDegrees() : node.eulerAngles.radiansToDegrees()
         }
         set {
             gameObject?.node.eulerAngles = newValue.degreesToRadians()
@@ -144,7 +144,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
                 else { return .zero }
             
-            return node.scale
+            return node.physicsBody != nil ? node.presentation.scale : node.scale
         }
         set {
             gameObject?.node.scale = newValue

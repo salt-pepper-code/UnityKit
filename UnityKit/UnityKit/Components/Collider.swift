@@ -35,12 +35,6 @@ public class Collider: Component, Instantiable {
         }
     }
 
-    @discardableResult public func execute(_ completionBlock: (Collider) -> ()) -> Collider {
-
-        completionBlock(self)
-        return self
-    }
-
     private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
 
         guard let gameObject = gameObject

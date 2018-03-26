@@ -87,7 +87,15 @@ public final class Rigidbody: Component, Instantiable {
         return transform.position
     }
 
-    public var rotation: Quaternion {
+    public var localPosition: Vector3 {
+
+        guard let transform = transform
+            else { return .zero }
+
+        return transform.localPosition
+    }
+
+    public var localRotation: Quaternion {
 
         guard let transform = transform
             else { return .zero }

@@ -1,7 +1,7 @@
 import Foundation
 
 open class Component: Object {
-    
+
     internal(set) public weak var gameObject: GameObject?
     
     public var transform: Transform? {

@@ -47,7 +47,13 @@ public final class Renderer: Component {
             gameObject?.node.renderingOrder = newValue
         }
     }
-    
+
+    @discardableResult public func execute(_ completionBlock: (Renderer) -> ()) -> Renderer {
+
+        completionBlock(self)
+        return self
+    }
+
     open override func awake() {
 
         if let scnMaterials = gameObject?.node.geometry?.materials {

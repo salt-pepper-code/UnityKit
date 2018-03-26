@@ -29,9 +29,15 @@ class TankMovement: MonoBehaviour {
         }
 
         joystick.onComplete = { [weak self] () in
-//            guard let vehicle = self?.vehicle
-//                else { return }
-//
+
+            guard let vehicle = self?.vehicle
+                else { return }
+
+            vehicle.applyBrakingForce(3, forWheelAt: 0)
+            vehicle.applyBrakingForce(3, forWheelAt: 1)
+
+            vehicle.applyEngineForce(0, forWheelAt: 0)
+            vehicle.applyEngineForce(0, forWheelAt: 1)
         }
     }
 
@@ -47,6 +53,9 @@ class TankMovement: MonoBehaviour {
             fetchComponents()
         }
 
+        guard let vehicle = vehicle
+            else { return }
+
 //        let angle = (360 - (angle - 90)).clamp()
 //        let rotation = Vector3(0, angle, 0)
 //        let movement = transform.forward * speed * Time.deltaTime.toFloat()
@@ -55,6 +64,10 @@ class TankMovement: MonoBehaviour {
 //        previousPosition = transform.position
 //        rigidbody.movePosition(transform.position + movement)
 
-        vehicle?.applyEngineForce(100)
+        vehicle.applyBrakingForce(0, forWheelAt: 0)
+        vehicle.applyBrakingForce(0, forWheelAt: 1)
+
+        vehicle.applyEngineForce(100, forWheelAt: 0)
+        vehicle.applyEngineForce(100, forWheelAt: 1)
     }
 }

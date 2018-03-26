@@ -93,10 +93,7 @@ extension GameObject {
         rigidBody?.get(property: .angularVelocityFactor).map { physicsBody.angularVelocityFactor = $0 }
         rigidBody?.get(property: .allowsResting).map { physicsBody.allowsResting = $0 }
 
+        node.physicsBody = nil
         node.physicsBody = physicsBody
-
-        if let vehicle = getComponent(Vehicle.self) {
-            vehicle.updateVehicule()
-        }
     }
 }

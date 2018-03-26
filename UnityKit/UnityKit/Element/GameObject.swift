@@ -129,14 +129,14 @@ public final class GameObject: Object {
         
         self.name = node.name ?? "No name"
         self.layer = .`default`
-        self.transform = addComponent(monoBehaviourOnly: false, type: Transform.self)
+        self.transform = addComponent(external: false, type: Transform.self)
         
         if let geometry = node.geometry {
 
-            let meshFilter = addComponent(monoBehaviourOnly: false, type: MeshFilter.self)
+            let meshFilter = addComponent(external: false, type: MeshFilter.self)
             meshFilter?.mesh = Mesh(geometry)
 
-            self.renderer = addComponent(monoBehaviourOnly: false, type: Renderer.self)
+            self.renderer = addComponent(external: false, type: Renderer.self)
 
             geometry.materials.forEach {
                 self.renderer?.materials.append(Material($0))
@@ -157,7 +157,7 @@ public final class GameObject: Object {
         
         self.node = SCNNode()
         super.init()
-        self.transform = addComponent(monoBehaviourOnly: false, type: Transform.self)
+        self.transform = addComponent(external: false, type: Transform.self)
         awake()
     }
     
@@ -275,12 +275,11 @@ public final class GameObject: Object {
     }
 
     @discardableResult public override func addComponent<T: Component>(_ type: T.Type) -> T? {
-        return super.addComponent(monoBehaviourOnly: true, type: type, gameObject: self)
+        return super.addComponent(external: true, type: type, gameObject: self)
     }
     
-    @discardableResult internal override func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
-        
-        return super.addComponent(monoBehaviourOnly: monoBehaviourOnly, type: type, gameObject: gameObject ?? self)
+    @discardableResult internal override func addComponent<T: Component>(external: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
+        return super.addComponent(external: external, type: type, gameObject: gameObject ?? self)
     }
     
     public func getComponentInChild<T: Component>(_ type: T.Type) -> T? {

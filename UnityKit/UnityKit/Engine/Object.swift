@@ -80,12 +80,12 @@ open class Object: Identifiable {
     }
     
     @discardableResult open func addComponent<T: Component>(_ type: T.Type) -> T? {
-        return addComponent(monoBehaviourOnly: true, type: type)
+        return addComponent(external: true, type: type)
     }
 
-    @discardableResult internal func addComponent<T: Component>(monoBehaviourOnly: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
+    @discardableResult internal func addComponent<T: Component>(external: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
         
-        if monoBehaviourOnly && (T.self === Renderer.self || T.self === Transform.self) {
+        if external && (T.self === Renderer.self || T.self === Transform.self) {
             return nil
         }
 

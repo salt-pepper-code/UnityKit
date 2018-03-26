@@ -3,6 +3,12 @@ import SceneKit
 
 public final class PlaneCollider: Collider {
 
+    @discardableResult public func execute(_ completionBlock: (PlaneCollider) -> ()) -> PlaneCollider {
+
+        completionBlock(self)
+        return self
+    }
+    
     override func constructBody() {
 
         guard let gameObject = gameObject,

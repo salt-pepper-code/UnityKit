@@ -18,6 +18,12 @@ public final class BoxCollider: Collider {
         return self
     }
 
+    @discardableResult public func execute(_ completionBlock: (BoxCollider) -> ()) -> BoxCollider {
+
+        completionBlock(self)
+        return self
+    }
+
     override func constructBody() {
 
         guard let gameObject = gameObject,

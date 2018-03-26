@@ -7,7 +7,6 @@ class TankShooting: MonoBehaviour {
 
     public var shellRef: GameObject?
     public var playerNumber: Int = 1
-    public var weaponOrigin: Transform?
 
     public var minLaunchForce: Float = 15
     public var maxLaunchForce: Float = 30
@@ -26,10 +25,6 @@ class TankShooting: MonoBehaviour {
 
         shellRef = GameObject(fileName: "Shell.scn", nodeName: "Shell")
 
-        guard let gameObject = gameObject
-            else { return }
-
-        weaponOrigin = GameObject.find(.name(.exact("WeaponOrigin")), in: gameObject)?.transform
         currentLaunchForce = minLaunchForce
         chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime
     }
@@ -37,12 +32,11 @@ class TankShooting: MonoBehaviour {
     private func fire() {
 
         guard let shellRef = shellRef,
-            let origin = weaponOrigin
+            let gameObject = gameObject,
+            let origin = GameObject.find(.name(.exact("WeaponOrigin")), in: gameObject)?.transform
             else { return }
 
         let shell = GameObject.instantiate(original: shellRef, addToScene: false)
-        shell.transform.orientation = origin.orientation
-        shell.transform.position = origin.position
         shell.layer = .projectile
 
         let rigidbody: Rigidbody? = shell.addComponent(Rigidbody.self)?.execute {
@@ -55,7 +49,9 @@ class TankShooting: MonoBehaviour {
             $0.contactWithLayer = .all
         }
 
-        gameObject?.scene?.addGameObject(shell)
+        gameObject.scene?.addGameObject(shell)
+        shell.transform.orientation = origin.orientation
+        shell.transform.position = origin.position
 
         rigidbody?.set(property: .velocity(currentLaunchForce * origin.forward))
     }

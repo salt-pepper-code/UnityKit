@@ -5,6 +5,12 @@ public final class MeshCollider: Collider {
 
     private(set) public var mesh: Mesh?
 
+    @discardableResult public func execute(_ completionBlock: (MeshCollider) -> ()) -> MeshCollider {
+
+        completionBlock(self)
+        return self
+    }
+    
     public func set(mesh: Mesh?) -> MeshCollider {
         
         self.mesh = mesh
