@@ -57,7 +57,7 @@ public class Collider: Component, Instantiable {
                 else { continue }
 
             monoBehaviour.onCollisionEnter(contact)
-            monoBehaviour.OnTriggerEnter(self)
+            monoBehaviour.onTriggerEnter(self)
         }
     }
 
@@ -92,7 +92,7 @@ public class Collider: Component, Instantiable {
                 else { continue }
 
             monoBehaviour.onCollisionExit(contact)
-            monoBehaviour.OnTriggerExit(self)
+            monoBehaviour.onTriggerExit(self)
         }
     }
 

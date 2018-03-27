@@ -54,6 +54,7 @@ class TankShooting: MonoBehaviour {
                 $0.collideWithLayer = .all
                 $0.contactWithLayer = .all
         }
+        shell.addComponent(ShellExplosion.self)
 
         gameObject.scene?.addGameObject(shell)
     }

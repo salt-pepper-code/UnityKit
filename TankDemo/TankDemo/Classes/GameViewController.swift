@@ -2,6 +2,11 @@
 import UnityKit
 import SceneKit
 
+enum PlayerType {
+    case player
+    case enemy
+}
+
 class GameViewController: UIViewController {
 
     override func loadView() {
@@ -20,8 +25,7 @@ class GameViewController: UIViewController {
 
     func setupScene() {
 
-        guard let scene = sceneView.sceneHolder,
-            let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
+        guard let scene = sceneView.sceneHolder
             else { return }
 
         // Controls Setup
@@ -48,7 +52,6 @@ class GameViewController: UIViewController {
         // Layers
         environments.forEach { $0.layer = .environment }
         ground.layer = .ground
-        tank.layer = .player
 
         // Rigidbodies
         environments.forEach {
@@ -74,11 +77,20 @@ class GameViewController: UIViewController {
         ground.addComponent(BoxCollider.self)?
             .set(size: Vector3Nullable(nil, 8, nil))
             .set(center: Vector3Nullable(nil, -4, nil))
-            .configure {
-                $0.collideWithLayer = [.player, .projectile]
-        }
 
         // Tank Setup
+        loadTank(type: .player, position: Vector3(0, 2, 0))
+        loadTank(type: .enemy, position: Vector3(4, 2, 0))
+    }
+
+    func loadTank(type: PlayerType, position: Vector3) {
+
+        guard let scene = sceneView.sceneHolder,
+            let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
+            else { return }
+
+        tank.layer = .player
+
         tank.addComponent(Rigidbody.self)?
             .configure {
                 $0.isKinematic = false
@@ -92,15 +104,18 @@ class GameViewController: UIViewController {
         tank.addComponent(MeshCollider.self)?
             .set(mesh: tank.getComponent(MeshFilter.self)?.mesh)
             .configure {
-                $0.collideWithLayer = [.environment, .ground]
-                $0.contactWithLayer = [.ground, .projectile]
+                $0.collideWithLayer = [.all]
+                $0.contactWithLayer = [.projectile]
         }
-        tank.addComponent(TankMovement.self)
-        tank.addComponent(TankShooting.self)
-        tank.addComponent(Vehicle.self)?
-            .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
 
-        tank.transform.position = Vector3(0, 2, 0)
+        if type == .player {
+            tank.addComponent(TankMovement.self)
+            tank.addComponent(TankShooting.self)
+            tank.addComponent(Vehicle.self)?
+                .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
+        }
+
+        tank.transform.position = position
 
         scene.addGameObject(tank)
     }

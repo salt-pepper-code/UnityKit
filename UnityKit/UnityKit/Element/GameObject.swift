@@ -53,6 +53,7 @@ public final class GameObject: Object {
 
     private var didAwake: Bool = false
     private var didStart: Bool = false
+    private var waitNextUpdate: Bool = true
 
     public var activeInHierarchy: Bool {
 
@@ -218,11 +219,13 @@ public final class GameObject: Object {
     
     public override func start() {
         
-        guard didAwake
+        guard didAwake, !didStart
             else { return }
 
-        guard !didStart
-            else { return }
+        guard !waitNextUpdate else {
+            waitNextUpdate = false
+            return
+        }
 
         didStart = true
         components.forEach { $0.start() }

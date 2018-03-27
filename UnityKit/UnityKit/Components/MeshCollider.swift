@@ -11,7 +11,7 @@ public final class MeshCollider: Collider {
         return self
     }
     
-    public func set(mesh: Mesh?) -> MeshCollider {
+    @discardableResult public func set(mesh: Mesh?) -> MeshCollider {
         
         self.mesh = mesh
         return self

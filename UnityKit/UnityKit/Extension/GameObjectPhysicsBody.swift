@@ -41,13 +41,22 @@ extension GameObject {
         return result.rawValue == 0 ? nil : result
     }
 
-    internal func updateBitMask() {
+    internal func updateBitMask(_ physicsBody: SCNPhysicsBody? = nil) {
 
-        guard let physicsBody = node.physicsBody
+        let body: SCNPhysicsBody?
+        if let physicsBody = physicsBody {
+            body = physicsBody
+        } else if let physicsBody = node.physicsBody {
+            body = physicsBody
+        } else {
+            body = nil
+        }
+
+        guard let physicsBody = body
             else { return }
 
-        physicsBody.collisionBitMask = getCollisionLayer()?.rawValue ?? layer.rawValue
-        physicsBody.contactTestBitMask = getContactLayer()?.rawValue ?? 0
+        getCollisionLayer().map { physicsBody.collisionBitMask = $0.rawValue }
+        getContactLayer().map { physicsBody.contactTestBitMask = $0.rawValue }
     }
 
     internal func updatePhysicsBody() {
@@ -77,7 +86,7 @@ extension GameObject {
         physicsBody.categoryBitMask = layer.rawValue
         physicsBody.isAffectedByGravity = useGravity
 
-        updateBitMask()
+        updateBitMask(physicsBody)
 
         let rigidBody = getComponent(Rigidbody.self)
 

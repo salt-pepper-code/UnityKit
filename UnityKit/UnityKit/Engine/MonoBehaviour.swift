@@ -23,11 +23,11 @@ open class MonoBehaviour: Behaviour, Instantiable {
 
     }
 
-    open func OnTriggerEnter(_ collider: Collider) {
+    open func onTriggerEnter(_ collider: Collider) {
 
     }
 
-    open func OnTriggerExit(_ collider: Collider) {
+    open func onTriggerExit(_ collider: Collider) {
 
     }
 }
