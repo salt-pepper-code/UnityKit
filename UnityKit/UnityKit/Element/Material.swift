@@ -88,26 +88,10 @@ public final class Material: Object {
     }
     
     //Color
-    
-    public func getColor(_ name: String) -> Color? {
+
+    public func getColor(_ name: BasicColorShading) -> Color? {
         
         switch name {
-        case BasicColorShading.diffuse.rawValue:
-            return getColor(.diffuse)
-        case BasicColorShading.specular.rawValue:
-            return getColor(.specular)
-        case BasicColorShading.emission.rawValue:
-            return getColor(.emission)
-        case BasicColorShading.reflective.rawValue:
-            return getColor(.reflective)
-        default:
-            return getColor(.unknown)
-        }
-    }
-    
-    public func getColor(_ shading: BasicColorShading) -> Color? {
-        
-        switch shading {
         case .diffuse:
             return scnMaterial.diffuse.contents as? Color
         case .specular:
@@ -121,25 +105,9 @@ public final class Material: Object {
         }
     }
     
-    public func setColor(_ name: String, color: Color?) {
+    public func setColor(_ name: BasicColorShading, color: Color?) {
         
         switch name {
-        case BasicColorShading.diffuse.rawValue:
-            setColor(.diffuse, color: color)
-        case BasicColorShading.specular.rawValue:
-            setColor(.specular, color: color)
-        case BasicColorShading.emission.rawValue:
-            setColor(.emission, color: color)
-        case BasicColorShading.reflective.rawValue:
-            setColor(.reflective, color: color)
-        default:
-            break
-        }
-    }
-    
-    public func setColor(_ shading: BasicColorShading, color: Color?) {
-        
-        switch shading {
         case .diffuse:
             scnMaterial.diffuse.contents = color
         case .specular:
@@ -152,26 +120,12 @@ public final class Material: Object {
             break
         }
     }
-    
+
     //Texture
     
-    public func getTexture(_ name: String) -> UIImage? {
+    public func getTexture(_ name: BasicTextureShading) -> UIImage? {
         
         switch name {
-        case BasicTextureShading.diffuse.rawValue:
-            return getTexture(.diffuse)
-        case BasicTextureShading.normal.rawValue:
-            return getTexture(.normal)
-        case BasicTextureShading.reflective.rawValue:
-            return getTexture(.reflective)
-        default:
-            return getTexture(.unknown)
-        }
-    }
-    
-    public func getTexture(_ shading: BasicTextureShading) -> UIImage? {
-        
-        switch shading {
         case .diffuse:
             return scnMaterial.diffuse.contents as? UIImage
         case .normal:
@@ -182,24 +136,10 @@ public final class Material: Object {
             return nil
         }
     }
-    
-    public func setTexture(_ name: String, image: UIImage?) {
+
+    public func setTexture(_ name: BasicTextureShading, image: UIImage?) {
         
         switch name {
-        case BasicTextureShading.diffuse.rawValue:
-            setTexture(.diffuse, image: image)
-        case BasicTextureShading.normal.rawValue:
-            setTexture(.normal, image: image)
-        case BasicTextureShading.reflective.rawValue:
-            setTexture(.reflective, image: image)
-        default:
-            break
-        }
-    }
-    
-    public func setTexture(_ shading: BasicTextureShading, image: UIImage?) {
-        
-        switch shading {
         case .diffuse:
             scnMaterial.diffuse.contents = color
         case .normal:

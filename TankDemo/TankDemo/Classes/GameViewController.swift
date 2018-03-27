@@ -113,6 +113,8 @@ class GameViewController: UIViewController {
             tank.addComponent(TankShooting.self)
             tank.addComponent(Vehicle.self)?
                 .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
+        } else {
+            tank.getComponent(Renderer.self)?.material?.setColor(.diffuse, color: .red)
         }
 
         tank.transform.position = position
