@@ -40,6 +40,10 @@ open class Object: Identifiable {
         
     }
 
+    open func preUpdate() {
+
+    }
+
     open func update() {
         
     }

@@ -176,7 +176,7 @@ public final class Camera: Component {
         
         fileprivate(set) public var target: GameObject?
     }
-    
+
     public func followTarget(target: GameObject?, distanceRange: (minimum: Float, maximum: Float)? = nil) {
         
         self.target = target
@@ -233,19 +233,19 @@ public final class Camera: Component {
     }
 
     @available(iOS 11.0, *)
-    public func lookAt(_ gameObject: GameObject, animated: Bool = false, duration: TimeInterval = 1) {
-        lookAt(gameObject.transform, animated: animated, duration: duration)
+    public func lookAt(_ gameObject: GameObject, duration: TimeInterval = 1) {
+        lookAt(gameObject.transform, duration: duration)
     }
 
     @available(iOS 11.0, *)
-    public func lookAt(_ target: Transform, animated: Bool = false, duration: TimeInterval = 1) {
+    public func lookAt(_ target: Transform, duration: TimeInterval? = nil) {
         gameObject?.node.constraints = nil
-        guard animated else {
+        guard let duration = duration else {
             transform?.lookAt(target)
             return
         }
         SCNTransaction.begin()
-        SCNTransaction.animationDuration = 1
+        SCNTransaction.animationDuration = duration
         SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transform?.lookAt(target)
         SCNTransaction.commit()

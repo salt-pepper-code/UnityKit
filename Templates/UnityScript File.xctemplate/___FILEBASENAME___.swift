@@ -1,7 +1,7 @@
 
 import UnityKit
 
-class ___FILEBASENAMEASIDENTIFIER___Script: MonoBehaviour {
+class ___FILEBASENAMEASIDENTIFIER___: MonoBehaviour {
     
     override func start() {
 

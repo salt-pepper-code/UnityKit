@@ -7,6 +7,14 @@ open class MonoBehaviour: Behaviour, Instantiable {
         return type(of: self).init()
     }
 
+    override func enableChanged() {
+
+        guard let gameObject = gameObject
+            else { return }
+
+        gameObject.setActive(enabled)
+    }
+
     open override func onEnable() {
 
     }

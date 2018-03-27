@@ -10,24 +10,56 @@ class ShellExplosion: MonoBehaviour {
 
     override func onTriggerEnter(_ collider: Collider) {
 
-        guard let transform = transform
+        guard let shellTransform = gameObject?.transform
             else { return }
 
-        let colliders = Physics.overlapSphere(position: transform.position, radius: explosionRadius, layerMask: .player)
+        let colliders = Physics.overlapSphere(position: shellTransform.position, radius: explosionRadius, layerMask: .player)
 
         for collider in colliders {
 
-            guard let rigidbody = collider.getComponent(Rigidbody.self),
-                let transform = gameObject?.transform
+            guard let targetRigidbody = collider.getComponent(Rigidbody.self)
                 else { continue }
 
-            if let vehicle = collider.getComponent(Vehicle.self) {
-                vehicle.applyBrakingForce(0)
+            if let targetVehicle = collider.getComponent(Vehicle.self) {
+                targetVehicle.applyBrakingForce(0)
             }
             
-            rigidbody.addExplosionForce(explosionForce: explosionForce, explosionPosition: transform.position, explosionRadius: explosionRadius)
+            targetRigidbody.addExplosionForce(explosionForce: explosionForce,
+                                              explosionPosition: shellTransform.position,
+                                              explosionRadius: explosionRadius,
+                                              replacePosition: Vector3Nullable(nil, 0, nil))
+
+            // If there is no TankHealth script attached to the gameobject, go on to the next collider.
+            guard let targetHealth = targetRigidbody.getComponent(TankHealth.self)
+                else { continue }
+
+            // Calculate the amount of damage the target should take based on it's distance from the shell.
+            let damage = calculateDamage(targetRigidbody.position)
+
+            // Deal this damage to the tank.
+            targetHealth.takeDamage(damage)
         }
 
+        // Destroy the shell.
         gameObject?.destroy()
+    }
+
+    private func calculateDamage(_ targetPosition: Vector3) -> Float {
+
+        guard let transform = transform
+            else { return 0 }
+
+        // Create a vector from the shell to the target.
+        let explosionToTarget = targetPosition - transform.position
+
+        // Calculate the distance from the shell to the target.
+        let explosionDistance = explosionToTarget.magnitude()
+
+        // Calculate the proportion of the maximum distance (the explosionRadius) the target is away.
+        let relativeDistance = (explosionRadius - explosionDistance) / explosionRadius
+
+        // Calculate damage as this proportion of the maximum possible damage.
+        // Make sure that the minimum damage is always 0.
+        return max(0, relativeDistance * maxDamage)
     }
 }

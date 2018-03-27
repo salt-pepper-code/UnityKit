@@ -265,15 +265,22 @@ public final class Rigidbody: Component, Instantiable {
         physicsBody.applyTorque(torque, asImpulse: asImpulse)
     }
 
-    public func addExplosionForce(explosionForce: Float, explosionPosition: Vector3, explosionRadius: Float) {
+    public func addExplosionForce(explosionForce: Float, explosionPosition: Vector3, explosionRadius: Float, replacePosition: Vector3Nullable? = nil) {
 
         guard let gameObject = gameObject,
-        let transform = gameObject.transform,
+            let transform = gameObject.transform,
             let physicsBody = gameObject.node.physicsBody
             else { return }
 
-        let heading = transform.position - explosionPosition
-        let distance = explosionPosition.distance(transform.position)
+        var from = explosionPosition
+        var to = transform.position
+
+        replacePosition?.x.map { from.x = $0; to.x = $0 }
+        replacePosition?.y.map { from.y = $0; to.y = $0 }
+        replacePosition?.z.map { from.z = $0; to.z = $0 }
+
+        let heading = to - from
+        let distance = heading.magnitude()
         var direction = (heading / distance).normalized()
 
         direction *= explosionForce / distance

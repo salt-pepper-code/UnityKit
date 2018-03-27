@@ -234,7 +234,26 @@ public final class GameObject: Object {
         components.forEach { $0.start() }
         children.forEach { $0.start() }
     }
-    
+
+    public override func preUpdate() {
+
+        guard didAwake
+            else { return }
+
+        guard didStart
+            else { return }
+
+        for component in components {
+
+            if let behaviour = component as? Behaviour,
+                !behaviour.enabled
+            { continue }
+
+            component.preUpdate()
+        }
+        children.forEach { $0.preUpdate() }
+    }
+
     public override func update() {
         
         guard didAwake

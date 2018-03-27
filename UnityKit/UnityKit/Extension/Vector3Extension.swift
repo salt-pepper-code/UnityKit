@@ -76,6 +76,10 @@ extension Vector3 {
     public static func length(_ vector: Vector3) -> Float {
         return sqrtf(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
     }
+
+    public func magnitude() -> Float {
+        return Vector3.length(self)
+    }
     
     /**
      * Normalizes the vector described by the Vector3 to length 1.0 and returns

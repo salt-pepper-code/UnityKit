@@ -9,7 +9,12 @@ open class Behaviour: Component {
             } else {
                 onDisable()
             }
+            enableChanged()
         }
+    }
+
+    internal func enableChanged() {
+
     }
     
     open func onEnable() {

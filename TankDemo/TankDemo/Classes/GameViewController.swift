@@ -79,15 +79,22 @@ class GameViewController: UIViewController {
             .set(center: Vector3Nullable(nil, -4, nil))
 
         // Tank Setup
-        loadTank(type: .player("Player"), position: Vector3(0, 2, 0))
+        guard let tank = loadTank(type: .player("Player"), position: Vector3(0, 2, 0))
+            else { return }
         loadTank(type: .ennemy("Ennemy"), position: Vector3(0, 2, -6))
+
+        // Camera Setup
+        guard let camera = Camera.main()
+            else { return }
+
+        camera.addComponent(CameraControl.self)?.set(target: tank)
     }
 
-    func loadTank(type: PlayerType, position: Vector3) {
+    @discardableResult func loadTank(type: PlayerType, position: Vector3) -> GameObject? {
 
         guard let scene = sceneView.sceneHolder,
             let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
-            else { return }
+            else { return nil }
 
         tank.layer = .player
 
@@ -118,12 +125,15 @@ class GameViewController: UIViewController {
             tank.getComponent(Renderer.self)?.material?.setColor(.diffuse, color: .red)
         }
 
+        tank.addComponent(TankHealth.self)
         tank.addComponent(Vehicle.self)?
             .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
 
         tank.transform.position = position
 
         scene.addGameObject(tank)
+
+        return tank
     }
 
     func createWheels() -> [Wheel.Parameters] {

@@ -19,6 +19,8 @@
 		0A4D0E0D2055B70800C119B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E082055B70800C119B6 /* AppDelegate.swift */; };
 		0A4D0E172056BE3D00C119B6 /* UnityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A4D0E162056BE3C00C119B6 /* UnityKit.framework */; };
 		0A4D0E182056BE3D00C119B6 /* UnityKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A4D0E162056BE3C00C119B6 /* UnityKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A6078D5206A986B003A297C /* TankHealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6078D4206A986B003A297C /* TankHealth.swift */; };
+		0A6078D8206A9E2E003A297C /* CameraControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6078D7206A9E2E003A297C /* CameraControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +51,8 @@
 		0A4D0E072055B70800C119B6 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		0A4D0E082055B70800C119B6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A4D0E162056BE3C00C119B6 /* UnityKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A6078D4206A986B003A297C /* TankHealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankHealth.swift; sourceTree = "<group>"; };
+		0A6078D7206A9E2E003A297C /* CameraControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +81,7 @@
 			children = (
 				0A094C39205B0190008CA2AB /* TankMovement.swift */,
 				0A094C38205B0190008CA2AB /* TankShooting.swift */,
+				0A6078D4206A986B003A297C /* TankHealth.swift */,
 				0A458B1F2069B11E00678202 /* ShellExplosion.swift */,
 			);
 			path = Tank;
@@ -132,10 +137,19 @@
 		0A4D0E1B2057497700C119B6 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				0A6078D6206A9E22003A297C /* Camera */,
 				0A094C37205B0190008CA2AB /* Tank */,
 				0A094C34205B0190008CA2AB /* UI */,
 			);
 			path = Scripts;
+			sourceTree = "<group>";
+		};
+		0A6078D6206A9E22003A297C /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				0A6078D7206A9E2E003A297C /* CameraControl.swift */,
+			);
+			path = Camera;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,6 +230,8 @@
 				0A4D0E0D2055B70800C119B6 /* AppDelegate.swift in Sources */,
 				0A094C3B205B0191008CA2AB /* Joystick.swift in Sources */,
 				0A094C3C205B0191008CA2AB /* TankShooting.swift in Sources */,
+				0A6078D5206A986B003A297C /* TankHealth.swift in Sources */,
+				0A6078D8206A9E2E003A297C /* CameraControl.swift in Sources */,
 				0A4D0E0C2055B70800C119B6 /* GameViewController.swift in Sources */,
 				0A094C3A205B0191008CA2AB /* FireButton.swift in Sources */,
 			);

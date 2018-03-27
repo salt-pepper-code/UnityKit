@@ -85,7 +85,15 @@ open class Scene: Identifiable {
     public func getInstanceID() -> String {
         return uuid
     }
-    
+
+    internal func preUpdate(updateAtTime time: TimeInterval) {
+
+        guard let _ = lastTimeStamp
+            else { return }
+
+        rootGameObject.preUpdate()
+    }
+
     internal func update(updateAtTime time: TimeInterval) {
 
         guard let lastTimeStamp = lastTimeStamp else {

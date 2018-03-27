@@ -117,7 +117,14 @@ open class View: SCNView {
 
 extension View: SCNSceneRendererDelegate {
 
-    public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+    public func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
+
+        DispatchQueue.main.async { () -> Void in
+            self.sceneHolder?.preUpdate(updateAtTime: time)
+        }
+    }
+
+    public func renderer(_ renderer: SCNSceneRenderer, didRenderScene scene: SCNScene, atTime time: TimeInterval) {
 
         DispatchQueue.main.async { () -> Void in
             self.sceneHolder?.update(updateAtTime: time)
