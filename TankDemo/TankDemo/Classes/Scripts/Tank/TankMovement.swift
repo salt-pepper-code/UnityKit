@@ -6,11 +6,9 @@ class TankMovement: MonoBehaviour {
 
     public var joystick: Joystick?
     public var vehicle: Vehicle?
-    public var playerNumber: Int = 1
     public let breakingSpeed: Float = 10
     public let motorSpeed: Float = 100
     public let turnSpeed: Float = 10
-    private var previousPosition: Vector3?
 
     //public var movementAudio: AudioSource?          // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
     //public var engineIdling: AudioClip?             // Audio to play when the tank isn't moving.

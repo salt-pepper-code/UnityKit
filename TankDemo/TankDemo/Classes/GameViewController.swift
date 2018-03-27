@@ -79,9 +79,10 @@ class GameViewController: UIViewController {
             .set(center: Vector3Nullable(nil, -4, nil))
 
         // Tank Setup
-        guard let tank = loadTank(type: .player("Player"), position: Vector3(0, 2, 0))
+        guard let tank = loadTank(type: .player("Player"), position: Vector3(0, 1, 0), color: Color(hexString: "#7ECE40"))
             else { return }
-        loadTank(type: .ennemy("Ennemy"), position: Vector3(0, 2, -6))
+        loadTank(type: .ennemy("Ennemy1"), position: Vector3(-13, 1, -5), color: Color(hexString: "#E52E28"))
+        loadTank(type: .ennemy("Ennemy2"), position: Vector3(13, 1, -5), color: Color(hexString: "#2A64B2")) // Vector3(3, 1, 30)
 
         // Camera Setup
         guard let camera = Camera.main()
@@ -90,7 +91,7 @@ class GameViewController: UIViewController {
         camera.addComponent(CameraControl.self)?.set(target: tank)
     }
 
-    @discardableResult func loadTank(type: PlayerType, position: Vector3) -> GameObject? {
+    @discardableResult func loadTank(type: PlayerType, position: Vector3, color: Color) -> GameObject? {
 
         guard let scene = sceneView.sceneHolder,
             let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
@@ -122,9 +123,9 @@ class GameViewController: UIViewController {
             tank.addComponent(TankShooting.self)
         case let .ennemy(name):
             tank.name = name
-            tank.getComponent(Renderer.self)?.material?.setColor(.diffuse, color: .red)
         }
 
+        tank.getComponent(Renderer.self)?.material?.setColor(.diffuse, color: color)
         tank.addComponent(TankHealth.self)
         tank.addComponent(Vehicle.self)?
             .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)

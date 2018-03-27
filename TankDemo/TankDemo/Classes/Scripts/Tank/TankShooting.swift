@@ -6,7 +6,6 @@ class TankShooting: MonoBehaviour {
     public var fireButton: FireButton?
 
     public var shellRef: GameObject?
-    public var playerNumber: Int = 1
 
     public var minLaunchForce: Float = 15
     public var maxLaunchForce: Float = 30
