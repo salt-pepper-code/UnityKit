@@ -1,5 +1,6 @@
 
 import UnityKit
+import Foundation
 
 class TankShooting: MonoBehaviour {
 
@@ -10,10 +11,16 @@ class TankShooting: MonoBehaviour {
     public var minLaunchForce: Float = 15
     public var maxLaunchForce: Float = 30
     public var maxChargeTime: Float = 0.75
+    public let reloadTime: TimeInterval = 1
 
+    private var timeElapsed: TimeInterval = 1
     private var currentLaunchForce: Float = 0
     private var chargeSpeed: Float = 0
     private var fired: Bool = false
+
+    override func onDestroy() {
+        fireButton?.onTrigger = nil
+    }
 
     override func awake() {
 
@@ -27,13 +34,21 @@ class TankShooting: MonoBehaviour {
         currentLaunchForce = minLaunchForce
         chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime
     }
-    
+
+    override func update() {
+
+        timeElapsed += Time.deltaTime
+    }
+
     private func fire() {
 
-        guard let shellRef = shellRef,
+        guard timeElapsed >= reloadTime,
+            let shellRef = shellRef,
             let gameObject = gameObject,
             let origin = GameObject.find(.name(.exact("WeaponOrigin")), in: gameObject)
             else { return }
+
+        timeElapsed = 0
 
         let shell = GameObject.instantiate(original: shellRef, addToScene: false)
         shell.layer = .projectile

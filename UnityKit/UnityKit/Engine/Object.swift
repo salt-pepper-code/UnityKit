@@ -57,20 +57,20 @@ open class Object: Identifiable {
     }
     
     internal func removeAllComponents() {
-        
-        components.removeAll()
+        components.forEach { $0.remove() }
     }
     
     public func removeComponentsOfType(_ type: Component.Type) {
-                
+
         while let index = components.index(where: { $0.self === type }) {
-            components.remove(at: index)
+            components[index].remove()
         }
     }
     
     public func removeComponent(_ component: Component) {
         
         if let index = components.index(where: { $0 == component }) {
+            components[index].onDestroy()
             components.remove(at: index)
         }
     }

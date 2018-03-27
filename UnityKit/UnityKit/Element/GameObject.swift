@@ -166,9 +166,9 @@ public final class GameObject: Object {
     }
     
     public override func destroy() {
-        
-        super.destroy()
+
         parent?.removeChild(self)
+        super.destroy()
     }
     
     public func instantiate() -> GameObject {

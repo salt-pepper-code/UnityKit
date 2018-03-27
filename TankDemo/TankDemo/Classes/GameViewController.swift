@@ -82,7 +82,7 @@ class GameViewController: UIViewController {
         guard let tank = loadTank(type: .player("Player"), position: Vector3(0, 1, 0), color: Color(hexString: "#7ECE40"))
             else { return }
         loadTank(type: .ennemy("Ennemy1"), position: Vector3(-13, 1, -5), color: Color(hexString: "#E52E28"))
-        loadTank(type: .ennemy("Ennemy2"), position: Vector3(13, 1, -5), color: Color(hexString: "#2A64B2")) // Vector3(3, 1, 30)
+        loadTank(type: .ennemy("Ennemy2"), position: Vector3(3, 1, 30), color: Color(hexString: "#2A64B2"))
 
         // Camera Setup
         guard let camera = Camera.main()

@@ -90,8 +90,12 @@ public final class Joystick: MonoBehaviour {
 
         guard let touch = Input.getTouch(0),
             let phase = touch.phase,
-            touch.view == view
-            else { return }
+            touch.view == view else {
+
+                onComplete?()
+                resetPosition()
+                return
+        }
 
         switch phase {
         case .began, .moved, .stationary:

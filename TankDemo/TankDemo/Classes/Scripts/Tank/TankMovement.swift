@@ -7,7 +7,7 @@ class TankMovement: MonoBehaviour {
     public var joystick: Joystick?
     public var vehicle: Vehicle?
     public let breakingSpeed: Float = 10
-    public let motorSpeed: Float = 100
+    public let motorSpeed: Float = 200
     public let turnSpeed: Float = 10
 
     //public var movementAudio: AudioSource?          // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
@@ -16,6 +16,11 @@ class TankMovement: MonoBehaviour {
     //public var pitchRange: Float = 0.1              // The amount by which the pitch of the engine noises can vary.
     //private var originalPitch: Float = 0            // The pitch of the audio source at the start of the scene.
     //private var particleSystems:ParticleSystem?     // References to all the particles systems used by the Tanks
+
+    override func onDestroy() {
+        joystick?.onUpdate = nil
+        joystick?.onComplete = nil
+    }
 
     override func awake() {
 

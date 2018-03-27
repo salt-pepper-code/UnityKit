@@ -13,14 +13,8 @@ open class Component: Object {
     public required init() {
         super.init()
     }
-    
-    deinit {
-        onDestroy()
-    }
-        
+
     open override func destroy() {
-        
-        super.destroy()
         gameObject?.removeComponent(self)
     }
     

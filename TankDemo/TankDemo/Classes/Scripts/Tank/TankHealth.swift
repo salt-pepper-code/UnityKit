@@ -20,7 +20,7 @@ class TankHealth: MonoBehaviour {
         setHealthUI()
 
         // If the current health is at or below zero and it has not yet been registered, call OnDeath.
-        if currentHealth <= 0 && !dead {
+        if currentHealth <= 0 {
             onDeath()
         }
     }
@@ -31,12 +31,7 @@ class TankHealth: MonoBehaviour {
 
     func onDeath() {
 
-        // Set the flag so that this function is only called once.
-        dead = true
-
-        print("dead")
-
         // Turn the tank off.
-        gameObject?.setActive(false)
+        gameObject?.destroy()
     }
 }

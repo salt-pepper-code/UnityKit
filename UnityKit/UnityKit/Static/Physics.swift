@@ -18,8 +18,8 @@ public class Physics {
 
                 var boundingBox = gameObject.boundingBox
 
-                let min = gameObject.node.presentation.convertPosition(boundingBox.min, to: scene.rootGameObject.node)
-                let max = gameObject.node.presentation.convertPosition(boundingBox.max, to: scene.rootGameObject.node)
+                let min = boundingBox.min + gameObject.transform.position
+                let max = boundingBox.max + gameObject.transform.position
 
                 boundingBox = (min: min, max: max)
 
