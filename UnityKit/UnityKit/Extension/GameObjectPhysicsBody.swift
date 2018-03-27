@@ -52,7 +52,8 @@ extension GameObject {
             body = nil
         }
 
-        guard let physicsBody = body
+        guard let physicsBody = body,
+            layer != .ground
             else { return }
 
         getCollisionLayer().map { physicsBody.collisionBitMask = $0.rawValue }

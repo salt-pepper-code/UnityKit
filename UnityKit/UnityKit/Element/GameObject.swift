@@ -75,9 +75,12 @@ public final class GameObject: Object {
         }
     }
 
-    public var boundingBox: (min: SCNVector3, max: SCNVector3) {
-
+    public var boundingBox: BoundingBox {
         return node.boundingBox
+    }
+
+    public var boundingSphere: BoundingSphere {
+        return node.boundingSphere
     }
 
     public convenience init?(fileName: String, nodeName: String?, bundle: Bundle = Bundle.main) {

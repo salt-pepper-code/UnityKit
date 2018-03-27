@@ -165,6 +165,7 @@ public final class Camera: Component {
     }
     
     public static func main(in scene: Scene? = Scene.sharedInstance) -> Camera? {
+        
         guard let scene = scene
             else { return nil }
 

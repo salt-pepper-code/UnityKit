@@ -3,8 +3,8 @@ import UnityKit
 import SceneKit
 
 enum PlayerType {
-    case player
-    case enemy
+    case player(String)
+    case ennemy(String)
 }
 
 class GameViewController: UIViewController {
@@ -79,8 +79,8 @@ class GameViewController: UIViewController {
             .set(center: Vector3Nullable(nil, -4, nil))
 
         // Tank Setup
-        loadTank(type: .player, position: Vector3(0, 2, 0))
-        loadTank(type: .enemy, position: Vector3(4, 2, 0))
+        loadTank(type: .player("Player"), position: Vector3(0, 2, 0))
+        loadTank(type: .ennemy("Ennemy"), position: Vector3(0, 2, -6))
     }
 
     func loadTank(type: PlayerType, position: Vector3) {
@@ -108,14 +108,18 @@ class GameViewController: UIViewController {
                 $0.contactWithLayer = [.projectile]
         }
 
-        if type == .player {
+        switch type {
+        case let .player(name):
+            tank.name = name
             tank.addComponent(TankMovement.self)
             tank.addComponent(TankShooting.self)
-            tank.addComponent(Vehicle.self)?
-                .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
-        } else {
+        case let .ennemy(name):
+            tank.name = name
             tank.getComponent(Renderer.self)?.material?.setColor(.diffuse, color: .red)
         }
+
+        tank.addComponent(Vehicle.self)?
+            .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
 
         tank.transform.position = position
 

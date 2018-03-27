@@ -7,6 +7,7 @@ class TankMovement: MonoBehaviour {
     public var joystick: Joystick?
     public var vehicle: Vehicle?
     public var playerNumber: Int = 1
+    public let breakingSpeed: Float = 10
     public let motorSpeed: Float = 100
     public let turnSpeed: Float = 10
     private var previousPosition: Vector3?
@@ -31,14 +32,15 @@ class TankMovement: MonoBehaviour {
 
         joystick.onComplete = { [weak self] () in
 
-            guard let vehicle = self?.vehicle
+            guard let vehicle = self?.vehicle,
+                let breakingSpeed = self?.breakingSpeed
                 else { return }
 
-            vehicle.applyBrakingForce(3, forWheelAt: 0)
-            vehicle.applyBrakingForce(3, forWheelAt: 1)
+            vehicle.applyBrakingForce(breakingSpeed, forWheelAt: 0)
+            vehicle.applyBrakingForce(breakingSpeed, forWheelAt: 1)
 
-            vehicle.applyEngineForce(0, forWheelAt: 0)
-            vehicle.applyEngineForce(0, forWheelAt: 1)
+            vehicle.applySteeringAngle(0)
+            vehicle.applyEngineForce(0)
         }
     }
 
@@ -60,28 +62,36 @@ class TankMovement: MonoBehaviour {
 
         let angle = 360 - angle - 180 - 45
         let tankYRotation = (gameObject.transform.localRotation.y * gameObject.transform.localRotation.w).radiansToDegrees
-
         let diffAngle = angle.differenceAngle(tankYRotation)
-        var turn = max(min(angle.differenceAngle(tankYRotation), turnSpeed), -turnSpeed)
 
-        if turn > -turnSpeed && turn < turnSpeed {
-            turn = 0
+        var steeringAngle = max(min(angle.differenceAngle(tankYRotation), turnSpeed), -turnSpeed)
+        let engineForce = motorSpeed
+
+        if steeringAngle > -turnSpeed && steeringAngle < turnSpeed {
+            steeringAngle = 0
         }
-
-        var speed = motorSpeed
 
         if abs(diffAngle) > 90 {
-            speed = -motorSpeed
-            turn = -turn
-        }
 
-        vehicle.applySteeringAngle(turn, forWheelAt: 2)
-        vehicle.applySteeringAngle(turn, forWheelAt: 3)
+            vehicle.applySteeringAngle(steeringAngle, forWheelAt: 0)
+            vehicle.applySteeringAngle(steeringAngle, forWheelAt: 1)
+
+            vehicle.applySteeringAngle(-steeringAngle, forWheelAt: 2)
+            vehicle.applySteeringAngle(-steeringAngle, forWheelAt: 3)
+
+        } else {
+
+            vehicle.applySteeringAngle(0, forWheelAt: 0)
+            vehicle.applySteeringAngle(0, forWheelAt: 1)
+
+            vehicle.applySteeringAngle(steeringAngle, forWheelAt: 2)
+            vehicle.applySteeringAngle(steeringAngle, forWheelAt: 3)
+        }
 
         vehicle.applyBrakingForce(0, forWheelAt: 0)
         vehicle.applyBrakingForce(0, forWheelAt: 1)
 
-        vehicle.applyEngineForce(speed, forWheelAt: 0)
-        vehicle.applyEngineForce(speed, forWheelAt: 1)
+        vehicle.applyEngineForce(engineForce, forWheelAt: 0)
+        vehicle.applyEngineForce(engineForce, forWheelAt: 1)
     }
 }

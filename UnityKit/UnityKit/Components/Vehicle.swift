@@ -55,6 +55,11 @@ public class Vehicle: Component {
     private var parameters: [Wheel.Parameters]?
     private var vehicle: SCNPhysicsVehicle?
     private var physicsWorld: SCNPhysicsWorld?
+    public var speedInKilometersPerHour: Float {
+        guard let vehicle = vehicle
+            else { return 0 }
+        return vehicle.speedInKilometersPerHour.toFloat()
+    }
 
     @discardableResult public func configure(_ completionBlock: (Vehicle) -> ()) -> Vehicle {
 

@@ -27,6 +27,7 @@
 		0A4D0E2F205754F900C119B6 /* SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E2E205754F900C119B6 /* SCNNode.swift */; };
 		0A4D0E312057550C00C119B6 /* Volume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E302057550C00C119B6 /* Volume.swift */; };
 		0A4D0E3620581EAB00C119B6 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D0E3520581EAB00C119B6 /* Debug.swift */; };
+		0A6078D0206A4FC3003A297C /* Physics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6078CF206A4FC3003A297C /* Physics.swift */; };
 		0A81D19F205ADD650046AEDA /* Instantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81D19E205ADD650046AEDA /* Instantiable.swift */; };
 		0A936912204EE43C009D04E4 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A936911204EE43C009D04E4 /* Tag.swift */; };
 		0A936914204EE46F009D04E4 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A936913204EE46F009D04E4 /* Layer.swift */; };
@@ -87,6 +88,7 @@
 		0A4D0E2E205754F900C119B6 /* SCNNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCNNode.swift; sourceTree = "<group>"; };
 		0A4D0E302057550C00C119B6 /* Volume.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Volume.swift; sourceTree = "<group>"; };
 		0A4D0E3520581EAB00C119B6 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
+		0A6078CF206A4FC3003A297C /* Physics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Physics.swift; sourceTree = "<group>"; };
 		0A81D19E205ADD650046AEDA /* Instantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instantiable.swift; sourceTree = "<group>"; };
 		0A936911204EE43C009D04E4 /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		0A936913204EE46F009D04E4 /* Layer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				0A4D0E2620574A1400C119B6 /* Time.swift */,
 				0A4D0E2720574A1400C119B6 /* Screen.swift */,
 				0A4D0E3520581EAB00C119B6 /* Debug.swift */,
+				0A6078CF206A4FC3003A297C /* Physics.swift */,
 			);
 			path = Static;
 			sourceTree = "<group>";
@@ -283,8 +286,8 @@
 				0A4A543B1FE93B9800DA4F22 /* GameObjectExtension.swift */,
 				0AE74524205B376B00DA0051 /* GameObjectPhysicsBody.swift */,
 				0AD605C52002B93D00908043 /* GameObjectSearchExtension.swift */,
-				0A4A54471FE9CC6100DA4F22 /* GeometryExtension.swift */,
 				0AA9FD502052A1BA004CCB0E /* GameObjectSCNActionable.swift */,
+				0A4A54471FE9CC6100DA4F22 /* GeometryExtension.swift */,
 				0AD605D020039E9500908043 /* ObjectSearchExtension.swift */,
 				0A4A543F1FE962F600DA4F22 /* MathExtension.swift */,
 				0A4D0DDF2055450800C119B6 /* FloatingPointExtension.swift */,
@@ -441,6 +444,7 @@
 				0A4D0E2B20574CD400C119B6 /* Collider.swift in Sources */,
 				0A4A543C1FE93B9800DA4F22 /* GameObjectExtension.swift in Sources */,
 				0A4D0E2F205754F900C119B6 /* SCNNode.swift in Sources */,
+				0A6078D0206A4FC3003A297C /* Physics.swift in Sources */,
 				0A4D0E2920574A1400C119B6 /* Screen.swift in Sources */,
 				0AD45A4820548A7A0055713A /* Identifiable.swift in Sources */,
 				0A13A2CF2059514A005EEFE3 /* Mesh.swift in Sources */,

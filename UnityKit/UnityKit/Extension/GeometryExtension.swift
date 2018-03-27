@@ -79,13 +79,15 @@ extension SCNGeometry {
         return geometry
     }
 
-
     internal static func vertices(source: SCNGeometrySource) -> [Vector3] {
+
         let vectors = source.data.withUnsafeBytes { (pointer: UnsafePointer<UInt8>) -> [Vector3] in
+
             let rawPointer = UnsafeRawPointer(pointer)
             let strides = stride(from: source.dataOffset,
                                  to: source.dataOffset + source.dataStride * source.vectorCount,
                                  by: source.dataStride)
+
             return strides.map { (byteOffset) -> Vector3 in
                 Vector3(rawPointer.load(fromByteOffset: byteOffset, as: float3.self))
             }

@@ -2,6 +2,7 @@
 import SceneKit
 
 public typealias BoundingBox = (min: Vector3, max: Vector3)
+public typealias BoundingSphere = (center: Vector3, radius: Float)
 
 public class Volume {
     
@@ -54,4 +55,56 @@ public func * (left: BoundingBox, right: Vector3) -> BoundingBox {
 
 public func * (left: BoundingBox, right: Float) -> BoundingBox {
     return (min: left.min * right, max: left.max * right)
+}
+
+extension GameObject {
+
+    public func boundingBoxFromBoundingSphere(relativeTo gameObject: GameObject? = nil) -> BoundingBox? {
+        return node.boundingBoxFromBoundingSphere(relativeTo: gameObject?.node)
+    }
+
+    public func boundingBox(relativeTo gameObject: GameObject) -> BoundingBox? {
+        return node.boundingBox(relativeTo: gameObject.node)
+    }
+}
+
+extension SCNNode {
+
+    func boundingBoxFromBoundingSphere(relativeTo node: SCNNode? = nil) -> BoundingBox? {
+
+        guard let _ = geometry
+            else { return nil }
+
+        let node = node ?? self
+
+        let boundingSphere = self.boundingSphere
+        let relativeCenter = convertPosition(boundingSphere.center, to: node)
+        
+        return (min: relativeCenter - boundingSphere.radius, max: relativeCenter + boundingSphere.radius)
+    }
+
+    func boundingBox(relativeTo node: SCNNode) -> BoundingBox? {
+
+        var boundingBox = childNodes
+            .reduce(nil) { $0 + $1.boundingBox(relativeTo: node) }
+
+        guard let geometry = geometry,
+            let source = geometry.sources(for: SCNGeometrySource.Semantic.vertex).first
+            else { return boundingBox }
+
+        let vertices = SCNGeometry.vertices(source: source).map { convertPosition($0, to: node) }
+        guard let first = vertices.first
+            else { return boundingBox }
+
+        boundingBox += vertices.reduce(into: (min: first, max: first), { boundingBox, vertex in
+            boundingBox.min.x = min(boundingBox.min.x, vertex.x)
+            boundingBox.min.y = min(boundingBox.min.y, vertex.y)
+            boundingBox.min.z = min(boundingBox.min.z, vertex.z)
+            boundingBox.max.x = max(boundingBox.max.x, vertex.x)
+            boundingBox.max.y = max(boundingBox.max.y, vertex.y)
+            boundingBox.max.z = max(boundingBox.max.z, vertex.z)
+        })
+
+        return boundingBox
+    }
 }
