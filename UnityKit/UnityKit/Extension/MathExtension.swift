@@ -80,6 +80,18 @@ extension CGFloat {
     }
 }
 
+extension Color {
+
+    public static func lerp(from v0: Color, to v1: Color, time t: TimeInterval) -> Color {
+        let comp0 = v0.components
+        let comp1 = v1.components
+        return Color(red: .lerp(from: comp0.red, to: comp1.red, time: t),
+                     green: .lerp(from: comp0.green, to: comp1.green, time: t),
+                     blue: .lerp(from: comp0.blue, to: comp1.blue, time: t),
+                     alpha: .lerp(from: comp0.alpha, to: comp1.alpha, time: t))
+    }
+}
+
 public func normalize(_ value: Float, in range: ClosedRange<Float>) -> Float {
     return (value - range.lowerBound) / (range.upperBound - range.lowerBound)
 }

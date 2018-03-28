@@ -72,6 +72,14 @@ public class GameObject: Object {
         }
         set {
             node.isHidden = !newValue
+
+            for component in components {
+
+                guard let behaviour = component as? Behaviour
+                    else { continue }
+
+                behaviour.enabled = newValue
+            }
         }
     }
 
@@ -231,7 +239,9 @@ public class GameObject: Object {
     
     public override func start() {
         
-        guard didAwake, !didStart
+        guard didAwake,
+            !didStart,
+            activeInHierarchy
             else { return }
 
         guard !waitNextUpdate else {
@@ -242,14 +252,15 @@ public class GameObject: Object {
         didStart = true
         components.forEach { $0.start() }
         children.forEach { $0.start() }
+
+        setActive(true)
     }
 
     public override func preUpdate() {
 
-        guard didAwake
-            else { return }
-
-        guard didStart
+        guard didAwake,
+            didStart,
+            activeInHierarchy
             else { return }
 
         for component in components {
@@ -265,7 +276,8 @@ public class GameObject: Object {
 
     public override func update() {
         
-        guard didAwake
+        guard didAwake,
+            activeInHierarchy
             else { return }
 
         guard didStart else {
@@ -286,10 +298,9 @@ public class GameObject: Object {
 
     public override func fixedUpdate() {
 
-        guard didAwake
-            else { return }
-
-        guard didStart
+        guard didAwake,
+            didStart,
+            activeInHierarchy
             else { return }
 
         for component in components {

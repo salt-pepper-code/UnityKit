@@ -1,14 +1,22 @@
 
 import UnityKit
+import Foundation
 
 class TankHealth: MonoBehaviour {
 
     let startingHealth: Float = 100
     var currentHealth: Float = 0
+    let fullHealthColor = Color.green
+    let zeroHealthColor = Color.red
+    var fillImage: UI.Image?
+    var slider: UI.Slider?
+
+    override func onEnable() {
+        currentHealth = startingHealth
+        setHealthUI()
+    }
 
     override func start() {
-
-        currentHealth = startingHealth
 
         // Setup Canvas
         let size: Float = 4
@@ -31,15 +39,15 @@ class TankHealth: MonoBehaviour {
                 $0.loadImage(fileName: "HealthWheel.png", type: .filled(canvas.pixelSize()), color: Color(hexString: "#FFFFFF", alpha: 0.31))
         }
 
-        let fillImage = fillArea.addComponent(UI.Image.self)?
+        fillImage = fillArea.addComponent(UI.Image.self)?
             .configure {
                 $0.fillMethod = .radial360(.top)
                 $0.clockwise = false
-                $0.loadImage(fileName: "HealthWheel.png", type: .filled(canvas.pixelSize()), color: Color(hexString: "#FF0000", alpha: 0.59))
+                $0.loadImage(fileName: "HealthWheel.png", type: .filled(canvas.pixelSize()), color: fullHealthColor)
         }
 
         // Setup Slider component that will control how to fill the image
-        healthSlider.addComponent(UI.Slider.self)?
+        slider = healthSlider.addComponent(UI.Slider.self)?
             .configure {
                 $0.fillImage = fillImage
                 $0.minValue = 0
@@ -65,7 +73,9 @@ class TankHealth: MonoBehaviour {
     }
 
     func setHealthUI() {
-        gameObject?.getComponentInChild(UI.Slider.self)?.value = currentHealth
+
+        slider?.value = currentHealth
+        fillImage?.color = Color.lerp(from: zeroHealthColor, to: fullHealthColor, time: (currentHealth / startingHealth).toDouble())
     }
 
     func onDeath() {
