@@ -89,8 +89,8 @@ open class Object: Identifiable {
 
     @discardableResult internal func addComponent<T: Component>(external: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
         
-        if external && (T.self === Renderer.self || T.self === Transform.self) {
-            return nil
+        if external && (T.self === Renderer.self || T.self === Transform.self || T.self === MeshFilter.self) {
+            fatalError("Can't manually add Renderer, Transform, MeshFilter or Canvas")
         }
 
         return addComponent(T(), gameObject: gameObject)

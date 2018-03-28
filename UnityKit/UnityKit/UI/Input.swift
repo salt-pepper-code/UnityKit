@@ -4,7 +4,7 @@ import SceneKit
 public typealias TouchPhase = UITouchPhase
 public typealias TouchType = UITouchType
 
-public class Touch {
+public final class Touch {
 
     private var previousTime: TimeInterval?
     private var updatedTime: TimeInterval = 0
@@ -64,7 +64,7 @@ public class Touch {
     }
 }
 
-public class Input {
+public final class Input {
 
     internal static var touches: [Touch]?
 

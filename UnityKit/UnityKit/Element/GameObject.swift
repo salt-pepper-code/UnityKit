@@ -1,7 +1,7 @@
 import Foundation
 import SceneKit
 
-public final class GameObject: Object {
+public class GameObject: Object {
 
     internal var task: DispatchWorkItem?
 
@@ -29,7 +29,7 @@ public final class GameObject: Object {
 
     public var tag: Tag = .untagged
 
-    internal let node: SCNNode
+    internal var node: SCNNode
 
     private(set) public var transform: Transform!
     private(set) public var renderer: Renderer?
@@ -128,13 +128,17 @@ public final class GameObject: Object {
     public init(_ node: SCNNode) {
         
         self.node = node
-        
         super.init()
-        
+        initialize()
+        awake()
+    }
+
+    internal func initialize() {
+
         self.name = node.name ?? "No name"
         self.layer = .`default`
         self.transform = addComponent(external: false, type: Transform.self)
-        
+
         if let geometry = node.geometry {
 
             let meshFilter = addComponent(external: false, type: MeshFilter.self)
@@ -152,9 +156,8 @@ public final class GameObject: Object {
 
             cameraComponent.scnCamera = camera
         }
-        
+
         GameObject.convertAllChildToGameObjects(self)
-        awake()
     }
     
     public required init() {

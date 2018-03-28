@@ -10,11 +10,11 @@ enum PlayerType {
 class GameViewController: UIViewController {
 
     override func loadView() {
-        self.view = View.makeView(sceneName: "Scene.scn")
+        self.view = UI.View.makeView(sceneName: "Scene.scn")
     }
 
-    var sceneView: View {
-        return self.view as! View
+    var sceneView: UI.View {
+        return self.view as! UI.View
     }
 
     override func viewDidLoad() {
@@ -83,6 +83,14 @@ class GameViewController: UIViewController {
             let tank = loadTank(type: .player("Player"), position: Vector3(0, 1, 0), color: Color(hexString: "#7ECE40"))
             else { return }
 
+        // Setup Tank Canvas
+        let size: Float = 3.5
+        let canvas = CanvasObject(worldSize: Size(size, size), pixelPerUnit: 100)
+        canvas.transform.localEulerAngles = Vector3(90, 0, 0)
+        canvas.addComponent(UI.Image.self)?.loadImage(fileName: "HealthWheel.png", type: .filled)
+        tank.addChild(canvas)
+
+        // Ennemies Setup
         loadTank(type: .ennemy("Ennemy1"), position: Vector3(-13, 1, -5), color: Color(hexString: "#E52E28"))
         loadTank(type: .ennemy("Ennemy2"), position: Vector3(3, 1, 30), color: Color(hexString: "#2A64B2"))
 
