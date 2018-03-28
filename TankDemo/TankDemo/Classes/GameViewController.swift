@@ -83,13 +83,6 @@ class GameViewController: UIViewController {
             let tank = loadTank(type: .player("Player"), position: Vector3(0, 1, 0), color: Color(hexString: "#7ECE40"))
             else { return }
 
-        // Setup Tank Canvas
-        let size: Float = 3.5
-        let canvas = CanvasObject(worldSize: Size(size, size), pixelPerUnit: 100)
-        canvas.transform.localEulerAngles = Vector3(90, 0, 0)
-        canvas.addComponent(UI.Image.self)?.loadImage(fileName: "HealthWheel.png", type: .filled)
-        tank.addChild(canvas)
-
         // Ennemies Setup
         loadTank(type: .ennemy("Ennemy1"), position: Vector3(-13, 1, -5), color: Color(hexString: "#E52E28"))
         loadTank(type: .ennemy("Ennemy2"), position: Vector3(3, 1, 30), color: Color(hexString: "#2A64B2"))
@@ -142,6 +135,13 @@ class GameViewController: UIViewController {
 
         scene.addGameObject(tank)
 
+        // Setup Tank Canvas
+        let size: Float = 3.5
+        let canvas = CanvasObject(worldSize: Size(size, size), pixelPerUnit: 100)
+        canvas.transform.localEulerAngles = Vector3(90, 0, 0)
+        canvas.addComponent(UI.Image.self)?.loadImage(fileName: "HealthWheel.png", type: .filled)
+        tank.addChild(canvas)
+        
         return tank
     }
 
