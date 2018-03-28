@@ -17,7 +17,7 @@ extension Degree {
         return angle
     }
 
-    public func clamp() -> Degree {
+    public func clampDegree() -> Degree {
         return .clamp(self)
     }
 
@@ -45,6 +45,18 @@ extension FloatingPoint {
     
     public var degreesToRadians: Self { return self * Self.degToRad() }
     public var radiansToDegrees: Self { return self * Self.radToDeg() }
+
+    public mutating func clamp(_ range: ClosedRange<Self>) {
+        self = Self.clamp(self, range: range)
+    }
+
+    public static func clamp(_ value: Self, range: ClosedRange<Self>) -> Self {
+        return max(min(value, range.upperBound), range.lowerBound)
+    }
+
+    public func clamp01() -> Self {
+        return Self.clamp(self, range: 0...1)
+    }
 }
 
 extension Double {

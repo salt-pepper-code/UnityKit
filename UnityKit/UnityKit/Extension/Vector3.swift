@@ -153,7 +153,7 @@ extension Vector3 {
     }
 
     public func angleClamp() -> Vector3 {
-        return Vector3(x.clamp(), y.clamp(), z.clamp())
+        return Vector3(x.clampDegree(), y.clampDegree(), z.clampDegree())
     }
 
     /**

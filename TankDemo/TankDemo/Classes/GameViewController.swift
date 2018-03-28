@@ -134,13 +134,6 @@ class GameViewController: UIViewController {
         tank.transform.position = position
 
         scene.addGameObject(tank)
-
-        // Setup Tank Canvas
-        let size: Float = 3.5
-        let canvas = CanvasObject(worldSize: Size(size, size), pixelPerUnit: 100)
-        canvas.transform.localEulerAngles = Vector3(90, 0, 0)
-        canvas.addComponent(UI.Image.self)?.loadImage(fileName: "HealthWheel.png", type: .filled)
-        tank.addChild(canvas)
         
         return tank
     }

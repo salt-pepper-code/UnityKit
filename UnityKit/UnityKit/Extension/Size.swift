@@ -28,6 +28,20 @@ extension Size {
     }
 }
 
+extension CGSize {
+
+    public func toSize() -> Size {
+        return Size(width: width.toFloat(), height: height.toFloat())
+    }
+}
+
+extension Size: Equatable {
+
+    public static func == (left: Size, right: Size) -> Bool {
+        return left.width == right.width && left.height == right.height
+    }
+}
+
 /**
  * Multiplies the x, y and z fields of a Vector2 with the same scalar value and
  * returns the result as a new Vector2.

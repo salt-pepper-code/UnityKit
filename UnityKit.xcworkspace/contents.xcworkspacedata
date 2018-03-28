@@ -5,9 +5,6 @@
       location = "group:TankDemo/TankDemo.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:UnityKitDemo/UnityKitDemo.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:UnityKit/UnityKit.xcodeproj">
    </FileRef>
 </Workspace>
