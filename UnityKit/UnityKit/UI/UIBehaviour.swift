@@ -25,8 +25,6 @@ extension UI {
             }
             guard canvasFound
                 else { fatalError("any subclass of UIBehaviour must be inside a Canvas") }
-
-            print(skScene)
         }
     }
 }

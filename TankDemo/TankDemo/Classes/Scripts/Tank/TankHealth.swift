@@ -5,7 +5,6 @@ class TankHealth: MonoBehaviour {
 
     let startingHealth: Float = 100
     var currentHealth: Float = 0
-    var dead: Bool = false
 
     override func start() {
         currentHealth = startingHealth
@@ -31,7 +30,7 @@ class TankHealth: MonoBehaviour {
 
     func onDeath() {
 
-        // Turn the tank off.
+        // Destroy tank
         gameObject?.destroy()
     }
 }

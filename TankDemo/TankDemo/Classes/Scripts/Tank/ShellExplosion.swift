@@ -29,14 +29,12 @@ class ShellExplosion: MonoBehaviour {
                                               explosionRadius: explosionRadius,
                                               replacePosition: Vector3Nullable(nil, 0, nil))
 
-            // If there is no TankHealth script attached to the gameobject, go on to the next collider.
             guard let targetHealth = targetRigidbody.getComponent(TankHealth.self)
                 else { continue }
 
             // Calculate the amount of damage the target should take based on it's distance from the shell.
             let damage = calculateDamage(targetRigidbody.position)
 
-            // Deal this damage to the tank.
             targetHealth.takeDamage(damage)
         }
 
