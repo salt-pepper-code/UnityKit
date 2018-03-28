@@ -99,6 +99,8 @@ open class Object: Identifiable {
     private func orderIndex<T: Component>(_ type: T.Type) -> Int {
 
         if type.self === Transform.self { return 0 }
+        if type.self === Camera.self { return 1 }
+        if type.self === Light.self { return 1 } 
         if type.self === MeshFilter.self { return 1 }
         if type.self === Renderer.self { return 2 }
         if type.self === Rigidbody.self { return 3 }

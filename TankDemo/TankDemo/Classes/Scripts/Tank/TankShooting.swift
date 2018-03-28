@@ -68,6 +68,14 @@ class TankShooting: MonoBehaviour {
                 $0.collideWithLayer = .all
                 $0.contactWithLayer = .all
         }
+        shell.addComponent(Light.self)?
+            .configure {
+                $0.type = .omni
+                $0.color = Color(hexString: "#FFF02B")
+                $0.intensity = 200
+                $0.attenuationDistance = 0...10
+                $0.attenuationFalloffExponent = 2
+        }
         shell.addComponent(ShellExplosion.self)
 
         gameObject.scene?.addGameObject(shell)

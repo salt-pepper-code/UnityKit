@@ -153,8 +153,14 @@ public class GameObject: Object {
 
         if let camera = node.camera,
             let cameraComponent = addComponent(Camera.self) {
-
+            
             cameraComponent.scnCamera = camera
+        }
+
+        if let light = node.light,
+            let lightComponent = addComponent(Light.self) {
+
+            lightComponent.scnLight = light
         }
 
         GameObject.convertAllChildToGameObjects(self)

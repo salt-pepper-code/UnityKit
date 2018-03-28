@@ -17,6 +17,7 @@
 		0A331FDF206BBFE2007BBE54 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A331FD9206BBFE2007BBE54 /* Image.swift */; };
 		0A331FE0206BBFE2007BBE54 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A331FDA206BBFE2007BBE54 /* Canvas.swift */; };
 		0A331FE2206BC00F007BBE54 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A331FE1206BC00F007BBE54 /* Slider.swift */; };
+		0A331FE4206BE5ED007BBE54 /* Light.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A331FE3206BE5ED007BBE54 /* Light.swift */; };
 		0A3E16842003F3F3001E3C7F /* Vector4Quaternion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3E16832003F3F3001E3C7F /* Vector4Quaternion.swift */; };
 		0A4A543C1FE93B9800DA4F22 /* GameObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A543B1FE93B9800DA4F22 /* GameObjectExtension.swift */; };
 		0A4A54401FE962F600DA4F22 /* MathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A543F1FE962F600DA4F22 /* MathExtension.swift */; };
@@ -86,6 +87,7 @@
 		0A331FD9206BBFE2007BBE54 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		0A331FDA206BBFE2007BBE54 /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		0A331FE1206BC00F007BBE54 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
+		0A331FE3206BE5ED007BBE54 /* Light.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Light.swift; sourceTree = "<group>"; };
 		0A3E16832003F3F3001E3C7F /* Vector4Quaternion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector4Quaternion.swift; sourceTree = "<group>"; };
 		0A4A543B1FE93B9800DA4F22 /* GameObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameObjectExtension.swift; sourceTree = "<group>"; };
 		0A4A543F1FE962F600DA4F22 /* MathExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathExtension.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			children = (
 				0A4D0E1D205749AB00C119B6 /* Transform.swift */,
 				0A4D0E1E205749AB00C119B6 /* Camera.swift */,
+				0A331FE3206BE5ED007BBE54 /* Light.swift */,
 				0A4D0E1F205749AB00C119B6 /* Renderer.swift */,
 				0A13A2D020595244005EEFE3 /* MeshFilter.swift */,
 				0A4D0E2A20574CD400C119B6 /* Collider.swift */,
@@ -491,6 +494,7 @@
 				0A331FDF206BBFE2007BBE54 /* Image.swift in Sources */,
 				0AD45A4C20548F790055713A /* Input.swift in Sources */,
 				0A81D19F205ADD650046AEDA /* Instantiable.swift in Sources */,
+				0A331FE4206BE5ED007BBE54 /* Light.swift in Sources */,
 				0A13A2CA2058A739005EEFE3 /* MeshCollider.swift in Sources */,
 				0AF3166C20588AD700757E38 /* BoxCollider.swift in Sources */,
 				493545F51FE86334003440E3 /* Component.swift in Sources */,

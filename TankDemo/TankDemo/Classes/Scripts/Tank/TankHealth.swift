@@ -10,19 +10,22 @@ class TankHealth: MonoBehaviour {
 
         currentHealth = startingHealth
 
-        // Setup Tank Canvas
-        let size: Float = 3.5
+        // Setup Canvas
+        let size: Float = 4
+        // CanvasObject
         let canvas = CanvasObject(worldSize: Size(size, size))
-        canvas.transform.localEulerAngles = Vector3(90, 0, 0)
-
+        // Childs
         let healthSlider = GameObject()
         let background = GameObject()
         let fillArea = GameObject()
+
+        canvas.transform.localEulerAngles = Vector3(90, 0, 0)
 
         canvas.addChild(healthSlider)
         healthSlider.addChild(background)
         healthSlider.addChild(fillArea)
 
+        // Setup Image components
         background.addComponent(UI.Image.self)?
             .configure {
                 $0.loadImage(fileName: "HealthWheel.png", type: .filled(canvas.pixelSize()), color: Color(hexString: "#FFFFFF", alpha: 0.31))
@@ -32,9 +35,10 @@ class TankHealth: MonoBehaviour {
             .configure {
                 $0.fillMethod = .radial360(.top)
                 $0.clockwise = false
-                $0.loadImage(fileName: "HealthWheel.png", type: .filled(canvas.pixelSize()), color: Color(hexString: "#FF0000", alpha: 0.31))
+                $0.loadImage(fileName: "HealthWheel.png", type: .filled(canvas.pixelSize()), color: Color(hexString: "#FF0000", alpha: 0.59))
         }
 
+        // Setup Slider component that will control how to fill the image
         healthSlider.addComponent(UI.Slider.self)?
             .configure {
                 $0.fillImage = fillImage

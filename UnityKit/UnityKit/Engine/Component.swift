@@ -25,7 +25,15 @@ open class Component: Object {
     public func remove() {
         gameObject?.removeComponent(self)
     }
-    
+
+    public override func removeComponent(_ component: Component) {
+        gameObject?.removeComponent(component)
+    }
+
+    public override func removeComponentsOfType(_ type: Component.Type) {
+        gameObject?.removeComponentsOfType(type)
+    }
+
     open override func getComponent<T: Component>(_ type: T.Type) -> T? {
         return gameObject?.getComponent(type)
     }

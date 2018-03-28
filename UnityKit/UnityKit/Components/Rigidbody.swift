@@ -225,6 +225,10 @@ public final class Rigidbody: Component, Instantiable {
         return self
     }
 
+    public override func onDestroy() {
+        gameObject?.node.physicsBody = nil
+    }
+
     public override func start() {
 
         if let _ = getComponent(Collider.self) {

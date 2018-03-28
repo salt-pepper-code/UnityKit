@@ -1,3 +1,4 @@
+
 import Foundation
 import SceneKit
 
@@ -144,7 +145,7 @@ public final class Camera: Component {
             calculateFieldOfViews()
         }
     }
-    
+
     private(set) public var target: GameObject?
     
     public required init() {
@@ -160,6 +161,15 @@ public final class Camera: Component {
         return self
     }
 
+    public override func awake() {
+
+        guard let node = gameObject?.node,
+            node.camera == nil
+            else { return }
+
+        node.camera = scnCamera
+    }
+    
     public func calculateFieldOfViews() {
         fieldOfView = hFieldOfView
     }
@@ -170,11 +180,6 @@ public final class Camera: Component {
             else { return nil }
 
         return GameObject.find(.tag(.mainCamera), in: scene)?.getComponent(Camera.self)
-    }
-    
-    public class Constraints {
-        
-        fileprivate(set) public var target: GameObject?
     }
 
     public func followTarget(target: GameObject?, distanceRange: (minimum: Float, maximum: Float)? = nil) {
