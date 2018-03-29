@@ -215,10 +215,7 @@ public class GameObject: Object {
     }
 
     internal override func movedToScene() {
-
-        components.forEach {
-            $0.movedToScene()
-        }
+        components.forEach { $0.movedToScene() }
     }
 
     public func setActive(_ active: Bool) {
@@ -272,6 +269,24 @@ public class GameObject: Object {
             component.preUpdate()
         }
         children.forEach { $0.preUpdate() }
+    }
+
+    override func internalUpdate() {
+
+        guard didAwake,
+            didStart,
+            activeInHierarchy
+            else { return }
+
+        for component in components {
+
+            guard let behaviour = component as? MonoBehaviour,
+                behaviour.enabled
+                else { continue }
+
+            behaviour.internalUpdate()
+        }
+        children.forEach { $0.internalUpdate() }
     }
 
     public override func update() {

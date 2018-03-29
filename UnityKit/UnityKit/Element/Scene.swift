@@ -105,6 +105,7 @@ open class Scene: Identifiable {
 
         Time.deltaTime = time - lastTimeStamp
         rootGameObject.update()
+        rootGameObject.internalUpdate()
         self.lastTimeStamp = time
     }
 

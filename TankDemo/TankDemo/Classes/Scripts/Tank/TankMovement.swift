@@ -18,6 +18,7 @@ class TankMovement: MonoBehaviour {
     //private var particleSystems:ParticleSystem?     // References to all the particles systems used by the Tanks
 
     override func onDestroy() {
+        
         joystick?.onUpdate = nil
         joystick?.onComplete = nil
     }
@@ -54,6 +55,9 @@ class TankMovement: MonoBehaviour {
     }
 
     private func move(_ angle: Degree, _ displacement: Float) {
+
+        guard enabled
+            else { return }
 
         if vehicle == nil {
             fetchComponents()

@@ -12,6 +12,8 @@
 		0A094C3C205B0191008CA2AB /* TankShooting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A094C38205B0190008CA2AB /* TankShooting.swift */; };
 		0A094C3D205B0191008CA2AB /* TankMovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A094C39205B0190008CA2AB /* TankMovement.swift */; };
 		0A458B202069B11E00678202 /* ShellExplosion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A458B1F2069B11E00678202 /* ShellExplosion.swift */; };
+		0A4C73A6206D238800BEBECB /* TankManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C73A5206D238800BEBECB /* TankManager.swift */; };
+		0A4C73A9206D281700BEBECB /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C73A8206D281700BEBECB /* GameManager.swift */; };
 		0A4D0E092055B70800C119B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A4D0E022055B70800C119B6 /* Assets.xcassets */; };
 		0A4D0E0A2055B70800C119B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A4D0E032055B70800C119B6 /* LaunchScreen.storyboard */; };
 		0A4D0E0B2055B70800C119B6 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A4D0E052055B70800C119B6 /* art.scnassets */; };
@@ -43,6 +45,8 @@
 		0A094C38205B0190008CA2AB /* TankShooting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TankShooting.swift; sourceTree = "<group>"; };
 		0A094C39205B0190008CA2AB /* TankMovement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TankMovement.swift; sourceTree = "<group>"; };
 		0A458B1F2069B11E00678202 /* ShellExplosion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellExplosion.swift; sourceTree = "<group>"; };
+		0A4C73A5206D238800BEBECB /* TankManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankManager.swift; sourceTree = "<group>"; };
+		0A4C73A8206D281700BEBECB /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		0A4D0DEA2055B56800C119B6 /* TankDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A4D0DFB2055B56800C119B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A4D0E022055B70800C119B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -85,6 +89,15 @@
 				0A458B1F2069B11E00678202 /* ShellExplosion.swift */,
 			);
 			path = Tank;
+			sourceTree = "<group>";
+		};
+		0A4C73A7206D280600BEBECB /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				0A4C73A8206D281700BEBECB /* GameManager.swift */,
+				0A4C73A5206D238800BEBECB /* TankManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		0A4D0DE12055B56800C119B6 = {
@@ -137,6 +150,7 @@
 		0A4D0E1B2057497700C119B6 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				0A4C73A7206D280600BEBECB /* Managers */,
 				0A6078D6206A9E22003A297C /* Camera */,
 				0A094C37205B0190008CA2AB /* Tank */,
 				0A094C34205B0190008CA2AB /* UI */,
@@ -228,12 +242,14 @@
 				0A094C3D205B0191008CA2AB /* TankMovement.swift in Sources */,
 				0A458B202069B11E00678202 /* ShellExplosion.swift in Sources */,
 				0A4D0E0D2055B70800C119B6 /* AppDelegate.swift in Sources */,
+				0A4C73A9206D281700BEBECB /* GameManager.swift in Sources */,
 				0A094C3B205B0191008CA2AB /* Joystick.swift in Sources */,
 				0A094C3C205B0191008CA2AB /* TankShooting.swift in Sources */,
 				0A6078D5206A986B003A297C /* TankHealth.swift in Sources */,
 				0A6078D8206A9E2E003A297C /* CameraControl.swift in Sources */,
 				0A4D0E0C2055B70800C119B6 /* GameViewController.swift in Sources */,
 				0A094C3A205B0191008CA2AB /* FireButton.swift in Sources */,
+				0A4C73A6206D238800BEBECB /* TankManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

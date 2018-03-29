@@ -36,13 +36,13 @@ class TankShooting: MonoBehaviour {
     }
 
     override func update() {
-
         timeElapsed += Time.deltaTime
     }
 
     private func fire() {
 
-        guard timeElapsed >= reloadTime,
+        guard enabled,
+            timeElapsed >= reloadTime,
             let shellRef = shellRef,
             let gameObject = gameObject,
             let origin = GameObject.find(.name(.exact("WeaponOrigin")), in: gameObject)

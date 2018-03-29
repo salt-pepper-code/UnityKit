@@ -80,7 +80,6 @@ class TankHealth: MonoBehaviour {
 
     func onDeath() {
 
-        // Destroy tank
-        gameObject?.destroy()
+        gameObject?.setActive(false)
     }
 }

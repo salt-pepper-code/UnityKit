@@ -44,6 +44,10 @@ open class Object: Identifiable {
 
     }
 
+    internal func internalUpdate() {
+
+    }
+
     open func update() {
         
     }

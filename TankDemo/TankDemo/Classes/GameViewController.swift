@@ -2,11 +2,6 @@
 import UnityKit
 import SceneKit
 
-enum PlayerType {
-    case player(String)
-    case ennemy(String)
-}
-
 class GameViewController: UIViewController {
 
     override func loadView() {
@@ -78,90 +73,10 @@ class GameViewController: UIViewController {
             .set(size: Vector3Nullable(nil, 8, nil))
             .set(center: Vector3Nullable(nil, -4, nil))
 
-        // Tank Setup
-        guard let camera = Camera.main(),
-            let tank = loadTank(type: .player("Player"), position: Vector3(0, 1, 0), color: Color(hexString: "#7ECE40"))
-            else { return }
-
-        // Ennemies Setup
-        loadTank(type: .ennemy("Ennemy1"), position: Vector3(-13, 1, -5), color: Color(hexString: "#E52E28"))
-        loadTank(type: .ennemy("Ennemy2"), position: Vector3(3, 1, 30), color: Color(hexString: "#2A64B2"))
-
-        // Camera Setup
-        camera.addComponent(CameraControl.self)?.set(target: tank)
-    }
-
-    @discardableResult func loadTank(type: PlayerType, position: Vector3, color: Color) -> GameObject? {
-
-        guard let scene = sceneView.sceneHolder,
-            let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
-            else { return nil }
-
-        tank.layer = .player
-
-        tank.addComponent(Rigidbody.self)?
-            .configure {
-                $0.isKinematic = false
-                $0.constraints = [.freezeRotationX, .freezeRotationZ]
-                $0.set(property: .allowsResting(false))
-                $0.set(property: .mass(80))
-                $0.set(property: .restitution(0.1))
-                $0.set(property: .friction(0.5))
-                $0.set(property: .rollingFriction(0))
-        }
-        tank.addComponent(MeshCollider.self)?
-            .set(mesh: tank.getComponent(MeshFilter.self)?.mesh)
-            .configure {
-                $0.collideWithLayer = [.all]
-                $0.contactWithLayer = [.projectile]
-        }
-
-        switch type {
-        case let .player(name):
-            tank.name = name
-            tank.addComponent(TankMovement.self)
-            tank.addComponent(TankShooting.self)
-        case let .ennemy(name):
-            tank.name = name
-        }
-
-        tank.getComponent(Renderer.self)?.material?.setColor(.diffuse, color: color)
-
-        tank.addComponent(TankHealth.self)
-        tank.addComponent(Vehicle.self)?
-            .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
-
-        tank.transform.position = position
-
-        scene.addGameObject(tank)
-        
-        return tank
-    }
-
-    func createWheels() -> [Wheel.Parameters] {
-
-        let positionXZ: Float = 0.56
-        let positionY: Float = 0.8
-
-        let wheels: [Wheel.Parameters] =
-            [{ var wheel = Wheel.Parameters(nodeName: "Wheel_Back_R")
-                wheel.connectionPosition = Vector3(positionXZ, positionY, positionXZ)
-                wheel.axle = Vector3(1, 0, 0)
-                return wheel }(),
-             { var wheel = Wheel.Parameters(nodeName: "Wheel_Back_L")
-                wheel.connectionPosition = Vector3(-positionXZ, positionY, positionXZ)
-                wheel.axle = Vector3(1, 0, 0)
-                return wheel }(),
-             { var wheel = Wheel.Parameters(nodeName: "Wheel_Front_R")
-                wheel.connectionPosition = Vector3(positionXZ, positionY, -positionXZ)
-                wheel.axle = Vector3(1, 0, 0)
-                return wheel }(),
-             { var wheel = Wheel.Parameters(nodeName: "Wheel_Front_L")
-                wheel.connectionPosition = Vector3(-positionXZ, positionY, -positionXZ)
-                wheel.axle = Vector3(1, 0, 0)
-                return wheel }()]
-
-        return wheels
+        // GameManager
+        let gameManager = GameObject(name: "GameManager")
+        gameManager.addComponent(GameManager.self)
+        scene.addGameObject(gameManager)
     }
 
     func setup(joystick: Joystick) {
