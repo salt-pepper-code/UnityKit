@@ -219,21 +219,15 @@ public final class Light: Component {
     }
 
     /*!
-     @property spotInnerAngle
-     @abstract The angle in degrees between the spot direction and the lit element below which the lighting is at full strength. Animatable. Defaults to 0.
+     @property spotAngle
+     @abstract The angle in degrees between the spot direction and the lit element below/after which the lighting is at full strength. Animatable. Inner defaults to 0. Outer defaults to 45 degrees.
      */
-    public var spotInnerAngle: CGFloat {
-        get { return scnLight.spotInnerAngle }
-        set { scnLight.spotInnerAngle = newValue }
-    }
-
-    /*!
-     @property spotOuterAngle
-     @abstract The angle in degrees between the spot direction and the lit element after which the lighting is at zero strength. Animatable. Defaults to 45 degrees.
-     */
-    public var spotOuterAngle: CGFloat {
-        get { return scnLight.spotOuterAngle }
-        set { scnLight.spotOuterAngle = newValue }
+    public var spotAngle: (inner: CGFloat, outer: CGFloat) {
+        get { return (scnLight.spotInnerAngle, scnLight.spotOuterAngle) }
+        set {
+            scnLight.spotInnerAngle = newValue.inner
+            scnLight.spotOuterAngle = newValue.outer
+        }
     }
 
     /*!

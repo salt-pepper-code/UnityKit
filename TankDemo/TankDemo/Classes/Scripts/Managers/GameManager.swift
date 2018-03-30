@@ -122,13 +122,11 @@ class GameManager: MonoBehaviour {
 
         queueCoroutine((execute: { [weak self] in
 
-            let first = self?.tanks.filter({
+            guard let tank = self?.tanks.filter({
                 guard let gameObject = $0.gameObject
                     else { return false }
                 return gameObject.activeSelf
-            }).first
-
-            guard let tank = first,
+            }).first,
                 let name = tank.gameObject?.name,
                 let count = self?.roundWinners[name]
                 else { return }
@@ -163,7 +161,7 @@ class GameManager: MonoBehaviour {
                 self?.gameLoop()
             }
 
-            }, exitCondition: { (timePassed) in return true }))
+            }, exitCondition: nil))
     }
 
     private func endMessage() -> String {
