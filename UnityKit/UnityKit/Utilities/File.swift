@@ -7,7 +7,12 @@ internal func searchPathForResource(for filename: String, extension ext: String?
 
     for item in enumerator {
 
-        guard let filePath = item as? String
+        guard let filePath = item as? String,
+            !filePath.starts(with: "Frameworks"),
+            !filePath.starts(with: "Base.lproj"),
+            !filePath.starts(with: "_CodeSignature"),
+            !filePath.starts(with: "META-INF"),
+            !filePath.starts(with: "Info.plist")
             else { continue }
 
         let fullPath = bundle.bundlePath + "/" + filePath
