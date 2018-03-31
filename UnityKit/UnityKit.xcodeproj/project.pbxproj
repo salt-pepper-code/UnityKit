@@ -11,6 +11,9 @@
 		0A13A2CF2059514A005EEFE3 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A13A2CE2059514A005EEFE3 /* Mesh.swift */; };
 		0A13A2D120595244005EEFE3 /* MeshFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A13A2D020595244005EEFE3 /* MeshFilter.swift */; };
 		0A290E39206DC31500B7C0D0 /* ParticleSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A290E38206DC31500B7C0D0 /* ParticleSystem.swift */; };
+		0A290E3B206FA18D00B7C0D0 /* AudioClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A290E3A206FA18D00B7C0D0 /* AudioClip.swift */; };
+		0A290E3D206FA3CC00B7C0D0 /* AudioSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A290E3C206FA3CC00B7C0D0 /* AudioSource.swift */; };
+		0A290E3F206FB85300B7C0D0 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A290E3E206FB85300B7C0D0 /* AudioEngine.swift */; };
 		0A331FDB206BBFE2007BBE54 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A331FD3206BBFE2007BBE54 /* View.swift */; };
 		0A331FDC206BBFE2007BBE54 /* UIBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A331FD4206BBFE2007BBE54 /* UIBehaviour.swift */; };
 		0A331FDD206BBFE2007BBE54 /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A331FD5206BBFE2007BBE54 /* UI.swift */; };
@@ -82,6 +85,9 @@
 		0A13A2CE2059514A005EEFE3 /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		0A13A2D020595244005EEFE3 /* MeshFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshFilter.swift; sourceTree = "<group>"; };
 		0A290E38206DC31500B7C0D0 /* ParticleSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleSystem.swift; sourceTree = "<group>"; };
+		0A290E3A206FA18D00B7C0D0 /* AudioClip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioClip.swift; sourceTree = "<group>"; };
+		0A290E3C206FA3CC00B7C0D0 /* AudioSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSource.swift; sourceTree = "<group>"; };
+		0A290E3E206FB85300B7C0D0 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
 		0A331FD3206BBFE2007BBE54 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		0A331FD4206BBFE2007BBE54 /* UIBehaviour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBehaviour.swift; sourceTree = "<group>"; };
 		0A331FD5206BBFE2007BBE54 /* UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
@@ -205,6 +211,7 @@
 				0A4D0E2C2057513F00C119B6 /* Rigidbody.swift */,
 				0AE74529205FE93A00DA0051 /* Vehicle.swift */,
 				0A290E38206DC31500B7C0D0 /* ParticleSystem.swift */,
+				0A290E3C206FA3CC00B7C0D0 /* AudioSource.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -292,6 +299,8 @@
 				0A936913204EE46F009D04E4 /* Layer.swift */,
 				0A4A54451FE97E0E00DA4F22 /* Material.swift */,
 				0A13A2CE2059514A005EEFE3 /* Mesh.swift */,
+				0A290E3E206FB85300B7C0D0 /* AudioEngine.swift */,
+				0A290E3A206FA18D00B7C0D0 /* AudioClip.swift */,
 			);
 			path = Element;
 			sourceTree = "<group>";
@@ -466,6 +475,7 @@
 				0A331FDD206BBFE2007BBE54 /* UI.swift in Sources */,
 				0A13A2D120595244005EEFE3 /* MeshFilter.swift in Sources */,
 				0AA9FD552052C844004CCB0E /* Ease.swift in Sources */,
+				0A290E3F206FB85300B7C0D0 /* AudioEngine.swift in Sources */,
 				0A331FE2206BC00F007BBE54 /* Slider.swift in Sources */,
 				0AE74528205FE34A00DA0051 /* Getteable.swift in Sources */,
 				493545F91FE8639B003440E3 /* GameObject.swift in Sources */,
@@ -478,8 +488,10 @@
 				0A4D0E20205749AB00C119B6 /* Transform.swift in Sources */,
 				0A331FDC206BBFE2007BBE54 /* UIBehaviour.swift in Sources */,
 				49B5EA1D1FE8836D002ED074 /* Vector3.swift in Sources */,
+				0A290E3D206FA3CC00B7C0D0 /* AudioSource.swift in Sources */,
 				0AF26E9D206BA5F600D826BC /* UIImageExtension.swift in Sources */,
 				0A331FDB206BBFE2007BBE54 /* View.swift in Sources */,
+				0A290E3B206FA18D00B7C0D0 /* AudioClip.swift in Sources */,
 				0A4D0E21205749AB00C119B6 /* Camera.swift in Sources */,
 				0AA9FD572052C891004CCB0E /* ActionExtension.swift in Sources */,
 				0A4D0E22205749AB00C119B6 /* Renderer.swift in Sources */,

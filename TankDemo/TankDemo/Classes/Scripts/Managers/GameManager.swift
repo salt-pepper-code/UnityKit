@@ -43,8 +43,6 @@ class GameManager: MonoBehaviour {
                 roundWinners[name] = 0
             }
         }
-        spawnAllTanks()
-        setCameraTarget()
         gameLoop()
     }
 

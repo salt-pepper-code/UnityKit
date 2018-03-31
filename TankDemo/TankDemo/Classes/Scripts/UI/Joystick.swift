@@ -4,12 +4,14 @@ import UIKit
 
 public typealias JoystickTuple = (angle: Float, displacement: Float)
 public typealias JoystickUpdate = (JoystickTuple) -> ()
+public typealias JoystickStart = () -> ()
 public typealias JoystickCompletion = () -> ()
 
 public final class Joystick: MonoBehaviour {
 
     let view: UIView
 
+    public var onStart: JoystickStart?
     public var onUpdate: JoystickUpdate? 
     public var onComplete: JoystickCompletion?
 
@@ -88,17 +90,20 @@ public final class Joystick: MonoBehaviour {
 
     public override func update() {
 
-        guard let touch = Input.getTouch(0),
-            let phase = touch.phase,
-            touch.view == view else {
+        guard let touch = Input.getTouch(0)
+            else { return }
 
-                onComplete?()
+        guard let phase = touch.phase,
+            touch.view == view else {
                 resetPosition()
                 return
         }
 
         switch phase {
-        case .began, .moved, .stationary:
+        case .began:
+            onStart?()
+            updatePosition(touch: touch)
+        case .moved, .stationary:
             updatePosition(touch: touch)
         case .cancelled, .ended:
             onComplete?()

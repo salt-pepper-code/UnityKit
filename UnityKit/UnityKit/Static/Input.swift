@@ -102,7 +102,7 @@ public final class Input {
             switch phase {
             case .began:
                 touch.viewAtBegin = touch.uitouch.view
-                touch.phase = .stationary
+                touch.phase = .began
             case .moved:
                 touch.phase = .stationary
             case .ended, .cancelled:

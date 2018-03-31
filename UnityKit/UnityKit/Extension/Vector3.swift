@@ -1,5 +1,6 @@
 
 import SceneKit
+import AVKit
 
 public typealias Vector3 = SCNVector3
 
@@ -192,6 +193,10 @@ extension Vector3 {
         let spsy = sp * sy
 
         return Quaternion((sr * cpcy - cr * spsy), (cr * spcy + sr * cpsy), (cr * cpsy - sr * spcy), (cr * cpcy + sr * spsy)).normalized()
+    }
+
+    internal func toAVAudio3DPoint() -> AVAudio3DPoint {
+        return AVAudio3DPoint(x: x, y: y, z: z)
     }
 }
 

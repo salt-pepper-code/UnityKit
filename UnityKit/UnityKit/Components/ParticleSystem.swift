@@ -29,6 +29,7 @@ public class ParticleSystem: Component {
         guard let particule = SCNParticleSystem(named: modelUrl.lastPathComponent, inDirectory: path)
             else { return nil }
 
+        particule.colliderNodes = []
         scnParticleSystem = particule
         gameObject?.node.addParticleSystem(particule)
 

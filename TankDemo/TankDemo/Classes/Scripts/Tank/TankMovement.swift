@@ -27,14 +27,41 @@ class TankMovement: MonoBehaviour {
 
         fetchComponents()
 
+        if let clip = AudioClip(fileName: "EngineIdle.aif") {
+            addComponent(AudioSource.self)?
+                .configure {
+                    $0.clip = clip
+                    $0.volume = 1
+                    $0.play()
+            }
+        }
+
         guard let joystick = joystick
             else { return }
+
+        joystick.onStart = { [weak self] () in
+            if let clip = AudioClip(fileName: "EngineDriving.aif") {
+                self?.getComponent(AudioSource.self)?
+                    .configure {
+                        $0.clip = clip
+                        $0.play()
+                }
+            }
+        }
 
         joystick.onUpdate = { [weak self] (update) -> () in
             self?.move(update.angle, update.displacement)
         }
 
         joystick.onComplete = { [weak self] () in
+
+            if let clip = AudioClip(fileName: "EngineIdle.aif") {
+                self?.getComponent(AudioSource.self)?
+                    .configure {
+                        $0.clip = clip
+                        $0.play()
+                }
+            }
 
             guard let vehicle = self?.vehicle,
                 let breakingSpeed = self?.breakingSpeed
