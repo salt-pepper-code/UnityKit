@@ -1,5 +1,6 @@
 
 import UnityKit
+import SceneKit
 
 class ShellExplosion: MonoBehaviour {
 
@@ -36,6 +37,17 @@ class ShellExplosion: MonoBehaviour {
             let damage = calculateDamage(targetRigidbody.position)
 
             targetHealth.takeDamage(damage)
+        }
+
+        if let scene = Scene.sharedInstance {
+            let empty = GameObject()
+            scene.addGameObject(empty)
+            empty.transform.position = shellTransform.position
+            empty.addComponent(ParticleSystem.self)?
+                .load(fileName: "Explosion.scnp")?
+                .executeAfter(milliseconds: 1000, block: { _ in
+                    empty.removeFromParent()
+                })
         }
 
         // Destroy the shell.

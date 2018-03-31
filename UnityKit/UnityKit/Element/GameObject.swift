@@ -29,7 +29,7 @@ public class GameObject: Object {
 
     public var tag: Tag = .untagged
 
-    internal var node: SCNNode
+    public var node: SCNNode
 
     private(set) public var transform: Transform!
     private(set) public var renderer: Renderer?
@@ -328,8 +328,13 @@ public class GameObject: Object {
         }
         children.forEach { $0.fixedUpdate() }
     }
-    
-    //Component
+
+    public func removeFromParent() {
+        parent?.removeChild(self)
+    }
+
+    // Component
+
     @discardableResult override func addComponent<T: Component>(_ component: T, gameObject: GameObject?) -> T? {
         return super.addComponent(component, gameObject: self)
     }
@@ -365,7 +370,7 @@ public class GameObject: Object {
         }
     }
     
-    //Child
+    // Child
     
     public func addToScene(_ scene: Scene) {
 
