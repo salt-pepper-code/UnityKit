@@ -74,7 +74,7 @@ public class Collider: Component, Instantiable {
         let contacts = physicsWorld.contactTest(with: physicsBody, options: [SCNPhysicsWorld.TestOption.searchMode: SCNPhysicsWorld.TestSearchMode.all])
 
         if contacts.count > 0 {
-            print(contacts)
+            Debug.log(contacts)
         }
         return false
     }

@@ -6,8 +6,8 @@ public typealias TouchType = UITouchType
 
 public final class Touch {
 
-    private var previousTime: TimeInterval?
-    private var updatedTime: TimeInterval = 0
+    fileprivate var previousTime: TimeInterval?
+    fileprivate var updatedTime: TimeInterval = 0
 
     internal var previousPosition: Vector2?
     internal var updatedPosition: Vector2 = .zero
@@ -19,6 +19,7 @@ public final class Touch {
 
         return updatedPosition - previousPosition
     }
+
     internal(set) public var deltaTime: TimeInterval {
         get {
             guard let previousTime = previousTime
@@ -34,7 +35,6 @@ public final class Touch {
 
     public let fingerId: Int
     public let uitouch: UITouch
-
     public var view: UIView? { return viewAtBegin }
     fileprivate weak var viewAtBegin: UIView?
 
@@ -49,24 +49,37 @@ public final class Touch {
     public var tapCount: Int { return uitouch.tapCount }
     public var type: TouchType { return uitouch.type }
 
+
     internal init(_ uitouch: UITouch, index: Int) {
+
         self.uitouch = uitouch
-        self.fingerId = index
-        self.updatedTime = uitouch.timestamp
+        fingerId = index
+        viewAtBegin = uitouch.view
+        phase = uitouch.phase
+        updatedTime = uitouch.timestamp
+        updatedPosition = uitouch.location(in: uitouch.view).toVector2()
+    }
+
+    internal func updateTouch(_ touch: Touch) {
+
+        if touch.view != view {
+            phase = .cancelled
+        }
+        deltaTime = touch.updatedTime
+        updatedPosition = touch.position
     }
 
     public func position(in view: UIView?) -> Vector2 {
         return uitouch.location(in: view).toVector2()
     }
 
-    public func previousPosition(in view: UIView?) -> Vector2 {
-        return uitouch.previousLocation(in: view).toVector2()
-    }
 }
 
 public final class Input {
 
-    internal static var touches: [Touch]?
+    private static var touches: [Touch]?
+    private static var stackUpdates = [TouchPhase: [Touch]]()
+    private static var clearNextFrame = false
 
     public static var touchCount: Int {
 
@@ -76,47 +89,94 @@ public final class Input {
         return touches.count
     }
 
-    internal static func preUpdateTouches(_ phase: TouchPhase) {
+    internal static func update() {
 
-        touches?.forEach { touch in
+        guard !clearNextFrame else {
+            clear()
+            return
+        }
 
-            touch.phase = phase
-            touch.deltaTime = touch.uitouch.timestamp
-            touch.updatedPosition = touch.uitouch.location(in: touch.uitouch.view).toVector2()
+        if let touches = touches {
 
-            if phase == .moved {
-                touch.previousPosition = touch.uitouch.previousLocation(in: touch.uitouch.view).toVector2()
+            Debug.log(touches.count)
+            
+            if let first = stackUpdates.first {
+
+                for (index, touch) in touches.enumerated() {
+
+                    let updatedTouch = first.value[index]
+                    touch.phase = first.key
+                    switch first.key {
+                    case .began:
+                        Debug.log("update began")
+                    case .moved:
+                        Debug.log("update moved")
+                        touch.previousPosition = touch.position
+                    case .ended:
+                        Debug.log("update ended")
+                        touch.previousPosition = touch.position
+                        clearNextFrame = true
+                    case .cancelled:
+                        Debug.log("update cancelled")
+                        clear()
+                    default:
+                        break
+                    }
+                    touch.updateTouch(updatedTouch)
+                }
+
+                stackUpdates.removeValue(forKey: first.key)
+
+            } else {
+
+                Debug.log("update stationary")
+
+                touches.forEach {
+                    $0.phase = .stationary
+                }
             }
+
+        } else if let first = stackUpdates.first,
+            first.value.first?.phase == .began {
+
+            Debug.log("setTouches")
+            setTouches(first.value)
+            update()
         }
     }
 
-    internal static func endUpdateTouches() {
+    internal static func stackTouches(_ touches: [Touch], phase: TouchPhase) {
 
-        var shouldClear = false
+        if let currentTouches = self.touches,
+            let currentFirst = currentTouches.first,
+            let first = touches.first {
 
-        touches?.forEach { touch in
-
-            guard let phase = touch.phase
-                else { return }
-
-            switch phase {
-            case .began:
-                touch.viewAtBegin = touch.uitouch.view
-                touch.phase = .began
-            case .moved:
-                touch.phase = .stationary
-            case .ended, .cancelled:
-                touch.viewAtBegin = nil
-                touch.phase = nil
-                shouldClear = true
-            case .stationary:
-                touch.previousPosition = touch.updatedPosition
+            if currentFirst.view != first.view {
+                currentTouches.forEach {
+                    $0.phase = .ended
+                }
+                clearNextFrame = true
+                Debug.log("different view")
+                return
             }
         }
 
-        if shouldClear {
-            clear()
+        switch phase {
+        case .began:
+            Debug.log("stack began")
+            if self.touches != nil || stackUpdates.count > 0 {
+                clear()
+            }
+        case .moved:
+            Debug.log("stack moved")
+        case .ended:
+            Debug.log("stack ended")
+        case .cancelled:
+            Debug.log("stack cancelled")
+        default:
+            break
         }
+        stackUpdates[phase] = touches
     }
 
     public static func getTouch(_ index: Int) -> Touch? {
@@ -124,10 +184,14 @@ public final class Input {
     }
 
     internal static func clear() {
-        self.touches = nil
+        Debug.log("clear")
+        clearNextFrame = false
+        stackUpdates.removeAll()
+        touches = nil
     }
 
     internal static func setTouches(_ touches: [Touch]) {
         self.touches = touches
     }
 }
+

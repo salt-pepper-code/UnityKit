@@ -132,7 +132,7 @@ extension UI.View: SCNSceneRendererDelegate {
 
         DispatchQueue.main.async { () -> Void in
             self.sceneHolder?.update(updateAtTime: time)
-            Input.endUpdateTouches()
+            Input.update()
         }
     }
 
@@ -175,27 +175,26 @@ extension UI.View {
 
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-        Input.setTouches(
-            touches.enumerated().map { (index, uitouch) -> Touch in
-                Touch(uitouch, index: index)
-        })
-
-        Input.preUpdateTouches(.began)
+        let touches = touches.enumerated().map { (index, uitouch) -> Touch in Touch(uitouch, index: index) }
+        Input.stackTouches(touches, phase: .began)
     }
 
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-        Input.preUpdateTouches(.moved)
+        let touches = touches.enumerated().map { (index, uitouch) -> Touch in Touch(uitouch, index: index) }
+        Input.stackTouches(touches, phase: .moved)
     }
 
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-        Input.preUpdateTouches(.ended)
+        let touches = touches.enumerated().map { (index, uitouch) -> Touch in Touch(uitouch, index: index) }
+        Input.stackTouches(touches, phase: .ended)
     }
 
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-        Input.preUpdateTouches(.cancelled)
+        let touches = touches.enumerated().map { (index, uitouch) -> Touch in Touch(uitouch, index: index) }
+        Input.stackTouches(touches, phase: .cancelled)
     }
 }
 

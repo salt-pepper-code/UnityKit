@@ -9,7 +9,7 @@ public class Time {
         let nanoTime = DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds
         let timeInterval = TimeInterval(nanoTime) / 1_000_000_000
 
-        print("Time to evaluate: \(timeInterval) seconds")
+        Debug.log("Time to evaluate: \(timeInterval) seconds")
 
         return timeInterval
     }

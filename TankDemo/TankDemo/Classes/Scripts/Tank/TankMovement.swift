@@ -27,11 +27,11 @@ class TankMovement: MonoBehaviour {
 
         fetchComponents()
 
-        if let clip = AudioClip(fileName: "EngineIdle.aif") {
+        if let clip = AudioClip(fileName: "EngineIdle.aif", playType: .loop) {
             addComponent(AudioSource.self)?
                 .configure {
                     $0.clip = clip
-                    $0.volume = 1
+                    $0.volume = 0.7
                     $0.play()
             }
         }
@@ -40,7 +40,7 @@ class TankMovement: MonoBehaviour {
             else { return }
 
         joystick.onStart = { [weak self] () in
-            if let clip = AudioClip(fileName: "EngineDriving.aif") {
+            if let clip = AudioClip(fileName: "EngineDriving.aif", playType: .loop) {
                 self?.getComponent(AudioSource.self)?
                     .configure {
                         $0.clip = clip
@@ -55,7 +55,7 @@ class TankMovement: MonoBehaviour {
 
         joystick.onComplete = { [weak self] () in
 
-            if let clip = AudioClip(fileName: "EngineIdle.aif") {
+            if let clip = AudioClip(fileName: "EngineIdle.aif", playType: .loop) {
                 self?.getComponent(AudioSource.self)?
                     .configure {
                         $0.clip = clip

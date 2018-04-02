@@ -166,7 +166,7 @@ public final class Transform: Component {
     public func lookAt(_ target: Transform) {
 
         if let constraints = gameObject?.node.constraints, constraints.count > 0 {
-            print("remove constraints on node before using lookAt")
+            Debug.log("remove constraints on node before using lookAt")
             return
         }
 

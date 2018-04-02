@@ -36,9 +36,9 @@ class FireButton: MonoBehaviour {
     private func initialize() {
         
         baseImageView.alpha = baseAlpha
-        view.addSubview(baseImageView)
         baseImageView.frame = view.bounds
-        baseImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight];
+        baseImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(baseImageView)
     }
 
     public override func update() {

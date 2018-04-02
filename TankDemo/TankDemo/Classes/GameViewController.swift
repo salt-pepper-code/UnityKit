@@ -77,11 +77,11 @@ class GameViewController: UIViewController {
         let gameManager = GameObject(name: "GameManager")
         gameManager.addComponent(GameManager.self)
         gameManager.transform.position = Vector3(0, 5, 0)
-        if let clip = AudioClip(fileName: "BackgroundMusic.wav") {
+        if let clip = AudioClip(fileName: "BackgroundMusic.wav", playType: .loop) {
             gameManager.addComponent(AudioSource.self)?
                 .configure {
                     $0.clip = clip
-                    $0.volume = 0.5
+                    $0.volume = 1
                     $0.play()
             }
         }
