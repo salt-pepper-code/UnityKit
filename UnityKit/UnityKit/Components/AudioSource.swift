@@ -21,15 +21,25 @@ public class AudioSource: Component {
 
         didSet {
 
+            let engine = AudioEngine.sharedInstance
+
+            if let oldValue = oldValue {
+                engine.disconnectNodeOutput(soundPlayer, bus: oldValue.bus)
+            }
+
             guard let clip = clip,
                 let buffer = clip.buffer
                 else { return }
 
-            let engine = AudioEngine.sharedInstance
-            engine.connect(soundPlayer, to: engine.environment, format: engine.format)
+            engine.connect(soundPlayer, to: engine.environment, fromBus: 0, toBus: clip.bus, format: engine.format)
             engine.startEngine()
 
-            soundPlayer.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
+            switch clip.playType {
+            case .loop:
+                soundPlayer.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
+            case .playOnce:
+                soundPlayer.scheduleBuffer(buffer, at: nil)
+            }
         }
     }
 
@@ -65,8 +75,12 @@ public class AudioSource: Component {
 
     public override func onDestroy() {
 
-        soundPlayer.stop()
-        AudioEngine.sharedInstance.detach(soundPlayer)
+        stop()
+        let engine = AudioEngine.sharedInstance
+        if let clip = clip {
+            engine.disconnectNodeOutput(soundPlayer, bus: clip.bus)
+        }
+        engine.detach(soundPlayer)
     }
 
     public func play() {

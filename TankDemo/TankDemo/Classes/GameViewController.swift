@@ -82,7 +82,7 @@ class GameViewController: UIViewController {
             gameManager.addComponent(AudioSource.self)?
                 .configure {
                     $0.clip = clip
-                    $0.volume = 1
+                    $0.volume = 0.3
                     $0.play()
             }
         }

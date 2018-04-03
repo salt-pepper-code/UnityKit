@@ -88,6 +88,8 @@ public final class Joystick: MonoBehaviour {
         return true
     }
 
+    private var didStart = false
+
     public override func update() {
 
         guard let touch = Input.getTouch(0)
@@ -95,18 +97,22 @@ public final class Joystick: MonoBehaviour {
 
         guard let phase = touch.phase,
             touch.view == view else {
-                onComplete?()
-                resetPosition()
+                if didStart {
+                    onComplete?()
+                    resetPosition()
+                }
                 return
         }
 
         switch phase {
         case .began:
+            didStart = true
             onStart?()
             updatePosition(touch: touch)
         case .moved, .stationary:
             updatePosition(touch: touch)
         case .cancelled, .ended:
+            didStart = false
             onComplete?()
             resetPosition()
         }

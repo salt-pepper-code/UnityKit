@@ -76,6 +76,14 @@ class TankShooting: MonoBehaviour {
                 $0.attenuationDistance = 0...10
                 $0.attenuationFalloffExponent = 2
         }
+        if let clip = AudioClip(fileName: "ShotFiring.wav") {
+            shell.addComponent(AudioSource.self)?
+                .configure {
+                    $0.clip = clip
+                    $0.volume = 1.5
+                    $0.play()
+            }
+        }
         shell.addComponent(ShellExplosion.self)
 
         gameObject.scene?.addGameObject(shell)

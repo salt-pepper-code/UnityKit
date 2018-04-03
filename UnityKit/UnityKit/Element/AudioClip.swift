@@ -9,7 +9,7 @@ public class AudioClip {
     }
 
     public var playType: PlayType = .playOnce
-    
+    private(set) internal var bus: Int = 0
     private(set) internal var buffer: AVAudioPCMBuffer?
     public let filename: String
 
@@ -20,12 +20,14 @@ public class AudioClip {
 
         do {
             let file = try AVAudioFile(forReading: audioUrl)
-            guard let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: file.fileFormat.sampleRate, channels: file.fileFormat.channelCount, interleaved: false),
+            guard let format = AudioEngine.sharedInstance.format,// AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: file.fileFormat.sampleRate, channels: file.fileFormat.channelCount, interleaved: false),
                 let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: UInt32(file.length))
                 else { return nil }
 
             try file.read(into: buffer)
 
+            let engine = AudioEngine.sharedInstance
+            self.bus = engine.environment.nextAvailableInputBus
             self.buffer = buffer
             self.filename = fileName
             self.playType = playType

@@ -31,7 +31,7 @@ class TankMovement: MonoBehaviour {
             addComponent(AudioSource.self)?
                 .configure {
                     $0.clip = clip
-                    $0.volume = 0.7
+                    $0.volume = 0.4
                     $0.play()
             }
         }

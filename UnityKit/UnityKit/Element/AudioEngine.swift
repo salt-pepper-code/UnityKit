@@ -13,11 +13,11 @@ internal class AudioEngine: AVAudioEngine {
 
         let sessionInstance = AVAudioSession.sharedInstance()
         let hardwareSampleRate = environment.outputFormat(forBus: 0).sampleRate
-        format = AVAudioFormat(standardFormatWithSampleRate: hardwareSampleRate, channels: 2)
+        let maxChannels = sessionInstance.maximumOutputNumberOfChannels
+        format = AVAudioFormat(standardFormatWithSampleRate: hardwareSampleRate, channels: AVAudioChannelCount(maxChannels))
         
         do {
             try sessionInstance.setCategory(AVAudioSessionCategoryPlayback)
-            let maxChannels = sessionInstance.maximumOutputNumberOfChannels
             try sessionInstance.setPreferredOutputNumberOfChannels(min(8, maxChannels))
             try sessionInstance.setActive(true)
         } catch {}
