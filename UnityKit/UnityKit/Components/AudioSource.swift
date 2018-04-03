@@ -22,31 +22,14 @@ public class AudioSource: Component {
         didSet {
 
             guard let clip = clip,
-                let file = clip.file
+                let buffer = clip.buffer
                 else { return }
 
             let engine = AudioEngine.sharedInstance
             engine.connect(soundPlayer, to: engine.environment, format: engine.format)
             engine.startEngine()
 
-            guard let sampleRate = engine.format?.sampleRate
-                else { return }
-
-            let completion: AVAudioNodeCompletionHandler?
-            switch clip.playType {
-            case .loop:
-                completion = { [weak self] in
-                    DispatchQueue.main.async {
-                        let sampleTime = AVAudioFramePosition(0)
-                        let startTime = AVAudioTime(hostTime: mach_absolute_time(), sampleTime: sampleTime, atRate: sampleRate)
-                        self?.soundPlayer.play(at: startTime)
-                    }
-                }
-            case .playOnce:
-                completion = nil
-            }
-
-            soundPlayer.scheduleFile(file, at: nil, completionHandler: completion)
+            soundPlayer.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
         }
     }
 
