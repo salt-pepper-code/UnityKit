@@ -98,26 +98,21 @@ public final class Input {
 
         if let touches = touches {
 
-            Debug.log(touches.count)
-            
             if let first = stackUpdates.first {
+
+                stackUpdates.removeValue(forKey: first.key)
 
                 for (index, touch) in touches.enumerated() {
 
                     let updatedTouch = first.value[index]
                     touch.phase = first.key
                     switch first.key {
-                    case .began:
-                        Debug.log("update began")
                     case .moved:
-                        Debug.log("update moved")
                         touch.previousPosition = touch.position
                     case .ended:
-                        Debug.log("update ended")
                         touch.previousPosition = touch.position
                         clearNextFrame = true
                     case .cancelled:
-                        Debug.log("update cancelled")
                         clear()
                     default:
                         break
@@ -125,11 +120,7 @@ public final class Input {
                     touch.updateTouch(updatedTouch)
                 }
 
-                stackUpdates.removeValue(forKey: first.key)
-
             } else {
-
-                Debug.log("update stationary")
 
                 touches.forEach {
                     $0.phase = .stationary
@@ -139,7 +130,6 @@ public final class Input {
         } else if let first = stackUpdates.first,
             first.value.first?.phase == .began {
 
-            Debug.log("setTouches")
             setTouches(first.value)
             update()
         }
@@ -156,23 +146,15 @@ public final class Input {
                     $0.phase = .ended
                 }
                 clearNextFrame = true
-                Debug.log("different view")
                 return
             }
         }
 
         switch phase {
         case .began:
-            Debug.log("stack began")
             if self.touches != nil || stackUpdates.count > 0 {
                 clear()
             }
-        case .moved:
-            Debug.log("stack moved")
-        case .ended:
-            Debug.log("stack ended")
-        case .cancelled:
-            Debug.log("stack cancelled")
         default:
             break
         }
@@ -184,7 +166,7 @@ public final class Input {
     }
 
     internal static func clear() {
-        Debug.log("clear")
+
         clearNextFrame = false
         stackUpdates.removeAll()
         touches = nil

@@ -95,6 +95,7 @@ public final class Joystick: MonoBehaviour {
 
         guard let phase = touch.phase,
             touch.view == view else {
+                onComplete?()
                 resetPosition()
                 return
         }

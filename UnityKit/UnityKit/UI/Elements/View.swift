@@ -171,7 +171,7 @@ extension UI.View: SCNPhysicsContactDelegate {
     }
 }
 
-extension UI.View {
+extension UI.View: UIGestureRecognizerDelegate {
 
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
@@ -195,6 +195,14 @@ extension UI.View {
 
         let touches = touches.enumerated().map { (index, uitouch) -> Touch in Touch(uitouch, index: index) }
         Input.stackTouches(touches, phase: .cancelled)
+    }
+
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+    }
+
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
 

@@ -61,24 +61,6 @@ public class Collider: Component, Instantiable {
         }
     }
 
-    internal func testCollisions() -> Bool {
-
-        guard let gameObject = gameObject,
-            let physicsBody = gameObject.node.physicsBody,
-            let scnScene = gameObject.scene?.scnScene
-            else { return false }
-
-        let physicsWorld = scnScene.physicsWorld
-
-        physicsWorld.updateCollisionPairs()
-        let contacts = physicsWorld.contactTest(with: physicsBody, options: [SCNPhysicsWorld.TestOption.searchMode: SCNPhysicsWorld.TestSearchMode.all])
-
-        if contacts.count > 0 {
-            Debug.log(contacts)
-        }
-        return false
-    }
-
     public func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: Collision) {
 
         guard isTrigger,

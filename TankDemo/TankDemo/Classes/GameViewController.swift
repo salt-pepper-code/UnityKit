@@ -15,6 +15,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
 
         super.viewDidLoad()
+        Debug.set(enable: .all)
         setupScene()
     }
 

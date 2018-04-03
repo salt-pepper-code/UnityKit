@@ -49,6 +49,36 @@ public final class Debug {
         self.enabled = enable.contains(.none) ? .none : enable
     }
 
+    public static func warning(_ items: Any...,
+        displayTime: Bool = false,
+        _ filepath: String = #file,
+        _ function: String = #function,
+        _ line: Int = #line,
+        _ column: Int = #column) {
+
+        log(items, style: .warning, displayTime: displayTime, filepath, function, line, column)
+    }
+
+    public static func error(_ items: Any...,
+        displayTime: Bool = false,
+        _ filepath: String = #file,
+        _ function: String = #function,
+        _ line: Int = #line,
+        _ column: Int = #column) {
+
+        log(items, style: .error, displayTime: displayTime, filepath, function, line, column)
+    }
+
+    public static func info(_ items: Any...,
+        displayTime: Bool = false,
+        _ filepath: String = #file,
+        _ function: String = #function,
+        _ line: Int = #line,
+        _ column: Int = #column) {
+
+        log(items, style: .info, displayTime: displayTime, filepath, function, line, column)
+    }
+
     public static func log(_ items: Any...,
         style: LogStyle = .debug,
         displayTime: Bool = false,
@@ -68,7 +98,8 @@ public final class Debug {
         case .info:
             print(time + style.prefix + items.description)
         case .warning:
-            print(time + style.prefix + items.description)
+            let filename = URL(fileURLWithPath: filepath).lastPathComponent
+            print(time + style.prefix + "[\(filename) line:\(line) col:\(column) func:\(function)] -> " + items.description)
         case .error:
             let filename = URL(fileURLWithPath: filepath).lastPathComponent
             print(time + style.prefix + "[\(filename) line:\(line) col:\(column) func:\(function)] -> " + items.description)
