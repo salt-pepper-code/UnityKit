@@ -87,7 +87,7 @@ class GameManager: MonoBehaviour {
             self?.disableTankControl()
 
             let message = "ROUND \(self?.roundNumber ?? 0)"
-            Debug.log(message)
+            Debug.info(message)
 
             }, exitCondition: { [weak self] (timePassed) in
 
@@ -138,7 +138,7 @@ class GameManager: MonoBehaviour {
             }
 
             let message = self?.endMessage() ?? ""
-            Debug.log(message)
+            Debug.info(message)
 
             self?.resetAllTanks()
             self?.disableTankControl()

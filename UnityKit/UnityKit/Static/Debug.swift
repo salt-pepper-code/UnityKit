@@ -49,37 +49,96 @@ public final class Debug {
         self.enabled = enable.contains(.none) ? .none : enable
     }
 
-    public static func warning(_ items: Any...,
+    public static func warning(_ message: String,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
 
-        log(items, style: .warning, displayTime: displayTime, filepath, function, line, column)
+        log(message, style: .warning, displayTime: displayTime, filepath, function, line, column)
     }
 
-    public static func error(_ items: Any...,
+    public static func error(_ message: String,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
 
-        log(items, style: .error, displayTime: displayTime, filepath, function, line, column)
+        log(message, style: .error, displayTime: displayTime, filepath, function, line, column)
     }
 
-    public static func info(_ items: Any...,
+    public static func info(_ message: String,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
 
-        log(items, style: .info, displayTime: displayTime, filepath, function, line, column)
+        log(message, style: .info, displayTime: displayTime, filepath, function, line, column)
     }
 
-    public static func log(_ items: Any...,
+    public static func log(_ message: String,
+                           style: LogStyle = .debug,
+                           displayTime: Bool = false,
+                           _ filepath: String = #file,
+                           _ function: String = #function,
+                           _ line: Int = #line,
+                           _ column: Int = #column) {
+
+        guard !enabled.contains(.none)
+            else { return }
+
+        let time = displayTime ? Debug.dateFormatter.string(from: Date()) + " " : ""
+
+        switch style {
+        case .debug:
+            print(time + style.prefix + message)
+        case .info:
+            print(time + style.prefix + message)
+        case .warning:
+            let filename = URL(fileURLWithPath: filepath).lastPathComponent
+            print(time + style.prefix + "[\(filename) line:\(line) col:\(column) func:\(function)] -> " + message)
+        case .error:
+            let filename = URL(fileURLWithPath: filepath).lastPathComponent
+            print(time + style.prefix + "[\(filename) line:\(line) col:\(column) func:\(function)] -> " + message)
+        default:
+            break
+        }
+    }
+
+    public static func warning(items: Any...,
+        displayTime: Bool = false,
+        _ filepath: String = #file,
+        _ function: String = #function,
+        _ line: Int = #line,
+        _ column: Int = #column) {
+
+        log(items: items, style: .warning, displayTime: displayTime, filepath, function, line, column)
+    }
+
+    public static func error(items: Any...,
+        displayTime: Bool = false,
+        _ filepath: String = #file,
+        _ function: String = #function,
+        _ line: Int = #line,
+        _ column: Int = #column) {
+
+        log(items: items, style: .error, displayTime: displayTime, filepath, function, line, column)
+    }
+
+    public static func info(items: Any...,
+        displayTime: Bool = false,
+        _ filepath: String = #file,
+        _ function: String = #function,
+        _ line: Int = #line,
+        _ column: Int = #column) {
+
+        log(items: items, style: .info, displayTime: displayTime, filepath, function, line, column)
+    }
+
+    public static func log(items: Any...,
         style: LogStyle = .debug,
         displayTime: Bool = false,
         _ filepath: String = #file,
@@ -94,15 +153,15 @@ public final class Debug {
 
         switch style {
         case .debug:
-            print(time + style.prefix + items.debugDescription)
+            print(time + style.prefix, items)
         case .info:
-            print(time + style.prefix + items.description)
+            print(time + style.prefix, items)
         case .warning:
             let filename = URL(fileURLWithPath: filepath).lastPathComponent
-            print(time + style.prefix + "[\(filename) line:\(line) col:\(column) func:\(function)] -> " + items.description)
+            print(time + style.prefix + "[\(filename) line:\(line) col:\(column) func:\(function)] -> ", items)
         case .error:
             let filename = URL(fileURLWithPath: filepath).lastPathComponent
-            print(time + style.prefix + "[\(filename) line:\(line) col:\(column) func:\(function)] -> " + items.description)
+            print(time + style.prefix + "[\(filename) line:\(line) col:\(column) func:\(function)] -> ", items)
         default:
             break
         }

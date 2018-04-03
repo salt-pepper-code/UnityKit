@@ -10,13 +10,6 @@ class TankMovement: MonoBehaviour {
     public let motorSpeed: Float = 200
     public let turnSpeed: Float = 10
 
-    //public var movementAudio: AudioSource?          // Reference to the audio source used to play engine sounds. NB: different to the shooting audio source.
-    //public var engineIdling: AudioClip?             // Audio to play when the tank isn't moving.
-    //public var engineDriving: AudioClip?            // Audio to play when the tank is moving.
-    //public var pitchRange: Float = 0.1              // The amount by which the pitch of the engine noises can vary.
-    //private var originalPitch: Float = 0            // The pitch of the audio source at the start of the scene.
-    //private var particleSystems:ParticleSystem?     // References to all the particles systems used by the Tanks
-
     override func onDestroy() {
         
         joystick?.onUpdate = nil
@@ -104,6 +97,24 @@ class TankMovement: MonoBehaviour {
         if steeringAngle > -turnSpeed && steeringAngle < turnSpeed {
             steeringAngle = 0
         }
+
+        /*vehicle.applyBrakingForce(0, forWheelAt: 0)
+        vehicle.applyBrakingForce(0, forWheelAt: 1)
+
+        if abs(diffAngle) > 90 {
+
+            vehicle.applyEngineForce(-engineForce, forWheelAt: 0)
+            vehicle.applyEngineForce(engineForce, forWheelAt: 1)
+            vehicle.applyEngineForce(-engineForce, forWheelAt: 2)
+            vehicle.applyEngineForce(engineForce, forWheelAt: 3)
+
+        } else {
+
+            vehicle.applyEngineForce(engineForce, forWheelAt: 0)
+            vehicle.applyEngineForce(engineForce, forWheelAt: 1)
+            vehicle.applyEngineForce(0, forWheelAt: 2)
+            vehicle.applyEngineForce(0, forWheelAt: 3)
+        }*/
 
         if abs(diffAngle) > 90 {
 

@@ -62,7 +62,6 @@ class TankShooting: MonoBehaviour {
                 $0.constraints = [.freezeRotationY]
             }
             .set(property: .velocity(currentLaunchForce * gameObject.transform.forward))
-
         shell.addComponent(MeshCollider.self)?
             .configure {
                 $0.collideWithLayer = .all
