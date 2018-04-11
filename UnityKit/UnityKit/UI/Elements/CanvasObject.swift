@@ -17,12 +17,18 @@ public class CanvasObject: GameObject {
                 $0.worldSize = worldSize
                 $0.pixelPerUnit = pixelPerUnit
         }
-        node = updateGeometry(worldSize: worldSize, pixelPerUnit: pixelPerUnit)
+        let result = CanvasObject.makeCanvas(worldSize: worldSize, pixelPerUnit: pixelPerUnit)
+        node = result.0
+        skView = result.1
+        pause()
         return self
     }
 
     public required init(worldSize: Size, pixelPerUnit: Float = 50) {
-        super.init(updateGeometry(worldSize: worldSize, pixelPerUnit: pixelPerUnit))
+        let result = CanvasObject.makeCanvas(worldSize: worldSize, pixelPerUnit: pixelPerUnit)
+        super.init(result.0)
+        skView = result.1
+        pause()
         addComponent(external: false, type: UI.Canvas.self, gameObject: self)?
             .configure {
                 $0.worldSize = worldSize
@@ -46,7 +52,7 @@ public class CanvasObject: GameObject {
         skView?.isPaused = false
     }
 
-    private func updateGeometry(worldSize: Size, pixelPerUnit: Float) -> SCNNode {
+    private static func makeCanvas(worldSize: Size, pixelPerUnit: Float) -> (SCNNode, SKView) {
 
         let geometry = SCNGeometry.createPrimitive(.plane(width: worldSize.width, height: worldSize.height, name: "Plane"))
         let node = SCNNode(geometry: geometry)
@@ -62,9 +68,6 @@ public class CanvasObject: GameObject {
         geometry.firstMaterial?.diffuse.contents = view.scene
         geometry.firstMaterial?.isDoubleSided = true
 
-        skView = view
-        pause()
-
-        return node
+        return (node, view)
     }
 }

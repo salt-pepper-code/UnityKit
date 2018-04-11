@@ -80,11 +80,11 @@ open class Object: Identifiable {
     }
     
     open func getComponent<T: Component>(_ type: T.Type) -> T? {
-        return components.flatMap { $0 as? T }.first
+        return components.compactMap { $0 as? T }.first
     }
     
     open func getComponents<T: Component>(_ type: T.Type) -> [T] {
-        return components.flatMap { $0 as? T }
+        return components.compactMap { $0 as? T }
     }
     
     @discardableResult open func addComponent<T: Component>(_ type: T.Type) -> T? {

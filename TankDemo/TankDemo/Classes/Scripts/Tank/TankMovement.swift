@@ -98,24 +98,6 @@ class TankMovement: MonoBehaviour {
             steeringAngle = 0
         }
 
-        /*vehicle.applyBrakingForce(0, forWheelAt: 0)
-        vehicle.applyBrakingForce(0, forWheelAt: 1)
-
-        if abs(diffAngle) > 90 {
-
-            vehicle.applyEngineForce(-engineForce, forWheelAt: 0)
-            vehicle.applyEngineForce(engineForce, forWheelAt: 1)
-            vehicle.applyEngineForce(-engineForce, forWheelAt: 2)
-            vehicle.applyEngineForce(engineForce, forWheelAt: 3)
-
-        } else {
-
-            vehicle.applyEngineForce(engineForce, forWheelAt: 0)
-            vehicle.applyEngineForce(engineForce, forWheelAt: 1)
-            vehicle.applyEngineForce(0, forWheelAt: 2)
-            vehicle.applyEngineForce(0, forWheelAt: 3)
-        }*/
-
         if abs(diffAngle) > 90 {
 
             vehicle.applySteeringAngle(steeringAngle, forWheelAt: 0)

@@ -201,6 +201,8 @@ class GameManager: MonoBehaviour {
         tanks.forEach { $0.disableControl() }
     }
 
+    // TANK Creation
+
     @discardableResult func loadTank(_ property: TankProperty) -> GameObject? {
 
         guard let scene = Scene.sharedInstance,
