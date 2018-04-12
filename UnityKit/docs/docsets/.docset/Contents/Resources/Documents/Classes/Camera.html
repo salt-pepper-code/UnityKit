@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Camera Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/Camera" class="dashAnchor"></a>
+    <a title="Camera Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (7% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Camera Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/AudioClip.html">AudioClip</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AudioClip/PlayType.html">– PlayType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AudioSource.html">AudioSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Behaviour.html">Behaviour</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BoxCollider.html">BoxCollider</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Camera.html">Camera</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CanvasObject.html">CanvasObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Collider.html">Collider</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Component.html">Component</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Debug.html">Debug</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Debug/LogStyle.html">– LogStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GameObject.html">GameObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GameObject/Layer.html">– Layer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GameObject/Tag.html">– Tag</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GameObject/SearchType.html">– SearchType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Input.html">Input</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Light.html">Light</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Material.html">Material</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Material/BasicColorShading.html">– BasicColorShading</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Material/BasicTextureShading.html">– BasicTextureShading</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Mesh.html">Mesh</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MeshCollider.html">MeshCollider</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MeshFilter.html">MeshFilter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MonoBehaviour.html">MonoBehaviour</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Object.html">Object</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ParticleSystem.html">ParticleSystem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Physics.html">Physics</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PlaneCollider.html">PlaneCollider</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Renderer.html">Renderer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Rigidbody.html">Rigidbody</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Rigidbody/Properties.html">– Properties</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Scene.html">Scene</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Scene/Allocation.html">– Allocation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Screen.html">Screen</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Time.html">Time</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Touch.html">Touch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Transform.html">Transform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Vehicle.html">Vehicle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Volume.html">Volume</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Wheel.html">Wheel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Wheel/Parameters.html">– Parameters</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/CoroutineThread.html">CoroutineThread</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Ease.html">Ease</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PrimitiveType.html">PrimitiveType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Action.html">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CGFloat.html">CGFloat</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CGPoint.html">CGPoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CGSize.html">CGSize</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Color.html">Color</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Degree.html">Degree</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Float.html">Float</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/FloatingPoint.html">FloatingPoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Quaternion.html">Quaternion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Vector3.html">Vector3</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Vector4.html">Vector4</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiAA4SizeVAD_SftF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiAA4SizeVSf_ADtF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiAA7Vector2VAD_ADtF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiAA7Vector2VAD_SftF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiAA7Vector2VSf_ADtF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiSC10SCNVector3V3min_AD3maxtAdE_AdFt_ADtF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiSC10SCNVector3V3min_AD3maxtAdE_AdFt_SftF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiSC10SCNVector3VAD_ADtF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiSC10SCNVector3VAD_SftF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiSC10SCNVector3VSf_ADtF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1moiSC10SCNVector4VAD_SftF">*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2meoiyAA7Vector2Vz_ADtF">*=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2meoiyAA7Vector2Vz_SftF">*=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2meoiySC10SCNVector3Vz_ADtF">*=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2meoiySC10SCNVector3Vz_SftF">*=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1poiAA7Vector2VAD_ADtF">+(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1poiSC10SCNVector3V3min_AD3maxtSgAG_AGtF">+(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1poiSC10SCNVector3VAD_ADtF">+(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1poiSC10SCNVector3VAD_SftF">+(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2peoiyAA7Vector2Vz_ADtF">+=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2peoiySC10SCNVector3V3min_AD3maxtSgz_AGtF">+=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2peoiySC10SCNVector3Vz_ADtF">+=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2peoiySC10SCNVector3Vz_SftF">+=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1soiAA7Vector2VAD_ADtF">-(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1soiSC10SCNVector3VAD_ADtF">-(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1soiSC10SCNVector3VAD_SftF">-(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2seoiyAA7Vector2Vz_ADtF">-=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2seoiySC10SCNVector3Vz_ADtF">-=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2seoiySC10SCNVector3Vz_SftF">-=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1doiAA7Vector2VAD_ADtF">/(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1doiAA7Vector2VAD_SftF">/(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1doiSC10SCNVector3VAD_ADtF">/(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit1doiSC10SCNVector3VAD_SftF">/(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2deoiyAA7Vector2Vz_ADtF">/=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2deoiyAA7Vector2Vz_SftF">/=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2deoiySC10SCNVector3Vz_ADtF">/=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2deoiySC10SCNVector3Vz_SftF">/=(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2eeoiSbAA5SceneC_ADtF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit2eeoiSbAA6ObjectC_ADtF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit7destroyyAA10GameObjectCF">destroy(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit11interpolateS2f4from_Sf2toSf5alphatF">interpolate(from:to:alpha:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:8UnityKit9normalizeS2f_s11ClosedRangeVySfG2intF">normalize(_:in:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:8UnityKit9GetteableP">Getteable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Instantiable.html">Instantiable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/RigidbodyConstraints.html">RigidbodyConstraints</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Size.html">Size</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UI.html">UI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UI/Slider.html">– Slider</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UI/UIBehaviour.html">– UIBehaviour</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UI/View.html">– View</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UI/Canvas.html">– Canvas</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UI/Image.html">– Image</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Vector2.html">Vector2</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Vector3Nullable.html">Vector3Nullable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit6Actiona">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit20ActionTimingFunctiona">ActionTimingFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit11BoundingBoxa">BoundingBox</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit14BoundingSpherea">BoundingSphere</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit9Collisiona">Collision</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit5Colora">Color</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit9Coroutinea">Coroutine</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit16CoroutineClosurea">CoroutineClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit18CoroutineConditiona">CoroutineCondition</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit6Degreea">Degree</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit10Quaterniona">Quaternion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit10TouchPhasea">TouchPhase</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit9TouchTypea">TouchType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit7Vector3a">Vector3</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8UnityKit7Vector4a">Vector4</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Camera</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Camera</span><span class="p">:</span> <span class="kt"><a href="../Classes/Component.html">Component</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC03scnC0So9SCNCameraCvp"></a>
+                    <a name="//apple_ref/swift/Property/scnCamera" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC03scnC0So9SCNCameraCvp">scnCamera</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">internal(set)</span> <span class="kd">public</span> <span class="k">var</span> <span class="nv">scnCamera</span> <span class="o">=</span> <span class="kt">SCNCamera</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC11fieldOfView12CoreGraphics7CGFloatVvp"></a>
+                    <a name="//apple_ref/swift/Property/fieldOfView" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC11fieldOfView12CoreGraphics7CGFloatVvp">fieldOfView</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">fieldOfView</span><span class="p">:</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC5zNearSdvp"></a>
+                    <a name="//apple_ref/swift/Property/zNear" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC5zNearSdvp">zNear</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">zNear</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC4zFarSdvp"></a>
+                    <a name="//apple_ref/swift/Property/zFar" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC4zFarSdvp">zFar</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">zFar</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC12orthographicSbvp"></a>
+                    <a name="//apple_ref/swift/Property/orthographic" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC12orthographicSbvp">orthographic</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">orthographic</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC16orthographicSizeSdvp"></a>
+                    <a name="//apple_ref/swift/Property/orthographicSize" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC16orthographicSizeSdvp">orthographicSize</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">orthographicSize</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC8allowHDRSbvp"></a>
+                    <a name="//apple_ref/swift/Property/allowHDR" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC8allowHDRSbvp">allowHDR</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="k">var</span> <span class="nv">allowHDR</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC11cullingMaskAA10GameObjectC5LayerVvp"></a>
+                    <a name="//apple_ref/swift/Property/cullingMask" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC11cullingMaskAA10GameObjectC5LayerVvp">cullingMask</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">cullingMask</span><span class="p">:</span> <span class="kt"><a href="../Classes/GameObject.html">GameObject</a></span><span class="o">.</span><span class="kt">Layer</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC10gameObjectAA04GameE0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/gameObject" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC10gameObjectAA04GameE0CSgvp">gameObject</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">override</span> <span class="k">var</span> <span class="nv">gameObject</span><span class="p">:</span> <span class="kt"><a href="../Classes/GameObject.html">GameObject</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC6targetAA10GameObjectCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/target" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC6targetAA10GameObjectCSgvp">target</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">private(set)</span> <span class="kd">public</span> <span class="k">var</span> <span class="nv">target</span><span class="p">:</span> <span class="kt"><a href="../Classes/GameObject.html">GameObject</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraCACycfc"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraCACycfc">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">required</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC9configureACyACcF"></a>
+                    <a name="//apple_ref/swift/Method/configure(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC9configureACyACcF">configure(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">configure</span><span class="p">(</span><span class="n">_</span> <span class="nv">completionBlock</span><span class="p">:</span> <span class="p">(</span><span class="kt">Camera</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="kt">Camera</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC5awakeyyF"></a>
+                    <a name="//apple_ref/swift/Method/awake()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC5awakeyyF">awake()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">awake</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC21calculateFieldOfViewsyyF"></a>
+                    <a name="//apple_ref/swift/Method/calculateFieldOfViews()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC21calculateFieldOfViewsyyF">calculateFieldOfViews()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">calculateFieldOfViews</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC4mainACSgAA5SceneCSg2in_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/main(in:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC4mainACSgAA5SceneCSg2in_tFZ">main(in:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="k">in</span> <span class="nv">scene</span><span class="p">:</span> <span class="kt"><a href="../Classes/Scene.html">Scene</a></span><span class="p">?</span> <span class="o">=</span> <span class="kt"><a href="../Classes/Scene.html">Scene</a></span><span class="o">.</span><span class="n">sharedInstance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Camera</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC12followTargetyAA10GameObjectCSg6target_Sf7minimum_Sf7maximumtSg13distanceRangetF"></a>
+                    <a name="//apple_ref/swift/Method/followTarget(target:distanceRange:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC12followTargetyAA10GameObjectCSg6target_Sf7minimum_Sf7maximumtSg13distanceRangetF">followTarget(target:distanceRange:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">followTarget</span><span class="p">(</span><span class="nv">target</span><span class="p">:</span> <span class="kt"><a href="../Classes/GameObject.html">GameObject</a></span><span class="p">?,</span> <span class="nv">distanceRange</span><span class="p">:</span> <span class="p">(</span><span class="nv">minimum</span><span class="p">:</span> <span class="kt">Float</span><span class="p">,</span> <span class="nv">maximum</span><span class="p">:</span> <span class="kt">Float</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC6lookAtyAA10GameObjectC_Sd8durationtF"></a>
+                    <a name="//apple_ref/swift/Method/lookAt(_:duration:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC6lookAtyAA10GameObjectC_Sd8durationtF">lookAt(_:duration:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">lookAt</span><span class="p">(</span><span class="n">_</span> <span class="nv">gameObject</span><span class="p">:</span> <span class="kt"><a href="../Classes/GameObject.html">GameObject</a></span><span class="p">,</span> <span class="nv">duration</span><span class="p">:</span> <span class="kt">TimeInterval</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit6CameraC6lookAtyAA9TransformC_SdSg8durationtF"></a>
+                    <a name="//apple_ref/swift/Method/lookAt(_:duration:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit6CameraC6lookAtyAA9TransformC_SdSg8durationtF">lookAt(_:duration:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">lookAt</span><span class="p">(</span><span class="n">_</span> <span class="nv">target</span><span class="p">:</span> <span class="kt"><a href="../Classes/Transform.html">Transform</a></span><span class="p">,</span> <span class="nv">duration</span><span class="p">:</span> <span class="kt">TimeInterval</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-04-12)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
