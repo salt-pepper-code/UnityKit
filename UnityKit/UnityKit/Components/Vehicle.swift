@@ -60,9 +60,18 @@ public class Vehicle: Component {
         super.init()
         self.ignoreUpdates = true
     }
-    
-    @discardableResult public func configure(_ completionBlock: (Vehicle) -> Void) -> Vehicle {
-        completionBlock(self)
+
+    /**
+     Configurable block that passes and returns itself.
+
+     - parameters:
+        - configurationBlock: block that passes itself.
+
+     - returns: itself
+     */
+    @discardableResult public func configure(_ configurationBlock: (Vehicle) -> ()) -> Vehicle {
+
+        configurationBlock(self)
         return self
     }
 

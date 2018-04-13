@@ -19,8 +19,17 @@ public final class BoxCollider: Collider {
         return self
     }
 
-    @discardableResult public func configure(_ completionBlock: (BoxCollider) -> Void) -> BoxCollider {
-        completionBlock(self)
+    /**
+     Configurable block that passes and returns itself.
+
+     - parameters:
+        - configurationBlock: block that passes itself.
+
+     - returns: itself
+     */
+    @discardableResult public func configure(_ configurationBlock: (BoxCollider) -> ()) -> BoxCollider {
+
+        configurationBlock(self)
         return self
     }
 

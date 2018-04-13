@@ -48,8 +48,16 @@ public final class Renderer: Component {
         self.ignoreUpdates = true
     }
 
-    @discardableResult public func configure(_ completionBlock: (Renderer) -> Void) -> Renderer {
-        completionBlock(self)
+    /**
+     Configurable block that passes and returns itself.
+
+     - parameters:
+        - configurationBlock: block that passes itself.
+
+     - returns: itself
+     */
+    @discardableResult public func configure(_ configurationBlock: (Renderer) -> Void) -> Renderer {
+        configurationBlock(self)
         return self
     }
 

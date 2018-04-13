@@ -104,12 +104,14 @@ extension GameObject {
     }
 
     public static func findGameObjects(_ type: SearchType, in gameObject: GameObject) -> [GameObject] {
-        return gameObject.getChildren().flatMap { child -> [GameObject] in
+        return gameObject.getChildren().compactMap { child -> [GameObject] in
             if GameObject.compare(type, gameObject: child) {
                 return [child] + GameObject.findGameObjects(type, in: child)
             }
             return GameObject.findGameObjects(type, in: child)
-        }
+            }.reduce([], { (current, next) -> [GameObject] in
+                current + next
+            })
     }
 
     public static func getComponents<T: Component>(_ type: T.Type, in scene: Scene? = Scene.sharedInstance) -> [T] {

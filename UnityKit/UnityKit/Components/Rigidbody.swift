@@ -207,8 +207,17 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
-    @discardableResult public func configure(_ completionBlock: (Rigidbody) -> Void) -> Rigidbody {
-        completionBlock(self)
+    /**
+     Configurable block that passes and returns itself.
+
+     - parameters:
+        - configurationBlock: block that passes itself.
+
+     - returns: itself
+     */
+    @discardableResult public func configure(_ configurationBlock: (Rigidbody) -> ()) -> Rigidbody {
+        
+        configurationBlock(self)
         return self
     }
 

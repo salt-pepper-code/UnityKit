@@ -14,7 +14,7 @@
     <a title="Camera Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (11% documented)</p>
+        <p><a href="../index.html"> Docs</a> (14% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -449,7 +449,8 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>A Camera is a device through which the player views the world.
+A world space point is defined in global coordinates (for example, Transform.position).</p>
 
           </section>
           <section class="section task-group-section">
@@ -495,7 +496,9 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Determines the receiver&rsquo;s field of view (in degree). Animatable.</p>
+
+<p><strong>Defaults to 60°.</strong></p>
 
                       </div>
                       <div class="declaration">
@@ -522,7 +525,11 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Determines the receiver&rsquo;s near value. Animatable.</p>
+
+<p>The near value determines the minimal distance between the camera and a visible surface. If a surface is closer to the camera than this minimal distance, then the surface is clipped. The near value must be different than zero.</p>
+
+<p><strong>Defaults to 1.</strong></p>
 
                       </div>
                       <div class="declaration">
@@ -549,7 +556,11 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Determines the receiver&rsquo;s far value. Animatable.</p>
+
+<p>The far value determines the maximal distance between the camera and a visible surface. If a surface is further from the camera than this maximal distance, then the surface is clipped.</p>
+
+<p><strong>Defaults to 100.</strong></p>
 
                       </div>
                       <div class="declaration">
@@ -576,7 +587,9 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Determines whether the receiver uses an orthographic projection or not.</p>
+
+<p><strong>Defaults to false.</strong></p>
 
                       </div>
                       <div class="declaration">
@@ -603,7 +616,11 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Determines the receiver&rsquo;s orthographic scale value. Animatable.</p>
+
+<p>This setting determines the size of the camera&rsquo;s visible area. This is only enabled when usesOrthographicProjection is set to true.</p>
+
+<p><strong>Defaults to 1.</strong></p>
 
                       </div>
                       <div class="declaration">
@@ -630,7 +647,9 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Determines if the receiver has a high dynamic range.</p>
+
+<p><strong>Defaults to false.</strong></p>
 
                       </div>
                       <div class="declaration">
@@ -657,7 +676,13 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>This is used to render parts of the scene selectively.</p>
+<div class="aside aside-important">
+    <p class="aside-title">Important</p>
+    If the GameObject&rsquo;s layerMask AND the camera&rsquo;s cullingMask is zero then the game object will be invisible from this camera.
+See <a href="GameObject/Layer.html">Layer</a> for more information.
+
+</div>
 
                       </div>
                       <div class="declaration">
@@ -684,7 +709,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The game object this component is attached to. A component is always attached to a game object.</p>
 
                       </div>
                       <div class="declaration">
@@ -711,7 +736,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The game object that it&rsquo;s follows.</p>
 
                       </div>
                       <div class="declaration">
@@ -765,16 +790,39 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Configurable block that passes and returns itself.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">configure</span><span class="p">(</span><span class="n">_</span> <span class="nv">completionBlock</span><span class="p">:</span> <span class="p">(</span><span class="kt">Camera</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="kt">Camera</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">configure</span><span class="p">(</span><span class="n">_</span> <span class="nv">configurationBlock</span><span class="p">:</span> <span class="p">(</span><span class="kt">Camera</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="kt">Camera</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configurationBlock</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>block that passes itself.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>itself</p>
                       </div>
                     </section>
                   </div>
@@ -890,9 +938,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8UnityKit6CameraC6lookAtyAA10GameObjectC_Sd8durationtF"></a>
+                    <a name="/s:8UnityKit6CameraC6lookAtyAA10GameObjectC_SdSg8durationtF"></a>
                     <a name="//apple_ref/swift/Method/lookAt(_:duration:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8UnityKit6CameraC6lookAtyAA10GameObjectC_Sd8durationtF">lookAt(_:duration:)</a>
+                    <a class="token" href="#/s:8UnityKit6CameraC6lookAtyAA10GameObjectC_SdSg8durationtF">lookAt(_:duration:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -907,7 +955,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">lookAt</span><span class="p">(</span><span class="n">_</span> <span class="nv">gameObject</span><span class="p">:</span> <span class="kt"><a href="../Classes/GameObject.html">GameObject</a></span><span class="p">,</span> <span class="nv">duration</span><span class="p">:</span> <span class="kt">TimeInterval</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">lookAt</span><span class="p">(</span><span class="n">_</span> <span class="nv">gameObject</span><span class="p">:</span> <span class="kt"><a href="../Classes/GameObject.html">GameObject</a></span><span class="p">,</span> <span class="nv">duration</span><span class="p">:</span> <span class="kt">TimeInterval</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -946,7 +994,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-04-12)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-04-13)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

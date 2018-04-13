@@ -371,7 +371,7 @@ public class GameObject: Object {
     }
 
     public func getComponentsInChild<T: Component>(_ type: T.Type) -> [T] {
-        return children.flatMap { child -> [T] in
+        return children.flatMap { (child) -> [T] in
             child.getComponents(type) + child.getComponentsInChild(type)
         }
     }

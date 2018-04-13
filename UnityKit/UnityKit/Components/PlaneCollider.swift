@@ -5,9 +5,18 @@ public final class PlaneCollider: Collider {
         super.init()
         self.ignoreUpdates = true
     }
-    
-    @discardableResult public func configure(_ completionBlock: (PlaneCollider) -> Void) -> PlaneCollider {
-        completionBlock(self)
+
+    /**
+     Configurable block that passes and returns itself.
+
+     - parameters:
+        - configurationBlock: block that passes itself.
+
+     - returns: itself
+     */
+    @discardableResult public func configure(_ configurationBlock: (PlaneCollider) -> ()) -> PlaneCollider {
+
+        configurationBlock(self)
         return self
     }
 

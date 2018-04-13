@@ -49,8 +49,17 @@ public class AudioSource: Component {
         engine.attach(soundPlayer)
     }
 
-    @discardableResult public func configure(_ completionBlock: (AudioSource) -> Void) -> AudioSource {
-        completionBlock(self)
+    /**
+     Configurable block that passes and returns itself.
+
+     - parameters:
+        - configurationBlock: block that passes itself.
+
+     - returns: itself
+     */
+    @discardableResult public func configure(_ configurationBlock: (AudioSource) -> ()) -> AudioSource {
+
+        configurationBlock(self)
         return self
     }
 

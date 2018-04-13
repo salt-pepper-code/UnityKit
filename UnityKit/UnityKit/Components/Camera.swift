@@ -1,6 +1,10 @@
 import Foundation
 import SceneKit
 
+/**
+ A Camera is a device through which the player views the world.
+ A world space point is defined in global coordinates (for example, Transform.position).
+ */
 public final class Camera: Component {
     private var hFieldOfView: CGFloat = 60
 
@@ -11,11 +15,11 @@ public final class Camera: Component {
         }
     }
 
-    /*!
-     @property fieldOfView
-     @abstract Determines the receiver's field of view (in degree). Animatable.
-     @discussion defaults to 60°.
-     */
+    /**
+     Determines the receiver's field of view (in degree). Animatable.
+
+     **Defaults to 60°.**
+    */
     public var fieldOfView: CGFloat {
         get {
             guard orthographic
@@ -34,10 +38,12 @@ public final class Camera: Component {
         }
     }
 
-    /*!
-     @property zNear
-     @abstract Determines the receiver's near value. Animatable.
-     @discussion The near value determines the minimal distance between the camera and a visible surface. If a surface is closer to the camera than this minimal distance, then the surface is clipped. The near value must be different than zero. Defaults to 1.
+    /**
+     Determines the receiver's near value. Animatable.
+
+     The near value determines the minimal distance between the camera and a visible surface. If a surface is closer to the camera than this minimal distance, then the surface is clipped. The near value must be different than zero.
+
+     **Defaults to 1.**
      */
     public var zNear: Double {
         get {
@@ -48,10 +54,12 @@ public final class Camera: Component {
         }
     }
 
-    /*!
-     @property zFar
-     @abstract Determines the receiver's far value. Animatable.
-     @discussion The far value determines the maximal distance between the camera and a visible surface. If a surface is further from the camera than this maximal distance, then the surface is clipped. Defaults to 100.
+    /**
+     Determines the receiver's far value. Animatable.
+
+     The far value determines the maximal distance between the camera and a visible surface. If a surface is further from the camera than this maximal distance, then the surface is clipped.
+
+     **Defaults to 100.**
      */
     public var zFar: Double {
         get {
@@ -62,9 +70,10 @@ public final class Camera: Component {
         }
     }
 
-    /*!
-     @property orthographic
-     @abstract Determines whether the receiver uses an orthographic projection or not. Defaults to NO.
+    /**
+     Determines whether the receiver uses an orthographic projection or not.
+
+     **Defaults to false.**
      */
     public var orthographic: Bool {
         get {
@@ -75,10 +84,12 @@ public final class Camera: Component {
         }
     }
 
-    /*!
-     @property orthographicSize
-     @abstract Determines the receiver's orthographic scale value. Animatable. Defaults to 1.
-     @discussion This setting determines the size of the camera's visible area. This is only enabled when usesOrthographicProjection is set to YES.
+    /**
+     Determines the receiver's orthographic scale value. Animatable.
+
+     This setting determines the size of the camera's visible area. This is only enabled when usesOrthographicProjection is set to true.
+
+     **Defaults to 1.**
      */
     public var orthographicSize: Double {
         get {
@@ -89,9 +100,10 @@ public final class Camera: Component {
         }
     }
 
-    /*!
-     @property allowHDR
-     @abstract Determines if the receiver has a high dynamic range. Defaults to NO.
+    /**
+     Determines if the receiver has a high dynamic range.
+
+     **Defaults to false.**
      */
     public var allowHDR: Bool {
         get {
@@ -107,9 +119,11 @@ public final class Camera: Component {
         }
     }
 
-    /*!
-     @property cullingMask
-     @abstract This is used to render parts of the scene selectively.
+    /**
+     This is used to render parts of the scene selectively.
+
+     - important: If the GameObject's layerMask AND the camera's cullingMask is zero then the game object will be invisible from this camera.
+     See [Layer](GameObject/Layer.html) for more information.
      */
     public var cullingMask: GameObject.Layer {
         get {
@@ -121,6 +135,9 @@ public final class Camera: Component {
         }
     }
 
+    /**
+     The game object this component is attached to. A component is always attached to a game object.
+     */
     public override var gameObject: GameObject? {
         didSet {
             guard let node = gameObject?.node,
@@ -132,6 +149,9 @@ public final class Camera: Component {
         }
     }
 
+    /**
+     The game object that it's follows.
+     */
     private(set) public var target: GameObject?
 
     /// Create a new instance
@@ -142,8 +162,16 @@ public final class Camera: Component {
         calculateFieldOfViews()
     }
 
-    @discardableResult public func configure(_ completionBlock: (Camera) -> Void) -> Camera {
-        completionBlock(self)
+    /**
+     Configurable block that passes and returns itself.
+
+     - parameters:
+        - configurationBlock: block that passes itself.
+
+     - returns: itself
+    */
+    @discardableResult public func configure(_ configurationBlock: (Camera) -> Void) -> Camera {
+        configurationBlock(self)
         return self
     }
 

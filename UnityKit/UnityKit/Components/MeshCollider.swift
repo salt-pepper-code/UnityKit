@@ -8,13 +8,17 @@ public final class MeshCollider: Collider {
         self.ignoreUpdates = true
     }
 
-    /// <#Description#>
-    ///
-    /// - Parameter completionBlock: <#completionBlock description#>
-    /// - Returns: <#return value description#>
-    @discardableResult public func configure(_ completionBlock: (MeshCollider) -> Void) -> MeshCollider {
+    /**
+     Configurable block that passes and returns itself.
 
-        completionBlock(self)
+     - parameters:
+        - configurationBlock: block that passes itself.
+
+     - returns: itself
+     */
+    @discardableResult public func configure(_ configurationBlock: (MeshCollider) -> ()) -> MeshCollider {
+
+        configurationBlock(self)
         return self
     }
     

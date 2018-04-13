@@ -1,6 +1,16 @@
 import Foundation
 
+
+/**
+ Base class for everything attached to GameObjects.
+
+ - notes:
+ Note that your code will never directly create a Component. Instead, you write script code (subclass from MonoBehaviour), and attach the script to a GameObject. See [MonoBehaviour](MonoBehaviour.html).
+ */
 open class Component: Object {
+    /**
+     The game object this component is attached to. A component is always attached to a game object.
+     */
     internal(set) public weak var gameObject: GameObject?
     internal var implementsPreUpdate = true
     internal var implementsUpdate = true
