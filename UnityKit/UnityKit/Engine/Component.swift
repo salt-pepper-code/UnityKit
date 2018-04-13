@@ -11,6 +11,7 @@ open class Component: Object {
         return gameObject?.transform
     }
 
+    /// Create a new instance
     public required init() {
         super.init()
     }

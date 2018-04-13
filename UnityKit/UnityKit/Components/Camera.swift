@@ -134,6 +134,7 @@ public final class Camera: Component {
 
     private(set) public var target: GameObject?
 
+    /// Create a new instance
     public required init() {
         super.init()
         self.ignoreUpdates = true

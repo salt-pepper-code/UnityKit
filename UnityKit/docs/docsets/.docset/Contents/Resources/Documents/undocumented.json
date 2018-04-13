@@ -205,49 +205,56 @@
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Camera.swift",
-      "line": 159,
+      "line": 151,
+      "symbol": "Camera.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Camera.swift",
+      "line": 158,
       "symbol": "Camera.configure(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Camera.swift",
-      "line": 165,
+      "line": 164,
       "symbol": "Camera.awake()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Camera.swift",
-      "line": 174,
+      "line": 173,
       "symbol": "Camera.calculateFieldOfViews()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Camera.swift",
-      "line": 178,
+      "line": 177,
       "symbol": "Camera.main(in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Camera.swift",
-      "line": 186,
+      "line": 185,
       "symbol": "Camera.followTarget(target:distanceRange:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Camera.swift",
-      "line": 242,
+      "line": 241,
       "symbol": "Camera.lookAt(_:duration:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Camera.swift",
-      "line": 247,
+      "line": 246,
       "symbol": "Camera.lookAt(_:duration:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -530,6 +537,20 @@
       "line": 6,
       "symbol": "MeshCollider.mesh",
       "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/MeshCollider.swift",
+      "line": 8,
+      "symbol": "MeshCollider.configure(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/MeshCollider.swift",
+      "line": 14,
+      "symbol": "MeshCollider.set(mesh:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
@@ -1044,6 +1065,132 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 4,
+      "symbol": "Transform",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 6,
+      "symbol": "Transform.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 10,
+      "symbol": "Transform.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 16,
+      "symbol": "Transform.forward",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 24,
+      "symbol": "Transform.back",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 28,
+      "symbol": "Transform.up",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 36,
+      "symbol": "Transform.bottom",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 40,
+      "symbol": "Transform.right",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 48,
+      "symbol": "Transform.left",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 52,
+      "symbol": "Transform.lossyScale",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 71,
+      "symbol": "Transform.position",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 87,
+      "symbol": "Transform.orientation",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 100,
+      "symbol": "Transform.localOrientation",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 113,
+      "symbol": "Transform.localPosition",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 126,
+      "symbol": "Transform.localRotation",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 139,
+      "symbol": "Transform.localEulerAngles",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 152,
+      "symbol": "Transform.localScale",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Transform.swift",
+      "line": 166,
+      "symbol": "Transform.lookAt(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Components/Vehicle.swift",
       "line": 4,
       "symbol": "Wheel",
@@ -1465,119 +1612,126 @@
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 186,
+      "line": 177,
+      "symbol": "GameObject.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
+      "line": 185,
       "symbol": "GameObject.destroy()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 192,
+      "line": 191,
       "symbol": "GameObject.instantiate()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 222,
+      "line": 221,
       "symbol": "GameObject.setActive(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 228,
+      "line": 227,
       "symbol": "GameObject.awake()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 238,
+      "line": 237,
       "symbol": "GameObject.start()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 257,
+      "line": 256,
       "symbol": "GameObject.preUpdate()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 293,
+      "line": 292,
       "symbol": "GameObject.update()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 315,
+      "line": 314,
       "symbol": "GameObject.fixedUpdate()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 333,
+      "line": 332,
       "symbol": "GameObject.removeFromParent()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 343,
+      "line": 342,
       "symbol": "GameObject.addComponent(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 351,
+      "line": 350,
       "symbol": "GameObject.getComponentInChild(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 367,
+      "line": 366,
       "symbol": "GameObject.getComponentsInChild(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 376,
+      "line": 375,
       "symbol": "GameObject.addToScene(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 384,
+      "line": 383,
       "symbol": "GameObject.addChild(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 401,
+      "line": 400,
       "symbol": "GameObject.getChildren()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 411,
+      "line": 410,
       "symbol": "GameObject.getChild(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/GameObject.swift",
-      "line": 416,
+      "line": 415,
       "symbol": "GameObject.removeChild(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -1773,49 +1927,56 @@
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/Material.swift",
-      "line": 64,
+      "line": 57,
+      "symbol": "Material.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/Material.swift",
+      "line": 65,
       "symbol": "Material.init(_:lightingModel:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/Material.swift",
-      "line": 74,
+      "line": 75,
       "symbol": "Material.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/Material.swift",
-      "line": 81,
+      "line": 82,
       "symbol": "Material.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/Material.swift",
-      "line": 91,
+      "line": 92,
       "symbol": "Material.getColor(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/Material.swift",
-      "line": 107,
+      "line": 108,
       "symbol": "Material.setColor(_:color:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/Material.swift",
-      "line": 125,
+      "line": 126,
       "symbol": "Material.getTexture(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/Material.swift",
-      "line": 139,
+      "line": 140,
       "symbol": "Material.setTexture(_:image:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -1832,6 +1993,13 @@
       "line": 6,
       "symbol": "Mesh.geometry",
       "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Element/Mesh.swift",
+      "line": 13,
+      "symbol": "Mesh.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
@@ -2032,56 +2200,63 @@
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Component.swift",
-      "line": 14,
+      "line": 13,
+      "symbol": "Component.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Component.swift",
+      "line": 17,
       "symbol": "Component.destroy()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Component.swift",
-      "line": 18,
+      "line": 21,
       "symbol": "Component.onDestroy()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Component.swift",
-      "line": 22,
+      "line": 25,
       "symbol": "Component.remove()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Component.swift",
-      "line": 26,
+      "line": 29,
       "symbol": "Component.removeComponent(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Component.swift",
-      "line": 30,
+      "line": 33,
       "symbol": "Component.removeComponentsOfType(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Component.swift",
-      "line": 34,
+      "line": 37,
       "symbol": "Component.getComponent(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Component.swift",
-      "line": 38,
+      "line": 41,
       "symbol": "Component.getComponents(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Component.swift",
-      "line": 42,
+      "line": 45,
       "symbol": "Component.addComponent(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -2249,91 +2424,98 @@
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 24,
+      "line": 19,
+      "symbol": "Object.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
+      "line": 23,
       "symbol": "Object.getInstanceID()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 28,
+      "line": 27,
       "symbol": "Object.destroy(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.class",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 32,
+      "line": 31,
       "symbol": "Object.destroy()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 36,
+      "line": 35,
       "symbol": "Object.awake()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 40,
+      "line": 39,
       "symbol": "Object.start()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 44,
+      "line": 43,
       "symbol": "Object.preUpdate()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 52,
+      "line": 51,
       "symbol": "Object.update()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 56,
+      "line": 55,
       "symbol": "Object.fixedUpdate()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 68,
+      "line": 67,
       "symbol": "Object.removeComponentsOfType(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 75,
+      "line": 74,
       "symbol": "Object.removeComponent(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 83,
+      "line": 82,
       "symbol": "Object.getComponent(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 87,
+      "line": 86,
       "symbol": "Object.getComponents(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Engine/Object.swift",
-      "line": 91,
+      "line": 90,
       "symbol": "Object.addComponent(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -2931,6 +3113,13 @@
       "line": 33,
       "symbol": "CGSize.toSize()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/Extension/Size.swift",
+      "line": 53,
+      "symbol": "*(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.free",
       "warning": "undocumented"
     },
     {
@@ -3952,6 +4141,13 @@
       "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/UI/Elements/CanvasObject.swift",
       "line": 39,
       "symbol": "CanvasObject.pixelSize()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/kevinmalkic/Documents/Git/UnityKit/UnityKit/UnityKit/UI/Elements/CanvasObject.swift",
+      "line": 43,
+      "symbol": "CanvasObject.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },

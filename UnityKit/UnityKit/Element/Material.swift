@@ -46,8 +46,7 @@ public final class Material: Object {
         }
     }
 
-    //
-
+    /// Create a new instance
     public required init() {
         self.scnMaterial = SCNMaterial()
         self.scnMaterial.lightingModel = .phong

@@ -13,7 +13,7 @@
     <a title="Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (7% documented)</p>
+        <p><a href="index.html"> Docs</a> (11% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -685,7 +685,18 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Position, rotation and scale of an object.</p>
+
+<p>Every object in a scene has a Transform. It&rsquo;s used to store and manipulate the position, rotation and scale of the object. Every Transform can have a parent, which allows you to apply position, rotation and scale hierarchically.</p>
+<h2 id='usage-example' class='heading'>Usage Example:</h2>
+<pre class="highlight swift"><code>   <span class="kd">public</span> <span class="kd">class</span> <span class="kt">ExampleClass</span><span class="p">:</span> <span class="kt">MonoBehaviour</span> <span class="p">{</span>
+       <span class="n">void</span> <span class="kt">Example</span><span class="p">()</span> <span class="p">{</span>
+           <span class="n">transform</span><span class="p">?</span><span class="o">.</span><span class="n">children</span><span class="p">?</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span>
+               <span class="nv">$0</span><span class="o">.</span><span class="n">position</span> <span class="o">+=</span> <span class="kt">Vector3</span><span class="o">.</span><span class="n">up</span> <span class="o">*</span> <span class="mf">10.0</span>
+           <span class="p">}</span>
+       <span class="p">}</span>
+   <span class="p">}</span>
+</code></pre>
 
                         <a href="Classes/Transform.html" class="slightly-smaller">See more</a>
                       </div>

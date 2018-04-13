@@ -14,6 +14,7 @@ open class Object: Identifiable {
     private(set) internal var components = [Component]()
     internal let uuid: String
 
+    /// Create a new instance
     public required init() {
         self.uuid = UUID().uuidString
     }

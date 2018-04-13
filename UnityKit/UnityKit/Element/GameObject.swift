@@ -176,6 +176,7 @@ public class GameObject: Object {
         GameObject.convertAllChildToGameObjects(self)
     }
 
+    /// Create a new instance
     public required init() {
         self.node = SCNNode()
         super.init()

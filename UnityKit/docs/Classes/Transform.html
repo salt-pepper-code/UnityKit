@@ -14,7 +14,7 @@
     <a title="Transform Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (7% documented)</p>
+        <p><a href="../index.html"> Docs</a> (11% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -449,7 +449,18 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>Position, rotation and scale of an object.</p>
+
+<p>Every object in a scene has a Transform. It&rsquo;s used to store and manipulate the position, rotation and scale of the object. Every Transform can have a parent, which allows you to apply position, rotation and scale hierarchically.</p>
+<h2 id='usage-example' class='heading'>Usage Example:</h2>
+<pre class="highlight swift"><code>   <span class="kd">public</span> <span class="kd">class</span> <span class="kt">ExampleClass</span><span class="p">:</span> <span class="kt">MonoBehaviour</span> <span class="p">{</span>
+       <span class="n">void</span> <span class="kt">Example</span><span class="p">()</span> <span class="p">{</span>
+           <span class="n">transform</span><span class="p">?</span><span class="o">.</span><span class="n">children</span><span class="p">?</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span>
+               <span class="nv">$0</span><span class="o">.</span><span class="n">position</span> <span class="o">+=</span> <span class="kt">Vector3</span><span class="o">.</span><span class="n">up</span> <span class="o">*</span> <span class="mf">10.0</span>
+           <span class="p">}</span>
+       <span class="p">}</span>
+   <span class="p">}</span>
+</code></pre>
 
           </section>
           <section class="section task-group-section">
@@ -468,7 +479,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create a new instance</p>
 
                       </div>
                       <div class="declaration">
@@ -485,9 +496,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8UnityKit9TransformCAcA10GameObjectCcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8UnityKit9TransformCAcA10GameObjectCcfc">init(_:)</a>
+                    <a name="/s:8UnityKit9TransformC8childrenSayACGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/children" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit9TransformC8childrenSayACGSgvp">children</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -495,14 +506,68 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The children of the transform.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">gameObject</span><span class="p">:</span> <span class="kt"><a href="../Classes/GameObject.html">GameObject</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">children</span><span class="p">:</span> <span class="p">[</span><span class="kt">Transform</span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit9TransformC6parentACSgvp"></a>
+                    <a name="//apple_ref/swift/Property/parent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit9TransformC6parentACSgvp">parent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The parent of the transform.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">parent</span><span class="p">:</span> <span class="kt">Transform</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8UnityKit9TransformC10childCountSivp"></a>
+                    <a name="//apple_ref/swift/Property/childCount" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8UnityKit9TransformC10childCountSivp">childCount</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The number of children the Transform has.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">childCount</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -522,7 +587,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The blue axis of the transform in world space.</p>
 
                       </div>
                       <div class="declaration">
@@ -549,7 +614,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The negative blue axis of the transform in world space.</p>
 
                       </div>
                       <div class="declaration">
@@ -576,7 +641,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The green axis of the transform in world space.</p>
 
                       </div>
                       <div class="declaration">
@@ -603,7 +668,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The negative green axis of the transform in world space.</p>
 
                       </div>
                       <div class="declaration">
@@ -630,7 +695,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The red axis of the transform in world space.</p>
 
                       </div>
                       <div class="declaration">
@@ -657,7 +722,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The negative red axis of the transform in world space.</p>
 
                       </div>
                       <div class="declaration">
@@ -684,7 +749,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The global scale of the object (Read Only).</p>
 
                       </div>
                       <div class="declaration">
@@ -711,7 +776,9 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The position of the transform in world space.</p>
+
+<p>The position member can be accessed by the Game code. Setting this value can be used to animate the GameObject. The example below makes an attached sphere bounce by updating the position. This bouncing slowly comes to an end. The position can also be use to determine where in 3D space the transform.</p>
 
                       </div>
                       <div class="declaration">
@@ -738,7 +805,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The orientation of the transform in world space stored as a Quaternion.</p>
 
                       </div>
                       <div class="declaration">
@@ -765,7 +832,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The orientation of the transform relative to the parent transform&rsquo;s orientation.</p>
 
                       </div>
                       <div class="declaration">
@@ -792,7 +859,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Position of the transform relative to the parent transform.</p>
 
                       </div>
                       <div class="declaration">
@@ -819,7 +886,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The rotation of the transform relative to the parent transform&rsquo;s rotation.</p>
 
                       </div>
                       <div class="declaration">
@@ -846,7 +913,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The rotation as Euler angles in degrees.</p>
 
                       </div>
                       <div class="declaration">
@@ -873,7 +940,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The scale of the transform relative to the parent.</p>
 
                       </div>
                       <div class="declaration">
@@ -900,7 +967,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Rotates the transform so the forward vector points at /target/&lsquo;s current position.</p>
 
                       </div>
                       <div class="declaration">
@@ -910,6 +977,25 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">lookAt</span><span class="p">(</span><span class="n">_</span> <span class="nv">target</span><span class="p">:</span> <span class="kt">Transform</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>target</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Object to point towards.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

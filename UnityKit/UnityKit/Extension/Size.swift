@@ -35,14 +35,22 @@ extension Size: Equatable {
     }
 }
 
-/**
- * Multiplies the x, y and z fields of a Vector2 with the same scalar value and
- * returns the result as a new Vector2.
- */
-public func * (vector: Size, scalar: Float) -> Size {
-    return Size(vector.width * scalar, vector.height * scalar)
+/// Multiplies the width and height fields of a Size with a scalar value
+///
+/// - Parameters:
+///   - size: A size
+///   - scalar: A float
+/// - Returns: the result as a new Size.
+public func * (size: Size, scalar: Float) -> Size {
+    return Size(size.width * scalar, size.height * scalar)
 }
 
-public func * (scalar: Float, vector: Size) -> Size {
-    return Size(vector.width * scalar, vector.height * scalar)
+/// Multiplies the width and height fields of a Size with a scalar value
+///
+/// - Parameters:
+///   - scalar: A float
+///   - size: A size
+/// - Returns: the result as a new Size.
+public func * (scalar: Float, size: Size) -> Size {
+    return Size(size.width * scalar, size.height * scalar)
 }

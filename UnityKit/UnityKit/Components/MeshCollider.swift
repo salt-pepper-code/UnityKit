@@ -7,17 +7,27 @@ public final class MeshCollider: Collider {
         super.init()
         self.ignoreUpdates = true
     }
-    
+
+    /// <#Description#>
+    ///
+    /// - Parameter completionBlock: <#completionBlock description#>
+    /// - Returns: <#return value description#>
     @discardableResult public func configure(_ completionBlock: (MeshCollider) -> Void) -> MeshCollider {
+
         completionBlock(self)
         return self
     }
-
+    
+    /// <#Description#>
+    ///
+    /// - Parameter mesh: <#mesh description#>
+    /// - Returns: <#return value description#>
     @discardableResult public func set(mesh: Mesh?) -> MeshCollider {
         self.mesh = mesh
         return self
     }
 
+    /// <#Description#>
     override func constructBody() {
         guard let gameObject = gameObject,
             let name = gameObject.name
