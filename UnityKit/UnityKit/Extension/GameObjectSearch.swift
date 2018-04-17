@@ -104,12 +104,14 @@ extension GameObject {
     }
 
     public static func findGameObjects(_ type: SearchType, in gameObject: GameObject) -> [GameObject] {
-        return gameObject.getChildren().compactMap { child -> [GameObject] in
-            if GameObject.compare(type, gameObject: child) {
-                return [child] + GameObject.findGameObjects(type, in: child)
+        return gameObject.getChildren()
+            .map { (child) -> [GameObject] in
+                if GameObject.compare(type, gameObject: child) {
+                    return [child] + GameObject.findGameObjects(type, in: child)
+                }
+                return GameObject.findGameObjects(type, in: child)
             }
-            return GameObject.findGameObjects(type, in: child)
-            }.reduce([], { (current, next) -> [GameObject] in
+            .reduce([], { (current, next) -> [GameObject] in
                 current + next
             })
     }
@@ -120,8 +122,12 @@ extension GameObject {
     }
 
     public static func getComponents<T: Component>(_ type: T.Type, in gameObject: GameObject) -> [T] {
-        return gameObject.getChildren().flatMap { child -> [T] in
-            return child.getComponents(type) + GameObject.getComponents(type, in: child)
-        }
+        return gameObject.getChildren()
+            .map { (child) -> [T] in
+                return child.getComponents(type) + GameObject.getComponents(type, in: child)
+            }.reduce([], { (current, next) -> [T] in
+                current + next
+            })
     }
 }
+
