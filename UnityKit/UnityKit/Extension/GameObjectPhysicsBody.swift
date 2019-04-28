@@ -6,13 +6,13 @@ extension GameObject {
     private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
 
         return getComponents(Collider.self)
-            .flatMap { (collider) -> SCNPhysicsShape? in collider.physicsShape }
+            .compactMap { (collider) -> SCNPhysicsShape? in collider.physicsShape }
     }
 
     private func getCollisionLayer() -> GameObject.Layer? {
 
         let layers = getComponents(Collider.self)
-            .flatMap { (collider) -> GameObject.Layer? in collider.collideWithLayer }
+            .compactMap { (collider) -> GameObject.Layer? in collider.collideWithLayer }
 
         let result = layers.reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
             guard prev != layer
@@ -28,7 +28,7 @@ extension GameObject {
     private func getContactLayer() -> GameObject.Layer? {
 
         let layers = getComponents(Collider.self)
-            .flatMap { (collider) -> GameObject.Layer? in collider.contactWithLayer }
+            .compactMap { (collider) -> GameObject.Layer? in collider.contactWithLayer }
 
         let result = layers.reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
             guard prev != layer

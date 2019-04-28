@@ -16,8 +16,8 @@ extension UI {
             var canvasFound = false
             var parent = gameObject
             while parent != nil {
-                if parent is CanvasObject {
-                    canvasObject = parent as! CanvasObject
+                if let object = parent as? CanvasObject {
+                    canvasObject = object
                     canvasFound = true
                     break
                 }

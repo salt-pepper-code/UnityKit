@@ -76,7 +76,7 @@ public class Vehicle: Component {
             let physicsBody = gameObject.node.physicsBody
             else { return self }
 
-        wheels = parameters.flatMap { parameter -> Wheel? in
+        wheels = parameters.compactMap { parameter -> Wheel? in
 
             guard let wheel = GameObject.find(.name(.exact(parameter.nodeName)), in: gameObject)
                 else { return nil }

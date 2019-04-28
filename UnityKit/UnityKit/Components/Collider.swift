@@ -41,7 +41,7 @@ public class Collider: Component, Instantiable {
             else { return nil }
 
         return gameObject.getComponents(Collider.self)
-            .flatMap { (collider) -> SCNPhysicsShape? in collider.physicsShape }
+            .compactMap { (collider) -> SCNPhysicsShape? in collider.physicsShape }
     }
 
     internal func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: Collision) {

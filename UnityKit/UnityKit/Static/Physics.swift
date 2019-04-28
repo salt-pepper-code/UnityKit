@@ -11,7 +11,7 @@ public class Physics {
         let boundingSphere = (center: position, radius: radius)
 
         let colliders = GameObject.findGameObjects(.layer(layerMask), in: scene)
-            .flatMap { gameObject -> Collider? in gameObject.getComponent(Collider.self) }
+            .compactMap { gameObject -> Collider? in gameObject.getComponent(Collider.self) }
             .filter {
                 guard let gameObject = $0.gameObject
                     else { return false }

@@ -5,7 +5,7 @@ public typealias Color = UIColor
 
 public extension Color {
 
-    public var components: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+    var components: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
 
         guard let c = self.cgColor.components
             else { return (red: 1, green: 1, blue: 1, alpha: 1) }
@@ -13,7 +13,7 @@ public extension Color {
         return (red: c[0], green: c[1], blue: c[2], alpha: c[3])
     }
 
-    public convenience init(hexString: String, alpha: CGFloat = 1.0) {
+    convenience init(hexString: String, alpha: CGFloat = 1.0) {
 
         let hexString: String = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         let scanner = Scanner(string: hexString)
@@ -32,7 +32,7 @@ public extension Color {
         self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
 
-    public func toHexString() -> String {
+    func toHexString() -> String {
         
         var r:CGFloat = 0
         var g:CGFloat = 0

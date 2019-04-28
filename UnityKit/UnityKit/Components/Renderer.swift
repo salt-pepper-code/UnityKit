@@ -54,7 +54,7 @@ public final class Renderer: Component {
         return self
     }
 
-    open override func awake() {
+    public override func awake() {
 
         if let scnMaterials = gameObject?.node.geometry?.materials {
             materials = scnMaterials.map { (scnMaterial) -> Material in Material(scnMaterial) }

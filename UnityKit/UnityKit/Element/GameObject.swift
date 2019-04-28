@@ -387,7 +387,7 @@ public class GameObject: Object {
         }
         child.parent = self
         
-        if children.index(where: { $0 == child }) == nil {
+        if children.firstIndex(where: { $0 == child }) == nil {
             
             children.append(child)
 
@@ -413,8 +413,8 @@ public class GameObject: Object {
     }
     
     public func removeChild(_ child: GameObject) {
-        
-        if let index = children.index(where: { $0 == child }) {
+
+        if let index = children.firstIndex(where: { $0 == child }) {
             
             if let gameObject = getChild(index) {
                 

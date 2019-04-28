@@ -80,7 +80,7 @@ public final class Joystick: MonoBehaviour {
                                            kCIInputColorKey: CIColor(color: handleTintColor),
                                            kCIInputImageKey: inputImage]
 
-        guard let filter = CIFilter(name: "CIColorMonochrome", withInputParameters: filterConfig),
+        guard let filter = CIFilter(name: "CIColorMonochrome", parameters: filterConfig),
             let outputImage = filter.outputImage
             else { return false }
 
@@ -115,6 +115,8 @@ public final class Joystick: MonoBehaviour {
             didStart = false
             onComplete?()
             resetPosition()
+        @unknown default:
+            break
         }
     }
 

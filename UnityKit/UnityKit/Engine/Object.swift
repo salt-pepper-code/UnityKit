@@ -66,14 +66,14 @@ open class Object: Identifiable {
     
     public func removeComponentsOfType(_ type: Component.Type) {
 
-        while let index = components.index(where: { $0.self === type }) {
+        while let index = components.firstIndex(where: { $0.self === type }) {
             components[index].remove()
         }
     }
     
     public func removeComponent(_ component: Component) {
         
-        if let index = components.index(where: { $0 == component }) {
+        if let index = components.firstIndex(where: { $0 == component }) {
             components[index].onDestroy()
             components.remove(at: index)
         }

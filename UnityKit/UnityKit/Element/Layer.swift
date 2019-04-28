@@ -33,7 +33,7 @@ extension GameObject {
 
         public static func name(for layer: Layer) -> String {
 
-            guard let index = layers.index(where: { (key, value) -> Bool in value == layer })
+            guard let index = layers.firstIndex(where: { (key, value) -> Bool in value == layer })
                 else { return "" }
 
             return layers.keys[index]

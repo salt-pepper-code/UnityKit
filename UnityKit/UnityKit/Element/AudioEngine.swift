@@ -17,7 +17,7 @@ internal class AudioEngine: AVAudioEngine {
         format = AVAudioFormat(standardFormatWithSampleRate: hardwareSampleRate, channels: AVAudioChannelCount(maxChannels))
         
         do {
-            try sessionInstance.setCategory(AVAudioSessionCategoryPlayback)
+            try sessionInstance.setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.playback)))
             try sessionInstance.setPreferredOutputNumberOfChannels(min(8, maxChannels))
             try sessionInstance.setActive(true)
         } catch {}
@@ -36,4 +36,9 @@ internal class AudioEngine: AVAudioEngine {
         do { try start() }
         catch {}
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

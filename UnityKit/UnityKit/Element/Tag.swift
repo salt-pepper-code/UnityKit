@@ -18,24 +18,12 @@ extension GameObject {
             }
         }
 
-        public var hashValue: Int {
-            return self.toInt()
-        }
-
-        private func toInt() -> Int {
-
+        public func hash(into hasher: inout Hasher) {
             switch self {
-            case .untagged:
-                return 0
-            case .mainCamera:
-                return 1
-            case let .custom(name):
-                return name.hashValue
+            case .untagged: hasher.combine(0)
+            case .mainCamera: hasher.combine(1)
+            case .custom(let name): hasher.combine(name)
             }
-        }
-
-        public static func ==(lhs: Tag, rhs: Tag) -> Bool {
-            return lhs.toInt() == rhs.toInt()
         }
     }
 }

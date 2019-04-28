@@ -104,7 +104,7 @@ public final class Camera: Component {
      @property allowHDR
      @abstract Determines if the receiver has a high dynamic range. Defaults to NO.
      */
-    open var allowHDR: Bool {
+    public var allowHDR: Bool {
         
         get {
             if #available(iOS 10.0, *) {
@@ -251,7 +251,7 @@ public final class Camera: Component {
         }
         SCNTransaction.begin()
         SCNTransaction.animationDuration = duration
-        SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         transform?.lookAt(target)
         SCNTransaction.commit()
     }

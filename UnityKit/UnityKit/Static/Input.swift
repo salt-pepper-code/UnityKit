@@ -1,8 +1,8 @@
 
 import SceneKit
 
-public typealias TouchPhase = UITouchPhase
-public typealias TouchType = UITouchType
+public typealias TouchPhase = UITouch.Phase
+public typealias TouchType = UITouch.TouchType
 
 public final class Touch {
 
