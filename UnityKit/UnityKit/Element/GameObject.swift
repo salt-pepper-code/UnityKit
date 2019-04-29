@@ -31,6 +31,15 @@ public class GameObject: Object {
 
     public var node: SCNNode
 
+    public var ignoreUpdates = false {
+        didSet {
+            if tag == .mainCamera && ignoreUpdates {
+                ignoreUpdates = false
+            }
+            getChildren().forEach { $0.ignoreUpdates = ignoreUpdates }
+        }
+    }
+    
     private(set) public var transform: Transform!
     private(set) public var renderer: Renderer?
     
@@ -53,7 +62,11 @@ public class GameObject: Object {
 
     private var didAwake: Bool = false
     private var didStart: Bool = false
-    private var waitNextUpdate: Bool = true
+    private var waitNextUpdate: Bool = true {
+        didSet {
+            children.forEach { $0.waitNextUpdate = waitNextUpdate }
+        }
+    }
 
     public var activeInHierarchy: Bool {
 
@@ -140,7 +153,7 @@ public class GameObject: Object {
         initialize()
         awake()
     }
-
+    
     internal func initialize() {
 
         self.name = node.name ?? "No name"
@@ -238,7 +251,7 @@ public class GameObject: Object {
         
         guard didAwake,
             !didStart,
-            activeInHierarchy
+            activeSelf
             else { return }
 
         guard !waitNextUpdate else {
@@ -249,84 +262,79 @@ public class GameObject: Object {
         didStart = true
         components.forEach { $0.start() }
         children.forEach { $0.start() }
-
         setActive(true)
     }
 
+    override func internalUpdate() {
+        
+        guard didAwake,
+            didStart,
+            activeSelf
+            else { return }
+        
+        components
+            .filter {
+                if let behaviour = $0 as? MonoBehaviour { return behaviour.enabled }
+                return false
+            }
+            .forEach { $0.internalUpdate() }
+        
+        children.filter { !$0.ignoreUpdates }.forEach { $0.internalUpdate() }
+    }
+    
     public override func preUpdate() {
 
         guard didAwake,
             didStart,
-            activeInHierarchy
+            activeSelf
             else { return }
 
-        for component in components {
+        components
+            .filter {
+                if !$0.implementsPreUpdate { return false }
+                if let behaviour = $0 as? Behaviour { return behaviour.enabled }
+                return true
+            }.forEach { $0.preUpdate() }
 
-            if let behaviour = component as? Behaviour,
-                !behaviour.enabled
-            { continue }
-
-            component.preUpdate()
-        }
-        children.forEach { $0.preUpdate() }
+        children.filter { !$0.ignoreUpdates }.forEach { $0.preUpdate() }
     }
-
-    override func internalUpdate() {
-
-        guard didAwake,
-            didStart,
-            activeInHierarchy
-            else { return }
-
-        for component in components {
-
-            guard let behaviour = component as? MonoBehaviour,
-                behaviour.enabled
-                else { continue }
-
-            behaviour.internalUpdate()
-        }
-        children.forEach { $0.internalUpdate() }
-    }
-
+    
     public override func update() {
         
         guard didAwake,
-            activeInHierarchy
+            activeSelf
             else { return }
 
         guard didStart else {
             start()
             return
         }
+        
+        components
+            .filter {
+                if !$0.implementsUpdate { return false }
+                if let behaviour = $0 as? Behaviour { return behaviour.enabled }
+                return true
+            }.forEach { $0.update() }
 
-        for component in components {
-
-            if let behaviour = component as? Behaviour,
-                !behaviour.enabled
-            { continue }
-
-            component.update()
-        }
-        children.forEach { $0.update() }
+        children.filter { !$0.ignoreUpdates || !$0.didStart }.forEach { $0.update() }
     }
 
     public override func fixedUpdate() {
 
         guard didAwake,
             didStart,
-            activeInHierarchy
+            activeSelf
             else { return }
 
-        for component in components {
+        components
+            .filter {
+                if !$0.implementsFixedUpdate { return false }
+                if let behaviour = $0 as? Behaviour { return behaviour.enabled }
+                return true
+            }.forEach { $0.fixedUpdate() }
 
-            if let behaviour = component as? Behaviour,
-                !behaviour.enabled
-            { continue }
-
-            component.fixedUpdate()
-        }
-        children.forEach { $0.fixedUpdate() }
+        children.filter { !$0.ignoreUpdates }.forEach { $0.fixedUpdate() }
     }
 
     public func removeFromParent() {

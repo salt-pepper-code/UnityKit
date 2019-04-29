@@ -3,6 +3,9 @@ import Foundation
 open class Component: Object {
 
     internal(set) public weak var gameObject: GameObject?
+    internal var implementsPreUpdate = true
+    internal var implementsUpdate = true
+    internal var implementsFixedUpdate = true
     
     public var transform: Transform? {
         get {
@@ -13,7 +16,19 @@ open class Component: Object {
     public required init() {
         super.init()
     }
-
+    
+    open override func preUpdate() {
+        implementsPreUpdate = false
+    }
+    
+    open override func update() {
+        implementsUpdate = false
+    }
+    
+    open override func fixedUpdate() {
+        implementsFixedUpdate = false
+    }
+    
     open override func destroy() {
         gameObject?.removeComponent(self)
     }

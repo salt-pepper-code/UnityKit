@@ -128,9 +128,9 @@ public class Vehicle: Component {
             let stride = wheelStride(vehicle, forWheelAt: index)
             else { return }
 
-        DispatchQueue.main.async { () -> Void in
+        DispatchQueue.main.async { [weak vehicle] () -> Void in
             for i in stride {
-                vehicle.applyEngineForce(value.toCGFloat(), forWheelAt: i)
+                vehicle?.applyEngineForce(value.toCGFloat(), forWheelAt: i)
             }
         }
     }
@@ -141,9 +141,9 @@ public class Vehicle: Component {
             let stride = wheelStride(vehicle, forWheelAt: index)
             else { return }
 
-        DispatchQueue.main.async { () -> Void in
+        DispatchQueue.main.async { [weak vehicle] () -> Void in
             for i in stride {
-                vehicle.setSteeringAngle(value.toCGFloat(), forWheelAt: i)
+                vehicle?.setSteeringAngle(value.toCGFloat(), forWheelAt: i)
             }
         }
     }
@@ -154,9 +154,9 @@ public class Vehicle: Component {
             let stride = wheelStride(vehicle, forWheelAt: index)
             else { return }
 
-        DispatchQueue.main.async { () -> Void in
+        DispatchQueue.main.async { [weak vehicle] () -> Void in
             for i in stride {
-                vehicle.applyBrakingForce(value.toCGFloat(), forWheelAt: i)
+                vehicle?.applyBrakingForce(value.toCGFloat(), forWheelAt: i)
             }
         }
     }

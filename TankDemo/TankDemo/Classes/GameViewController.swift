@@ -5,7 +5,7 @@ import SceneKit
 class GameViewController: UIViewController {
 
     override func loadView() {
-        self.view = UI.View.makeView(sceneName: "Scene.scn")
+        self.view = UI.View.makeView(sceneName: "Scene.scn", options: UI.View.Options(showsStatistics: true))
     }
 
     var sceneView: UI.View {
@@ -23,7 +23,12 @@ class GameViewController: UIViewController {
 
         guard let scene = sceneView.sceneHolder
             else { return }
-
+        
+        //ignore update calls on all scene objects
+        scene.rootGameObject.getChildren().forEach {
+            $0.ignoreUpdates = true
+        }
+        
         // Controls Setup
         let controls = GameObject(name: "Controls")
         guard let joystick = controls.addComponent(Joystick.self),
@@ -46,9 +51,11 @@ class GameViewController: UIViewController {
         let environments = militaries + oilFields + boundaries + rocks + [helipad]
 
         // Layers
-        environments.forEach { $0.layer = .environment }
+        environments.forEach {
+            $0.layer = .environment
+        }
         ground.layer = .ground
-
+        
         // Rigidbodies
         environments.forEach {
             $0.addComponent(Rigidbody.self)?
