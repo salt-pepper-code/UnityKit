@@ -29,7 +29,7 @@ public class CanvasObject: GameObject {
         super.init(result.0)
         skView = result.1
         pause()
-        addComponent(external: false, type: UI.Canvas.self, gameObject: self)?
+        addComponent(external: false, type: UI.Canvas.self, gameObject: self)
             .configure {
                 $0.worldSize = worldSize
                 $0.pixelPerUnit = pixelPerUnit

@@ -24,16 +24,18 @@ class GameViewController: UIViewController {
         guard let scene = sceneView.sceneHolder
             else { return }
         
-        //ignore update calls on all scene objects
-        scene.rootGameObject.getChildren().forEach {
-            $0.ignoreUpdates = true
+        //ignore update calls on all scene objects for performance
+        scene.rootGameObject
+            .getChildren()
+            .filter { $0.tag != .mainCamera }
+            .forEach {
+                $0.ignoreUpdates = true
         }
         
         // Controls Setup
         let controls = GameObject(name: "Controls")
-        guard let joystick = controls.addComponent(Joystick.self),
-            let fireButton = controls.addComponent(FireButton.self)
-            else { return }
+        let joystick = controls.addComponent(Joystick.self)
+        let fireButton = controls.addComponent(FireButton.self)
 
         scene.addGameObject(controls)
         setup(joystick: joystick)
@@ -48,7 +50,7 @@ class GameViewController: UIViewController {
             let helipad = GameObject.find(.name(.exact("Helipad")))
             else { return }
 
-        let environments = militaries + oilFields + boundaries + rocks + [helipad]
+        let environments = militaries + oilFields + boundaries + rocks + [helipad, ground]
 
         // Layers
         environments.forEach {
@@ -58,26 +60,21 @@ class GameViewController: UIViewController {
         
         // Rigidbodies
         environments.forEach {
-            $0.addComponent(Rigidbody.self)?
+            $0.addComponent(Rigidbody.self)
                 .configure {
                     $0.useGravity = false
                     $0.isStatic = true
             }
         }
-        ground.addComponent(Rigidbody.self)?
-            .configure {
-                $0.useGravity = false
-                $0.isStatic = true
-        }
 
         // Colliders
         environments.forEach {
-            $0.addComponent(MeshCollider.self)?
+            $0.addComponent(MeshCollider.self)
                 .configure {
                     $0.collideWithLayer = [.player, .projectile]
             }
         }
-        ground.addComponent(BoxCollider.self)?
+        ground.addComponent(BoxCollider.self)
             .set(size: Vector3Nullable(nil, 8, nil))
             .set(center: Vector3Nullable(nil, -4, nil))
 
@@ -86,7 +83,7 @@ class GameViewController: UIViewController {
         gameManager.addComponent(GameManager.self)
         gameManager.transform.position = Vector3(0, 5, 0)
         if let clip = AudioClip(fileName: "BackgroundMusic.wav", playType: .loop) {
-            gameManager.addComponent(AudioSource.self)?
+            gameManager.addComponent(AudioSource.self)
                 .configure {
                     $0.clip = clip
                     $0.volume = 0.3

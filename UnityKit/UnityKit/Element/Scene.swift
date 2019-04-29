@@ -60,9 +60,8 @@ open class Scene: Identifiable {
             
             let cameraObject = GameObject()
 
-            if let cameraComponent = cameraObject.addComponent(Camera.self) {
-                cameraObject.node.camera = cameraComponent.scnCamera
-            }
+            let cameraComponent = cameraObject.addComponent(Camera.self)
+            cameraObject.node.camera = cameraComponent.scnCamera
 
             cameraObject.tag = .mainCamera
             cameraObject.name = cameraObject.tag.name

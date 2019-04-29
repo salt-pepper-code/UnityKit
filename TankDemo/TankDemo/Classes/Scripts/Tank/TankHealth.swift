@@ -34,12 +34,12 @@ class TankHealth: MonoBehaviour {
         healthSlider.addChild(fillArea)
 
         // Setup Image components
-        background.addComponent(UI.Image.self)?
+        background.addComponent(UI.Image.self)
             .configure {
                 $0.loadImage(fileName: "HealthWheel.png", type: .filled(canvas.pixelSize()), color: Color(hexString: "#FFFFFF", alpha: 0.31))
         }
 
-        fillImage = fillArea.addComponent(UI.Image.self)?
+        fillImage = fillArea.addComponent(UI.Image.self)
             .configure {
                 $0.fillMethod = .radial360(.top)
                 $0.clockwise = false
@@ -47,7 +47,7 @@ class TankHealth: MonoBehaviour {
         }
 
         // Setup Slider component that will control how to fill the image
-        slider = healthSlider.addComponent(UI.Slider.self)?
+        slider = healthSlider.addComponent(UI.Slider.self)
             .configure {
                 $0.fillImage = fillImage
                 $0.minValue = 0

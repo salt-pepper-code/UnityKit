@@ -87,11 +87,11 @@ open class Object: Identifiable {
         return components.compactMap { $0 as? T }
     }
     
-    @discardableResult open func addComponent<T: Component>(_ type: T.Type) -> T? {
+    @discardableResult open func addComponent<T: Component>(_ type: T.Type) -> T {
         return addComponent(external: true, type: type)
     }
 
-    @discardableResult internal func addComponent<T: Component>(external: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
+    @discardableResult internal func addComponent<T: Component>(external: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T {
         
         if external && (T.self === Renderer.self || T.self === Transform.self || T.self === MeshFilter.self || T.self === UI.Canvas.self) {
             fatalError("Can't manually add Renderer, Transform, MeshFilter or Canvas")
@@ -116,7 +116,7 @@ open class Object: Identifiable {
         return 6
     }
 
-    @discardableResult internal func addComponent<T: Component>(_ component: T, gameObject: GameObject? = nil) -> T? {
+    @discardableResult internal func addComponent<T: Component>(_ component: T, gameObject: GameObject? = nil) -> T {
 
         components.append(component)
         components.sort { orderIndex(type(of: $0)) <= orderIndex(type(of: $1)) }

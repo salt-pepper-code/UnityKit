@@ -55,19 +55,19 @@ class TankShooting: MonoBehaviour {
         shell.transform.orientation = origin.transform.orientation
         shell.transform.position = origin.transform.position
 
-        shell.addComponent(Rigidbody.self)?
+        shell.addComponent(Rigidbody.self)
             .configure {
                 $0.useGravity = true
                 $0.isKinematic = false
                 $0.constraints = [.freezeRotationY]
             }
             .set(property: .velocity(currentLaunchForce * gameObject.transform.forward))
-        shell.addComponent(MeshCollider.self)?
+        shell.addComponent(MeshCollider.self)
             .configure {
                 $0.collideWithLayer = .all
                 $0.contactWithLayer = .all
         }
-        shell.addComponent(Light.self)?
+        shell.addComponent(Light.self)
             .configure {
                 $0.type = .omni
                 $0.color = Color(hexString: "#FFF02B")
@@ -76,7 +76,7 @@ class TankShooting: MonoBehaviour {
                 $0.attenuationFalloffExponent = 2
         }
         if let clip = AudioClip(fileName: "ShotFiring.wav") {
-            shell.addComponent(AudioSource.self)?
+            shell.addComponent(AudioSource.self)
                 .configure {
                     $0.clip = clip
                     $0.volume = 1.5

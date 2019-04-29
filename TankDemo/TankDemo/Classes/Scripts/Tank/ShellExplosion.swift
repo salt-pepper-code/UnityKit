@@ -44,17 +44,17 @@ class ShellExplosion: MonoBehaviour {
             scene.addGameObject(empty)
             empty.transform.position = shellTransform.position
             if let clip = AudioClip(fileName: "ShellExplosion.wav") {
-                empty.addComponent(AudioSource.self)?
+                empty.addComponent(AudioSource.self)
                     .configure {
                         $0.clip = clip
                         $0.volume = 2
                         $0.play()
                 }
             }
-            empty.addComponent(ParticleSystem.self)?
+            empty.addComponent(ParticleSystem.self)
                 .load(fileName: "Explosion.scnp")?
-                .executeAfter(milliseconds: 1000, block: { _ in
-                    empty.destroy()
+                .executeAfter(milliseconds: 1000, block: { [weak empty] _ in
+                    empty?.destroy()
                 })
         }
 

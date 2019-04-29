@@ -33,9 +33,6 @@ public class GameObject: Object {
 
     public var ignoreUpdates = false {
         didSet {
-            if tag == .mainCamera && ignoreUpdates {
-                ignoreUpdates = false
-            }
             getChildren().forEach { $0.ignoreUpdates = ignoreUpdates }
         }
     }
@@ -163,7 +160,7 @@ public class GameObject: Object {
         if let geometry = node.geometry {
 
             let meshFilter = addComponent(external: false, type: MeshFilter.self)
-            meshFilter?.mesh = Mesh(geometry)
+            meshFilter.mesh = Mesh(geometry)
 
             self.renderer = addComponent(external: false, type: Renderer.self)
 
@@ -172,16 +169,12 @@ public class GameObject: Object {
             }
         }
 
-        if let camera = node.camera,
-            let cameraComponent = addComponent(Camera.self) {
-            
-            cameraComponent.scnCamera = camera
+        if let camera = node.camera {
+            addComponent(Camera.self).scnCamera = camera
         }
 
-        if let light = node.light,
-            let lightComponent = addComponent(Light.self) {
-
-            lightComponent.scnLight = light
+        if let light = node.light {
+            addComponent(Light.self).scnLight = light
         }
 
         GameObject.convertAllChildToGameObjects(self)
@@ -343,15 +336,15 @@ public class GameObject: Object {
 
     // Component
 
-    @discardableResult override func addComponent<T: Component>(_ component: T, gameObject: GameObject?) -> T? {
+    @discardableResult override func addComponent<T: Component>(_ component: T, gameObject: GameObject?) -> T {
         return super.addComponent(component, gameObject: self)
     }
 
-    @discardableResult public override func addComponent<T: Component>(_ type: T.Type) -> T? {
+    @discardableResult public override func addComponent<T: Component>(_ type: T.Type) -> T {
         return super.addComponent(external: true, type: type, gameObject: self)
     }
     
-    @discardableResult internal override func addComponent<T: Component>(external: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T? {
+    @discardableResult internal override func addComponent<T: Component>(external: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T {
         return super.addComponent(external: external, type: type, gameObject: gameObject ?? self)
     }
     

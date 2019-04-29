@@ -21,7 +21,7 @@ class TankMovement: MonoBehaviour {
         fetchComponents()
 
         if let clip = AudioClip(fileName: "EngineIdle.aif", playType: .loop) {
-            addComponent(AudioSource.self)?
+            addComponent(AudioSource.self)
                 .configure {
                     $0.clip = clip
                     $0.volume = 0.4

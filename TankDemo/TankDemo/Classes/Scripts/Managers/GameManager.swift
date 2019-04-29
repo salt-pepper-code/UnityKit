@@ -211,7 +211,7 @@ class GameManager: MonoBehaviour {
 
         tank.layer = .player
 
-        tank.addComponent(Rigidbody.self)?
+        tank.addComponent(Rigidbody.self)
             .configure {
                 $0.isKinematic = false
                 $0.constraints = [.freezeRotationX, .freezeRotationZ]
@@ -221,7 +221,7 @@ class GameManager: MonoBehaviour {
                 $0.set(property: .friction(0.5))
                 $0.set(property: .rollingFriction(0))
         }
-        tank.addComponent(MeshCollider.self)?
+        tank.addComponent(MeshCollider.self)
             .set(mesh: tank.getComponent(MeshFilter.self)?.mesh)
             .configure {
                 $0.collideWithLayer = [.all]
@@ -241,7 +241,7 @@ class GameManager: MonoBehaviour {
 
         tank.addComponent(TankManager.self)
         tank.addComponent(TankHealth.self)
-        tank.addComponent(Vehicle.self)?
+        tank.addComponent(Vehicle.self)
             .set(wheels: createWheels(), physicsWorld: scene.scnScene.physicsWorld)
 
         tank.transform.position = property.spawnPosition
