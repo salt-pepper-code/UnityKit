@@ -213,6 +213,7 @@ class GameManager: MonoBehaviour {
 
         tank.addComponent(Rigidbody.self)
             .configure {
+                $0.isStatic = false
                 $0.isKinematic = false
                 $0.constraints = [.freezeRotationX, .freezeRotationZ]
                 $0.set(property: .allowsResting(false))

@@ -4,19 +4,21 @@ import SceneKit
 public class ParticleSystem: Component {
 
     public var scnParticleSystem: SCNParticleSystem?
-
+    
     public override func onDestroy() {
 
         guard let particule = scnParticleSystem
             else { return }
-
+        
+        particule.reset()
+        scnParticleSystem = nil
         gameObject?.node.removeParticleSystem(particule)
     }
 
-    @discardableResult public func load(fileName: String, bundle: Bundle = Bundle.main) -> ParticleSystem? {
+    @discardableResult public func load(fileName: String, bundle: Bundle = Bundle.main, loops: Bool) -> ParticleSystem {
 
         guard let modelUrl = searchPathForResource(for: fileName, extension: nil, bundle: bundle)
-            else { return nil }
+            else { return self }
 
         var path = modelUrl.relativePath
             .replacingOccurrences(of: bundle.bundlePath, with: "")
@@ -27,12 +29,13 @@ public class ParticleSystem: Component {
         }
 
         guard let particule = SCNParticleSystem(named: modelUrl.lastPathComponent, inDirectory: path)
-            else { return nil }
+            else { return self }
 
         particule.colliderNodes = []
+        particule.loops = loops
         scnParticleSystem = particule
         gameObject?.node.addParticleSystem(particule)
-
+        
         return self
     }
 
@@ -42,10 +45,10 @@ public class ParticleSystem: Component {
         return self
     }
 
-    @discardableResult public func executeAfter(milliseconds: Int, block: ((SCNParticleSystem?) -> ())? = nil) -> ParticleSystem {
+    @discardableResult public func executeAfter(milliseconds: Int, block: @escaping (SCNParticleSystem?) -> ()) -> ParticleSystem {
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + DispatchTimeInterval.milliseconds(milliseconds)) { [weak self] in
-            block?(self?.scnParticleSystem)
+        DispatchQueue.main.asyncAfter(deadline: .now() + DispatchTimeInterval.milliseconds(milliseconds)) { [weak scnParticleSystem] in
+            block(scnParticleSystem)
         }
         return self
     }

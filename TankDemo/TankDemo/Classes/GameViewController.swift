@@ -24,7 +24,7 @@ class GameViewController: UIViewController {
         guard let scene = sceneView.sceneHolder
             else { return }
         
-        //ignore update calls on all scene objects for performance
+        // Ignores update calls on all scene objects for performance
         scene.rootGameObject
             .getChildren()
             .filter { $0.tag != .mainCamera }
@@ -42,15 +42,15 @@ class GameViewController: UIViewController {
         setup(fireButton: fireButton)
 
         // Physics Setup
-        guard let militaries = GameObject.find(.name(.exact("Military")))?.getChildren(),
-            let oilFields = GameObject.find(.name(.exact("OilField")))?.getChildren(),
-            let rocks = GameObject.find(.name(.exact("Rocks")))?.getChildren(),
-            let boundaries = GameObject.find(.name(.exact("Boundaries")))?.getChildren(),
-            let ground = GameObject.find(.name(.exact("GroundPlane"))),
+        let militaries = GameObject.find(.name(.exact("Military")))?.getChildren() ?? []
+        let oilFields = GameObject.find(.name(.exact("OilField")))?.getChildren() ?? []
+        let rocks = GameObject.find(.name(.exact("Rocks")))?.getChildren() ?? []
+        let boundaries = GameObject.find(.name(.exact("Boundaries")))?.getChildren() ?? []
+        guard let ground = GameObject.find(.name(.exact("GroundPlane"))),
             let helipad = GameObject.find(.name(.exact("Helipad")))
             else { return }
 
-        let environments = militaries + oilFields + boundaries + rocks + [helipad, ground]
+        let environments = militaries + oilFields + boundaries + rocks + [helipad]
 
         // Layers
         environments.forEach {
@@ -65,6 +65,11 @@ class GameViewController: UIViewController {
                     $0.useGravity = false
                     $0.isStatic = true
             }
+        }
+        ground.addComponent(Rigidbody.self)
+            .configure {
+                $0.useGravity = false
+                $0.isStatic = true
         }
 
         // Colliders

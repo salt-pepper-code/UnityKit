@@ -74,15 +74,20 @@ extension UI {
         public static func makeView(on superview: UIView? = nil,
                                     sceneName: String? = nil,
                                     options: View.Options? = nil,
+                                    castShadow: Bool = true,
                                     allocation: Scene.Allocation = .singleton,
                                     extraLayers: [String]? = nil) -> View {
 
+            let shadowCastingAllowed: Bool
             #if (arch(i386) || arch(x86_64))
                 let options = options ?? View.Options(antialiasingMode: .none,
                                                       preferredRenderingAPI: .openGLES2)
+                shadowCastingAllowed = false
+                print("Shadows are disabled on the simulator for performance reason, prefer to use a device!")
             #else
                 let options = options ?? View.Options(antialiasingMode: .multisampling4X,
                                                       preferredRenderingAPI: .metal)
+                shadowCastingAllowed = true
             #endif
 
             extraLayers?.forEach {
@@ -99,9 +104,9 @@ extension UI {
             options.rendersContinuously.map { view.rendersContinuously = $0 }
 
             if let sceneName = sceneName {
-                view.sceneHolder = Scene(sceneName: sceneName, allocation: allocation)
+                view.sceneHolder = Scene(sceneName: sceneName, allocation: allocation, shadowCastingAllowed: shadowCastingAllowed)
             } else {
-                view.sceneHolder = Scene(allocation: allocation)
+                view.sceneHolder = Scene(allocation: allocation, shadowCastingAllowed: shadowCastingAllowed)
             }
 
             view.scene?.physicsWorld.contactDelegate = view

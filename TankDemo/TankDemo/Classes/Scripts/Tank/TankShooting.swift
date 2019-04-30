@@ -58,6 +58,7 @@ class TankShooting: MonoBehaviour {
         shell.addComponent(Rigidbody.self)
             .configure {
                 $0.useGravity = true
+                $0.isStatic = false
                 $0.isKinematic = false
                 $0.constraints = [.freezeRotationY]
             }

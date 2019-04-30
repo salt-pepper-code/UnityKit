@@ -163,10 +163,8 @@ public class GameObject: Object {
             meshFilter.mesh = Mesh(geometry)
 
             self.renderer = addComponent(external: false, type: Renderer.self)
-
-            geometry.materials.forEach {
-                self.renderer?.materials.append(Material($0))
-            }
+            
+            self.renderer?.materials = geometry.materials.map { Material($0) }
         }
 
         if let camera = node.camera {
@@ -190,8 +188,8 @@ public class GameObject: Object {
     
     public override func destroy() {
 
-        parent?.removeChild(self)
         super.destroy()
+        parent?.removeChild(self)
     }
     
     public func instantiate() -> GameObject {
@@ -215,7 +213,6 @@ public class GameObject: Object {
     }
     
     internal func setScene(_ scene: Scene) {
-        
         self.scene = scene
         children.forEach { $0.setScene(scene) }
     }

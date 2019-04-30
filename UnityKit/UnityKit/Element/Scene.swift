@@ -11,37 +11,40 @@ open class Scene: Identifiable {
     private var lastTimeStamp: TimeInterval?
     public let scnScene: SCNScene
     public let rootGameObject: GameObject
-
+    internal let shadowCastingAllowed: Bool
+    
     internal let uuid: String
 
     private(set) public static var sharedInstance: Scene?
 
-    public convenience init?(sceneName: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, allocation: Allocation) {
+    public convenience init?(sceneName: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, allocation: Allocation, shadowCastingAllowed: Bool = true) {
 
         guard let sceneUrl = searchPathForResource(for: sceneName, extension: nil, bundle: bundle)
             else { return nil }
 
-        self.init(sceneUrl: sceneUrl, options: options, allocation: allocation)
+        self.init(sceneUrl: sceneUrl, options: options, allocation: allocation, shadowCastingAllowed: shadowCastingAllowed)
     }
     
-    public convenience init?(scenePath: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, allocation: Allocation) {
+    public convenience init?(scenePath: String, options: [SCNSceneSource.LoadingOption : Any]? = nil, bundle: Bundle = Bundle.main, allocation: Allocation, shadowCastingAllowed: Bool = true) {
         
         guard let sceneUrl = bundle.url(forResource: scenePath, withExtension: nil)
             else { return nil }
 
-        self.init(sceneUrl: sceneUrl, options: options, allocation: allocation)
+        self.init(sceneUrl: sceneUrl, options: options, allocation: allocation, shadowCastingAllowed: shadowCastingAllowed)
     }
     
-    public convenience init?(sceneUrl: URL, options: [SCNSceneSource.LoadingOption : Any]? = nil, allocation: Allocation) {
+    public convenience init?(sceneUrl: URL, options: [SCNSceneSource.LoadingOption : Any]? = nil, allocation: Allocation, shadowCastingAllowed: Bool = true) {
         
         guard let scene = try? SCNScene(url: sceneUrl, options: options)
             else { return nil }
 
-        self.init(scene, allocation: allocation)
+        self.init(scene, allocation: allocation, shadowCastingAllowed: shadowCastingAllowed)
     }
     
-    public init(_ scene: SCNScene? = nil, allocation: Allocation) {
+    public init(_ scene: SCNScene? = nil, allocation: Allocation, shadowCastingAllowed: Bool = true) {
 
+        self.shadowCastingAllowed = shadowCastingAllowed
+        
         self.uuid = UUID().uuidString
         
         self.scnScene = scene ?? SCNScene()
@@ -55,7 +58,7 @@ open class Scene: Identifiable {
             camera.tag = .mainCamera
             camera.name = camera.tag.name
         }
-
+        
         if Camera.main(in: self) == nil {
             
             let cameraObject = GameObject()
@@ -71,6 +74,10 @@ open class Scene: Identifiable {
             cameraObject.transform.position = Vector3(0, 10, 20)
         }
 
+        if shadowCastingAllowed == false {
+            self.disableCastsShadow(gameObject: self.rootGameObject)
+        }
+        
         switch allocation {
         case .singleton:
             Scene.sharedInstance = self
@@ -79,6 +86,13 @@ open class Scene: Identifiable {
         }
     }
 
+    internal func disableCastsShadow(gameObject: GameObject) {
+        gameObject.getChildren().forEach {
+            $0.node.castsShadow = false
+            $0.node.light?.castsShadow = false
+            disableCastsShadow(gameObject: $0)
+        }
+    }
     //
 
     public func getInstanceID() -> String {
@@ -126,6 +140,9 @@ open class Scene: Identifiable {
     
     public func addGameObject(_ gameObject: GameObject) {
         gameObject.addToScene(self)
+        if shadowCastingAllowed == false {
+            gameObject.node.castsShadow = false
+        }
     }
     
     public func find(_ type: GameObject.SearchType) -> GameObject? {

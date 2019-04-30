@@ -52,7 +52,7 @@ class ShellExplosion: MonoBehaviour {
                 }
             }
             empty.addComponent(ParticleSystem.self)
-                .load(fileName: "Explosion.scnp")?
+                .load(fileName: "Explosion.scnp", loops: false)
                 .executeAfter(milliseconds: 1000, block: { [weak empty] _ in
                     empty?.destroy()
                 })

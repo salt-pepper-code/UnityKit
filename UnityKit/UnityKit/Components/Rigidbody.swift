@@ -109,7 +109,15 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
-    public var isStatic: Bool = false
+    public var isStatic: Bool = false {
+        didSet {
+            if isStatic {
+                gameObject?.node.movabilityHint = .fixed
+            } else {
+                gameObject?.node.movabilityHint = .movable
+            }
+        }
+    }
 
     public var isKinematic: Bool = true
 
