@@ -194,7 +194,6 @@ public final class Transform: Component {
     /// Rotates the transform so the forward vector points at /target/'s current position.
     ///
     /// - Parameter target: Object to point towards.
-    @available(iOS 11.0, *)
     public func lookAt(_ target: Transform) {
         if let constraints = gameObject?.node.constraints, constraints.count > 0 {
             Debug.warning("remove constraints on node before using lookAt")

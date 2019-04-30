@@ -220,7 +220,7 @@ public final class Camera: Component {
         return distanceConstraint
     }
 
-    public func lookAt(_ gameObject: GameObject, duration: TimeInterval = 1) {
+    public func lookAt(_ gameObject: GameObject, duration: TimeInterval? = nil) {
         lookAt(gameObject.transform, duration: duration)
     }
 
