@@ -1,4 +1,3 @@
-
 import SceneKit
 import Foundation
 
@@ -6,20 +5,17 @@ public typealias Vector4 = SCNVector4
 public typealias Quaternion = SCNQuaternion
 
 extension Vector4 {
-    
     public static var zero: Vector4 {
         return SCNVector4Zero
     }
 }
 
 extension Quaternion {
-
     public static func euler(_ x: Degree, _ y: Degree, _ z: Degree) -> Quaternion {
         return Vector3(x.degreesToRadians, y.degreesToRadians, z.degreesToRadians).toQuaternion()
     }
 
     public func normalized() -> Quaternion {
-
         let n = x * x + y * y + z * z + w * w
 
         if n == 1 {
@@ -30,7 +26,6 @@ extension Quaternion {
     }
 
     public func toEuler() -> Vector3 {
-
         let d = 2.0 * (y * w - x * z)
 
         switch d {
@@ -53,7 +48,6 @@ extension Quaternion {
      }
 
     public static func difference(from: Vector3, to: Vector3) -> Quaternion {
-
         let v0 = from.normalized()
         let v1 = to.normalized()
 

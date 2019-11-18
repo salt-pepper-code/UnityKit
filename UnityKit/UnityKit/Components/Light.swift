@@ -1,9 +1,7 @@
-
 import Foundation
 import SceneKit
 
 public final class Light: Component {
-
     internal(set) public var scnLight = SCNLight()
 
     /*!
@@ -240,7 +238,6 @@ public final class Light: Component {
     }
 
     public override var gameObject: GameObject? {
-
         didSet {
             guard let node = gameObject?.node,
                 node.light != scnLight
@@ -250,14 +247,17 @@ public final class Light: Component {
         }
     }
 
-    @discardableResult public func configure(_ completionBlock: (Light) -> ()) -> Light {
+    required init() {
+        super.init()
+        self.ignoreUpdates = true
+    }
 
+    @discardableResult public func configure(_ completionBlock: (Light) -> Void) -> Light {
         completionBlock(self)
         return self
     }
 
     public override func awake() {
-
         guard let node = gameObject?.node,
             node.light == nil
             else { return }

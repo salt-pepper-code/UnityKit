@@ -1,18 +1,16 @@
-
 import UnityKit
 import UIKit
 
 public typealias JoystickTuple = (angle: Float, displacement: Float)
-public typealias JoystickUpdate = (JoystickTuple) -> ()
-public typealias JoystickStart = () -> ()
-public typealias JoystickCompletion = () -> ()
+public typealias JoystickUpdate = (JoystickTuple) -> Void
+public typealias JoystickStart = () -> Void
+public typealias JoystickCompletion = () -> Void
 
 public final class Joystick: MonoBehaviour {
-
     let view: UIView
 
     public var onStart: JoystickStart?
-    public var onUpdate: JoystickUpdate? 
+    public var onUpdate: JoystickUpdate?
     public var onComplete: JoystickCompletion?
 
     public var baseAlpha: CGFloat {
@@ -56,11 +54,10 @@ public final class Joystick: MonoBehaviour {
     }
 
     private func initialize() {
-
         baseImageView.alpha = baseAlpha
         view.addSubview(baseImageView)
         baseImageView.frame = view.bounds
-        baseImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight];
+        baseImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         if !makeHandleImage() {
             fatalError("failed to create handle image")
@@ -72,7 +69,6 @@ public final class Joystick: MonoBehaviour {
     }
 
     @discardableResult private func makeHandleImage() -> Bool {
-
         guard let inputImage = CIImage(image: handleImage)
             else { return false }
 
@@ -91,7 +87,6 @@ public final class Joystick: MonoBehaviour {
     private var didStart = false
 
     public override func update() {
-
         guard let touch = Input.getTouch(0)
             else { return }
 
@@ -129,13 +124,11 @@ public final class Joystick: MonoBehaviour {
     }
 
     private func update(position: Vector2) {
-
         let delta = position - CGPoint(x: view.frame.midX, y: view.frame.midY).toVector2()
         let newDisplacement = delta.length() / radius
         let newAngleRadians = atan2f(delta.x, delta.y)
 
         if newDisplacement > 1.0 {
-
             let x = CGFloat(sinf(newAngleRadians)) * radius.toCGFloat()
             let y = CGFloat(cosf(newAngleRadians)) * radius.toCGFloat()
             handleImageView.frame.origin = CGPoint(x: x + view.bounds.midX - handleImageView.bounds.size.width / 2.0,
@@ -154,4 +147,3 @@ public final class Joystick: MonoBehaviour {
         }
     }
 }
-

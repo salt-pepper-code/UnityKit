@@ -1,8 +1,5 @@
-
 extension GameObject {
-
     public struct Layer: OptionSet {
-
         public let rawValue: Int
 
         public init(rawValue: Int) {
@@ -16,7 +13,7 @@ extension GameObject {
         public static let projectile = Layer(rawValue: 1 << 4)
 
         public static var all: Layer {
-            return layers.values.dropFirst().reduce(`default`) { (prev, layer) -> Layer in
+            return layers.values.dropFirst().reduce(`default`) { prev, layer -> Layer in
                 [prev, layer]
             }
         }
@@ -24,23 +21,15 @@ extension GameObject {
         private(set) public static var layers = ["default": `default`, "ground": ground, "player": player, "environment": environment, "projectile": projectile]
 
         public static func layer(for name: String) -> Layer {
-
-            guard let layer = layers[name]
-                else { return `default` }
-
-            return layer
+            return layers[name] ?? `default`
         }
 
         public static func name(for layer: Layer) -> String {
-
-            guard let index = layers.firstIndex(where: { (key, value) -> Bool in value == layer })
-                else { return "" }
-
+            guard let index = layers.firstIndex(where: { _, value -> Bool in value == layer }) else { return "" }
             return layers.keys[index]
         }
 
         @discardableResult internal static func addLayer(with name: String) -> Layer {
-
             if let layer = layers[name] {
                 return layer
             }

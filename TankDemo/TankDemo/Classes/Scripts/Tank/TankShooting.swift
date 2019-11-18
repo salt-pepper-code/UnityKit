@@ -1,9 +1,7 @@
-
 import UnityKit
 import Foundation
 
 class TankShooting: MonoBehaviour {
-
     public var fireButton: FireButton?
 
     public var shellRef: GameObject?
@@ -23,7 +21,6 @@ class TankShooting: MonoBehaviour {
     }
 
     override func awake() {
-
         fireButton = GameObject.findObjectOfType(FireButton.self)
         fireButton?.onTrigger = { [weak self] () in
             self?.fire()
@@ -40,7 +37,6 @@ class TankShooting: MonoBehaviour {
     }
 
     private func fire() {
-
         guard enabled,
             timeElapsed >= reloadTime,
             let shellRef = shellRef,
@@ -67,7 +63,7 @@ class TankShooting: MonoBehaviour {
             .configure {
                 $0.collideWithLayer = .all
                 $0.contactWithLayer = .all
-        }
+            }
         shell.addComponent(Light.self)
             .configure {
                 $0.type = .omni
@@ -75,14 +71,14 @@ class TankShooting: MonoBehaviour {
                 $0.intensity = 200
                 $0.attenuationDistance = 0...10
                 $0.attenuationFalloffExponent = 2
-        }
+            }
         if let clip = AudioClip(fileName: "ShotFiring.wav") {
             shell.addComponent(AudioSource.self)
                 .configure {
                     $0.clip = clip
                     $0.volume = 1.5
                     $0.play()
-            }
+                }
         }
         shell.addComponent(ShellExplosion.self)
 

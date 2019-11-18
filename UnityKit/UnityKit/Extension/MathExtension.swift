@@ -1,11 +1,9 @@
-
 import CoreGraphics
 import Foundation
 
 public typealias Degree = Float
 
 extension Degree {
-
     public static func clamp(_ angle: Degree) -> Degree {
         var angle = angle
         while angle >= 360 {
@@ -22,12 +20,11 @@ extension Degree {
     }
 
     public static func differenceAngle(x: Degree, y: Degree) -> Degree {
-
         var arg = fmod(y - x, 360)
-        if (arg < 0 ) {
+        if arg < 0 {
             arg = arg + 360
         }
-        if (arg > 180) {
+        if arg > 180 {
             arg = arg - 360
         }
         return -arg
@@ -39,10 +36,9 @@ extension Degree {
 }
 
 extension FloatingPoint {
-    
     public static func degToRad() -> Self { return .pi / 180 }
     public static func radToDeg() -> Self { return 180 / .pi }
-    
+
     public var degreesToRadians: Self { return self * Self.degToRad() }
     public var radiansToDegrees: Self { return self * Self.radToDeg() }
 
@@ -60,28 +56,24 @@ extension FloatingPoint {
 }
 
 extension Double {
-    
     public static func lerp(from v0: Double, to v1: Double, time t: TimeInterval) -> Double {
         return (1 - t) * v0 + t * v1
     }
 }
 
 extension Float {
-
     public static func lerp(from v0: Float, to v1: Float, time t: TimeInterval) -> Float {
         return Float(1 - t) * v0 + Float(t) * v1
     }
 }
 
 extension CGFloat {
-
     public static func lerp(from v0: CGFloat, to v1: CGFloat, time t: TimeInterval) -> CGFloat {
         return CGFloat(1 - t) * v0 + CGFloat(t) * v1
     }
 }
 
 extension Color {
-
     public static func lerp(from v0: Color, to v1: Color, time t: TimeInterval) -> Color {
         let comp0 = v0.components
         let comp1 = v1.components

@@ -1,9 +1,7 @@
-
 import Foundation
 import SceneKit
 
 public struct RigidbodyConstraints: OptionSet {
-
     public let rawValue: Int
 
     public init(rawValue: Int) {
@@ -23,9 +21,7 @@ public struct RigidbodyConstraints: OptionSet {
 }
 
 public final class Rigidbody: Component, Instantiable {
-
     public func instantiate(gameObject: GameObject) -> Rigidbody {
-
         let clone = type(of: self).init()
         clone.isStatic = isStatic
         clone.isKinematic = isKinematic
@@ -38,15 +34,12 @@ public final class Rigidbody: Component, Instantiable {
     public var constraints: RigidbodyConstraints = .none {
         didSet {
             func freezeAxe(_ value: Float) -> Float {
-                if value < -.pi/2 { return -.pi }
-                else if value > .pi/2 { return .pi }
-                else { return 0 }
+                if value < -.pi/2 { return -.pi } else if value > .pi/2 { return .pi } else { return 0 }
             }
 
             if constraints.contains(.freezePositionX) ||
                 constraints.contains(.freezePositionY) ||
                 constraints.contains(.freezePositionZ) {
-
                 var factor = Vector3.one
                 if constraints.contains(.freezePositionX) {
                     factor.x = 0
@@ -63,7 +56,6 @@ public final class Rigidbody: Component, Instantiable {
             if constraints.contains(.freezeRotationX) ||
                 constraints.contains(.freezeRotationY) ||
                 constraints.contains(.freezeRotationZ) {
-
                 var factor = Vector3.one
                 if constraints.contains(.freezeRotationX) {
                     factor.x = 0
@@ -80,27 +72,15 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public var position: Vector3 {
-
-        guard let transform = transform
-            else { return .zero }
-
-        return transform.position
+        return transform?.position ?? .zero
     }
 
     public var localPosition: Vector3 {
-
-        guard let transform = transform
-            else { return .zero }
-
-        return transform.localPosition
+        return transform?.localPosition ?? .zero
     }
 
     public var localRotation: Quaternion {
-
-        guard let transform = transform
-            else { return .zero }
-
-        return transform.localRotation
+        return transform?.localRotation ?? .zero
     }
 
     public var useGravity: Bool = true {
@@ -122,9 +102,7 @@ public final class Rigidbody: Component, Instantiable {
     public var isKinematic: Bool = true
 
     public enum Properties {
-
         public enum Setter {
-
             case mass(Float)
             case restitution(Float)
             case friction(Float)
@@ -139,7 +117,6 @@ public final class Rigidbody: Component, Instantiable {
         }
 
         public enum Getter: Int {
-
             case mass
             case restitution
             case friction
@@ -156,8 +133,12 @@ public final class Rigidbody: Component, Instantiable {
 
     internal var properties = [Properties.Getter: Any]()
 
+    public required init() {
+        super.init()
+        self.ignoreUpdates = true
+    }
+    
     public func set(property: Properties.Setter) {
-
         let physicsBody = gameObject?.node.physicsBody
 
         switch property {
@@ -198,7 +179,6 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public func get<T>(property: Properties.Getter) -> T? where T: Getteable {
-
         let physicsBody = gameObject?.node.physicsBody
 
         switch property {
@@ -227,8 +207,7 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
-    @discardableResult public func configure(_ completionBlock: (Rigidbody) -> ()) -> Rigidbody {
-        
+    @discardableResult public func configure(_ completionBlock: (Rigidbody) -> Void) -> Rigidbody {
         completionBlock(self)
         return self
     }
@@ -238,7 +217,6 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public override func start() {
-
         if let _ = getComponent(Collider.self) {
             return
         }
@@ -246,7 +224,6 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public func movePosition(_ position: Vector3) {
-
         guard let transform = gameObject?.transform
             else { return }
 
@@ -254,7 +231,6 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public func moveRotation(_ to: Vector3) {
-
         guard let transform = gameObject?.transform
             else { return }
 
@@ -262,7 +238,6 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public func addForce(_ direction: Vector3) {
-
         guard let physicsBody = gameObject?.node.physicsBody
             else { return }
 
@@ -270,7 +245,6 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public func addTorque(_ torque: Vector4, asImpulse: Bool) {
-
         guard let physicsBody = gameObject?.node.physicsBody
             else { return }
 
@@ -278,7 +252,6 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public func addExplosionForce(explosionForce: Float, explosionPosition: Vector3, explosionRadius: Float, replacePosition: Vector3Nullable? = nil) {
-
         guard let gameObject = gameObject,
             let transform = gameObject.transform,
             let physicsBody = gameObject.node.physicsBody
@@ -301,11 +274,9 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public func clearAllForces() {
-
         guard let physicsBody = gameObject?.node.physicsBody
             else { return }
 
         physicsBody.clearAllForces()
     }
 }
-

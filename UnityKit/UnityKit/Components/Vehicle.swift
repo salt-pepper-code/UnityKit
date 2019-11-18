@@ -1,10 +1,7 @@
-
 import SceneKit
 
 public class Wheel {
-
     public struct Parameters {
-
         public let nodeName: String
         public var suspensionStiffness: Float?
         public var suspensionCompression: Float?
@@ -32,7 +29,6 @@ public class Wheel {
     }
 
     fileprivate func scnWheel() -> SCNPhysicsVehicleWheel {
-
         let wheel = SCNPhysicsVehicleWheel(node: gameObject.node)
         parameters.suspensionStiffness.map { wheel.suspensionStiffness = $0.toCGFloat() }
         parameters.suspensionCompression.map { wheel.suspensionCompression = $0.toCGFloat() }
@@ -50,7 +46,6 @@ public class Wheel {
 }
 
 public class Vehicle: Component {
-
     private(set) public var wheels = [Wheel]()
     private var parameters: [Wheel.Parameters]?
     private var vehicle: SCNPhysicsVehicle?
@@ -61,14 +56,17 @@ public class Vehicle: Component {
         return vehicle.speedInKilometersPerHour.toFloat()
     }
 
-    @discardableResult public func configure(_ completionBlock: (Vehicle) -> ()) -> Vehicle {
-
+    public required init() {
+        super.init()
+        self.ignoreUpdates = true
+    }
+    
+    @discardableResult public func configure(_ completionBlock: (Vehicle) -> Void) -> Vehicle {
         completionBlock(self)
         return self
     }
 
     @discardableResult public func set(wheels parameters: [Wheel.Parameters], physicsWorld: SCNPhysicsWorld) -> Vehicle {
-
         self.physicsWorld = physicsWorld
         self.parameters = parameters
 
@@ -77,7 +75,6 @@ public class Vehicle: Component {
             else { return self }
 
         wheels = parameters.compactMap { parameter -> Wheel? in
-
             guard let wheel = GameObject.find(.name(.exact(parameter.nodeName)), in: gameObject)
                 else { return nil }
 
@@ -93,7 +90,6 @@ public class Vehicle: Component {
     }
 
     public override func onDestroy() {
-
         guard let physicsWorld = physicsWorld,
             let vehicle = vehicle
             else { return }
@@ -102,7 +98,6 @@ public class Vehicle: Component {
     }
 
     public override func start() {
-
         if let physicsWorld = physicsWorld,
             let parameters = parameters,
             vehicle == nil {
@@ -111,7 +106,6 @@ public class Vehicle: Component {
     }
 
     private func wheelStride(_ vehicle: SCNPhysicsVehicle, forWheelAt index: Int?) -> StrideThrough<Int>? {
-
         guard vehicle.wheels.count > 0
             else { return nil }
 
@@ -123,7 +117,6 @@ public class Vehicle: Component {
     }
 
     public func applyEngineForce(_ value: Float, forWheelAt index: Int? = nil) {
-
         guard let vehicle = vehicle,
             let stride = wheelStride(vehicle, forWheelAt: index)
             else { return }
@@ -136,7 +129,6 @@ public class Vehicle: Component {
     }
 
     public func applySteeringAngle(_ value: Degree, forWheelAt index: Int? = nil) {
-
         guard let vehicle = vehicle,
             let stride = wheelStride(vehicle, forWheelAt: index)
             else { return }
@@ -149,7 +141,6 @@ public class Vehicle: Component {
     }
 
     public func applyBrakingForce(_ value: Float, forWheelAt index: Int? = nil) {
-
         guard let vehicle = vehicle,
             let stride = wheelStride(vehicle, forWheelAt: index)
             else { return }
@@ -161,4 +152,3 @@ public class Vehicle: Component {
         }
     }
 }
-

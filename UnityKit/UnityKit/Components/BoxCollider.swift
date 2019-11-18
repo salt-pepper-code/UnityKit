@@ -1,31 +1,30 @@
-
 import SceneKit
 
 public final class BoxCollider: Collider {
-
     private(set) public var size: Vector3Nullable?
     private(set) public var center: Vector3Nullable?
 
+    public required init() {
+        super.init()
+        self.ignoreUpdates = true
+    }
+    
     @discardableResult public func set(size: Vector3Nullable?) -> BoxCollider {
-
         self.size = size
         return self
     }
 
     @discardableResult public func set(center: Vector3Nullable?) -> BoxCollider {
-
         self.center = center
         return self
     }
 
-    @discardableResult public func configure(_ completionBlock: (BoxCollider) -> ()) -> BoxCollider {
-
+    @discardableResult public func configure(_ completionBlock: (BoxCollider) -> Void) -> BoxCollider {
         completionBlock(self)
         return self
     }
 
     override func constructBody() {
-
         guard let gameObject = gameObject,
             let name = gameObject.name
             else { return }

@@ -1,8 +1,5 @@
-
 extension GameObject {
-
     public enum Tag: Hashable {
-
         case untagged
         case mainCamera
         case custom(String)

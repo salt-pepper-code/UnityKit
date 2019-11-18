@@ -1,10 +1,7 @@
-
 import SpriteKit
 
 extension UI {
-
     public final class Image: UIBehaviour {
-
         public enum ImageType {
             case simple(Size)
             case filled(Size)
@@ -63,14 +60,12 @@ extension UI {
             }
         }
 
-        @discardableResult public func configure(_ completionBlock: (Image) -> ()) -> Image {
-
+        @discardableResult public func configure(_ completionBlock: (Image) -> Void) -> Image {
             completionBlock(self)
             return self
         }
 
         private func updateImage() {
-
             canvasObject.resume()
             defer {
                 canvasObject.pause()
@@ -90,7 +85,6 @@ extension UI {
             let texture: SKTexture
 
             switch type {
-
             case let .simple(size):
                 texture = SKTexture(image: displayImage.resize(to: size.toCGSize()))
 
@@ -118,7 +112,6 @@ extension UI {
         }
 
         public func loadImage(fileName: String, type: ImageType, color: Color = .white, bundle: Bundle = Bundle.main) {
-
             guard let url = searchPathForResource(for: fileName, extension: nil, bundle: bundle)
                 else { return }
 
@@ -130,7 +123,6 @@ extension UI {
                 self.color = color
                 self.type = type
                 self.sourceImage = sourceImage
-
             } catch {}
         }
     }

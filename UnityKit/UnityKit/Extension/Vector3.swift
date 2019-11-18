@@ -1,17 +1,14 @@
-
 import SceneKit
 import AVKit
 
 public typealias Vector3 = SCNVector3
 
 public struct Vector3Nullable {
-
     public let x: Float?
     public let y: Float?
     public let z: Float?
 
     public init(_ x: Float?, _ y: Float?, _ z: Float?) {
-        
         self.x = x
         self.y = y
         self.z = z
@@ -19,39 +16,38 @@ public struct Vector3Nullable {
 }
 
 extension Vector3 {
-
     public static var zero: Vector3 {
         return SCNVector3Zero
     }
-    
+
     public static var one: Vector3 {
         return Vector3(1, 1, 1)
     }
-    
+
     public static var back: Vector3 {
         return Vector3(0, 0, -1)
     }
-    
+
    public static var down: Vector3 {
         return Vector3(0, -1, 0)
     }
-    
+
     public static var forward: Vector3 {
         return Vector3(0, 0, 1)
     }
-    
+
     public static var left: Vector3 {
         return Vector3(-1, 0, 0)
     }
-    
+
     public static var right: Vector3 {
         return Vector3(1, 0, 0)
     }
-    
+
     public static var up: Vector3 {
         return Vector3(0, 1, 0)
     }
-        
+
     /**
      * Negates the vector described by Vector3 and returns
      * the result as a new Vector3.
@@ -59,21 +55,21 @@ extension Vector3 {
     public func negated() -> Vector3 {
         return self * -1
     }
-    
+
     /**
      * Negates the vector described by Vector3
      */
     mutating public func negate() {
         self = negated()
     }
-    
+
     /**
      * Returns the length (magnitude) of the vector described by the Vector3
      */
     public func length() -> Float {
         return Vector3.length(self)
     }
-    
+
     public static func length(_ vector: Vector3) -> Float {
         return sqrtf(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
     }
@@ -81,7 +77,7 @@ extension Vector3 {
     public func magnitude() -> Float {
         return Vector3.length(self)
     }
-    
+
     /**
      * Normalizes the vector described by the Vector3 to length 1.0 and returns
      * the result as a new Vector3.
@@ -89,7 +85,7 @@ extension Vector3 {
     public func normalized() -> Vector3 {
         return Vector3.normalized(self)
     }
-    
+
     public static func normalized(_ vector: Vector3) -> Vector3 {
         let lenght = vector.length()
         guard lenght != 0
@@ -100,55 +96,55 @@ extension Vector3 {
     mutating public func normalize() {
         self = normalized()
     }
-    
+
     /**
      * Returns the distance between a and b.
      */
     public func distance(_ vector: Vector3) -> Float {
         return Vector3.distance(self, vector)
     }
-    
+
     public static func distance(_ a: Vector3, _ b: Vector3) -> Float {
         return (b - a).length()
     }
-    
+
     /**
      * Calculates the dot product between two Vector3.
      */
     public func dot(_ vector: Vector3) -> Float {
         return Vector3.dot(self, vector)
     }
-    
+
     public static func dot(_ a: Vector3, _ b: Vector3) -> Float {
         return (a.x * b.x) + (a.y * b.y) + (a.z * b.z)
     }
-    
+
     /**
      * Projects a vector onto another vector.
      */
     public func project(_ normal: Vector3) -> Vector3 {
         return Vector3.project(self, normal)
     }
-    
+
     public static func project(_ vector: Vector3, _ onNormal: Vector3) -> Vector3 {
         return Vector3.scale(Vector3.dot(vector, onNormal) / Vector3.dot(onNormal, onNormal), onNormal)
     }
-    
+
     /**
      * Cross Product of two vectors.
      */
     public func cross(_ vector: Vector3) -> Vector3 {
         return Vector3.cross(self, vector)
     }
-    
+
     public static func cross(_ a: Vector3, _ b: Vector3) -> Vector3 {
         return Vector3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
     }
-    
+
     public func degreesToRadians() -> Vector3 {
         return Vector3(x.degreesToRadians, y.degreesToRadians, z.degreesToRadians)
     }
-    
+
     public func radiansToDegrees() -> Vector3 {
         return Vector3(x.radiansToDegrees, y.radiansToDegrees, z.radiansToDegrees)
     }
@@ -172,7 +168,6 @@ extension Vector3 {
     }
 
     public func toQuaternion() -> Quaternion {
-
         var angle: Float = 0
 
         angle = x * 0.5
@@ -201,11 +196,10 @@ extension Vector3 {
 }
 
 extension Vector3: Equatable {
-    
     public static func == (left: Vector3, right: Vector3) -> Bool {
         return left.x == right.x && left.y == right.y && left.z == right.z
     }
-    
+
     public static func != (left: Vector3, right: Vector3) -> Bool {
         return !(left == right)
     }

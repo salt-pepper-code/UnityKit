@@ -1,7 +1,6 @@
 import SceneKit
 
 extension SCNNode {
-    
     func deepClone(_ node: SCNNode? = nil) -> SCNNode {
         let refNode = (node ?? self)
         let clone = refNode.clone()
@@ -17,4 +16,3 @@ extension SCNNode {
         return clone
     }
 }
-

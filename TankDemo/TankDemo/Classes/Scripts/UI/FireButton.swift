@@ -1,11 +1,9 @@
-
 import UIKit
 import UnityKit
 
-public typealias FireButtonTrigger = () -> ()
+public typealias FireButtonTrigger = () -> Void
 
 class FireButton: MonoBehaviour {
-
     let view: UIView
     private let baseImage = UIImage(named: "JoystickBase")!
     private let baseImageView: UIImageView
@@ -34,7 +32,6 @@ class FireButton: MonoBehaviour {
     }
 
     private func initialize() {
-        
         baseImageView.alpha = baseAlpha
         baseImageView.frame = view.bounds
         baseImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -42,7 +39,6 @@ class FireButton: MonoBehaviour {
     }
 
     public override func update() {
-
         guard let touch = Input.getTouch(0),
             let phase = touch.phase,
             touch.view == view

@@ -1,4 +1,3 @@
-
 import UnityKit
 import Foundation
 
@@ -14,7 +13,6 @@ struct TankProperty {
 }
 
 class GameManager: MonoBehaviour {
-
     let startDelay: TimeInterval = 3
     let endDelay: TimeInterval = 3
     let numRoundsToWin: Int = 5
@@ -30,13 +28,12 @@ class GameManager: MonoBehaviour {
                           TankProperty(type: .ennemy("Ennemy2"), spawnPosition: Vector3(3, 1, 30), color: Color(hexString: "#2A64B2"))]
 
     override func start() {
-
         Camera.main()?.addComponent(CameraControl.self)
         startGame()
+        gameObject?.scene?.printGameObjectsIgnoreUpdates()
     }
 
     private func startGame() {
-
         tankProperties.forEach {
             switch $0.type {
             case let .player(name), let .ennemy(name):
@@ -47,12 +44,10 @@ class GameManager: MonoBehaviour {
     }
 
     private func spawnAllTanks() {
-
         tanks.forEach { $0.gameObject?.destroy() }
         tanks.removeAll()
 
         for property in tankProperties {
-
             guard let tank = loadTank(property)?.getComponent(TankManager.self)
                 else { continue }
 
@@ -62,7 +57,6 @@ class GameManager: MonoBehaviour {
     }
 
     private func setCameraTarget() {
-
         guard let camera = Camera.main(),
             let tank = tanks.first?.gameObject
             else { return }
@@ -71,16 +65,13 @@ class GameManager: MonoBehaviour {
     }
 
     private func gameLoop() {
-
         roundStarting()
         roundPlaying()
         roundEnding()
     }
 
     private func roundStarting() {
-
         queueCoroutine((execute: { [weak self] in
-
             self?.roundNumber += 1
             self?.spawnAllTanks()
             self?.setCameraTarget()
@@ -88,9 +79,7 @@ class GameManager: MonoBehaviour {
 
             let message = "ROUND \(self?.roundNumber ?? 0)"
             Debug.info(message)
-
-            }, exitCondition: { [weak self] (timePassed) in
-
+            }, exitCondition: { [weak self] timePassed in
                 guard let startDelay = self?.startDelay
                     else { return false }
 
@@ -99,27 +88,21 @@ class GameManager: MonoBehaviour {
     }
 
     private func roundPlaying() {
-
         queueCoroutine((execute: { [weak self] in
-
             self?.enableTankControl()
-
-            }, exitCondition: { [weak self] (timePassed) in
-
+            }, exitCondition: { [weak self] timePassed in
                 let numTanksLeft = self?.tanks.filter {
                     guard let gameObject = $0.gameObject
                         else { return false }
                     return gameObject.activeSelf
-                    }.count ?? 0
+                }.count ?? 0
 
                 return numTanksLeft <= 1
         }))
     }
 
     private func roundEnding() {
-
         queueCoroutine((execute: { [weak self] in
-
             guard let tank = self?.tanks.filter({
                 guard let gameObject = $0.gameObject
                     else { return false }
@@ -142,9 +125,7 @@ class GameManager: MonoBehaviour {
 
             self?.resetAllTanks()
             self?.disableTankControl()
-
-            }, exitCondition: { [weak self] (timePassed) in
-
+            }, exitCondition: { [weak self] timePassed in
                 guard let endDelay = self?.endDelay
                     else { return false }
 
@@ -152,18 +133,15 @@ class GameManager: MonoBehaviour {
         }))
 
         queueCoroutine((execute: { [weak self] in
-
             if self?.gameWinner != nil {
                 self?.startGame()
             } else {
                 self?.gameLoop()
             }
-
             }, exitCondition: nil))
     }
 
     private func endMessage() -> String {
-
         // By default when a round ends there are no winners so the default end message is a draw.
         var message = "DRAW!"
 
@@ -188,7 +166,6 @@ class GameManager: MonoBehaviour {
     }
 
     private func resetAllTanks() {
-
         spawnAllTanks()
         setCameraTarget()
     }
@@ -204,7 +181,6 @@ class GameManager: MonoBehaviour {
     // TANK Creation
 
     @discardableResult func loadTank(_ property: TankProperty) -> GameObject? {
-
         guard let scene = Scene.sharedInstance,
             let tank = GameObject(fileName: "Tank.scn", nodeName: "Tank")
             else { return nil }
@@ -221,13 +197,14 @@ class GameManager: MonoBehaviour {
                 $0.set(property: .restitution(0.1))
                 $0.set(property: .friction(0.5))
                 $0.set(property: .rollingFriction(0))
-        }
+            }
+
         tank.addComponent(MeshCollider.self)
             .set(mesh: tank.getComponent(MeshFilter.self)?.mesh)
             .configure {
                 $0.collideWithLayer = [.all]
                 $0.contactWithLayer = [.projectile]
-        }
+            }
 
         switch property.type {
         case let .player(name):
@@ -253,24 +230,20 @@ class GameManager: MonoBehaviour {
     }
 
     func createWheels() -> [Wheel.Parameters] {
-
         let positionXZ: Float = 0.56
         let positionY: Float = 0.8
 
         let wheels: [Wheel.Parameters] =
-            [{ var wheel = Wheel.Parameters(nodeName: "Wheel_Back_R")
+            [ { var wheel = Wheel.Parameters(nodeName: "Wheel_Back_R")
                 wheel.connectionPosition = Vector3(positionXZ, positionY, positionXZ)
                 wheel.axle = Vector3(1, 0, 0)
-                return wheel }(),
-             { var wheel = Wheel.Parameters(nodeName: "Wheel_Back_L")
+                return wheel }(), { var wheel = Wheel.Parameters(nodeName: "Wheel_Back_L")
                 wheel.connectionPosition = Vector3(-positionXZ, positionY, positionXZ)
                 wheel.axle = Vector3(1, 0, 0)
-                return wheel }(),
-             { var wheel = Wheel.Parameters(nodeName: "Wheel_Front_R")
+                return wheel }(), { var wheel = Wheel.Parameters(nodeName: "Wheel_Front_R")
                 wheel.connectionPosition = Vector3(positionXZ, positionY, -positionXZ)
                 wheel.axle = Vector3(1, 0, 0)
-                return wheel }(),
-             { var wheel = Wheel.Parameters(nodeName: "Wheel_Front_L")
+                return wheel }(), { var wheel = Wheel.Parameters(nodeName: "Wheel_Front_L")
                 wheel.connectionPosition = Vector3(-positionXZ, positionY, -positionXZ)
                 wheel.axle = Vector3(1, 0, 0)
                 return wheel }()]

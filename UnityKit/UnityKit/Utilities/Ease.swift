@@ -1,8 +1,6 @@
-
 import Foundation
 
 public enum Ease {
-
     case linear
     case backOut
     case backIn
@@ -37,7 +35,6 @@ public enum Ease {
     case custom(ActionTimingFunction)
 
     public func timingFunction() -> ActionTimingFunction {
-
         switch self {
         case .linear: return Ease._linear
         case .backOut: return Ease._backOut
@@ -290,7 +287,4 @@ public enum Ease {
         }
         return a * pow(2, -10 * n) * sin((n - s) * (2 * .pi) / p) * 0.5 + 1
     }
-
 }
-
-

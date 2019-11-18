@@ -1,9 +1,7 @@
-
 import UnityKit
 import Foundation
 
 class TankMovement: MonoBehaviour {
-
     public var joystick: Joystick?
     public var vehicle: Vehicle?
     public let breakingSpeed: Float = 10
@@ -11,13 +9,11 @@ class TankMovement: MonoBehaviour {
     public let turnSpeed: Float = 10
 
     override func onDestroy() {
-        
         joystick?.onUpdate = nil
         joystick?.onComplete = nil
     }
 
     override func awake() {
-
         fetchComponents()
 
         if let clip = AudioClip(fileName: "EngineIdle.aif", playType: .loop) {
@@ -26,7 +22,7 @@ class TankMovement: MonoBehaviour {
                     $0.clip = clip
                     $0.volume = 0.4
                     $0.play()
-            }
+                }
         }
 
         guard let joystick = joystick
@@ -38,22 +34,21 @@ class TankMovement: MonoBehaviour {
                     .configure {
                         $0.clip = clip
                         $0.play()
-                }
+                    }
             }
         }
 
-        joystick.onUpdate = { [weak self] (update) -> () in
+        joystick.onUpdate = { [weak self] update -> Void in
             self?.move(update.angle, update.displacement)
         }
 
         joystick.onComplete = { [weak self] () in
-
             if let clip = AudioClip(fileName: "EngineIdle.aif", playType: .loop) {
                 self?.getComponent(AudioSource.self)?
                     .configure {
                         $0.clip = clip
                         $0.play()
-                }
+                    }
             }
 
             guard let vehicle = self?.vehicle,
@@ -69,13 +64,11 @@ class TankMovement: MonoBehaviour {
     }
 
     private func fetchComponents() {
-
         vehicle = gameObject?.getComponent(Vehicle.self)
         joystick = GameObject.findObjectOfType(Joystick.self)
     }
 
     private func move(_ angle: Degree, _ displacement: Float) {
-
         guard enabled
             else { return }
 
@@ -99,15 +92,12 @@ class TankMovement: MonoBehaviour {
         }
 
         if abs(diffAngle) > 90 {
-
             vehicle.applySteeringAngle(steeringAngle, forWheelAt: 0)
             vehicle.applySteeringAngle(steeringAngle, forWheelAt: 1)
 
             vehicle.applySteeringAngle(-steeringAngle, forWheelAt: 2)
             vehicle.applySteeringAngle(-steeringAngle, forWheelAt: 3)
-
         } else {
-
             vehicle.applySteeringAngle(0, forWheelAt: 0)
             vehicle.applySteeringAngle(0, forWheelAt: 1)
 

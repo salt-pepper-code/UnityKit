@@ -1,16 +1,17 @@
-
 import SceneKit
 
 public final class PlaneCollider: Collider {
-
-    @discardableResult public func configure(_ completionBlock: (PlaneCollider) -> ()) -> PlaneCollider {
-
+    public required init() {
+        super.init()
+        self.ignoreUpdates = true
+    }
+    
+    @discardableResult public func configure(_ completionBlock: (PlaneCollider) -> Void) -> PlaneCollider {
         completionBlock(self)
         return self
     }
-    
-    override func constructBody() {
 
+    override func constructBody() {
         guard let gameObject = gameObject,
             let name = gameObject.name
             else { return }

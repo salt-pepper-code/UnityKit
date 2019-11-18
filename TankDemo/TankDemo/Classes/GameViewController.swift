@@ -1,37 +1,25 @@
-
 import UnityKit
 import SceneKit
 
 class GameViewController: UIViewController {
-
     override func loadView() {
         self.view = UI.View.makeView(sceneName: "Scene.scn", options: UI.View.Options(showsStatistics: true))
     }
 
     var sceneView: UI.View {
-        return self.view as! UI.View
+        return self.view as? UI.View ?? UI.View(frame: .zero)
     }
 
     override func viewDidLoad() {
-
         super.viewDidLoad()
         Debug.set(enable: .all)
         setupScene()
     }
 
     func setupScene() {
-
         guard let scene = sceneView.sceneHolder
             else { return }
-        
-        // Ignores update calls on all scene objects for performance
-        scene.rootGameObject
-            .getChildren()
-            .filter { $0.tag != .mainCamera }
-            .forEach {
-                $0.ignoreUpdates = true
-        }
-        
+
         // Controls Setup
         let controls = GameObject(name: "Controls")
         let joystick = controls.addComponent(Joystick.self)
@@ -42,6 +30,7 @@ class GameViewController: UIViewController {
         setup(fireButton: fireButton)
 
         // Physics Setup
+        // Look for 3d models within the scene by they respective names in the file.
         let militaries = GameObject.find(.name(.exact("Military")))?.getChildren() ?? []
         let oilFields = GameObject.find(.name(.exact("OilField")))?.getChildren() ?? []
         let rocks = GameObject.find(.name(.exact("Rocks")))?.getChildren() ?? []
@@ -53,32 +42,31 @@ class GameViewController: UIViewController {
         let environments = militaries + oilFields + boundaries + rocks + [helipad]
 
         // Layers
+        // Settings layer tag to easily identify them for collisions.
         environments.forEach {
             $0.layer = .environment
         }
         ground.layer = .ground
-        
+
         // Rigidbodies
-        environments.forEach {
+        // Adding rigid bodies to environments with static so they won't move after a collision and be affected by gravity.
+        (environments + [ground]).forEach {
             $0.addComponent(Rigidbody.self)
                 .configure {
                     $0.useGravity = false
                     $0.isStatic = true
-            }
-        }
-        ground.addComponent(Rigidbody.self)
-            .configure {
-                $0.useGravity = false
-                $0.isStatic = true
+                }
         }
 
         // Colliders
         environments.forEach {
             $0.addComponent(MeshCollider.self)
                 .configure {
+                    // This will define what will the environment trigger the collision with.
                     $0.collideWithLayer = [.player, .projectile]
-            }
+                }
         }
+        // We want to ignore triggering any collision with the ground, as the tank will constantly collide with the ground.
         ground.addComponent(BoxCollider.self)
             .set(size: Vector3Nullable(nil, 8, nil))
             .set(center: Vector3Nullable(nil, -4, nil))
@@ -93,13 +81,12 @@ class GameViewController: UIViewController {
                     $0.clip = clip
                     $0.volume = 0.3
                     $0.play()
-            }
+                }
         }
         scene.addGameObject(gameManager)
     }
 
     func setup(joystick: Joystick) {
-
         let size: CGFloat = 60
         joystick.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(joystick.view)
@@ -115,7 +102,6 @@ class GameViewController: UIViewController {
     }
 
     func setup(fireButton: FireButton) {
-
         let size: CGFloat = 60
         fireButton.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(fireButton.view)
@@ -137,4 +123,3 @@ class GameViewController: UIViewController {
         return true
     }
 }
-

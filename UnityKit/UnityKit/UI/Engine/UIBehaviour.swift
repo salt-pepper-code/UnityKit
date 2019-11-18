@@ -1,10 +1,7 @@
-
 import SpriteKit
 
 extension UI {
-
     public class UIBehaviour: Behaviour {
-
         public var canvasObject: CanvasObject!
 
         public var skScene: SKScene {
@@ -12,7 +9,6 @@ extension UI {
         }
 
         public override func awake() {
-
             var canvasFound = false
             var parent = gameObject
             while parent != nil {

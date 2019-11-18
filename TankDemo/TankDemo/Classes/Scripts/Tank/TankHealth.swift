@@ -1,9 +1,7 @@
-
 import UnityKit
 import Foundation
 
 class TankHealth: MonoBehaviour {
-
     let startingHealth: Float = 100
     var currentHealth: Float = 0
     let fullHealthColor = Color.green
@@ -17,7 +15,6 @@ class TankHealth: MonoBehaviour {
     }
 
     override func start() {
-
         // Setup Canvas
         let size: Float = 4
         // CanvasObject
@@ -37,14 +34,14 @@ class TankHealth: MonoBehaviour {
         background.addComponent(UI.Image.self)
             .configure {
                 $0.loadImage(fileName: "HealthWheel.png", type: .filled(canvas.pixelSize()), color: Color(hexString: "#FFFFFF", alpha: 0.31))
-        }
+            }
 
         fillImage = fillArea.addComponent(UI.Image.self)
             .configure {
                 $0.fillMethod = .radial360(.top)
                 $0.clockwise = false
                 $0.loadImage(fileName: "HealthWheel.png", type: .filled(canvas.pixelSize()), color: fullHealthColor)
-        }
+            }
 
         // Setup Slider component that will control how to fill the image
         slider = healthSlider.addComponent(UI.Slider.self)
@@ -53,13 +50,12 @@ class TankHealth: MonoBehaviour {
                 $0.minValue = 0
                 $0.maxValue = startingHealth
                 $0.value = currentHealth
-        }
+            }
 
         gameObject?.addChild(canvas)
     }
 
     public func takeDamage(_ amount: Float) {
-
         // Reduce current health by the amount of damage done.
         currentHealth -= amount
 
@@ -73,13 +69,11 @@ class TankHealth: MonoBehaviour {
     }
 
     func setHealthUI() {
-
         slider?.value = currentHealth
         fillImage?.color = Color.lerp(from: zeroHealthColor, to: fullHealthColor, time: (currentHealth / startingHealth).toDouble())
     }
 
     func onDeath() {
-
         gameObject?.setActive(false)
     }
 }

@@ -1,8 +1,6 @@
-
 import SceneKit
 
 public final class Mesh: Object {
-
     public var geometry: SCNGeometry
 
     @available(*, unavailable)

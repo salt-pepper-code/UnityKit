@@ -1,7 +1,6 @@
 import SceneKit
 
 extension GameObject {
-
     public func runAction(_ action: SCNAction) {
         node.runAction(action)
     }

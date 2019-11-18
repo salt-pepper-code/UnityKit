@@ -1,10 +1,7 @@
-
 import UIKit
 
 extension UIImage {
-
     func resize(to size: CGSize) -> UIImage {
-
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         draw(in: CGRect(origin: .zero, size: size))
 
@@ -15,7 +12,6 @@ extension UIImage {
     }
 
     func replaceColor(with color: UIColor) -> UIImage {
-
         let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, scale)
 
@@ -35,7 +31,6 @@ extension UIImage {
     }
 
     func fill(fromAngle: Degree, toAngle: Degree, fillOrigin: UI.Image.FillOrigin, clockwise: Bool) -> UIImage {
-
         UIGraphicsBeginImageContextWithOptions(self.size, false, scale)
 
         guard let ctx = UIGraphicsGetCurrentContext()
@@ -83,4 +78,3 @@ extension UIImage {
         return result
     }
 }
-

@@ -1,20 +1,16 @@
-
 import SceneKit
 
 extension GameObject {
-
     private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
-
         return getComponents(Collider.self)
-            .compactMap { (collider) -> SCNPhysicsShape? in collider.physicsShape }
+            .compactMap { collider -> SCNPhysicsShape? in collider.physicsShape }
     }
 
     private func getCollisionLayer() -> GameObject.Layer? {
-
         let layers = getComponents(Collider.self)
-            .compactMap { (collider) -> GameObject.Layer? in collider.collideWithLayer }
+            .compactMap { collider -> GameObject.Layer? in collider.collideWithLayer }
 
-        let result = layers.reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
+        let result = layers.reduce(Layer(rawValue: 0)) { prev, layer -> Layer in
             guard prev != layer
                 else { return layer }
 
@@ -26,11 +22,10 @@ extension GameObject {
     }
 
     private func getContactLayer() -> GameObject.Layer? {
-
         let layers = getComponents(Collider.self)
-            .compactMap { (collider) -> GameObject.Layer? in collider.contactWithLayer }
+            .compactMap { collider -> GameObject.Layer? in collider.contactWithLayer }
 
-        let result = layers.reduce(Layer(rawValue: 0)) { (prev, layer) -> Layer in
+        let result = layers.reduce(Layer(rawValue: 0)) { prev, layer -> Layer in
             guard prev != layer
                 else { return layer }
 
@@ -42,7 +37,6 @@ extension GameObject {
     }
 
     internal func updateBitMask(_ physicsBody: SCNPhysicsBody? = nil) {
-
         let body: SCNPhysicsBody?
         if let physicsBody = physicsBody {
             body = physicsBody
@@ -61,7 +55,6 @@ extension GameObject {
     }
 
     internal func updatePhysicsBody() {
-
         var physicsShape: SCNPhysicsShape?
         var useGravity: Bool
         var bodyType: SCNPhysicsBodyType = .kinematic

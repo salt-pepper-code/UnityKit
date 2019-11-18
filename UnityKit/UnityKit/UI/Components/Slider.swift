@@ -1,10 +1,7 @@
-
 import SpriteKit
 
 extension UI {
-
     public class Slider: UIBehaviour {
-
         public var fillImage: Image?
         public var minValue: Float = 0
         public var maxValue: Float = 1
@@ -15,8 +12,7 @@ extension UI {
             }
         }
 
-        @discardableResult public func configure(_ completionBlock: (Slider) -> ()) -> Slider {
-
+        @discardableResult public func configure(_ completionBlock: (Slider) -> Void) -> Slider {
             completionBlock(self)
             return self
         }
@@ -26,4 +22,3 @@ extension UI {
         }
     }
 }
-

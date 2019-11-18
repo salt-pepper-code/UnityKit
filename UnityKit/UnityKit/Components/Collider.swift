@@ -1,10 +1,8 @@
-
 import SceneKit
 
 public typealias Collision = SCNPhysicsContact
 
 public class Collider: Component, Instantiable {
-
     open func instantiate(gameObject: GameObject) -> Self {
         let clone = type(of: self).init()
         clone.collideWithLayer = collideWithLayer
@@ -35,24 +33,26 @@ public class Collider: Component, Instantiable {
         }
     }
 
-    private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
+    public required init() {
+        super.init()
+        self.ignoreUpdates = true
+    }
 
+    private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
         guard let gameObject = gameObject
             else { return nil }
 
         return gameObject.getComponents(Collider.self)
-            .compactMap { (collider) -> SCNPhysicsShape? in collider.physicsShape }
+            .compactMap { collider -> SCNPhysicsShape? in collider.physicsShape }
     }
 
     internal func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: Collision) {
-
         guard isTrigger,
             let gameObject = gameObject,
             contact.nodeA.name == gameObject.name || contact.nodeB.name == gameObject.name
             else { return }
 
         for component in gameObject.components {
-            
             guard let monoBehaviour = component as? MonoBehaviour
                 else { continue }
 
@@ -62,14 +62,12 @@ public class Collider: Component, Instantiable {
     }
 
     public func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: Collision) {
-
         guard isTrigger,
             let gameObject = gameObject,
             contact.nodeA.name == gameObject.name || contact.nodeB.name == gameObject.name
             else { return }
 
         for component in gameObject.components {
-
             guard let monoBehaviour = component as? MonoBehaviour
                 else { continue }
 
@@ -79,13 +77,11 @@ public class Collider: Component, Instantiable {
     }
 
     public override func start() {
-        
         constructBody()
         gameObject?.updatePhysicsBody()
     }
 
     public override func onDestroy() {
-
     }
 
     internal func constructBody() {

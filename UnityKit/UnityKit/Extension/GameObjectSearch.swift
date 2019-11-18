@@ -1,5 +1,4 @@
 extension GameObject {
-    
     public enum SearchType {
         public enum Name {
             case contains(String)
@@ -16,7 +15,6 @@ extension GameObject {
     }
 
     private static func compare(_ compareType: SearchType.Name, to other: String) -> Bool {
-
         switch compareType {
         case let .contains(name):
             return other.contains(name)
@@ -33,7 +31,6 @@ extension GameObject {
     }
 
     private static func compare(_ type: SearchType, gameObject: GameObject) -> Bool {
-
         switch type {
         case let .name(compareType):
             guard let name = gameObject.name,
@@ -83,40 +80,31 @@ extension GameObject {
     }
 
     public static func find(_ type: SearchType, in scene: Scene? = Scene.sharedInstance) -> GameObject? {
-
-        guard let scene = scene
-            else { return nil }
-
+        guard let scene = scene else { return nil }
         return GameObject.find(type, in: scene.rootGameObject)
     }
 
     public static func find(_ type: SearchType, in gameObject: GameObject) -> GameObject? {
-
         for child in gameObject.getChildren() {
-
             if GameObject.compare(type, gameObject: child) {
                 return child
             }
-
+        }
+        for child in gameObject.getChildren() {
             if let found = GameObject.find(type, in: child) {
                 return found
             }
         }
-
         return nil
     }
 
     public static func findGameObjects(_ type: SearchType, in scene: Scene? = Scene.sharedInstance) -> [GameObject] {
-
-        guard let scene = scene
-            else { return [] }
-
+        guard let scene = scene else { return [] }
         return GameObject.findGameObjects(type, in: scene.rootGameObject)
     }
-    
-    public static func findGameObjects(_ type: SearchType, in gameObject: GameObject) -> [GameObject] {
 
-        return gameObject.getChildren().flatMap { (child) -> [GameObject] in
+    public static func findGameObjects(_ type: SearchType, in gameObject: GameObject) -> [GameObject] {
+        return gameObject.getChildren().flatMap { child -> [GameObject] in
             if GameObject.compare(type, gameObject: child) {
                 return [child] + GameObject.findGameObjects(type, in: child)
             }
@@ -124,21 +112,14 @@ extension GameObject {
         }
     }
 
-
     public static func getComponents<T: Component>(_ type: T.Type, in scene: Scene? = Scene.sharedInstance) -> [T] {
-
-        guard let scene = scene
-            else { return [] }
-
+        guard let scene = scene else { return [] }
         return GameObject.getComponents(type, in: scene.rootGameObject)
     }
 
     public static func getComponents<T: Component>(_ type: T.Type, in gameObject: GameObject) -> [T] {
-
-        return gameObject.getChildren().flatMap { (child) -> [T] in
-
+        return gameObject.getChildren().flatMap { child -> [T] in
             return child.getComponents(type) + GameObject.getComponents(type, in: child)
         }
     }
 }
-

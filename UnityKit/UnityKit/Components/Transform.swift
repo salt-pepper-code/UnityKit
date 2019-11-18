@@ -2,19 +2,18 @@ import Foundation
 import SceneKit
 
 public final class Transform: Component {
-    
     public required init() {
         super.init()
+        self.ignoreUpdates = true
     }
-    
+
     public init(_ gameObject: GameObject) {
-        
         super.init()
+        self.ignoreUpdates = true
         self.gameObject = gameObject
     }
 
     public var forward: Vector3 {
-
         guard let node = gameObject?.node
             else { return .zero }
 
@@ -26,7 +25,6 @@ public final class Transform: Component {
     }
 
     public var up: Vector3 {
-
         guard let node = gameObject?.node
             else { return .zero }
 
@@ -38,7 +36,6 @@ public final class Transform: Component {
     }
 
     public var right: Vector3 {
-
         guard let node = gameObject?.node
             else { return .zero }
 
@@ -50,15 +47,13 @@ public final class Transform: Component {
     }
 
     public var lossyScale: Vector3 {
-        
         guard let parent = gameObject?.parent
             else { return localScale }
-        
+
         return parent.transform.lossyScale * localScale
     }
 
     private func hasOrIsPartOfPhysicsBody() -> Bool {
-
         guard let gameObject = gameObject
             else { return false }
 
@@ -69,11 +64,10 @@ public final class Transform: Component {
     }
 
     public var position: Vector3 {
-        
         get {
             guard let node = gameObject?.node
                 else { return .zero }
-            
+
             return hasOrIsPartOfPhysicsBody() ? node.presentation.worldPosition : node.worldPosition
         }
         set {
@@ -85,7 +79,6 @@ public final class Transform: Component {
     }
 
     public var orientation: Quaternion {
-
         get {
             guard let node = gameObject?.node
                 else { return .zero }
@@ -98,7 +91,6 @@ public final class Transform: Component {
     }
 
     public var localOrientation: Quaternion {
-
         get {
             guard let node = gameObject?.node
                 else { return .zero }
@@ -111,33 +103,30 @@ public final class Transform: Component {
     }
 
     public var localPosition: Vector3 {
-        
         get {
             guard let node = gameObject?.node
                 else { return .zero }
-            
+
             return hasOrIsPartOfPhysicsBody() ? node.presentation.position : node.position
         }
         set {
             gameObject?.node.position = newValue
         }
     }
-    
+
     public var localRotation: Vector4 {
-        
         get {
             guard let node = gameObject?.node
                 else { return .zero }
-            
+
             return hasOrIsPartOfPhysicsBody() ? node.presentation.rotation : node.rotation
         }
         set {
             gameObject?.node.rotation = newValue
         }
     }
-    
+
     public var localEulerAngles: Vector3 {
-        
         get {
             guard let node = gameObject?.node
                 else { return .zero }
@@ -148,13 +137,12 @@ public final class Transform: Component {
             gameObject?.node.eulerAngles = newValue.degreesToRadians()
         }
     }
-    
+
     public var localScale: Vector3 {
-        
         get {
             guard let node = gameObject?.node
                 else { return .zero }
-            
+
             return hasOrIsPartOfPhysicsBody() ? node.presentation.scale : node.scale
         }
         set {
@@ -162,9 +150,7 @@ public final class Transform: Component {
         }
     }
 
-    @available(iOS 11.0, *)
     public func lookAt(_ target: Transform) {
-
         if let constraints = gameObject?.node.constraints, constraints.count > 0 {
             Debug.warning("remove constraints on node before using lookAt")
             return

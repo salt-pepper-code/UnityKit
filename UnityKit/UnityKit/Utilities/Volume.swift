@@ -1,15 +1,13 @@
-
 import SceneKit
 
 public typealias BoundingBox = (min: Vector3, max: Vector3)
 public typealias BoundingSphere = (center: Vector3, radius: Float)
 
 public class Volume {
-    
     public static func boundingSize(_ boundingBox: BoundingBox) -> Vector3 {
         return Vector3(abs(boundingBox.max.x - boundingBox.min.x), abs(boundingBox.max.y - boundingBox.min.y), abs(boundingBox.max.z - boundingBox.min.z))
     }
-    
+
     public static func boundingCenter(_ boundingBox: BoundingBox) -> Vector3 {
         let volumeSize = Volume.boundingSize(boundingBox)
         return Vector3(boundingBox.min.x + volumeSize.x / 2,
@@ -58,7 +56,6 @@ public func * (left: BoundingBox, right: Float) -> BoundingBox {
 }
 
 extension GameObject {
-
     public func boundingBoxFromBoundingSphere(relativeTo gameObject: GameObject? = nil) -> BoundingBox? {
         return node.boundingBoxFromBoundingSphere(relativeTo: gameObject?.node)
     }
@@ -69,9 +66,7 @@ extension GameObject {
 }
 
 extension SCNNode {
-
     func boundingBoxFromBoundingSphere(relativeTo node: SCNNode? = nil) -> BoundingBox? {
-
         guard let _ = geometry
             else { return nil }
 
@@ -79,12 +74,11 @@ extension SCNNode {
 
         let boundingSphere = self.boundingSphere
         let relativeCenter = convertPosition(boundingSphere.center, to: node)
-        
+
         return (min: relativeCenter - boundingSphere.radius, max: relativeCenter + boundingSphere.radius)
     }
 
     func boundingBox(relativeTo node: SCNNode) -> BoundingBox? {
-
         var boundingBox = childNodes
             .reduce(nil) { $0 + $1.boundingBox(relativeTo: node) }
 

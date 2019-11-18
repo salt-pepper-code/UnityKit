@@ -1,22 +1,22 @@
-
 import SpriteKit
 import SceneKit
 
 public class CanvasObject: GameObject {
-
     internal var skScene: SKScene {
-        return node.geometry!.firstMaterial!.diffuse.contents as! SKScene
+        guard let scene = node.geometry?.firstMaterial?.diffuse.contents as? SKScene else {
+            fatalError("Should have a scene")
+        }
+        return scene
     }
 
     private var skView: SKView?
 
     @discardableResult public func set(worldSize: Size, pixelPerUnit: Float = 1) -> CanvasObject {
-
         getComponent(UI.Canvas.self)?
             .configure {
                 $0.worldSize = worldSize
                 $0.pixelPerUnit = pixelPerUnit
-        }
+            }
         let result = CanvasObject.makeCanvas(worldSize: worldSize, pixelPerUnit: pixelPerUnit)
         node = result.0
         skView = result.1
@@ -33,7 +33,7 @@ public class CanvasObject: GameObject {
             .configure {
                 $0.worldSize = worldSize
                 $0.pixelPerUnit = pixelPerUnit
-        }
+            }
     }
 
     public func pixelSize() -> Size {
@@ -53,7 +53,6 @@ public class CanvasObject: GameObject {
     }
 
     private static func makeCanvas(worldSize: Size, pixelPerUnit: Float) -> (SCNNode, SKView) {
-
         let geometry = SCNGeometry.createPrimitive(.plane(width: worldSize.width, height: worldSize.height, name: "Plane"))
         let node = SCNNode(geometry: geometry)
         node.name = "Canvas"

@@ -1,33 +1,26 @@
-
 import Foundation
 import SceneKit
 
 extension UI {
-
     open class View: SCNView {
-
         private class AtomicLock {
-            
             private let lock = DispatchSemaphore(value: 1)
             private var value: Bool = false
 
             func get() -> Bool {
-                
                 lock.wait()
                 defer { lock.signal() }
                 return value
             }
-            
+
             func set(_ newValue: Bool) {
-                
                 lock.wait()
                 defer { lock.signal() }
                 value = newValue
             }
         }
-        
-        public struct Options {
 
+        public struct Options {
             let allowsCameraControl: Bool?
             let autoenablesDefaultLighting: Bool?
             let antialiasingMode: SCNAntialiasingMode?
@@ -43,7 +36,6 @@ extension UI {
                  showsStatistics: Bool? = nil,
                  backgroundColor: Color? = nil,
                  rendersContinuously: Bool? = true) {
-
                 self.allowsCameraControl = allowsCameraControl
                 self.autoenablesDefaultLighting = autoenablesDefaultLighting
                 self.antialiasingMode = antialiasingMode
@@ -54,7 +46,7 @@ extension UI {
             }
         }
 
-        public override init(frame: CGRect, options: [String : Any]? = nil) {
+        public override init(frame: CGRect, options: [String: Any]? = nil) {
             self.lock = Dictionary(uniqueKeysWithValues: Lock.all.map { ($0, AtomicLock()) })
             super.init(frame: .zero, options: options)
             self.delegate = self
@@ -70,22 +62,21 @@ extension UI {
             static let all: [Lock] = [.preUpdate, .update, .fixed, .physicsBegin, .physicsEnd]
         }
         private var lock: [Lock: AtomicLock]
-        
+
         public static func makeView(on superview: UIView? = nil,
                                     sceneName: String? = nil,
                                     options: View.Options? = nil,
                                     castShadow: Bool = true,
                                     allocation: Scene.Allocation = .singleton,
                                     extraLayers: [String]? = nil) -> View {
-
             let shadowCastingAllowed: Bool
             #if (arch(i386) || arch(x86_64))
-                let options = options ?? View.Options(antialiasingMode: .none,
+                let options = options ?? View.Options(antialiasingMode: SCNAntialiasingMode.none,
                                                       preferredRenderingAPI: .openGLES2)
                 shadowCastingAllowed = false
                 print("Shadows are disabled on the simulator for performance reason, prefer to use a device!")
             #else
-                let options = options ?? View.Options(antialiasingMode: .multisampling4X,
+                let options = options ?? View.Options(antialiasingMode: SCNAntialiasingMode.multisampling4X,
                                                       preferredRenderingAPI: .metal)
                 shadowCastingAllowed = true
             #endif
@@ -112,7 +103,6 @@ extension UI {
             view.scene?.physicsWorld.contactDelegate = view
 
             if let superview = superview {
-
                 view.frame = superview.bounds
                 view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
@@ -126,7 +116,6 @@ extension UI {
         }
 
         public var sceneHolder: Scene? {
-
             didSet {
                 guard let scene = sceneHolder
                     else { return }
@@ -137,7 +126,6 @@ extension UI {
         }
 
         open override func layoutSubviews() {
-
             super.layoutSubviews()
 
             Screen.width = frame.size.width
@@ -152,9 +140,7 @@ extension UI {
 }
 
 extension UI.View: SCNSceneRendererDelegate {
-
     public func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
-        
         guard lock[.preUpdate]?.get() == false else { return }
         lock[.preUpdate]?.set(true)
         DispatchQueue.main.async { [weak self] () -> Void in
@@ -164,7 +150,6 @@ extension UI.View: SCNSceneRendererDelegate {
     }
 
     public func renderer(_ renderer: SCNSceneRenderer, didRenderScene scene: SCNScene, atTime time: TimeInterval) {
-        
         guard lock[.update]?.get() == false else { return }
         lock[.update]?.set(true)
         DispatchQueue.main.async { [weak self] () -> Void in
@@ -175,7 +160,6 @@ extension UI.View: SCNSceneRendererDelegate {
     }
 
     public func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {
-        
         guard lock[.fixed]?.get() == false else { return }
         lock[.fixed]?.set(true)
         DispatchQueue.main.async { [weak self] () -> Void in
@@ -186,9 +170,7 @@ extension UI.View: SCNSceneRendererDelegate {
 }
 
 extension UI.View: SCNPhysicsContactDelegate {
-
     public func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        
         guard lock[.physicsBegin]?.get() == false else { return }
         lock[.physicsBegin]?.set(true)
         guard let sceneHolder = sceneHolder
@@ -203,7 +185,6 @@ extension UI.View: SCNPhysicsContactDelegate {
     }
 
     public func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
-        
         guard lock[.physicsEnd]?.get() == false else { return }
         lock[.physicsEnd]?.set(true)
         guard let sceneHolder = sceneHolder
@@ -219,28 +200,23 @@ extension UI.View: SCNPhysicsContactDelegate {
 }
 
 extension UI.View: UIGestureRecognizerDelegate {
-
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-
-        let touches = touches.enumerated().map { (index, uitouch) -> Touch in Touch(uitouch, index: index) }
+        let touches = touches.enumerated().map { index, uitouch -> Touch in Touch(uitouch, index: index) }
         Input.stackTouches(touches, phase: .began)
     }
 
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-
-        let touches = touches.enumerated().map { (index, uitouch) -> Touch in Touch(uitouch, index: index) }
+        let touches = touches.enumerated().map { index, uitouch -> Touch in Touch(uitouch, index: index) }
         Input.stackTouches(touches, phase: .moved)
     }
 
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-
-        let touches = touches.enumerated().map { (index, uitouch) -> Touch in Touch(uitouch, index: index) }
+        let touches = touches.enumerated().map { index, uitouch -> Touch in Touch(uitouch, index: index) }
         Input.stackTouches(touches, phase: .ended)
     }
 
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-
-        let touches = touches.enumerated().map { (index, uitouch) -> Touch in Touch(uitouch, index: index) }
+        let touches = touches.enumerated().map { index, uitouch -> Touch in Touch(uitouch, index: index) }
         Input.stackTouches(touches, phase: .cancelled)
     }
 
@@ -252,4 +228,3 @@ extension UI.View: UIGestureRecognizerDelegate {
         return true
     }
 }
-

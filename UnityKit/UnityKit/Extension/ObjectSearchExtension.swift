@@ -1,9 +1,7 @@
 import UIKit
 
 extension Object {
-
     public static func findObjectOfType<T: Component>(_ type: T.Type, in scene: Scene? = Scene.sharedInstance) -> T? {
-
         guard let scene = scene
             else { return nil }
 
@@ -13,9 +11,8 @@ extension Object {
 
         return nil
     }
-    
-    public static func findObjectsOfType<T: Component>(_ type: T.Type, in scene: Scene? = Scene.sharedInstance) -> [T] {
 
+    public static func findObjectsOfType<T: Component>(_ type: T.Type, in scene: Scene? = Scene.sharedInstance) -> [T] {
         guard let scene = scene
             else { return [] }
 

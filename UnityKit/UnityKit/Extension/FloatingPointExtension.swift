@@ -1,9 +1,7 @@
-
 import CoreGraphics
 import Foundation
 
 extension CGFloat {
-
     public func toFloat() -> Float {
         return Float(self)
     }
@@ -14,7 +12,6 @@ extension CGFloat {
 }
 
 extension Float {
-
     public func toDouble() -> Double {
         return Double(self)
     }
@@ -25,7 +22,6 @@ extension Float {
 }
 
 extension Double {
-
     public func toFloat() -> Float {
         return Float(self)
     }

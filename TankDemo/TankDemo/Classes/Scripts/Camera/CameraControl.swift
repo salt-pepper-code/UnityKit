@@ -1,13 +1,10 @@
-
 import UnityKit
 
 class CameraControl: MonoBehaviour {
-
     private var target: GameObject?
     private var camera: Camera?
 
     public func set(target: GameObject) {
-
         self.target = target
 
         camera = getComponent(Camera.self)
@@ -21,7 +18,6 @@ class CameraControl: MonoBehaviour {
     }
 
     override func update() {
-
         guard let camera = camera?.gameObject,
             let target = target
             else { return }

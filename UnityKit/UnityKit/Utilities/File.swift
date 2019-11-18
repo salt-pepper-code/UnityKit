@@ -1,12 +1,10 @@
 import Foundation
 
 internal func searchPathForResource(for filename: String, extension ext: String? = nil, bundle: Bundle = Bundle.main) -> URL? {
-    
     guard let enumerator = FileManager.default.enumerator(atPath: bundle.bundlePath)
         else { return nil }
 
     for item in enumerator {
-
         guard let filePath = item as? String,
             !filePath.starts(with: "Frameworks"),
             !filePath.starts(with: "Base.lproj"),
@@ -37,12 +35,11 @@ internal func searchPathForResource(for filename: String, extension ext: String?
             }
         }
     }
-    
+
     return nil
 }
 
 internal func splitFilename(_ name: String) -> (name: String, extension: String?) {
-
     let filename = { () -> String in
         let arr = name.split { $0 == "." }
         return arr.count > 0 ? String(describing: arr.first!) : ""

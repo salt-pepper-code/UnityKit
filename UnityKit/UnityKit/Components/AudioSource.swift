@@ -1,8 +1,6 @@
-
 import AVKit
 
 public class AudioSource: Component {
-
     private var soundPlayer = AVAudioPlayerNode()
 
     public var volume: Float = 1 {
@@ -11,16 +9,14 @@ public class AudioSource: Component {
         }
     }
 
-    public var customPosition: Vector3?{
+    public var customPosition: Vector3? {
         didSet {
             soundPlayer.position = customPosition?.toAVAudio3DPoint() ?? soundPlayer.position
         }
     }
 
     public var clip: AudioClip? {
-
         didSet {
-
             let engine = AudioEngine.sharedInstance
 
             if let oldValue = oldValue {
@@ -43,38 +39,37 @@ public class AudioSource: Component {
         }
     }
 
+    public required init() {
+        super.init()
+        self.ignoreUpdates = true
+    }
+    
     public override func awake() {
-
         let engine = AudioEngine.sharedInstance
         engine.attach(soundPlayer)
     }
 
-    @discardableResult public func configure(_ completionBlock: (AudioSource) -> ()) -> AudioSource {
-
+    @discardableResult public func configure(_ completionBlock: (AudioSource) -> Void) -> AudioSource {
         completionBlock(self)
         return self
     }
 
     @discardableResult public func set(volume: Float) -> AudioSource {
-
         self.volume = volume
         return self
     }
 
     @discardableResult public func set(clip: AudioClip) -> AudioSource {
-
         self.clip = clip
         return self
     }
 
     @discardableResult public func set(customPosition: Vector3) -> AudioSource {
-
         self.customPosition = customPosition
         return self
     }
 
     public override func onDestroy() {
-
         stop()
         let engine = AudioEngine.sharedInstance
         if let clip = clip {

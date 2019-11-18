@@ -1,30 +1,26 @@
-
 import UnityKit
 import SceneKit
 
 class ShellExplosion: MonoBehaviour {
-
     let maxDamage: Float = 100
     let explosionForce: Float = 1000
     let maxLifeTime: Float = 2
     let explosionRadius: Float = 5
 
     override func onTriggerEnter(_ collider: Collider) {
-
         guard let shellTransform = gameObject?.transform
             else { return }
 
         let colliders = Physics.overlapSphere(position: shellTransform.position, radius: explosionRadius, layerMask: .player)
 
         for collider in colliders {
-
             guard let targetRigidbody = collider.getComponent(Rigidbody.self)
                 else { continue }
 
             if let targetVehicle = collider.getComponent(Vehicle.self) {
                 targetVehicle.applyBrakingForce(0)
             }
-            
+
             targetRigidbody.addExplosionForce(explosionForce: explosionForce,
                                               explosionPosition: shellTransform.position,
                                               explosionRadius: explosionRadius,
@@ -49,7 +45,7 @@ class ShellExplosion: MonoBehaviour {
                         $0.clip = clip
                         $0.volume = 2
                         $0.play()
-                }
+                    }
             }
             empty.addComponent(ParticleSystem.self)
                 .load(fileName: "Explosion.scnp", loops: false)
@@ -63,7 +59,6 @@ class ShellExplosion: MonoBehaviour {
     }
 
     private func calculateDamage(_ targetPosition: Vector3) -> Float {
-
         guard let transform = transform
             else { return 0 }
 

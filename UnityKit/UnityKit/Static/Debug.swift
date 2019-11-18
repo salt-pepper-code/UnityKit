@@ -1,10 +1,7 @@
-
 import Foundation
 
 public final class Debug {
-
     public struct LogStyle: OptionSet {
-
         public let rawValue: Int
 
         public init(rawValue: Int) {
@@ -20,7 +17,6 @@ public final class Debug {
         public static var all: LogStyle = [.debug, .info, .warning, .error]
 
         public var prefix: String {
-
             if self.contains(.debug) {
                 return "💬" + " DEBUG: "
             } else if self.contains(.info) {
@@ -55,7 +51,6 @@ public final class Debug {
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
-
         log(message, style: .warning, displayTime: displayTime, filepath, function, line, column)
     }
 
@@ -65,7 +60,6 @@ public final class Debug {
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
-
         log(message, style: .error, displayTime: displayTime, filepath, function, line, column)
     }
 
@@ -75,7 +69,6 @@ public final class Debug {
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
-
         log(message, style: .info, displayTime: displayTime, filepath, function, line, column)
     }
 
@@ -86,7 +79,6 @@ public final class Debug {
                            _ function: String = #function,
                            _ line: Int = #line,
                            _ column: Int = #column) {
-
         guard !enabled.contains(.none)
             else { return }
 
@@ -114,7 +106,6 @@ public final class Debug {
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
-
         log(items: items, style: .warning, displayTime: displayTime, filepath, function, line, column)
     }
 
@@ -124,7 +115,6 @@ public final class Debug {
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
-
         log(items: items, style: .error, displayTime: displayTime, filepath, function, line, column)
     }
 
@@ -134,7 +124,6 @@ public final class Debug {
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
-
         log(items: items, style: .info, displayTime: displayTime, filepath, function, line, column)
     }
 
@@ -145,7 +134,6 @@ public final class Debug {
         _ function: String = #function,
         _ line: Int = #line,
         _ column: Int = #column) {
-
         guard !enabled.contains(.none)
             else { return }
 

@@ -1,4 +1,3 @@
-
 import UIKit
 
 public struct Vector2 {
@@ -12,35 +11,30 @@ public struct Vector2 {
 }
 
 extension Vector2 {
-
     public func toCGPoint() -> CGPoint {
         return CGPoint(x: self.x.toCGFloat(), y: self.y.toCGFloat())
     }
 }
 
 extension CGSize {
-
     public func toVector2() -> Vector2 {
         return Vector2(self.width.toFloat(), self.height.toFloat())
     }
 }
 
 extension CGPoint {
-
     public func toVector2() -> Vector2 {
         return Vector2(self.x.toFloat(), self.y.toFloat())
     }
 }
 
 extension Vector2: Equatable {
-
     public static func == (left: Vector2, right: Vector2) -> Bool {
         return left.x == right.x && left.y == right.y
     }
 }
 
 extension Vector2 {
-
     public static var zero: Vector2 {
         return Vector2(0, 0)
     }

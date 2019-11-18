@@ -2,16 +2,13 @@ import Foundation
 import SceneKit
 
 public final class Renderer: Component {
-    
     public var materials = [Material]() {
-        
         didSet {
-            gameObject?.node.geometry?.materials = materials.map { (material) -> SCNMaterial in material.scnMaterial }
+            gameObject?.node.geometry?.materials = materials.map { material -> SCNMaterial in material.scnMaterial }
         }
     }
-    
+
     public var material: Material? {
-        
         get {
             return materials.first
         }
@@ -21,9 +18,8 @@ public final class Renderer: Component {
             }
         }
     }
-    
+
     public var shadowCasting: Bool {
-        
         get {
             guard let gameObject = gameObject
                 else { return false }
@@ -34,9 +30,8 @@ public final class Renderer: Component {
             gameObject?.node.castsShadow = newValue
         }
     }
-    
+
     public var sortingOrder: Int {
-        
         get {
             guard let gameObject = gameObject
                 else { return 0 }
@@ -48,13 +43,16 @@ public final class Renderer: Component {
         }
     }
 
-    @discardableResult public func configure(_ completionBlock: (Renderer) -> ()) -> Renderer {
+    public required init() {
+        super.init()
+        self.ignoreUpdates = true
+    }
 
+    @discardableResult public func configure(_ completionBlock: (Renderer) -> Void) -> Renderer {
         completionBlock(self)
         return self
     }
 
     public override func awake() {
-
     }
 }
