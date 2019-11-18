@@ -164,7 +164,7 @@ public final class Transform: Component {
             gameObject?.node.rotation = newValue
         }
     }
-    
+
     /// The rotation as Euler angles in degrees.
     public var localEulerAngles: Vector3 {
         get {

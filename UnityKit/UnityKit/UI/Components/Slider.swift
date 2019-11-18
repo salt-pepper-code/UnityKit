@@ -11,7 +11,7 @@ extension UI {
                 updateValue()
             }
         }
-        
+
         /**
          Configurable block that passes and returns itself.
          - parameters:
@@ -19,8 +19,7 @@ extension UI {
 
          - returns: itself
          */
-        @discardableResult public func configure(_ configurationBlock: (Slider) -> ()) -> Slider {
-
+        @discardableResult public func configure(_ configurationBlock: (Slider) -> Void) -> Slider {
             configurationBlock(self)
             return self
         }

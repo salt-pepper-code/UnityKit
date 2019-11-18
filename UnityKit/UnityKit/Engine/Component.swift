@@ -1,6 +1,5 @@
 import Foundation
 
-
 /**
  Base class for everything attached to GameObjects.
 

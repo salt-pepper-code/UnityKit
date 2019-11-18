@@ -67,8 +67,7 @@ extension UI {
             - configurationBlock: block that passes itself.
          - returns: itself
          */
-        @discardableResult public func configure(_ configurationBlock: (Image) -> ()) -> Image {
-
+        @discardableResult public func configure(_ configurationBlock: (Image) -> Void) -> Image {
             configurationBlock(self)
             return self
         }

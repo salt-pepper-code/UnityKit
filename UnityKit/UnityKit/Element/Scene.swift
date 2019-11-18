@@ -144,7 +144,6 @@ open class Scene: Identifiable {
 
 // Debug
 extension Scene {
-
     public func printGameObjectsIgnoreUpdates() {
         gameObjectCount = 0
         ignoreUpdatesCount = 0

@@ -7,7 +7,7 @@ public class ParticleSystem: Component {
         super.init()
         self.ignoreUpdates = true
     }
-    
+
     public override func onDestroy() {
         guard let particule = scnParticleSystem
             else { return }

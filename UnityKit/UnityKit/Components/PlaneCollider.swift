@@ -14,8 +14,7 @@ public final class PlaneCollider: Collider {
 
      - returns: itself
      */
-    @discardableResult public func configure(_ configurationBlock: (PlaneCollider) -> ()) -> PlaneCollider {
-
+    @discardableResult public func configure(_ configurationBlock: (PlaneCollider) -> Void) -> PlaneCollider {
         configurationBlock(self)
         return self
     }

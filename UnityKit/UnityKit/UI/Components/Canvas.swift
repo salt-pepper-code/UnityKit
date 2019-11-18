@@ -13,8 +13,7 @@ extension UI {
 
          - returns: itself
          */
-        @discardableResult public func configure(_ configurationBlock: (Canvas) -> ()) -> Canvas {
-
+        @discardableResult public func configure(_ configurationBlock: (Canvas) -> Void) -> Canvas {
             configurationBlock(self)
             return self
         }

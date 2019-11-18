@@ -16,12 +16,11 @@ public final class MeshCollider: Collider {
 
      - returns: itself
      */
-    @discardableResult public func configure(_ configurationBlock: (MeshCollider) -> ()) -> MeshCollider {
-
+    @discardableResult public func configure(_ configurationBlock: (MeshCollider) -> Void) -> MeshCollider {
         configurationBlock(self)
         return self
     }
-    
+
     /// <#Description#>
     ///
     /// - Parameter mesh: <#mesh description#>

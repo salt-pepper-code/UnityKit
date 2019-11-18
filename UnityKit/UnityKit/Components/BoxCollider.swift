@@ -8,7 +8,7 @@ public final class BoxCollider: Collider {
         super.init()
         self.ignoreUpdates = true
     }
-    
+
     @discardableResult public func set(size: Vector3Nullable?) -> BoxCollider {
         self.size = size
         return self
@@ -27,8 +27,7 @@ public final class BoxCollider: Collider {
 
      - returns: itself
      */
-    @discardableResult public func configure(_ configurationBlock: (BoxCollider) -> ()) -> BoxCollider {
-
+    @discardableResult public func configure(_ configurationBlock: (BoxCollider) -> Void) -> BoxCollider {
         configurationBlock(self)
         return self
     }

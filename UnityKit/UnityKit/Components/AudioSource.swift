@@ -43,7 +43,7 @@ public class AudioSource: Component {
         super.init()
         self.ignoreUpdates = true
     }
-    
+
     public override func awake() {
         let engine = AudioEngine.sharedInstance
         engine.attach(soundPlayer)
@@ -57,8 +57,7 @@ public class AudioSource: Component {
 
      - returns: itself
      */
-    @discardableResult public func configure(_ configurationBlock: (AudioSource) -> ()) -> AudioSource {
-
+    @discardableResult public func configure(_ configurationBlock: (AudioSource) -> Void) -> AudioSource {
         configurationBlock(self)
         return self
     }

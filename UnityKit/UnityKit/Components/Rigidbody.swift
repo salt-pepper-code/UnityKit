@@ -137,7 +137,7 @@ public final class Rigidbody: Component, Instantiable {
         super.init()
         self.ignoreUpdates = true
     }
-    
+
     public func set(property: Properties.Setter) {
         let physicsBody = gameObject?.node.physicsBody
 
@@ -215,8 +215,7 @@ public final class Rigidbody: Component, Instantiable {
 
      - returns: itself
      */
-    @discardableResult public func configure(_ configurationBlock: (Rigidbody) -> ()) -> Rigidbody {
-        
+    @discardableResult public func configure(_ configurationBlock: (Rigidbody) -> Void) -> Rigidbody {
         configurationBlock(self)
         return self
     }

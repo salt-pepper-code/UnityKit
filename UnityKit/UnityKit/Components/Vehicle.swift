@@ -69,8 +69,7 @@ public class Vehicle: Component {
 
      - returns: itself
      */
-    @discardableResult public func configure(_ configurationBlock: (Vehicle) -> ()) -> Vehicle {
-
+    @discardableResult public func configure(_ configurationBlock: (Vehicle) -> Void) -> Vehicle {
         configurationBlock(self)
         return self
     }
