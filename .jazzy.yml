@@ -1,0 +1,11 @@
+theme: fullwidth 
+skip_undocumented: true
+readme: README.md
+xcodebuild_arguments:
+  - -workspace
+  - UnityKit.xcworkspace
+  - -scheme
+  - UnityKit
+author: Salt and Pepper Code
+
+#jazzy --config .jazzy.yml --output Documentation --clean
