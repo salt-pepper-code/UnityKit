@@ -150,11 +150,6 @@ public final class Rigidbody: Component, Instantiable {
 
     internal var properties = [Properties.Getter: Any]()
 
-    public required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     public func set(property: Properties.Setter) {
         let physicsBody = gameObject?.node.physicsBody
 

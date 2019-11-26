@@ -6,11 +6,6 @@ A mesh collider allows you to do collision detection between meshes and primitiv
 public final class MeshCollider: Collider {
     private(set) public var mesh: Mesh?
 
-    public required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     /**
      Configurable block that passes and returns itself.
 

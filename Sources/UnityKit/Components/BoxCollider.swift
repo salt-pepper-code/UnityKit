@@ -7,11 +7,6 @@ public final class BoxCollider: Collider {
     private(set) public var size: Vector3Nullable?
     private(set) public var center: Vector3Nullable?
 
-    public required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     @discardableResult public func set(size: Vector3Nullable?) -> BoxCollider {
         self.size = size
         return self

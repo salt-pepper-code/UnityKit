@@ -61,12 +61,6 @@ public final class Renderer: Component {
         }
     }
 
-    /// Create a new instance
-    public required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     /**
      Configurable block that passes and returns itself.
 

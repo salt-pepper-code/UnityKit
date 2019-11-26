@@ -65,11 +65,6 @@ public class Vehicle: Component {
         return vehicle.speedInKilometersPerHour.toFloat()
     }
 
-    public required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     /**
      Configurable block that passes and returns itself.
 

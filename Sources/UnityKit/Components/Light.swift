@@ -239,12 +239,6 @@ public final class Light: Component {
         }
     }
 
-    /// Create a new instance
-    required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     /**
      Configurable block that passes and returns itself.
 

@@ -4,11 +4,6 @@ import SceneKit
 Representation of a plane in 3D space.
 */
 public final class PlaneCollider: Collider {
-    public required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     /**
      Configurable block that passes and returns itself.
 

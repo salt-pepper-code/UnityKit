@@ -9,11 +9,6 @@ public class ParticleSystem: Component {
     }
     public var scnParticleSystem: SCNParticleSystem?
 
-    public required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     public override func onDestroy() {
         guard let particule = scnParticleSystem
             else { return }

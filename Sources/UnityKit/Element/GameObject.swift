@@ -209,14 +209,7 @@ public class GameObject: Object {
     }
 
     internal func shouldIgnoreUpdates() -> Bool {
-        var ignore = true
-        for component in components {
-            if !component.ignoreUpdates {
-                ignore = false
-                break
-            }
-        }
-        return ignore
+        return components.first(where: { !$0.ignoreUpdates }) == nil
     }
 
     internal func setScene(_ scene: Scene) {
@@ -348,8 +341,9 @@ public class GameObject: Object {
     }
 
     @discardableResult public override func addComponent<T: Component>(_ type: T.Type) -> T {
+        let component = super.addComponent(external: true, type: type, gameObject: self)
         self.ignoreUpdates = shouldIgnoreUpdates()
-        return super.addComponent(external: true, type: type, gameObject: self)
+        return component
     }
 
     @discardableResult internal override func addComponent<T: Component>(external: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T {

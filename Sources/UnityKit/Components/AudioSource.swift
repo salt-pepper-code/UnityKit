@@ -45,11 +45,6 @@ public class AudioSource: Component {
         }
     }
 
-    public required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     public override func awake() {
         let engine = AudioEngine.sharedInstance
         engine.attach(soundPlayer)

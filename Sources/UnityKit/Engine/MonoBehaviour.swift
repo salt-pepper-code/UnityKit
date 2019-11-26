@@ -17,7 +17,10 @@ open class MonoBehaviour: Behaviour, Instantiable {
     private var queuedCoroutineInfo = [CoroutineInfo]()
     private var currentCoroutineInfo: CoroutineInfo?
     private var timePassed: TimeInterval = 0
-
+    public override var ignoreUpdates: Bool {
+        return false
+    }
+    
     open override func destroy() {
         currentCoroutineInfo = nil
         queuedCoroutineInfo.removeAll()

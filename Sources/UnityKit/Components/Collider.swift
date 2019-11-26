@@ -51,12 +51,6 @@ public class Collider: Component, Instantiable {
         }
     }
 
-    /// Create a new instance
-    public required init() {
-        super.init()
-        self.ignoreUpdates = true
-    }
-
     private func getAllPhysicsShapes() -> [SCNPhysicsShape]? {
         guard let gameObject = gameObject
             else { return nil }

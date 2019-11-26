@@ -28,7 +28,9 @@ open class Component: Object {
     internal var order: ComponentOrder {
         return .other
     }
-    public var ignoreUpdates = false
+    public var ignoreUpdates: Bool {
+        return true
+    }
 
     public var transform: Transform? {
         return gameObject?.transform

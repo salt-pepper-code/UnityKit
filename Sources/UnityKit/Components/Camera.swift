@@ -160,7 +160,6 @@ public final class Camera: Component {
     /// Create a new instance
     public required init() {
         super.init()
-        self.ignoreUpdates = true
         self.cullingMask = GameObject.Layer.all
         calculateFieldOfViews()
     }
