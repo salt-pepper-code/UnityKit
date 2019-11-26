@@ -4,6 +4,9 @@ import AVKit
 A representation of audio sources in 3D.
 */
 public class AudioSource: Component {
+    internal override var order: ComponentOrder {
+        return .other
+    }
     private var soundPlayer = AVAudioPlayerNode()
 
     public var volume: Float = 1 {

@@ -52,6 +52,9 @@ public class Wheel {
 The Vehicles module implements vehicle physics simulation through the Wheel component.
 */
 public class Vehicle: Component {
+    override internal var order: ComponentOrder {
+        return .vehicle
+    }
     private(set) public var wheels = [Wheel]()
     private var parameters: [Wheel.Parameters]?
     private var vehicle: SCNPhysicsVehicle?

@@ -11,6 +11,9 @@ public enum CoroutineThread {
 }
 
 open class MonoBehaviour: Behaviour, Instantiable {
+    internal override var order: ComponentOrder {
+        return .monoBehaviour
+    }
     private var queuedCoroutineInfo = [CoroutineInfo]()
     private var currentCoroutineInfo: CoroutineInfo?
     private var timePassed: TimeInterval = 0

@@ -17,6 +17,9 @@ import SceneKit
  ````
  */
 public final class Transform: Component {
+    override internal var order: ComponentOrder {
+        return .transform
+    }
     /// Create a new instance
     public required init() {
         super.init()
@@ -28,7 +31,6 @@ public final class Transform: Component {
         self.ignoreUpdates = true
         self.gameObject = gameObject
     }
-
     /// The children of the transform.
     public var children: [Transform]? { return gameObject?.getChildren().map { $0.transform } }
     /// The parent of the transform.

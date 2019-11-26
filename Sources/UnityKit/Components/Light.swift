@@ -5,6 +5,9 @@
 Script interface for light components.
 */
 public final class Light: Component {
+    override internal var order: ComponentOrder {
+        return .priority
+    }
     internal(set) public var scnLight = SCNLight()
 
     /**

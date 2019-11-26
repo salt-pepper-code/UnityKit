@@ -4,6 +4,9 @@ import SceneKit
 Script interface for Particle Systems.
 */
 public class ParticleSystem: Component {
+    internal override var order: ComponentOrder {
+        return .other
+    }
     public var scnParticleSystem: SCNParticleSystem?
 
     public required init() {

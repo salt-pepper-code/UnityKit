@@ -35,6 +35,9 @@ In a script, the FixedUpdate function is recommended as the place to apply force
 A common problem when starting out with Rigidbodies is that the game physics appears to run in "slow motion". This is actually due to the scale used for your models. The default gravity settings assume that one world unit corresponds to one metre of distance. With non-physical games, it doesn't make much difference if your models are all 100 units long but when using physics, they will be treated as very large objects. If a large scale is used for objects that are supposed to be small, they will appear to fall very slowly - the physics engine thinks they are very large objects falling over very large distances. With this in mind, be sure to keep your objects more or less at their scale in real life (so a car should be about 4 units = 4 metres, for example).
 */
 public final class Rigidbody: Component, Instantiable {
+    override internal var order: ComponentOrder {
+        return .rigidbody
+    }
     public func instantiate(gameObject: GameObject) -> Rigidbody {
         let clone = type(of: self).init()
         clone.isStatic = isStatic

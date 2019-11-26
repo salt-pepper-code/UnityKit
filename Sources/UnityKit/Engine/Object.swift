@@ -100,24 +100,9 @@ open class Object: Identifiable {
         return addComponent(T(), gameObject: gameObject)
     }
 
-    private func orderIndex<T: Component>(_ type: T.Type) -> Int {
-        if type.self === Transform.self { return 0 }
-        if type.self === Camera.self { return 1 }
-        if type.self === Light.self { return 1 }
-        if type.self === MeshFilter.self { return 1 }
-        if type.self === Renderer.self { return 2 }
-        if type.self === Rigidbody.self { return 3 }
-        if type.self === Collider.self { return 4 }
-        if type.self === BoxCollider.self { return 4 }
-        if type.self === PlaneCollider.self { return 4 }
-        if type.self === MeshCollider.self { return 4 }
-        if type.self === Vehicle.self { return 5 }
-        return 6
-    }
-
     @discardableResult internal func addComponent<T: Component>(_ component: T, gameObject: GameObject? = nil) -> T {
         components.append(component)
-        components.sort { orderIndex(type(of: $0)) <= orderIndex(type(of: $1)) }
+        components.sort { $0.order.rawValue <= $1.order.rawValue }
         component.gameObject = gameObject
         component.awake()
         if let behaviour = component as? Behaviour {

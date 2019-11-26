@@ -1,5 +1,16 @@
 import Foundation
 
+internal enum ComponentOrder: Int {
+    case transform
+    case priority
+    case renderer
+    case rigidbody
+    case collider
+    case vehicle
+    case other
+    case monoBehaviour
+}
+
 /**
  Base class for everything attached to GameObjects.
 
@@ -14,6 +25,9 @@ open class Component: Object {
     internal var implementsPreUpdate = true
     internal var implementsUpdate = true
     internal var implementsFixedUpdate = true
+    internal var order: ComponentOrder {
+        return .other
+    }
     public var ignoreUpdates = false
 
     public var transform: Transform? {

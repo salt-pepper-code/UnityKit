@@ -6,6 +6,9 @@ public typealias Collision = SCNPhysicsContact
 A base class of all colliders.
 */
 public class Collider: Component, Instantiable {
+    override internal var order: ComponentOrder {
+        return .collider
+    }
     /**
      Clones the object original and returns the clone.
     */

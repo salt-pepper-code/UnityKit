@@ -5,6 +5,9 @@ import SceneKit
 General functionality for all renderers.
 */
 public final class Renderer: Component {
+    override internal var order: ComponentOrder {
+        return .renderer
+    }
     /**
     Returns all the instantiated materials of this object.
     */

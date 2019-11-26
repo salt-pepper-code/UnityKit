@@ -6,6 +6,9 @@ import SceneKit
  A world space point is defined in global coordinates (for example, Transform.position).
  */
 public final class Camera: Component {
+    override internal var order: ComponentOrder {
+        return .priority
+    }
     private var hFieldOfView: CGFloat = 60
 
     internal(set) public var scnCamera = SCNCamera() {
