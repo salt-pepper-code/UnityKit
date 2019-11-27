@@ -148,7 +148,7 @@ open class Object: Identifiable {
     }
 
     internal class func cache<T: Component>(_ type: T.Type) -> [T]? {
-        if let wrapper = Object.cache.keys.first(where: { $0.value === T.self }) {
+        if let wrapper = Object.cache.keys.first(where: { $0.value === T.self || $0.value is T.self }) {
             return Object.cache[wrapper]?.compactMap { $0 as? T }
         }
         return nil
