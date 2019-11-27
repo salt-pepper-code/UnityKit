@@ -129,7 +129,7 @@ open class Object: Identifiable {
     }
 
     internal class func addCache<T: Component>(_ component: T) {
-        let wrapper = Object.cache.keys.first(where: { $0.value is T })
+        let wrapper = Object.cache.keys.first(where: { $0.value === T.self })
         if let wrapper = wrapper, var components = Object.cache[wrapper] {
             components.append(component)
             Object.cache[wrapper] = components
@@ -139,7 +139,7 @@ open class Object: Identifiable {
     }
 
     internal class func removeCache<T: Component>(_ component: T) {
-        guard let wrapper = Object.cache.keys.first(where: { $0.value is T }) else { return }
+        guard let wrapper = Object.cache.keys.first(where: { $0.value === T.self }) else { return }
         var components = Object.cache[wrapper]
         if let index = components?.firstIndex(where: { $0 === component }) {
             components?.remove(at: index)
@@ -148,7 +148,7 @@ open class Object: Identifiable {
     }
 
     internal class func cache<T: Component>(_ type: T.Type) -> [T]? {
-        if let wrapper = Object.cache.keys.first(where: { $0.value is T }) {
+        if let wrapper = Object.cache.keys.first(where: { $0.value === T.self }) {
             return Object.cache[wrapper]?.compactMap { $0 as? T }
         }
         return nil
