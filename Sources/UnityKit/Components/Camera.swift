@@ -110,15 +110,10 @@ public final class Camera: Component {
      */
     public var allowHDR: Bool {
         get {
-            if #available(iOS 10.0, *) {
-                return scnCamera.wantsHDR
-            }
-            return false
+            return scnCamera.wantsHDR
         }
         set {
-            if #available(iOS 10.0, *) {
-                scnCamera.wantsHDR = newValue
-            }
+            scnCamera.wantsHDR = newValue
         }
     }
 

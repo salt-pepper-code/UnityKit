@@ -11,7 +11,7 @@ class Wrapper: Hashable, Equatable {
 }
 
 func == (left:Wrapper, right:Wrapper) -> Bool {
-   return left.value == right.value
+    return left.value == right.value
 }
 
 public func destroy(_ gameObject: GameObject) {
@@ -129,16 +129,18 @@ open class Object: Identifiable {
     }
 
     internal class func addCache<T: Component>(_ component: T) {
-        if var components = Object.cache[Wrapper(T.self)] {
+        let wrapper = Object.cache.keys.first(where: { $0.value is T })
+        if let wrapper = wrapper, var components = Object.cache[wrapper] {
             components.append(component)
-            Object.cache[Wrapper(T.self)] = components
+            Object.cache[wrapper] = components
         } else {
             Object.cache[Wrapper(T.self)] = [component]
         }
     }
 
     internal class func removeCache<T: Component>(_ component: T) {
-        var components = Object.cache[Wrapper(T.self)]
+        guard let wrapper = Object.cache.keys.first(where: { $0.value is T }) else { return }
+        var components = Object.cache[wrapper]
         if let index = components?.firstIndex(where: { $0 === component }) {
             components?.remove(at: index)
             Object.cache[Wrapper(T.self)] = [component]
@@ -146,6 +148,9 @@ open class Object: Identifiable {
     }
 
     internal class func cache<T: Component>(_ type: T.Type) -> [T]? {
-        return Object.cache[Wrapper(type)]?.compactMap { $0 as? T }
+        if let wrapper = Object.cache.keys.first(where: { $0.value is T }) {
+            return Object.cache[wrapper]?.compactMap { $0 as? T }
+        }
+        return nil
     }
 }
