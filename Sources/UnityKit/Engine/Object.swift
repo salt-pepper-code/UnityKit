@@ -1,10 +1,25 @@
 import Foundation
 
+class Wrapper: Hashable, Equatable {
+   let value: Component.Type
+    init(_ value:Component.Type) {
+        self.value = value
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(value))
+    }
+}
+
+func == (left:Wrapper, right:Wrapper) -> Bool {
+   return left.value == right.value
+}
+
 public func destroy(_ gameObject: GameObject) {
     Object.destroy(gameObject)
 }
 
 open class Object: Identifiable {
+    private static var cache = [Wrapper: [Component]]()
     /**
      Determines the name of the receiver.
     */
@@ -75,6 +90,7 @@ open class Object: Identifiable {
         if let index = components.firstIndex(where: { $0 == component }) {
             components[index].onDestroy()
             components.remove(at: index)
+            Object.removeCache(component)
         }
     }
 
@@ -108,6 +124,28 @@ open class Object: Identifiable {
         if let behaviour = component as? Behaviour {
             behaviour.enabled = true
         }
+        Object.addCache(component)
         return component
+    }
+
+    internal class func addCache<T: Component>(_ component: T) {
+        if var components = Object.cache[Wrapper(T.self)] {
+            components.append(component)
+            Object.cache[Wrapper(T.self)] = components
+        } else {
+            Object.cache[Wrapper(T.self)] = [component]
+        }
+    }
+
+    internal class func removeCache<T: Component>(_ component: T) {
+        var components = Object.cache[Wrapper(T.self)]
+        if let index = components?.firstIndex(where: { $0 === component }) {
+            components?.remove(at: index)
+            Object.cache[Wrapper(T.self)] = [component]
+        }
+    }
+
+    internal class func cache<T: Component>(_ type: T.Type) -> [T]? {
+        return Object.cache[Wrapper(type)]?.compactMap { $0 as? T }
     }
 }
