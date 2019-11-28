@@ -1,25 +1,11 @@
 import Foundation
 
-class Wrapper: Hashable, Equatable {
-   let value: Component.Type
-    init(_ value:Component.Type) {
-        self.value = value
-    }
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(value))
-    }
-}
-
-func == (left:Wrapper, right:Wrapper) -> Bool {
-    return left.value == right.value
-}
-
 public func destroy(_ gameObject: GameObject) {
     Object.destroy(gameObject)
 }
 
 open class Object: Identifiable {
-    private static var cache = [Wrapper: [Component]]()
+    private static var cache = [Component: [Component]]()
     /**
      Determines the name of the receiver.
     */
@@ -129,28 +115,37 @@ open class Object: Identifiable {
     }
 
     internal class func addCache<T: Component>(_ component: T) {
-        let wrapper = Object.cache.keys.first(where: { $0.value === T.self })
-        if let wrapper = wrapper, var components = Object.cache[wrapper] {
+        let key = Object.cache.keys.first(where: { $0 is T })
+        if let key = key, var components = Object.cache[key] {
             components.append(component)
-            Object.cache[wrapper] = components
+            Object.cache[key] = components
         } else {
-            Object.cache[Wrapper(T.self)] = [component]
+            Object.cache[T.init()] = [component]
         }
     }
 
     internal class func removeCache<T: Component>(_ component: T) {
-        guard let wrapper = Object.cache.keys.first(where: { $0.value === T.self }) else { return }
-        var components = Object.cache[wrapper]
-        if let index = components?.firstIndex(where: { $0 === component }) {
-            components?.remove(at: index)
-            Object.cache[Wrapper(T.self)] = [component]
+        let keys = Object.cache.keys.filter ({ $0 is T })
+        guard keys.count > 0 else { return }
+        keys.forEach { key in
+            var components = Object.cache[key]
+            if let index = components?.firstIndex(where: { $0 == component }) {
+                components?.remove(at: index)
+                Object.cache[key] = components
+                return
+            }
         }
     }
 
     internal class func cache<T: Component>(_ type: T.Type) -> [T]? {
-        if let wrapper = Object.cache.keys.first(where: { $0.value === T.self || $0.value.init() is T }) {
-            return Object.cache[wrapper]?.compactMap { $0 as? T }
+        let keys = Object.cache.keys.filter { $0 is T }
+        guard keys.count > 0 else { return nil }
+        let result: [T] = keys.reduce([T]()) { (prev, key) -> [T] in
+            if let cache = Object.cache[key]?.compactMap({ $0 as? T }) {
+                return prev + cache
+            }
+            return prev
         }
-        return nil
+        return result
     }
 }

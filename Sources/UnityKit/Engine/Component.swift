@@ -17,7 +17,7 @@ internal enum ComponentOrder: Int {
  - notes:
  Note that your code will never directly create a Component. Instead, you write script code (subclass from MonoBehaviour), and attach the script to a GameObject. See [MonoBehaviour](MonoBehaviour.html).
  */
-open class Component: Object {
+open class Component: Object, Hashable {
     /**
      The game object this component is attached to. A component is always attached to a game object.
      */
@@ -34,6 +34,10 @@ open class Component: Object {
 
     public var transform: Transform? {
         return gameObject?.transform
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
     }
 
     /// Create a new instance
