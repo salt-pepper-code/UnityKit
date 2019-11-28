@@ -86,7 +86,7 @@ extension UI {
             }
 
             let view = View(frame: .zero, options: ["preferredRenderingAPI": options.preferredRenderingAPI ?? SCNRenderingAPI.metal])
-
+            
             options.allowsCameraControl.map { view.allowsCameraControl = $0 }
             options.autoenablesDefaultLighting.map { view.autoenablesDefaultLighting = $0 }
             options.antialiasingMode.map { view.antialiasingMode = $0 }

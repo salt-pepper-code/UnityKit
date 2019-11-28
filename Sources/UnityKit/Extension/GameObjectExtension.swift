@@ -12,7 +12,7 @@ extension GameObject {
         let gameObject = original.instantiate()
 
         if addToScene {
-            let scene = original.scene ?? Scene.sharedInstance
+            let scene = original.scene ?? Scene.shared
             scene?.addGameObject(gameObject)
         }
 

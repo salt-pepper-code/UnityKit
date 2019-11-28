@@ -1,7 +1,7 @@
 import SceneKit
 
 public class Physics {
-    public static func overlapSphere(position: Vector3, radius: Float, layerMask: GameObject.Layer = .all, in scene: Scene? = Scene.sharedInstance) -> [Collider] {
+    public static func overlapSphere(position: Vector3, radius: Float, layerMask: GameObject.Layer = .all, in scene: Scene? = Scene.shared) -> [Collider] {
         guard let scene = scene
             else { return [] }
 

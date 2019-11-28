@@ -192,7 +192,7 @@ public final class Camera: Component {
 
      - returns: The first enabled camera tagged "MainCamera".
     */
-    public static func main(in scene: Scene? = Scene.sharedInstance) -> Camera? {
+    public static func main(in scene: Scene? = Scene.shared) -> Camera? {
         guard let scene = scene
             else { return nil }
 

@@ -79,7 +79,7 @@ extension GameObject {
         return false
     }
 
-    public static func find(_ type: SearchType, in scene: Scene? = Scene.sharedInstance) -> GameObject? {
+    public static func find(_ type: SearchType, in scene: Scene? = Scene.shared) -> GameObject? {
         guard let scene = scene else { return nil }
         return GameObject.find(type, in: scene.rootGameObject)
     }
@@ -98,7 +98,7 @@ extension GameObject {
         return nil
     }
 
-    public static func findGameObjects(_ type: SearchType, in scene: Scene? = Scene.sharedInstance) -> [GameObject] {
+    public static func findGameObjects(_ type: SearchType, in scene: Scene? = Scene.shared) -> [GameObject] {
         guard let scene = scene else { return [] }
         return GameObject.findGameObjects(type, in: scene.rootGameObject)
     }
@@ -116,7 +116,7 @@ extension GameObject {
             })
     }
 
-    public static func getComponents<T: Component>(_ type: T.Type, in scene: Scene? = Scene.sharedInstance) -> [T] {
+    public static func getComponents<T: Component>(_ type: T.Type, in scene: Scene? = Scene.shared) -> [T] {
         guard let scene = scene else { return [] }
         return GameObject.getComponents(type, in: scene.rootGameObject)
     }

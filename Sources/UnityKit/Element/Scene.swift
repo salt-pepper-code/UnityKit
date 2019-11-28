@@ -17,7 +17,7 @@ open class Scene: Identifiable {
     internal let shadowCastingAllowed: Bool
     internal let uuid: String
 
-    private(set) public static var sharedInstance: Scene?
+    private(set) public static var shared: Scene?
 
     public convenience init?(sceneName: String, options: SceneLoadingOptions? = nil, bundle: Bundle = Bundle.main, allocation: Allocation, shadowCastingAllowed: Bool = true) {
         guard let sceneUrl = searchPathForResource(for: sceneName, extension: nil, bundle: bundle)
@@ -76,9 +76,9 @@ open class Scene: Identifiable {
 
         switch allocation {
         case .singleton:
-            Scene.sharedInstance = self
+            Scene.shared = self
         case .instantiate:
-            Scene.sharedInstance = nil
+            Scene.shared = nil
         }
     }
 
