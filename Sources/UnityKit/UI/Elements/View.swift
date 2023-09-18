@@ -35,6 +35,9 @@ extension UI {
             self.rendersContinuously = rendersContinuously
         }
     }
+}
+
+extension UI {
 
     public struct SwiftUIView: UIViewRepresentable {
 
@@ -82,6 +85,17 @@ extension UI {
                 lock.wait()
                 defer { lock.signal() }
                 value = newValue
+            }
+        }
+
+        public var sceneHolder: Scene? {
+            didSet {
+                guard let scene = sceneHolder
+                else { return }
+
+                self.scene = scene.scnScene
+                self.pointOfView = Camera.main(in: scene)?.gameObject?.node
+                scene.view = self
             }
         }
 
@@ -163,16 +177,6 @@ extension UI {
             }
 
             return view
-        }
-
-        public var sceneHolder: Scene? {
-            didSet {
-                guard let scene = sceneHolder
-                else { return }
-
-                self.scene = scene.scnScene
-                self.pointOfView = Camera.main(in: scene)?.gameObject?.node
-            }
         }
 
         open override func layoutSubviews() {

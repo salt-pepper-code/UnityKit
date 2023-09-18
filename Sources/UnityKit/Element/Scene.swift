@@ -13,9 +13,11 @@ open class Scene: Identifiable, Equatable {
     private var ignoreUpdatesCount: Int = 0
     private var lastTimeStamp: TimeInterval?
     public let scnScene: SCNScene
+    internal weak var view: UI.UIKitView?
     public let rootGameObject: GameObject
     internal let shadowCastingAllowed: Bool
     public let id: String
+
 
     private(set) public static var shared: Scene?
 
@@ -116,6 +118,9 @@ open class Scene: Identifiable, Equatable {
             Scene.shared = nil
         }
     }
+}
+
+extension Scene {
 
     internal func disableCastsShadow(gameObject: GameObject) {
         gameObject.getChildren().forEach {
@@ -174,6 +179,18 @@ open class Scene: Identifiable, Equatable {
 
     public func findGameObjects(_ type: GameObject.SearchType) -> [GameObject] {
         return GameObject.findGameObjects(type, in: self)
+    }
+}
+
+extension Scene {
+
+    public func hitTest(_ location: Vector2) -> [GameObject] {
+        guard let results = view?.hitTest(location.toCGPoint())
+        else { return [] }
+        for result in results {
+            print(result.node)
+        }
+        return []
     }
 }
 
