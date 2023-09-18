@@ -187,10 +187,9 @@ extension Scene {
     public func hitTest(_ location: Vector2) -> [GameObject] {
         guard let results = view?.hitTest(location.toCGPoint())
         else { return [] }
-        for result in results {
-            print(result.node)
-        }
-        return []
+        return results
+            .compactMap { $0.node.name }
+            .compactMap { GameObject.find(.name(.exact($0))) }
     }
 }
 
