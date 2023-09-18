@@ -1,17 +1,21 @@
 import Foundation
 
-internal func searchPathForResource(for filename: String, extension ext: String? = nil, bundle: Bundle = Bundle.main) -> URL? {
+internal func searchPathForResource(
+    for filename: String,
+    extension ext: String? = nil,
+    bundle: Bundle = Bundle.main
+) -> URL? {
     guard let enumerator = FileManager.default.enumerator(atPath: bundle.bundlePath)
-        else { return nil }
-
+    else { return nil }
+    
     for item in enumerator {
         guard let filePath = item as? String,
-            !filePath.starts(with: "Frameworks"),
-            !filePath.starts(with: "Base.lproj"),
-            !filePath.starts(with: "_CodeSignature"),
-            !filePath.starts(with: "META-INF"),
-            !filePath.starts(with: "Info.plist")
-            else { continue }
+              !filePath.starts(with: "Frameworks"),
+              !filePath.starts(with: "Base.lproj"),
+              !filePath.starts(with: "_CodeSignature"),
+              !filePath.starts(with: "META-INF"),
+              !filePath.starts(with: "Info.plist")
+        else { continue }
 
         let fullPath = bundle.bundlePath + "/" + filePath
         let url = URL(fileURLWithPath: fullPath)
@@ -25,9 +29,9 @@ internal func searchPathForResource(for filename: String, extension ext: String?
             let file = splitFilename(filename)
 
             if let ext1 = file.extension,
-                let ext2 = bundleFile.extension {
+               let ext2 = bundleFile.extension {
                 if bundleFile.name == file.name,
-                    ext1 == ext2 {
+                   ext1 == ext2 {
                     return url
                 }
             } else if bundleFile.name == file.name {

@@ -2,8 +2,8 @@ import Foundation
 import SceneKit
 
 /**
-Controls which degrees of freedom are allowed for the simulation of this Rigidbody.
-*/
+ Controls which degrees of freedom are allowed for the simulation of this Rigidbody.
+ */
 public struct RigidbodyConstraints: OptionSet {
     public let rawValue: Int
 
@@ -24,16 +24,16 @@ public struct RigidbodyConstraints: OptionSet {
 }
 
 /**
-Control of an object's position through physics simulation.
+ Control of an object's position through physics simulation.
 
-Adding a Rigidbody component to an object will put its motion under the control of Unity's physics engine. Even without adding any code, a Rigidbody object will be pulled downward by gravity and will react to collisions with incoming objects if the right Collider component is also present.
+ Adding a Rigidbody component to an object will put its motion under the control of Unity's physics engine. Even without adding any code, a Rigidbody object will be pulled downward by gravity and will react to collisions with incoming objects if the right Collider component is also present.
 
-The Rigidbody also has a scripting API that lets you apply forces to the object and control it in a physically realistic way. For example, a car's behaviour can be specified in terms of the forces applied by the wheels. Given this information, the physics engine can handle most other aspects of the car's motion, so it will accelerate realistically and respond correctly to collisions.
+ The Rigidbody also has a scripting API that lets you apply forces to the object and control it in a physically realistic way. For example, a car's behaviour can be specified in terms of the forces applied by the wheels. Given this information, the physics engine can handle most other aspects of the car's motion, so it will accelerate realistically and respond correctly to collisions.
 
-In a script, the FixedUpdate function is recommended as the place to apply forces and change Rigidbody settings (as opposed to Update, which is used for most other frame update tasks). The reason for this is that physics updates are carried out in measured time steps that don't coincide with the frame update. FixedUpdate is called immediately before each physics update and so any changes made there will be processed directly.
+ In a script, the FixedUpdate function is recommended as the place to apply forces and change Rigidbody settings (as opposed to Update, which is used for most other frame update tasks). The reason for this is that physics updates are carried out in measured time steps that don't coincide with the frame update. FixedUpdate is called immediately before each physics update and so any changes made there will be processed directly.
 
-A common problem when starting out with Rigidbodies is that the game physics appears to run in "slow motion". This is actually due to the scale used for your models. The default gravity settings assume that one world unit corresponds to one metre of distance. With non-physical games, it doesn't make much difference if your models are all 100 units long but when using physics, they will be treated as very large objects. If a large scale is used for objects that are supposed to be small, they will appear to fall very slowly - the physics engine thinks they are very large objects falling over very large distances. With this in mind, be sure to keep your objects more or less at their scale in real life (so a car should be about 4 units = 4 metres, for example).
-*/
+ A common problem when starting out with Rigidbodies is that the game physics appears to run in "slow motion". This is actually due to the scale used for your models. The default gravity settings assume that one world unit corresponds to one metre of distance. With non-physical games, it doesn't make much difference if your models are all 100 units long but when using physics, they will be treated as very large objects. If a large scale is used for objects that are supposed to be small, they will appear to fall very slowly - the physics engine thinks they are very large objects falling over very large distances. With this in mind, be sure to keep your objects more or less at their scale in real life (so a car should be about 4 units = 4 metres, for example).
+ */
 public final class Rigidbody: Component, Instantiable {
     override internal var order: ComponentOrder {
         return .rigidbody
@@ -89,15 +89,15 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public var position: Vector3 {
-        return transform?.position ?? .zero
+        transform?.position ?? .zero
     }
 
     public var localPosition: Vector3 {
-        return transform?.localPosition ?? .zero
+        transform?.localPosition ?? .zero
     }
 
     public var localRotation: Quaternion {
-        return transform?.localRotation ?? .zero
+        transform?.localRotation ?? .zero
     }
 
     public var useGravity: Bool = true {
@@ -223,7 +223,7 @@ public final class Rigidbody: Component, Instantiable {
      Configurable block that passes and returns itself.
 
      - parameters:
-        - configurationBlock: block that passes itself.
+     - configurationBlock: block that passes itself.
 
      - returns: itself
      */
@@ -245,37 +245,42 @@ public final class Rigidbody: Component, Instantiable {
 
     public func movePosition(_ position: Vector3) {
         guard let transform = gameObject?.transform
-            else { return }
+        else { return }
 
         transform.position = position
     }
 
     public func moveRotation(_ to: Vector3) {
         guard let transform = gameObject?.transform
-            else { return }
+        else { return }
 
         transform.localEulerAngles = to
     }
 
     public func addForce(_ direction: Vector3) {
         guard let physicsBody = gameObject?.node.physicsBody
-            else { return }
+        else { return }
 
         physicsBody.applyForce(direction, asImpulse: true)
     }
 
     public func addTorque(_ torque: Vector4, asImpulse: Bool) {
         guard let physicsBody = gameObject?.node.physicsBody
-            else { return }
+        else { return }
 
         physicsBody.applyTorque(torque, asImpulse: asImpulse)
     }
 
-    public func addExplosionForce(explosionForce: Float, explosionPosition: Vector3, explosionRadius: Float, replacePosition: Vector3Nullable? = nil) {
+    public func addExplosionForce(
+        explosionForce: Float,
+        explosionPosition: Vector3,
+        explosionRadius: Float,
+        replacePosition: Vector3Nullable? = nil
+    ) {
         guard let gameObject = gameObject,
-            let transform = gameObject.transform,
-            let physicsBody = gameObject.node.physicsBody
-            else { return }
+              let transform = gameObject.transform,
+              let physicsBody = gameObject.node.physicsBody
+        else { return }
 
         var from = explosionPosition
         var to = transform.position
@@ -295,7 +300,7 @@ public final class Rigidbody: Component, Instantiable {
 
     public func clearAllForces() {
         guard let physicsBody = gameObject?.node.physicsBody
-            else { return }
+        else { return }
 
         physicsBody.clearAllForces()
     }

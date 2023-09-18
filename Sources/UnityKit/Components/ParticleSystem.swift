@@ -5,7 +5,7 @@ Script interface for Particle Systems.
 */
 public class ParticleSystem: Component {
     internal override var order: ComponentOrder {
-        return .other
+        .other
     }
     public var scnParticleSystem: SCNParticleSystem?
 
@@ -18,7 +18,11 @@ public class ParticleSystem: Component {
         gameObject?.node.removeParticleSystem(particule)
     }
 
-    @discardableResult public func load(fileName: String, bundle: Bundle = Bundle.main, loops: Bool) -> ParticleSystem {
+    @discardableResult public func load(
+        fileName: String,
+        bundle: Bundle = Bundle.main,
+        loops: Bool
+    ) -> ParticleSystem {
         guard let modelUrl = searchPathForResource(for: fileName, extension: nil, bundle: bundle)
             else { return self }
 

@@ -5,7 +5,7 @@ extension UI {
         public var canvasObject: CanvasObject!
 
         public var skScene: SKScene {
-            return canvasObject.skScene
+            canvasObject.skScene
         }
 
         public override func awake() {
@@ -20,7 +20,7 @@ extension UI {
                 parent = parent?.parent
             }
             guard canvasFound
-                else { fatalError("any subclass of UIBehaviour must be inside a Canvas") }
+            else { fatalError("any subclass of UIBehaviour must be inside a Canvas") }
         }
     }
 }

@@ -64,7 +64,7 @@ extension UI {
          Configurable block that passes and returns itself.
 
          - parameters:
-            - configurationBlock: block that passes itself.
+         - configurationBlock: block that passes itself.
          - returns: itself
          */
         @discardableResult public func configure(_ configurationBlock: (Image) -> Void) -> Image {
@@ -81,7 +81,7 @@ extension UI {
             spriteNode?.removeFromParent()
 
             guard let sourceImage = sourceImage
-                else { return }
+            else { return }
 
             var displayImage = sourceImage
 
@@ -105,13 +105,18 @@ extension UI {
                 switch fillMethod {
                 case let .radial360(fillOrigin):
                     let to = fillAmount.clamp01() * 360
-                    displayImage = displayImage.fill(fromAngle: 0, toAngle: to, fillOrigin: fillOrigin, clockwise: clockwise)
+                    displayImage = displayImage.fill(
+                        fromAngle: 0,
+                        toAngle: to,
+                        fillOrigin: fillOrigin,
+                        clockwise: clockwise
+                    )
                 default:
                     break
                 }
                 texture = SKTexture(image: displayImage)
             }
-
+            
             let sprite = SKSpriteNode(texture: texture)
             sprite.anchorPoint = CGPoint(x: 0, y: 0)
             skScene.addChild(sprite)
@@ -120,12 +125,12 @@ extension UI {
 
         public func loadImage(fileName: String, type: ImageType, color: Color = .white, bundle: Bundle = Bundle.main) {
             guard let url = searchPathForResource(for: fileName, extension: nil, bundle: bundle)
-                else { return }
+            else { return }
 
             do {
                 let imageData = try Data(contentsOf: url)
                 guard let sourceImage = UIImage(data: imageData)
-                    else { return }
+                else { return }
 
                 self.color = color
                 self.type = type

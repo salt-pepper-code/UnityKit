@@ -1,2 +1,2 @@
-public struct UI {
+public enum UI {
 }

@@ -45,42 +45,50 @@ public final class Debug {
         self.enabled = enable.contains(.none) ? .none : enable
     }
 
-    public static func warning(_ message: String,
+    public static func warning(
+        _ message: String,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
-        _ column: Int = #column) {
+        _ column: Int = #column
+    ) {
         log(message, style: .warning, displayTime: displayTime, filepath, function, line, column)
     }
 
-    public static func error(_ message: String,
+    public static func error(
+        _ message: String,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
-        _ column: Int = #column) {
+        _ column: Int = #column
+    ) {
         log(message, style: .error, displayTime: displayTime, filepath, function, line, column)
     }
 
-    public static func info(_ message: String,
+    public static func info(
+        _ message: String,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
-        _ column: Int = #column) {
+        _ column: Int = #column
+    ) {
         log(message, style: .info, displayTime: displayTime, filepath, function, line, column)
     }
 
-    public static func log(_ message: String,
-                           style: LogStyle = .debug,
-                           displayTime: Bool = false,
-                           _ filepath: String = #file,
-                           _ function: String = #function,
-                           _ line: Int = #line,
-                           _ column: Int = #column) {
+    public static func log(
+        _ message: String,
+        style: LogStyle = .debug,
+        displayTime: Bool = false,
+        _ filepath: String = #file,
+        _ function: String = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
         guard !enabled.contains(.none)
-            else { return }
+        else { return }
 
         let time = displayTime ? Debug.dateFormatter.string(from: Date()) + " " : ""
 
@@ -100,42 +108,50 @@ public final class Debug {
         }
     }
 
-    public static func warning(items: Any...,
+    public static func warning(
+        items: Any...,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
-        _ column: Int = #column) {
+        _ column: Int = #column
+    ) {
         log(items: items, style: .warning, displayTime: displayTime, filepath, function, line, column)
     }
 
-    public static func error(items: Any...,
+    public static func error(
+        items: Any...,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
-        _ column: Int = #column) {
+        _ column: Int = #column
+    ) {
         log(items: items, style: .error, displayTime: displayTime, filepath, function, line, column)
     }
 
-    public static func info(items: Any...,
+    public static func info(
+        items: Any...,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
-        _ column: Int = #column) {
+        _ column: Int = #column
+    ) {
         log(items: items, style: .info, displayTime: displayTime, filepath, function, line, column)
     }
 
-    public static func log(items: Any...,
+    public static func log(
+        items: Any...,
         style: LogStyle = .debug,
         displayTime: Bool = false,
         _ filepath: String = #file,
         _ function: String = #function,
         _ line: Int = #line,
-        _ column: Int = #column) {
+        _ column: Int = #column
+    ) {
         guard !enabled.contains(.none)
-            else { return }
+        else { return }
 
         let time = displayTime ? Debug.dateFormatter.string(from: Date()) + " " : ""
 

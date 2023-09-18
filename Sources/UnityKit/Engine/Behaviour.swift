@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 open class Behaviour: Component {
     public var enabled: Bool = false {

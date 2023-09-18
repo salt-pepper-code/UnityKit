@@ -1,8 +1,8 @@
 import SceneKit
 
 /**
-A mesh collider allows you to do collision detection between meshes and primitives.
-*/
+ A mesh collider allows you to do collision detection between meshes and primitives.
+ */
 public final class MeshCollider: Collider {
     private(set) public var mesh: Mesh?
 
@@ -10,7 +10,7 @@ public final class MeshCollider: Collider {
      Configurable block that passes and returns itself.
 
      - parameters:
-        - configurationBlock: block that passes itself.
+     - configurationBlock: block that passes itself.
 
      - returns: itself
      */
@@ -31,15 +31,17 @@ public final class MeshCollider: Collider {
     /// <#Description#>
     override func constructBody() {
         guard let gameObject = gameObject,
-            let name = gameObject.name
-            else { return }
+              let name = gameObject.name
+        else { return }
 
         if let geometry = mesh?.geometry {
             geometry.name = name + "MeshCollider"
 
-            let shape = SCNPhysicsShape(geometry: geometry,
-                                        options: [.type: SCNPhysicsShape.ShapeType.convexHull,
-                                                  .scale: gameObject.transform.localScale.x])
+            let shape = SCNPhysicsShape(
+                geometry: geometry,
+                options: [.type: SCNPhysicsShape.ShapeType.convexHull,
+                          .scale: gameObject.transform.localScale.x]
+            )
             physicsShape = shape
         }
     }

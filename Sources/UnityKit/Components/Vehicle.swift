@@ -1,8 +1,8 @@
 import SceneKit
 
 /**
-Wheel component.
-*/
+ Wheel component.
+ */
 public class Wheel {
     public struct Parameters {
         public let nodeName: String
@@ -49,8 +49,8 @@ public class Wheel {
 }
 
 /**
-The Vehicles module implements vehicle physics simulation through the Wheel component.
-*/
+ The Vehicles module implements vehicle physics simulation through the Wheel component.
+ */
 public class Vehicle: Component {
     override internal var order: ComponentOrder {
         return .vehicle
@@ -61,7 +61,7 @@ public class Vehicle: Component {
     private var physicsWorld: SCNPhysicsWorld?
     public var speedInKilometersPerHour: Float {
         guard let vehicle = vehicle
-            else { return 0 }
+        else { return 0 }
         return vehicle.speedInKilometersPerHour.toFloat()
     }
 
@@ -69,7 +69,7 @@ public class Vehicle: Component {
      Configurable block that passes and returns itself.
 
      - parameters:
-        - configurationBlock: block that passes itself.
+     - configurationBlock: block that passes itself.
 
      - returns: itself
      */
@@ -83,17 +83,20 @@ public class Vehicle: Component {
         self.parameters = parameters
 
         guard let gameObject = gameObject,
-            let physicsBody = gameObject.node.physicsBody
-            else { return self }
+              let physicsBody = gameObject.node.physicsBody
+        else { return self }
 
         wheels = parameters.compactMap { parameter -> Wheel? in
             guard let wheel = GameObject.find(.name(.exact(parameter.nodeName)), in: gameObject)
-                else { return nil }
+            else { return nil }
 
             return Wheel(gameObject: wheel, parameter: parameter)
         }
 
-        let vehicle = SCNPhysicsVehicle(chassisBody: physicsBody, wheels: wheels.map { wheel -> SCNPhysicsVehicleWheel in return wheel.scnWheel() })
+        let vehicle = SCNPhysicsVehicle(
+            chassisBody: physicsBody,
+            wheels: wheels.map { wheel -> SCNPhysicsVehicleWheel in return wheel.scnWheel() }
+        )
         physicsWorld.addBehavior(vehicle)
 
         self.vehicle = vehicle
@@ -103,23 +106,23 @@ public class Vehicle: Component {
 
     public override func onDestroy() {
         guard let physicsWorld = physicsWorld,
-            let vehicle = vehicle
-            else { return }
+              let vehicle = vehicle
+        else { return }
 
         physicsWorld.removeBehavior(vehicle)
     }
 
     public override func start() {
         if let physicsWorld = physicsWorld,
-            let parameters = parameters,
-            vehicle == nil {
+           let parameters = parameters,
+           vehicle == nil {
             set(wheels: parameters, physicsWorld: physicsWorld)
         }
     }
 
     private func wheelStride(_ vehicle: SCNPhysicsVehicle, forWheelAt index: Int?) -> StrideThrough<Int>? {
         guard vehicle.wheels.count > 0
-            else { return nil }
+        else { return nil }
 
         if let index = index {
             return stride(from: index, through: index, by: 1)
@@ -130,8 +133,8 @@ public class Vehicle: Component {
 
     public func applyEngineForce(_ value: Float, forWheelAt index: Int? = nil) {
         guard let vehicle = vehicle,
-            let stride = wheelStride(vehicle, forWheelAt: index)
-            else { return }
+              let stride = wheelStride(vehicle, forWheelAt: index)
+        else { return }
 
         DispatchQueue.main.async { [weak vehicle] () -> Void in
             for i in stride {
@@ -142,8 +145,8 @@ public class Vehicle: Component {
 
     public func applySteeringAngle(_ value: Degree, forWheelAt index: Int? = nil) {
         guard let vehicle = vehicle,
-            let stride = wheelStride(vehicle, forWheelAt: index)
-            else { return }
+              let stride = wheelStride(vehicle, forWheelAt: index)
+        else { return }
 
         DispatchQueue.main.async { [weak vehicle] () -> Void in
             for i in stride {
@@ -154,8 +157,8 @@ public class Vehicle: Component {
 
     public func applyBrakingForce(_ value: Float, forWheelAt index: Int? = nil) {
         guard let vehicle = vehicle,
-            let stride = wheelStride(vehicle, forWheelAt: index)
-            else { return }
+              let stride = wheelStride(vehicle, forWheelAt: index)
+        else { return }
 
         DispatchQueue.main.async { [weak vehicle] () -> Void in
             for i in stride {

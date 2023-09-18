@@ -19,28 +19,63 @@ open class Scene: Identifiable {
 
     private(set) public static var shared: Scene?
 
-    public convenience init?(sceneName: String, options: SceneLoadingOptions? = nil, bundle: Bundle = Bundle.main, allocation: Allocation, shadowCastingAllowed: Bool = true) {
+    public convenience init?(
+        sceneName: String,
+        options: SceneLoadingOptions? = nil,
+        bundle: Bundle = Bundle.main,
+        allocation: Allocation,
+        shadowCastingAllowed: Bool = true
+    ) {
         guard let sceneUrl = searchPathForResource(for: sceneName, extension: nil, bundle: bundle)
-            else { return nil }
+        else { return nil }
 
-        self.init(sceneUrl: sceneUrl, options: options, allocation: allocation, shadowCastingAllowed: shadowCastingAllowed)
+        self.init(
+            sceneUrl: sceneUrl,
+            options: options,
+            allocation: allocation,
+            shadowCastingAllowed: shadowCastingAllowed
+        )
     }
 
-    public convenience init?(scenePath: String, options: SceneLoadingOptions? = nil, bundle: Bundle = Bundle.main, allocation: Allocation, shadowCastingAllowed: Bool = true) {
+    public convenience init?(
+        scenePath: String,
+        options: SceneLoadingOptions? = nil,
+        bundle: Bundle = Bundle.main,
+        allocation: Allocation,
+        shadowCastingAllowed: Bool = true
+    ) {
         guard let sceneUrl = bundle.url(forResource: scenePath, withExtension: nil)
-            else { return nil }
+        else { return nil }
 
-        self.init(sceneUrl: sceneUrl, options: options, allocation: allocation, shadowCastingAllowed: shadowCastingAllowed)
+        self.init(
+            sceneUrl: sceneUrl,
+            options: options,
+            allocation: allocation,
+            shadowCastingAllowed: shadowCastingAllowed
+        )
     }
 
-    public convenience init?(sceneUrl: URL, options: SceneLoadingOptions? = nil, allocation: Allocation, shadowCastingAllowed: Bool = true) {
+    public convenience init?(
+        sceneUrl: URL,
+        options: SceneLoadingOptions? = nil,
+        allocation: Allocation,
+        shadowCastingAllowed: Bool = true
+    ) {
         guard let scene = try? SCNScene(url: sceneUrl, options: options)
-            else { return nil }
+        else { return nil }
 
-        self.init(scene, allocation: allocation, shadowCastingAllowed: shadowCastingAllowed)
+        self.init(
+            scene,
+            allocation: allocation,
+            shadowCastingAllowed: shadowCastingAllowed
+        )
     }
 
-    public init(_ scene: SCNScene? = nil, allocation: Allocation, shadowCastingAllowed: Bool = true) {
+    public init(
+        _ scene: SCNScene? = nil,
+        allocation: Allocation,
+        shadowCastingAllowed: Bool = true
+    ) {
         self.shadowCastingAllowed = shadowCastingAllowed
 
         self.uuid = UUID().uuidString

@@ -1,44 +1,69 @@
 import SceneKit
 
 public enum PrimitiveType {
-    case sphere(radius: Float, name: String?)
-    case capsule(capRadius: Float, height: Float, name: String?)
-    case cylinder(radius: Float, height: Float, name: String?)
-    case cube(width: Float, height: Float, length: Float, chamferRadius: Float, name: String?)
-    case plane(width: Float, height: Float, name: String?)
-    case floor(width: Float, length: Float, name: String?)
+    case sphere(
+        radius: Float,
+        name: String? = nil
+    )
+    case capsule(
+        capRadius: Float,
+        height: Float,
+        name: String? = nil
+    )
+    case cylinder(
+        radius: Float,
+        height: Float,
+        name: String? = nil
+    )
+    case cube(
+        width: Float,
+        height: Float,
+        length: Float,
+        chamferRadius: Float,
+        name: String? = nil
+    )
+    case plane(
+        width: Float,
+        height: Float,
+        name: String? = nil
+    )
+    case floor(
+        width: Float,
+        length: Float,
+        name: String? = nil
+    )
+
+    var name: String {
+        switch self {
+        case let .sphere(_, n):
+            return n ?? "Sphere"
+
+        case let .capsule(_, _, n):
+            return n ?? "Capsule"
+
+        case let .cylinder(_, _, n):
+            return n ?? "Cylinder"
+
+        case let .cube(_, _, _, _, n):
+            return n ?? "Cube"
+
+        case let .plane(_, _, n):
+            return n ?? "Plane"
+
+        case let .floor(_, _, n):
+            return n ?? "Floor"
+        }
+    }
 }
 
 extension GameObject {
     public static func createPrimitive(_ type: PrimitiveType) -> GameObject {
         let geometry = SCNGeometry.createPrimitive(type)
-        let name: String
-
-        switch type {
-        case let .sphere(_, n):
-            name = n ?? "Sphere"
-
-        case let .capsule(_, _, n):
-            name = n ?? "Capsule"
-
-        case let .cylinder(_, _, n):
-            name = n ?? "Cylinder"
-
-        case let .cube(_, _, _, _, n):
-            name = n ?? "Cube"
-
-        case let .plane(_, _, n):
-            name = n ?? "Plane"
-
-        case let .floor(_, _, n):
-            name = n ?? "Floor"
-        }
-
         geometry.firstMaterial?.lightingModel = .phong
 
         let gameObject = GameObject(SCNNode(geometry: geometry))
 
-        gameObject.name = name
+        gameObject.name = type.name
 
         return gameObject
     }

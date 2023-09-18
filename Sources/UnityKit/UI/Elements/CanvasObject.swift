@@ -53,7 +53,7 @@ public class CanvasObject: GameObject {
     }
 
     private static func makeCanvas(worldSize: Size, pixelPerUnit: Float) -> (SCNNode, SKView) {
-        let geometry = SCNGeometry.createPrimitive(.plane(width: worldSize.width, height: worldSize.height, name: "Plane"))
+        let geometry = SCNGeometry.createPrimitive(.plane(width: worldSize.width, height: worldSize.height))
         let node = SCNNode(geometry: geometry)
         node.name = "Canvas"
         node.castsShadow = false

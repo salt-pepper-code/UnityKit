@@ -13,13 +13,13 @@ public class AudioClip {
 
     public init?(fileName: String, playType: PlayType = .playOnce, bundle: Bundle = Bundle.main) {
         guard let audioUrl = searchPathForResource(for: fileName, extension: nil, bundle: bundle)
-            else { return nil }
+        else { return nil }
 
         do {
             let file = try AVAudioFile(forReading: audioUrl)
             guard let format = AudioEngine.sharedInstance.format, // AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: file.fileFormat.sampleRate, channels: file.fileFormat.channelCount, interleaved: false),
-                let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: UInt32(file.length))
-                else { return nil }
+                  let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: UInt32(file.length))
+            else { return nil }
 
             try file.read(into: buffer)
 

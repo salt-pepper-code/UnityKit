@@ -7,18 +7,18 @@ import SceneKit
  Every object in a scene has a Transform. It's used to store and manipulate the position, rotation and scale of the object. Every Transform can have a parent, which allows you to apply position, rotation and scale hierarchically.
  ### Usage Example: ###
  ````
-    public class ExampleClass: MonoBehaviour {
-        void Example() {
-            transform?.children?.forEach {
-                $0.position += Vector3.up * 10.0
-            }
-        }
-    }
+ public class ExampleClass: MonoBehaviour {
+ void Example() {
+ transform?.children?.forEach {
+ $0.position += Vector3.up * 10.0
+ }
+ }
+ }
  ````
  */
 public final class Transform: Component {
     override internal var order: ComponentOrder {
-        return .transform
+        .transform
     }
 
     public required init() {
@@ -40,7 +40,7 @@ public final class Transform: Component {
     /// The blue axis of the transform in world space.
     public var forward: Vector3 {
         guard let node = gameObject?.node
-            else { return .zero }
+        else { return .zero }
 
         return Vector3(hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldFront : node.simdWorldFront)
     }
@@ -53,7 +53,7 @@ public final class Transform: Component {
     /// The green axis of the transform in world space.
     public var up: Vector3 {
         guard let node = gameObject?.node
-            else { return .zero }
+        else { return .zero }
 
         return Vector3(hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldUp : node.simdWorldUp)
     }
@@ -66,7 +66,7 @@ public final class Transform: Component {
     /// The red axis of the transform in world space.
     public var right: Vector3 {
         guard let node = gameObject?.node
-            else { return .zero }
+        else { return .zero }
 
         return Vector3(hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldRight : node.simdWorldRight)
     }
@@ -79,36 +79,36 @@ public final class Transform: Component {
     /// The global scale of the object (Read Only).
     public var lossyScale: Vector3 {
         guard let parent = gameObject?.parent
-            else { return localScale }
+        else { return localScale }
 
         return parent.transform.lossyScale * localScale
     }
 
     private func hasOrIsPartOfPhysicsBody() -> Bool {
         guard let gameObject = gameObject
-            else { return false }
+        else { return false }
 
         guard let parent = gameObject.parent
-            else { return gameObject.node.physicsBody != nil }
+        else { return gameObject.node.physicsBody != nil }
 
         return gameObject.node.physicsBody != nil || parent.transform.hasOrIsPartOfPhysicsBody()
     }
 
     /**
-        The position of the transform in world space.
+     The position of the transform in world space.
 
-        The position member can be accessed by the Game code. Setting this value can be used to animate the GameObject. The example below makes an attached sphere bounce by updating the position. This bouncing slowly comes to an end. The position can also be use to determine where in 3D space the transform.
-    */
+     The position member can be accessed by the Game code. Setting this value can be used to animate the GameObject. The example below makes an attached sphere bounce by updating the position. This bouncing slowly comes to an end. The position can also be use to determine where in 3D space the transform.
+     */
     public var position: Vector3 {
         get {
             guard let node = gameObject?.node
-                else { return .zero }
+            else { return .zero }
 
             return hasOrIsPartOfPhysicsBody() ? node.presentation.worldPosition : node.worldPosition
         }
         set {
             guard let node = gameObject?.node
-                else { return }
+            else { return }
 
             node.worldPosition = newValue
         }
@@ -118,7 +118,7 @@ public final class Transform: Component {
     public var orientation: Quaternion {
         get {
             guard let node = gameObject?.node
-                else { return .zero }
+            else { return .zero }
 
             return hasOrIsPartOfPhysicsBody() ? node.presentation.worldOrientation : node.worldOrientation
         }
@@ -131,7 +131,7 @@ public final class Transform: Component {
     public var localOrientation: Quaternion {
         get {
             guard let node = gameObject?.node
-                else { return .zero }
+            else { return .zero }
 
             return hasOrIsPartOfPhysicsBody() ? node.presentation.orientation : node.orientation
         }
@@ -144,7 +144,7 @@ public final class Transform: Component {
     public var localPosition: Vector3 {
         get {
             guard let node = gameObject?.node
-                else { return .zero }
+            else { return .zero }
 
             return hasOrIsPartOfPhysicsBody() ? node.presentation.position : node.position
         }
@@ -157,7 +157,7 @@ public final class Transform: Component {
     public var localRotation: Vector4 {
         get {
             guard let node = gameObject?.node
-                else { return .zero }
+            else { return .zero }
 
             return hasOrIsPartOfPhysicsBody() ? node.presentation.rotation : node.rotation
         }
@@ -170,7 +170,7 @@ public final class Transform: Component {
     public var localEulerAngles: Vector3 {
         get {
             guard let node = gameObject?.node
-                else { return .zero }
+            else { return .zero }
 
             return hasOrIsPartOfPhysicsBody() ? node.presentation.orientation.toEuler().radiansToDegrees() : node.orientation.toEuler().radiansToDegrees()
         }
@@ -183,7 +183,7 @@ public final class Transform: Component {
     public var localScale: Vector3 {
         get {
             guard let node = gameObject?.node
-                else { return .zero }
+            else { return .zero }
 
             return hasOrIsPartOfPhysicsBody() ? node.presentation.scale : node.scale
         }

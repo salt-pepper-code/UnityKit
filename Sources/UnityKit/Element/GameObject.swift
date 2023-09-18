@@ -16,8 +16,8 @@ public class GameObject: Object {
         }
         set {
             guard node.camera == nil,
-                node.light == nil
-                else { return }
+                  node.light == nil
+            else { return }
 
             node.categoryBitMask = newValue.rawValue
             children.forEach { $0.layer = newValue }
@@ -50,7 +50,7 @@ public class GameObject: Object {
     private(set) public weak var scene: Scene? {
         didSet {
             guard oldValue != scene
-                else { return }
+            else { return }
 
             if let parent = parent, let rootGameObject = oldValue?.rootGameObject, parent == rootGameObject {
                 scene?.rootGameObject.addChild(self)
@@ -84,7 +84,7 @@ public class GameObject: Object {
 
             for component in components {
                 guard let behaviour = component as? Behaviour
-                    else { continue }
+                else { continue }
 
                 behaviour.enabled = newValue
             }
@@ -108,29 +108,37 @@ public class GameObject: Object {
         return node.boundingSphere
     }
 
-    public convenience init?(fileName: String, nodeName: String?, bundle: Bundle = Bundle.main) {
+    public convenience init?(
+        fileName: String,
+        nodeName: String?,
+        bundle: Bundle = Bundle.main
+    ) {
         guard let modelUrl = searchPathForResource(for: fileName, extension: nil, bundle: bundle)
-            else { return nil }
+        else { return nil }
 
         self.init(modelUrl: modelUrl, nodeName: nodeName)
     }
 
-    public convenience init?(modelPath: String, nodeName: String?, bundle: Bundle = Bundle.main) {
+    public convenience init?(
+        modelPath: String,
+        nodeName: String?,
+        bundle: Bundle = Bundle.main
+    ) {
         guard let modelUrl = bundle.url(forResource: modelPath, withExtension: nil)
-            else { return nil }
+        else { return nil }
 
         self.init(modelUrl: modelUrl, nodeName: nodeName)
     }
 
     public convenience init?(modelUrl: URL, nodeName: String?) {
         guard let referenceNode = SCNReferenceNode(url: modelUrl)
-            else { return nil }
+        else { return nil }
 
         referenceNode.load()
 
         if let nodeName = nodeName {
             guard let node = referenceNode.childNodes.filter({ $0.name == nodeName }).first
-                else { return nil }
+            else { return nil }
 
             self.init(node)
         } else {
@@ -229,7 +237,7 @@ public class GameObject: Object {
 
     public override func awake() {
         guard !didAwake
-            else { return }
+        else { return }
 
         didAwake = true
         components.forEach { $0.awake() }
@@ -238,9 +246,9 @@ public class GameObject: Object {
 
     public override func start() {
         guard didAwake,
-            !didStart,
-            activeSelf
-            else { return }
+              !didStart,
+              activeSelf
+        else { return }
 
         guard !waitNextUpdate else {
             waitNextUpdate = false
@@ -255,9 +263,9 @@ public class GameObject: Object {
 
     override func internalUpdate() {
         guard didAwake,
-            didStart,
-            activeSelf
-            else { return }
+              didStart,
+              activeSelf
+        else { return }
 
         components
             .compactMap { $0 as? MonoBehaviour }
@@ -271,9 +279,9 @@ public class GameObject: Object {
 
     public override func preUpdate() {
         guard didAwake,
-            didStart,
-            activeSelf
-            else { return }
+              didStart,
+              activeSelf
+        else { return }
 
         components
             .filter {
@@ -290,8 +298,8 @@ public class GameObject: Object {
 
     public override func update() {
         guard didAwake,
-            activeSelf
-            else { return }
+              activeSelf
+        else { return }
 
         guard didStart else {
             start()
@@ -313,9 +321,9 @@ public class GameObject: Object {
 
     public override func fixedUpdate() {
         guard didAwake,
-            didStart,
-            activeSelf
-            else { return }
+              didStart,
+              activeSelf
+        else { return }
 
         components
             .filter {
@@ -336,7 +344,10 @@ public class GameObject: Object {
 
     // Component
 
-    @discardableResult internal override func addComponent<T: Component>(_ component: T, gameObject: GameObject?) -> T {
+    @discardableResult internal override func addComponent<T: Component>(
+        _ component: T,
+        gameObject: GameObject?
+    ) -> T {
         return super.addComponent(component, gameObject: gameObject)
     }
 
@@ -346,7 +357,11 @@ public class GameObject: Object {
         return component
     }
 
-    @discardableResult internal override func addComponent<T: Component>(external: Bool = true, type: T.Type, gameObject: GameObject? = nil) -> T {
+    @discardableResult internal override func addComponent<T: Component>(
+        external: Bool = true,
+        type: T.Type,
+        gameObject: GameObject? = nil
+    ) -> T {
         return super.addComponent(external: external, type: type, gameObject: gameObject ?? self)
     }
 

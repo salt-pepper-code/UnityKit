@@ -7,7 +7,7 @@ import SceneKit
  */
 public final class Camera: Component {
     override internal var order: ComponentOrder {
-        return .priority
+        .priority
     }
     private var hFieldOfView: CGFloat = 60
 

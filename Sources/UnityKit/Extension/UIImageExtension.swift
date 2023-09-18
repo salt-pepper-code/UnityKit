@@ -6,7 +6,7 @@ extension UIImage {
         draw(in: CGRect(origin: .zero, size: size))
 
         guard let result = UIGraphicsGetImageFromCurrentImageContext()
-            else { return self }
+        else { return self }
 
         return result
     }
@@ -16,7 +16,7 @@ extension UIImage {
         UIGraphicsBeginImageContextWithOptions(rect.size, false, scale)
 
         guard let c = UIGraphicsGetCurrentContext()
-            else { return self }
+        else { return self }
 
         draw(in: rect)
 
@@ -25,16 +25,21 @@ extension UIImage {
         c.fill(rect)
 
         guard let result = UIGraphicsGetImageFromCurrentImageContext()
-            else { return self }
+        else { return self }
 
         return result
     }
 
-    func fill(fromAngle: Degree, toAngle: Degree, fillOrigin: UI.Image.FillOrigin, clockwise: Bool) -> UIImage {
+    func fill(
+        fromAngle: Degree,
+        toAngle: Degree,
+        fillOrigin: UI.Image.FillOrigin,
+        clockwise: Bool
+    ) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, scale)
 
         guard let ctx = UIGraphicsGetCurrentContext()
-            else { return self }
+        else { return self }
 
         let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
@@ -63,7 +68,12 @@ extension UIImage {
         let path = CGMutablePath()
         path.move(to: center)
         path.addLine(to: nextPoint)
-        path.addArc(center: center, radius: size.height / 2, startAngle: from.toCGFloat().degreesToRadians, endAngle: to.toCGFloat().degreesToRadians, clockwise: clockwise)
+        path.addArc(
+            center: center, radius: size.height / 2,
+            startAngle: from.toCGFloat().degreesToRadians,
+            endAngle: to.toCGFloat().degreesToRadians,
+            clockwise: clockwise
+        )
         path.addLine(to: center)
 
         ctx.addPath(path)
@@ -73,7 +83,7 @@ extension UIImage {
         draw(in: rect)
 
         guard let result = UIGraphicsGetImageFromCurrentImageContext()
-            else { return self }
+        else { return self }
 
         return result
     }

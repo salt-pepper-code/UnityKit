@@ -107,7 +107,7 @@ public final class Material: Object {
             break
         }
     }
-
+    
     //Texture
 
     public func getTexture(_ name: BasicTextureShading) -> UIImage? {

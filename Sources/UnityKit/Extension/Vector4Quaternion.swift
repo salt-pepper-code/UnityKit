@@ -6,13 +6,13 @@ public typealias Quaternion = SCNQuaternion
 
 extension Vector4 {
     public static var zero: Vector4 {
-        return SCNVector4Zero
+        SCNVector4Zero
     }
 }
 
 extension Quaternion {
     public static func euler(_ x: Degree, _ y: Degree, _ z: Degree) -> Quaternion {
-        return Vector3(x.degreesToRadians, y.degreesToRadians, z.degreesToRadians).toQuaternion()
+        Vector3(x.degreesToRadians, y.degreesToRadians, z.degreesToRadians).toQuaternion()
     }
 
     public func normalized() -> Quaternion {
@@ -74,5 +74,5 @@ extension Quaternion {
 }
 
 public func * (quaternion: Quaternion, scalar: Float) -> Quaternion {
-    return Quaternion(quaternion.x * scalar, quaternion.y * scalar, quaternion.z * scalar, quaternion.w * scalar)
+    Quaternion(quaternion.x * scalar, quaternion.y * scalar, quaternion.z * scalar, quaternion.w * scalar)
 }

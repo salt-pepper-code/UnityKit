@@ -2,24 +2,24 @@ import Foundation
 import SceneKit
 
 /**
-General functionality for all renderers.
-*/
+ General functionality for all renderers.
+ */
 public final class Renderer: Component {
     override internal var order: ComponentOrder {
-        return .renderer
+        .renderer
     }
     /**
-    Returns all the instantiated materials of this object.
-    */
+     Returns all the instantiated materials of this object.
+     */
     public var materials = [Material]() {
         didSet {
             gameObject?.node.geometry?.materials = materials.map { material -> SCNMaterial in material.scnMaterial }
         }
     }
-
+    
     /**
-    Returns the first instantiated Material assigned to the renderer.
-    */
+     Returns the first instantiated Material assigned to the renderer.
+     */
     public var material: Material? {
         get {
             return materials.first
@@ -30,50 +30,50 @@ public final class Renderer: Component {
             }
         }
     }
-
+    
     /**
-    Does this object cast shadows?
-    */
+     Does this object cast shadows?
+     */
     public var shadowCasting: Bool {
         get {
             guard let gameObject = gameObject
-                else { return false }
-
+            else { return false }
+            
             return gameObject.node.castsShadow
         }
         set {
             gameObject?.node.castsShadow = newValue
         }
     }
-
+    
     /**
-    Renderer's order within a sorting layer.
-    */
+     Renderer's order within a sorting layer.
+     */
     public var sortingOrder: Int {
         get {
             guard let gameObject = gameObject
-                else { return 0 }
-
+            else { return 0 }
+            
             return gameObject.node.renderingOrder
         }
         set {
             gameObject?.node.renderingOrder = newValue
         }
     }
-
+    
     /**
      Configurable block that passes and returns itself.
-
+     
      - parameters:
-        - configurationBlock: block that passes itself.
-
+     - configurationBlock: block that passes itself.
+     
      - returns: itself
      */
     @discardableResult public func configure(_ configurationBlock: (Renderer) -> Void) -> Renderer {
         configurationBlock(self)
         return self
     }
-
+    
     public override func awake() {
     }
 }
