@@ -357,6 +357,15 @@ public class GameObject: Object {
         return component
     }
 
+    @discardableResult public func addComponent<T: Component>(_ component: T) -> T {
+        if (T.self === Renderer.self || T.self === Transform.self || T.self === MeshFilter.self || T.self === UI.Canvas.self) {
+            fatalError("Can't manually add Renderer, Transform, MeshFilter or Canvas")
+        }
+        let component = super.addComponent(component, gameObject: self)
+        self.ignoreUpdates = shouldIgnoreUpdates()
+        return component
+    }
+
     @discardableResult internal override func addComponent<T: Component>(
         external: Bool = true,
         type: T.Type,

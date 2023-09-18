@@ -188,7 +188,14 @@ extension Scene {
         guard let results = view?.hitTest(location.toCGPoint())
         else { return [] }
         return results
-            .compactMap { $0.node.name }
+            .compactMap {
+                guard let name = $0.node.name
+                else {
+                    Debug.log("No name set ignored node: \($0.node)")
+                    return nil
+                }
+                return name
+            }
             .compactMap { GameObject.find(.name(.exact($0))) }
     }
 }
