@@ -5,11 +5,12 @@ public func destroy(_ gameObject: GameObject) {
 }
 
 open class Object: Identifiable, Equatable {
-    private static var cache = [Component: [Component]]()
+    private static var cache = [String: [Component]]()
     /**
      Determines the name of the receiver.
     */
     open var name: String?
+    internal var cacheKey: String
 
     private(set) internal var components = [Component]()
     public let id: String
@@ -17,6 +18,7 @@ open class Object: Identifiable, Equatable {
     /// Create a new instance
     public required init() {
         self.id = UUID().uuidString
+        self.cacheKey = NSStringFromClass(Self.self)
     }
 
     /// Returns the instance id of the object.
@@ -115,17 +117,18 @@ open class Object: Identifiable, Equatable {
     }
 
     internal class func addCache<T: Component>(_ component: T) {
-        let key = Object.cache.keys.first(where: { $0 is T })
+        print(component.cacheKey)
+        let key = Object.cache.keys.first(where: { $0 == component.cacheKey })
         if let key = key, var components = Object.cache[key] {
             components.append(component)
             Object.cache[key] = components
         } else {
-            Object.cache[T.init()] = [component]
+            Object.cache[component.cacheKey] = [component]
         }
     }
 
     internal class func removeCache<T: Component>(_ component: T) {
-        let keys = Object.cache.keys.filter ({ $0 is T })
+        let keys = Object.cache.keys.filter ({ $0 == component.cacheKey })
         guard keys.count > 0 else { return }
         keys.forEach { key in
             var components = Object.cache[key]
@@ -138,7 +141,7 @@ open class Object: Identifiable, Equatable {
     }
 
     internal class func cache<T: Component>(_ type: T.Type) -> [T]? {
-        let keys = Object.cache.keys.filter { $0 is T }
+        let keys = Object.cache.keys.filter { $0 == NSStringFromClass(type.self) }
         guard keys.count > 0 else { return nil }
         let result: [T] = keys.reduce([T]()) { (prev, key) -> [T] in
             if let cache = Object.cache[key]?.compactMap({ $0 as? T }) {
