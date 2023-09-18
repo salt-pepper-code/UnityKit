@@ -38,27 +38,26 @@ extension UI {
 
     public struct SwiftUIView: UIViewRepresentable {
 
-        public let sceneName: String?
-        public let options: Options?
-        public let extraLayers: [String]?
+        let sceneView: UI.UIKitView
+        public var scene: Scene? {
+            sceneView.sceneHolder
+        }
 
         public init(
             sceneName: String? = nil,
             options: Options? = nil,
             extraLayers: [String]? = nil
         ) {
-            self.sceneName = sceneName
-            self.options = options
-            self.extraLayers = extraLayers
-        }
-
-        public func makeUIView(context: Context) -> UI.UIKitView {
-            UI.UIKitView.makeView(
+            self.sceneView = UI.UIKitView.makeView(
                 on: nil,
                 sceneName: sceneName,
                 options: options,
                 extraLayers: extraLayers
             )
+        }
+
+        public func makeUIView(context: Context) -> UI.UIKitView {
+            sceneView
         }
 
         public func updateUIView(_ uiView: UI.UIKitView, context: Context) {
