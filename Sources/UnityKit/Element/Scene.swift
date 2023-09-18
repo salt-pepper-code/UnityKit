@@ -3,7 +3,7 @@ import SceneKit
 
 public typealias SceneLoadingOptions = [SCNSceneSource.LoadingOption: Any]
 
-open class Scene: Identifiable {
+open class Scene: Identifiable, Equatable {
     public enum Allocation {
         case instantiate
         case singleton
@@ -15,7 +15,7 @@ open class Scene: Identifiable {
     public let scnScene: SCNScene
     public let rootGameObject: GameObject
     internal let shadowCastingAllowed: Bool
-    internal let uuid: String
+    public let id: String
 
     private(set) public static var shared: Scene?
 
@@ -78,7 +78,7 @@ open class Scene: Identifiable {
     ) {
         self.shadowCastingAllowed = shadowCastingAllowed
 
-        self.uuid = UUID().uuidString
+        self.id = UUID().uuidString
 
         self.scnScene = scene ?? SCNScene()
 
@@ -127,7 +127,7 @@ open class Scene: Identifiable {
     //
 
     public func getInstanceID() -> String {
-        return uuid
+        id
     }
 
     internal func preUpdate(updateAtTime time: TimeInterval) {

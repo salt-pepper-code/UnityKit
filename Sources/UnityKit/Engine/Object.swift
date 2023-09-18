@@ -4,7 +4,7 @@ public func destroy(_ gameObject: GameObject) {
     Object.destroy(gameObject)
 }
 
-open class Object: Identifiable {
+open class Object: Identifiable, Equatable {
     private static var cache = [Component: [Component]]()
     /**
      Determines the name of the receiver.
@@ -12,16 +12,16 @@ open class Object: Identifiable {
     open var name: String?
 
     private(set) internal var components = [Component]()
-    internal let uuid: String
+    public let id: String
 
     /// Create a new instance
     public required init() {
-        self.uuid = UUID().uuidString
+        self.id = UUID().uuidString
     }
 
     /// Returns the instance id of the object.
     public func getInstanceID() -> String {
-        return uuid
+        id
     }
 
     /// Removes a gameobject, component or asset.
