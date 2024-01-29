@@ -14,14 +14,14 @@ public extension Color {
         let r, g, b, a: CGFloat
         
         guard hex.hasPrefix("#") else {
-            self.init()
+            self.init(red: 1, green: 0, blue: 0, alpha: 1)
             return
         }
         let start = hex.index(hex.startIndex, offsetBy: 1)
         let hexColor = String(hex[start...])
         
         guard hexColor.count == 8 else {
-            self.init()
+            self.init(red: 1, green: 0, blue: 0, alpha: 1)
             return
         }
         
@@ -29,7 +29,7 @@ public extension Color {
         var hexNumber: UInt64 = 0
         
         guard scanner.scanHexInt64(&hexNumber) else {
-            self.init()
+            self.init(red: 1, green: 0, blue: 0, alpha: 1)
             return
         }
         
