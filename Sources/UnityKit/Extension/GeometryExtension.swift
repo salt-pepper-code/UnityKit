@@ -110,7 +110,7 @@ extension SCNGeometry {
                              by: source.dataStride)
 
         return strides.map { byteOffset -> Vector3 in
-            Vector3(rawPointer.load(fromByteOffset: byteOffset, as: float3.self))
+            Vector3(rawPointer.load(fromByteOffset: byteOffset, as: SIMD3<Float>.self))
         }
     }
 }

@@ -10,22 +10,27 @@ public extension Color {
         return (red: c[0], green: c[1], blue: c[2], alpha: c[3])
     }
 
-    convenience init(hexString: String, alpha: CGFloat = 1.0) {
-        let hexString: String = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        let scanner = Scanner(string: hexString)
-        if hexString.hasPrefix("#") {
-            scanner.scanLocation = 1
-        }
-        var color: UInt32 = 0
-        scanner.scanHexInt32(&color)
-        let mask = 0x000000FF
-        let r = Int(color >> 16) & mask
-        let g = Int(color >> 8) & mask
-        let b = Int(color) & mask
-        let red   = CGFloat(r) / 255.0
-        let green = CGFloat(g) / 255.0
-        let blue  = CGFloat(b) / 255.0
-        self.init(red: red, green: green, blue: blue, alpha: alpha)
+    convenience init?(hex: String) {
+            let r, g, b, a: CGFloat
+
+        guard hex.hasPrefix("#") else { return nil }
+        let start = hex.index(hex.startIndex, offsetBy: 1)
+        let hexColor = String(hex[start...])
+        
+        guard hexColor.count == 8 else { return nil }
+
+            let scanner = Scanner(string: hexColor)
+        var hexNumber: UInt64 = 0
+        
+        guard scanner.scanHexInt64(&hexNumber) else { return nil }
+        
+        r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
+        g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
+        b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
+        a = CGFloat(hexNumber & 0x000000ff) / 255
+        
+        self.init(red: r, green: g, blue: b, alpha: a)
+        return
     }
 
     func toHexString() -> String {
