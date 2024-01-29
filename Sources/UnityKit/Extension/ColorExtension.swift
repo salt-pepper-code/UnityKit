@@ -10,19 +10,28 @@ public extension Color {
         return (red: c[0], green: c[1], blue: c[2], alpha: c[3])
     }
 
-    convenience init?(hex: String) {
-            let r, g, b, a: CGFloat
-
-        guard hex.hasPrefix("#") else { return nil }
+    convenience init(hex: String) {
+        let r, g, b, a: CGFloat
+        
+        guard hex.hasPrefix("#") else {
+            self.init()
+            return
+        }
         let start = hex.index(hex.startIndex, offsetBy: 1)
         let hexColor = String(hex[start...])
         
-        guard hexColor.count == 8 else { return nil }
-
-            let scanner = Scanner(string: hexColor)
+        guard hexColor.count == 8 else {
+            self.init()
+            return
+        }
+        
+        let scanner = Scanner(string: hexColor)
         var hexNumber: UInt64 = 0
         
-        guard scanner.scanHexInt64(&hexNumber) else { return nil }
+        guard scanner.scanHexInt64(&hexNumber) else {
+            self.init()
+            return
+        }
         
         r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
         g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
@@ -32,7 +41,7 @@ public extension Color {
         self.init(red: r, green: g, blue: b, alpha: a)
         return
     }
-
+    
     func toHexString() -> String {
         var r: CGFloat = 0
         var g: CGFloat = 0
