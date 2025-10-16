@@ -37,6 +37,10 @@ open class Object: Identifiable, Equatable {
     public required init() {
         self.id = UUID().uuidString
     }
+    
+    deinit {
+        Debug.debug("\(Self.self).deinit")
+    }
 
     /// Returns the instance id of the object.
     public func getInstanceID() -> String {
