@@ -170,7 +170,7 @@ public class GameObject: Object {
         self.node = node
         super.init()
         initialize()
-        Debug.debug("GameObject.init(_:) - '\(self.name ?? "unnamed")'")
+        Debug.debug("GameObject[\(self.name ?? "unnamed")].init(_:)")
         awake()
     }
 
@@ -204,7 +204,7 @@ public class GameObject: Object {
         self.node = SCNNode()
         super.init()
         self.transform = addComponent(external: false, type: Transform.self)
-        Debug.debug("GameObject.init() - '\(self.name ?? "unnamed")'")
+        Debug.debug("GameObject[\(self.name ?? "unnamed")].init()")
         awake()
     }
 
@@ -257,7 +257,7 @@ public class GameObject: Object {
         guard !didAwake
         else { return }
 
-        Debug.debug("GameObject.awake() - '\(self.name ?? "unnamed")'")
+        Debug.debug("GameObject[\(self.name ?? "unnamed")].awake()")
         didAwake = true
         components.forEach { $0.awake() }
         let childrenCopy = children // Thread-safe read
@@ -275,7 +275,7 @@ public class GameObject: Object {
             return
         }
 
-        Debug.debug("GameObject.start() - '\(self.name ?? "unnamed")'")
+        Debug.debug("GameObject[\(self.name ?? "unnamed")].start()")
         didStart = true
         components.forEach { $0.start() }
         let childrenCopy = children // Thread-safe read
@@ -306,7 +306,7 @@ public class GameObject: Object {
               activeSelf
         else { return }
 
-        Debug.debug("GameObject.preUpdate() - '\(self.name ?? "unnamed")'")
+        Debug.debug("GameObject[\(self.name ?? "unnamed")].preUpdate()")
         components
             .filter {
                 if !$0.implementsPreUpdate { return false }
@@ -331,7 +331,7 @@ public class GameObject: Object {
             return
         }
 
-        Debug.debug("GameObject.update() - '\(self.name ?? "unnamed")'")
+        Debug.debug("GameObject[\(self.name ?? "unnamed")].update()")
         components
             .filter {
                 if !$0.implementsUpdate { return false }
@@ -352,7 +352,7 @@ public class GameObject: Object {
               activeSelf
         else { return }
 
-        Debug.debug("GameObject.fixedUpdate() - '\(self.name ?? "unnamed")'")
+        Debug.debug("GameObject[\(self.name ?? "unnamed")].fixedUpdate()")
         components
             .filter {
                 if !$0.implementsFixedUpdate { return false }

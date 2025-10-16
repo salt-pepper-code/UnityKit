@@ -48,25 +48,31 @@ open class Component: Object, Hashable {
     /// Create a new instance
     public required init() {
         super.init()
+        Debug.debug("\(Self.self).init()")
     }
 
     open override func preUpdate() {
+        Debug.debug("\(Self.self).preUpdate()")
         implementsPreUpdate = false
     }
 
     open override func update() {
+        Debug.debug("\(Self.self).update()")
         implementsUpdate = false
     }
 
     open override func fixedUpdate() {
+        Debug.debug("\(Self.self).fixedUpdate()")
         implementsFixedUpdate = false
     }
 
     open override func destroy() {
+        Debug.debug("\(Self.self).destroy()")
         gameObject?.removeComponent(self)
     }
 
     open func onDestroy() {
+        Debug.debug("\(Self.self).onDestroy()")
     }
 
     public func remove() {

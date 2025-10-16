@@ -51,10 +51,12 @@ open class Object: Identifiable, Equatable {
 
     /// Awake is called when the script instance is being loaded.
     open func awake() {
+        Debug.debug("\(Self.self).awake()")
     }
 
     /// Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
     open func start() {
+        Debug.debug("\(Self.self).start()")
     }
 
     /// preUpdate is called every frame, if the Object is enabled on willRenderScene.
