@@ -1,10 +1,9 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("Collider Components")
 struct ColliderTests {
-
     func createTestScene() -> Scene {
         return Scene(allocation: .instantiate)
     }
@@ -13,12 +12,11 @@ struct ColliderTests {
 
     @Test("SphereCollider can be added to GameObject")
     func addSphereCollider() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "Sphere")
         scene.addGameObject(obj)
 
-        let collider = obj.addComponent(SphereCollider.self)
-        collider.awake()
+        _ = obj.addComponent(SphereCollider.self)
 
         #expect(obj.getComponent(SphereCollider.self) != nil)
         #expect(obj.getComponent(Collider.self) != nil)
@@ -26,7 +24,7 @@ struct ColliderTests {
 
     @Test("SphereCollider uses custom radius when set")
     func sphereColliderCustomRadius() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let boxGeometry = SCNBox(width: 2, height: 2, length: 2, chamferRadius: 0)
         let boxNode = SCNNode(geometry: boxGeometry)
@@ -37,28 +35,26 @@ struct ColliderTests {
 
         let collider = obj.addComponent(SphereCollider.self)
         collider.set(radius: 5.0)
-        collider.awake()
 
         #expect(collider.radius == 5.0)
     }
 
     @Test("SphereCollider can set center offset")
     func sphereColliderCenter() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "Sphere")
         scene.addGameObject(obj)
 
         let collider = obj.addComponent(SphereCollider.self)
         let centerOffset = Vector3(1, 2, 3)
         collider.set(center: centerOffset)
-        collider.awake()
 
         #expect(collider.center == centerOffset)
     }
 
     @Test("SphereCollider configure method works")
     func sphereColliderConfigure() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "Sphere")
         scene.addGameObject(obj)
 
@@ -67,7 +63,6 @@ struct ColliderTests {
             sphere.set(radius: 3.0)
             sphere.set(center: Vector3(0, 1, 0))
         }
-        collider.awake()
 
         #expect(collider.radius == 3.0)
         #expect(collider.center == Vector3(0, 1, 0))
@@ -75,7 +70,7 @@ struct ColliderTests {
 
     @Test("SphereCollider is detected by Physics.overlapSphere")
     func sphereColliderPhysicsDetection() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let boxGeometry = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0)
         let boxNode = SCNNode(geometry: boxGeometry)
@@ -86,7 +81,6 @@ struct ColliderTests {
         scene.addGameObject(obj)
 
         let collider = obj.addComponent(SphereCollider.self)
-        collider.awake()
 
         // Should be detected when overlapping
         let overlapping = Physics.overlapSphere(
@@ -103,12 +97,11 @@ struct ColliderTests {
 
     @Test("CapsuleCollider can be added to GameObject")
     func addCapsuleCollider() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "Capsule")
         scene.addGameObject(obj)
 
-        let collider = obj.addComponent(CapsuleCollider.self)
-        collider.awake()
+        _ = obj.addComponent(CapsuleCollider.self)
 
         #expect(obj.getComponent(CapsuleCollider.self) != nil)
         #expect(obj.getComponent(Collider.self) != nil)
@@ -116,7 +109,7 @@ struct ColliderTests {
 
     @Test("CapsuleCollider uses custom radius and height when set")
     func capsuleColliderCustomDimensions() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let boxGeometry = SCNBox(width: 2, height: 4, length: 2, chamferRadius: 0)
         let boxNode = SCNNode(geometry: boxGeometry)
@@ -128,7 +121,6 @@ struct ColliderTests {
         let collider = obj.addComponent(CapsuleCollider.self)
         collider.set(radius: 1.5)
         collider.set(height: 5.0)
-        collider.awake()
 
         #expect(collider.radius == 1.5)
         #expect(collider.height == 5.0)
@@ -136,21 +128,20 @@ struct ColliderTests {
 
     @Test("CapsuleCollider can set center offset")
     func capsuleColliderCenter() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "Capsule")
         scene.addGameObject(obj)
 
         let collider = obj.addComponent(CapsuleCollider.self)
         let centerOffset = Vector3(0, 1, 0)
         collider.set(center: centerOffset)
-        collider.awake()
 
         #expect(collider.center == centerOffset)
     }
 
     @Test("CapsuleCollider configure method works")
     func capsuleColliderConfigure() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "Capsule")
         scene.addGameObject(obj)
 
@@ -160,7 +151,6 @@ struct ColliderTests {
             capsule.set(height: 2.0)
             capsule.set(center: Vector3(0, 0.5, 0))
         }
-        collider.awake()
 
         #expect(collider.radius == 0.5)
         #expect(collider.height == 2.0)
@@ -169,7 +159,7 @@ struct ColliderTests {
 
     @Test("CapsuleCollider is detected by Physics.overlapSphere")
     func capsuleColliderPhysicsDetection() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let boxGeometry = SCNBox(width: 1, height: 2, length: 1, chamferRadius: 0)
         let boxNode = SCNNode(geometry: boxGeometry)
@@ -180,7 +170,6 @@ struct ColliderTests {
         scene.addGameObject(obj)
 
         let collider = obj.addComponent(CapsuleCollider.self)
-        collider.awake()
 
         // Should be detected when overlapping
         let overlapping = Physics.overlapSphere(
@@ -197,7 +186,7 @@ struct ColliderTests {
 
     @Test("BoxCollider can be added to GameObject")
     func addBoxCollider() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let boxGeometry = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0)
         let boxNode = SCNNode(geometry: boxGeometry)
@@ -206,8 +195,7 @@ struct ColliderTests {
         let obj = GameObject(boxNode)
         scene.addGameObject(obj)
 
-        let collider = obj.addComponent(BoxCollider.self)
-        collider.awake()
+        _ = obj.addComponent(BoxCollider.self)
 
         #expect(obj.getComponent(BoxCollider.self) != nil)
         #expect(obj.getComponent(Collider.self) != nil)
@@ -215,7 +203,7 @@ struct ColliderTests {
 
     @Test("BoxCollider is detected by Physics.Raycast")
     func boxColliderRaycastDetection() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let boxGeometry = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0)
         let boxNode = SCNNode(geometry: boxGeometry)
@@ -226,7 +214,6 @@ struct ColliderTests {
         scene.addGameObject(obj)
 
         let collider = obj.addComponent(BoxCollider.self)
-        collider.awake()
 
         let hit = try #require(Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -242,7 +229,7 @@ struct ColliderTests {
 
     @Test("Physics.overlapSphere finds multiple colliders")
     func overlapSphereMultipleColliders() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         // Create three objects at different positions
         for i in 0..<3 {
@@ -254,8 +241,7 @@ struct ColliderTests {
             obj.transform.position = Vector3(Float(i), 0, 0)
             scene.addGameObject(obj)
 
-            let collider = obj.addComponent(BoxCollider.self)
-            collider.awake()
+            _ = obj.addComponent(BoxCollider.self)
         }
 
         // Overlap sphere centered at (1, 0, 0) with radius 2
@@ -271,7 +257,7 @@ struct ColliderTests {
 
     @Test("Physics.overlapSphere respects layer mask")
     func overlapSphereLayerMask() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         // Create object on default layer
         let boxGeometry1 = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0)
@@ -281,8 +267,7 @@ struct ColliderTests {
         obj1.layer = .default
         obj1.transform.position = Vector3(0, 0, 0)
         scene.addGameObject(obj1)
-        let collider1 = obj1.addComponent(BoxCollider.self)
-        collider1.awake()
+        _ = obj1.addComponent(BoxCollider.self)
 
         // Create object on player layer
         let boxGeometry2 = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0)
@@ -292,8 +277,7 @@ struct ColliderTests {
         obj2.layer = .player
         obj2.transform.position = Vector3(1, 0, 0)
         scene.addGameObject(obj2)
-        let collider2 = obj2.addComponent(BoxCollider.self)
-        collider2.awake()
+        _ = obj2.addComponent(BoxCollider.self)
 
         // Search only default layer
         let defaultResults = Physics.overlapSphere(
@@ -341,7 +325,7 @@ struct ColliderTests {
 
     @Test("Physics.overlapSphere with no overlaps returns empty")
     func overlapSphereNoOverlaps() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let boxGeometry = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0)
         let boxNode = SCNNode(geometry: boxGeometry)
@@ -351,8 +335,7 @@ struct ColliderTests {
         obj.transform.position = Vector3(100, 0, 0)
         scene.addGameObject(obj)
 
-        let collider = obj.addComponent(BoxCollider.self)
-        collider.awake()
+        _ = obj.addComponent(BoxCollider.self)
 
         // Search far from the object
         let results = Physics.overlapSphere(

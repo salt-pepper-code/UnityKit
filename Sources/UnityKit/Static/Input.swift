@@ -4,72 +4,72 @@ public typealias TouchPhase = UITouch.Phase
 public typealias TouchType = UITouch.TouchType
 
 public final class Touch {
-    fileprivate var previousTime: TimeInterval?
-    fileprivate var updatedTime: TimeInterval = 0
+    private var previousTime: TimeInterval?
+    private var updatedTime: TimeInterval = 0
 
-    internal var previousPosition: Vector2?
-    internal var updatedPosition: Vector2 = .zero
+    var previousPosition: Vector2?
+    var updatedPosition: Vector2 = .zero
 
     public var deltaPosition: Vector2 {
-        guard let previousPosition = previousPosition,
-            let _ = phase
-            else { return .zero }
+        guard let previousPosition,
+              let _ = phase
+        else { return .zero }
 
-        return updatedPosition - previousPosition
+        return self.updatedPosition - previousPosition
     }
 
-    internal(set) public var deltaTime: TimeInterval {
+    public internal(set) var deltaTime: TimeInterval {
         get {
-            guard let previousTime = previousTime
-                else { return 0 }
+            guard let previousTime
+            else { return 0 }
 
-            return updatedTime - previousTime
+            return self.updatedTime - previousTime
         }
         set {
-            previousTime = updatedTime != 0 ? updatedTime : nil
-            updatedTime = newValue
+            self.previousTime = self.updatedTime != 0 ? self.updatedTime : nil
+            self.updatedTime = newValue
         }
     }
 
     public let fingerId: Int
     public let uitouch: UITouch
-    public var view: UIView? { return viewAtBegin }
-    fileprivate weak var viewAtBegin: UIView?
+    public var view: UIView? { return self.viewAtBegin }
+    private weak var viewAtBegin: UIView?
 
     public var phase: TouchPhase?
-    public var altitudeAngle: Float { return uitouch.altitudeAngle.toFloat() }
-    public var azimuthAngle: Float { return uitouch.azimuthAngle(in: uitouch.view).toFloat() }
-    public var maximumPossiblePressure: Float { return uitouch.maximumPossibleForce.toFloat() }
-    public var position: Vector2 { return uitouch.location(in: uitouch.view).toVector2() }
-    public var pressure: Float { return uitouch.force.toFloat() }
-    public var radius: Float { return uitouch.majorRadius.toFloat() }
-    public var radiusVariance: Float { return uitouch.majorRadiusTolerance.toFloat() }
-    public var tapCount: Int { return uitouch.tapCount }
-    public var type: TouchType { return uitouch.type }
+    public var altitudeAngle: Float { return self.uitouch.altitudeAngle.toFloat() }
+    public var azimuthAngle: Float { return self.uitouch.azimuthAngle(in: self.uitouch.view).toFloat() }
+    public var maximumPossiblePressure: Float { return self.uitouch.maximumPossibleForce.toFloat() }
+    public var position: Vector2 { return self.uitouch.location(in: self.uitouch.view).toVector2() }
+    public var pressure: Float { return self.uitouch.force.toFloat() }
+    public var radius: Float { return self.uitouch.majorRadius.toFloat() }
+    public var radiusVariance: Float { return self.uitouch.majorRadiusTolerance.toFloat() }
+    public var tapCount: Int { return self.uitouch.tapCount }
+    public var type: TouchType { return self.uitouch.type }
 
-    internal init(_ uitouch: UITouch, index: Int) {
+    init(_ uitouch: UITouch, index: Int) {
         self.uitouch = uitouch
-        fingerId = index
-        viewAtBegin = uitouch.view
-        phase = uitouch.phase
-        updatedTime = uitouch.timestamp
-        updatedPosition = uitouch.location(in: uitouch.view).toVector2()
+        self.fingerId = index
+        self.viewAtBegin = uitouch.view
+        self.phase = uitouch.phase
+        self.updatedTime = uitouch.timestamp
+        self.updatedPosition = uitouch.location(in: uitouch.view).toVector2()
     }
 
-    internal func updateTouch(_ touch: Touch) {
-        if touch.view != view {
-            phase = .cancelled
+    func updateTouch(_ touch: Touch) {
+        if touch.view != self.view {
+            self.phase = .cancelled
         }
-        deltaTime = touch.updatedTime
-        updatedPosition = touch.position
+        self.deltaTime = touch.updatedTime
+        self.updatedPosition = touch.position
     }
 
     public func position(in view: UIView?) -> Vector2 {
-        return uitouch.location(in: view).toVector2()
+        return self.uitouch.location(in: view).toVector2()
     }
 }
 
-public final class Input {
+public enum Input {
     private struct State {
         var touches: [Touch]?
         var stackUpdates = [TouchPhase: [Touch]]()
@@ -112,81 +112,81 @@ public final class Input {
 
     /// Returns true while the user holds down the key identified by name
     public static func getKey(_ key: String) -> Bool {
-        state.read { $0.keysPressed.contains(key.uppercased()) }
+        self.state.read { $0.keysPressed.contains(key.uppercased()) }
     }
 
     /// Returns true during the frame the user starts pressing down the key
     public static func getKeyDown(_ key: String) -> Bool {
-        state.read { $0.keysDown.contains(key.uppercased()) }
+        self.state.read { $0.keysDown.contains(key.uppercased()) }
     }
 
     /// Returns true during the frame the user releases the key
     public static func getKeyUp(_ key: String) -> Bool {
-        state.read { $0.keysUp.contains(key.uppercased()) }
+        self.state.read { $0.keysUp.contains(key.uppercased()) }
     }
 
     // MARK: - Mouse Methods
 
     /// Returns whether the given mouse button is held down (0 = left, 1 = right, 2 = middle)
     public static func getMouseButton(_ button: Int) -> Bool {
-        guard button >= 0 && button < 3 else { return false }
-        return state.read { $0.mouseButtons[button] }
+        guard button >= 0, button < 3 else { return false }
+        return self.state.read { $0.mouseButtons[button] }
     }
 
     /// Returns true during the frame the user pressed the given mouse button
     public static func getMouseButtonDown(_ button: Int) -> Bool {
-        guard button >= 0 && button < 3 else { return false }
-        return state.read { $0.mouseButtonsDown[button] }
+        guard button >= 0, button < 3 else { return false }
+        return self.state.read { $0.mouseButtonsDown[button] }
     }
 
     /// Returns true during the frame the user releases the given mouse button
     public static func getMouseButtonUp(_ button: Int) -> Bool {
-        guard button >= 0 && button < 3 else { return false }
-        return state.read { $0.mouseButtonsUp[button] }
+        guard button >= 0, button < 3 else { return false }
+        return self.state.read { $0.mouseButtonsUp[button] }
     }
 
     // MARK: - Internal Update Methods
 
-    internal static func setKeyDown(_ key: String) {
+    static func setKeyDown(_ key: String) {
         let upperKey = key.uppercased()
-        state.write {
+        self.state.write {
             $0.keysPressed.insert(upperKey)
             $0.keysDown.insert(upperKey)
         }
     }
 
-    internal static func setKeyUp(_ key: String) {
+    static func setKeyUp(_ key: String) {
         let upperKey = key.uppercased()
-        state.write {
+        self.state.write {
             $0.keysPressed.remove(upperKey)
             $0.keysUp.insert(upperKey)
         }
     }
 
-    internal static func setMouseButtonDown(_ button: Int) {
-        guard button >= 0 && button < 3 else { return }
-        state.write {
+    static func setMouseButtonDown(_ button: Int) {
+        guard button >= 0, button < 3 else { return }
+        self.state.write {
             $0.mouseButtons[button] = true
             $0.mouseButtonsDown[button] = true
         }
     }
 
-    internal static func setMouseButtonUp(_ button: Int) {
-        guard button >= 0 && button < 3 else { return }
-        state.write {
+    static func setMouseButtonUp(_ button: Int) {
+        guard button >= 0, button < 3 else { return }
+        self.state.write {
             $0.mouseButtons[button] = false
             $0.mouseButtonsUp[button] = true
         }
     }
 
-    internal static func setMousePosition(_ position: Vector2) {
-        mousePosition = position
+    static func setMousePosition(_ position: Vector2) {
+        self.mousePosition = position
     }
 
-    internal static func update() {
+    static func update() {
         var shouldRecurse = false
 
-        state.write { s in
+        self.state.write { s in
             // Clear frame-specific input states
             s.keysDown.removeAll()
             s.keysUp.removeAll()
@@ -194,7 +194,7 @@ public final class Input {
             s.mouseButtonsUp = [false, false, false]
 
             guard !s.clearNextFrame else {
-                clear(state: &s)
+                self.clear(state: &s)
                 return
             }
 
@@ -202,7 +202,7 @@ public final class Input {
                 if let first = s.stackUpdates.first {
                     s.stackUpdates.removeValue(forKey: first.key)
 
-                    currentTouches.enumerated().forEach { index, touch in
+                    for (index, touch) in currentTouches.enumerated() {
                         let updatedTouch = first.value[index]
                         touch.phase = first.key
                         switch first.key {
@@ -212,19 +212,20 @@ public final class Input {
                             touch.previousPosition = touch.position
                             s.clearNextFrame = true
                         case .cancelled:
-                            clear(state: &s)
+                            self.clear(state: &s)
                         default:
                             break
                         }
                         touch.updateTouch(updatedTouch)
                     }
                 } else {
-                    currentTouches.forEach {
-                        $0.phase = .stationary
+                    for currentTouch in currentTouches {
+                        currentTouch.phase = .stationary
                     }
                 }
             } else if let first = s.stackUpdates.first,
-                first.value.first?.phase == .began {
+                      first.value.first?.phase == .began
+            {
                 s.touches = first.value
                 shouldRecurse = true
             }
@@ -232,18 +233,19 @@ public final class Input {
 
         // Handle recursive update call outside the synchronized block to avoid deadlock
         if shouldRecurse {
-            update()
+            self.update()
         }
     }
 
-    internal static func stackTouches(_ touches: [Touch], phase: TouchPhase) {
-        state.write { s in
+    static func stackTouches(_ touches: [Touch], phase: TouchPhase) {
+        self.state.write { s in
             if let currentTouches = s.touches,
-                let currentFirst = currentTouches.first,
-                let first = touches.first {
+               let currentFirst = currentTouches.first,
+               let first = touches.first
+            {
                 if currentFirst.view != first.view {
-                    currentTouches.forEach {
-                        $0.phase = .ended
+                    for currentTouch in currentTouches {
+                        currentTouch.phase = .ended
                     }
                     s.clearNextFrame = true
                     return
@@ -253,7 +255,7 @@ public final class Input {
             switch phase {
             case .began:
                 if s.touches != nil || s.stackUpdates.count > 0 {
-                    clear(state: &s)
+                    self.clear(state: &s)
                 }
             default:
                 break
@@ -263,14 +265,14 @@ public final class Input {
     }
 
     public static func getTouch(_ index: Int) -> Touch? {
-        state.read { s in
+        self.state.read { s in
             guard let touches = s.touches, index < touches.count else { return nil }
             return touches[index]
         }
     }
 
-    internal static func clear() {
-        state.write { s in clear(state: &s) }
+    static func clear() {
+        self.state.write { s in self.clear(state: &s) }
     }
 
     private static func clear(state: inout State) {
@@ -279,14 +281,15 @@ public final class Input {
         state.touches = nil
     }
 
-    internal static func setTouches(_ touches: [Touch]) {
-        state.write { $0.touches = touches }
+    static func setTouches(_ touches: [Touch]) {
+        self.state.write { $0.touches = touches }
     }
 
     // MARK: - Testing Helpers
-    internal static func resetForTesting() {
-        state.write { s in
-            clear(state: &s)
+
+    static func resetForTesting() {
+        self.state.write { s in
+            self.clear(state: &s)
             s.keysPressed.removeAll()
             s.keysDown.removeAll()
             s.keysUp.removeAll()

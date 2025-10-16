@@ -17,7 +17,7 @@ import SceneKit
  ````
  */
 public final class Transform: Component {
-    override internal var order: ComponentOrder {
+    override var order: ComponentOrder {
         .transform
     }
 
@@ -31,7 +31,7 @@ public final class Transform: Component {
     }
 
     /// The children of the transform.
-    public var children: [Transform]? { return gameObject?.getChildren().map { $0.transform } }
+    public var children: [Transform]? { return gameObject?.getChildren().map(\.transform) }
     /// The parent of the transform.
     public var parent: Transform? { return gameObject?.parent?.transform }
     /// The number of children the Transform has.
@@ -42,12 +42,12 @@ public final class Transform: Component {
         guard let node = gameObject?.node
         else { return .zero }
 
-        return Vector3(hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldFront : node.simdWorldFront)
+        return Vector3(self.hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldFront : node.simdWorldFront)
     }
 
     /// The negative blue axis of the transform in world space.
     public var back: Vector3 {
-        return forward.negated()
+        return self.forward.negated()
     }
 
     /// The green axis of the transform in world space.
@@ -55,12 +55,12 @@ public final class Transform: Component {
         guard let node = gameObject?.node
         else { return .zero }
 
-        return Vector3(hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldUp : node.simdWorldUp)
+        return Vector3(self.hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldUp : node.simdWorldUp)
     }
 
     /// The negative green axis of the transform in world space.
     public var bottom: Vector3 {
-        return up.negated()
+        return self.up.negated()
     }
 
     /// The red axis of the transform in world space.
@@ -68,24 +68,24 @@ public final class Transform: Component {
         guard let node = gameObject?.node
         else { return .zero }
 
-        return Vector3(hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldRight : node.simdWorldRight)
+        return Vector3(self.hasOrIsPartOfPhysicsBody() ? node.presentation.simdWorldRight : node.simdWorldRight)
     }
 
     /// The negative red axis of the transform in world space.
     public var left: Vector3 {
-        return right.negated()
+        return self.right.negated()
     }
 
     /// The global scale of the object (Read Only).
     public var lossyScale: Vector3 {
         guard let parent = gameObject?.parent
-        else { return localScale }
+        else { return self.localScale }
 
-        return parent.transform.lossyScale * localScale
+        return parent.transform.lossyScale * self.localScale
     }
 
     private func hasOrIsPartOfPhysicsBody() -> Bool {
-        guard let gameObject = gameObject
+        guard let gameObject
         else { return false }
 
         guard let parent = gameObject.parent
@@ -104,7 +104,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
             else { return .zero }
 
-            return hasOrIsPartOfPhysicsBody() ? node.presentation.worldPosition : node.worldPosition
+            return self.hasOrIsPartOfPhysicsBody() ? node.presentation.worldPosition : node.worldPosition
         }
         set {
             guard let node = gameObject?.node
@@ -120,7 +120,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
             else { return .zero }
 
-            return hasOrIsPartOfPhysicsBody() ? node.presentation.worldOrientation : node.worldOrientation
+            return self.hasOrIsPartOfPhysicsBody() ? node.presentation.worldOrientation : node.worldOrientation
         }
         set {
             gameObject?.node.worldOrientation = newValue
@@ -133,7 +133,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
             else { return .zero }
 
-            return hasOrIsPartOfPhysicsBody() ? node.presentation.orientation : node.orientation
+            return self.hasOrIsPartOfPhysicsBody() ? node.presentation.orientation : node.orientation
         }
         set {
             gameObject?.node.orientation = newValue
@@ -146,7 +146,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
             else { return .zero }
 
-            return hasOrIsPartOfPhysicsBody() ? node.presentation.position : node.position
+            return self.hasOrIsPartOfPhysicsBody() ? node.presentation.position : node.position
         }
         set {
             gameObject?.node.position = newValue
@@ -159,7 +159,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
             else { return .zero }
 
-            return hasOrIsPartOfPhysicsBody() ? node.presentation.rotation : node.rotation
+            return self.hasOrIsPartOfPhysicsBody() ? node.presentation.rotation : node.rotation
         }
         set {
             gameObject?.node.rotation = newValue
@@ -172,7 +172,8 @@ public final class Transform: Component {
             guard let node = gameObject?.node
             else { return .zero }
 
-            return hasOrIsPartOfPhysicsBody() ? node.presentation.orientation.toEuler().radiansToDegrees() : node.orientation.toEuler().radiansToDegrees()
+            return self.hasOrIsPartOfPhysicsBody() ? node.presentation.orientation.toEuler().radiansToDegrees() : node
+                .orientation.toEuler().radiansToDegrees()
         }
         set {
             gameObject?.node.eulerAngles = newValue.degreesToRadians()
@@ -185,7 +186,7 @@ public final class Transform: Component {
             guard let node = gameObject?.node
             else { return .zero }
 
-            return hasOrIsPartOfPhysicsBody() ? node.presentation.scale : node.scale
+            return self.hasOrIsPartOfPhysicsBody() ? node.presentation.scale : node.scale
         }
         set {
             gameObject?.node.scale = newValue

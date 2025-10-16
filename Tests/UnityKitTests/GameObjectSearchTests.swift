@@ -1,10 +1,9 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("GameObject Search")
 struct GameObjectSearchTests {
-
     func createTestScene() -> Scene {
         return Scene(allocation: .instantiate)
     }
@@ -13,7 +12,7 @@ struct GameObjectSearchTests {
 
     @Test("Search by layer finds objects on specific layer")
     func searchBySpecificLayer() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let defaultObj = GameObject(name: "DefaultObject")
         defaultObj.layer = .default
@@ -42,7 +41,7 @@ struct GameObjectSearchTests {
 
     @Test("Search with .all layer mask finds all objects")
     func searchAllLayers() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let obj1 = GameObject(name: "TestObject1")
         obj1.layer = .default
@@ -63,7 +62,7 @@ struct GameObjectSearchTests {
 
     @Test("Search with combined layer mask finds matching objects")
     func searchCombinedLayers() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let defaultObj = GameObject(name: "DefaultObject")
         defaultObj.layer = .default
@@ -87,7 +86,7 @@ struct GameObjectSearchTests {
             .filter { ["DefaultObject", "PlayerObject", "GroundObject", "EnvironmentObject"].contains($0.name ?? "") }
 
         #expect(results.count == 2)
-        let names = results.compactMap { $0.name }
+        let names = results.compactMap(\.name)
         #expect(names.contains("DefaultObject"))
         #expect(names.contains("PlayerObject"))
         #expect(!names.contains("GroundObject"))
@@ -98,7 +97,7 @@ struct GameObjectSearchTests {
 
     @Test("Search by exact name finds only matching object")
     func searchExactName() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let obj1 = GameObject(name: "Player")
         scene.addGameObject(obj1)
@@ -116,7 +115,7 @@ struct GameObjectSearchTests {
 
     @Test("Search by name contains finds all matches")
     func searchNameContains() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let obj1 = GameObject(name: "PlayerCharacter")
         scene.addGameObject(obj1)
@@ -130,7 +129,7 @@ struct GameObjectSearchTests {
         let results = GameObject.findGameObjects(.name(.contains("Player")), in: scene)
         #expect(results.count == 2)
 
-        let names = results.compactMap { $0.name }
+        let names = results.compactMap(\.name)
         #expect(names.contains("PlayerCharacter"))
         #expect(names.contains("EnemyPlayer"))
         #expect(!names.contains("Enemy"))
@@ -138,7 +137,7 @@ struct GameObjectSearchTests {
 
     @Test("Search by name starts with finds matching objects")
     func searchNameStartsWith() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let obj1 = GameObject(name: "Player1")
         scene.addGameObject(obj1)
@@ -152,7 +151,7 @@ struct GameObjectSearchTests {
         let results = GameObject.findGameObjects(.name(.startWith("Player")), in: scene)
         #expect(results.count == 2)
 
-        let names = results.compactMap { $0.name }
+        let names = results.compactMap(\.name)
         #expect(names.contains("Player1"))
         #expect(names.contains("Player2"))
         #expect(!names.contains("Enemy"))
@@ -160,7 +159,7 @@ struct GameObjectSearchTests {
 
     @Test("Search by name .any finds all objects")
     func searchNameAny() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let obj1 = GameObject(name: "MyObject1")
         scene.addGameObject(obj1)
@@ -177,7 +176,7 @@ struct GameObjectSearchTests {
 
     @Test("Search by tag finds matching objects")
     func searchByTag() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let obj1 = GameObject(name: "Object1")
         obj1.tag = .custom("Player")
@@ -194,7 +193,7 @@ struct GameObjectSearchTests {
         let results = GameObject.findGameObjects(.tag(.custom("Player")), in: scene)
         #expect(results.count == 2)
 
-        let names = results.compactMap { $0.name }
+        let names = results.compactMap(\.name)
         #expect(names.contains("Object1"))
         #expect(names.contains("Object3"))
         #expect(!names.contains("Object2"))
@@ -204,7 +203,7 @@ struct GameObjectSearchTests {
 
     @Test("Search by name and tag finds matching objects")
     func searchNameAndTag() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let obj1 = GameObject(name: "Player1")
         obj1.tag = .custom("Player")
@@ -230,7 +229,7 @@ struct GameObjectSearchTests {
 
     @Test("Search for camera objects")
     func searchCamera() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let cameraNode = SCNNode()
         cameraNode.name = "MainCamera"
@@ -253,7 +252,7 @@ struct GameObjectSearchTests {
 
     @Test("Search for light objects")
     func searchLight() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let lightNode = SCNNode()
         lightNode.name = "DirectionalLight"
@@ -276,7 +275,7 @@ struct GameObjectSearchTests {
 
     @Test("Search finds objects in nested hierarchy")
     func searchNestedHierarchy() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let parent = GameObject(name: "HierarchyParent")
         parent.layer = .default
@@ -294,7 +293,7 @@ struct GameObjectSearchTests {
             .filter { $0.name?.starts(with: "Hierarchy") ?? false }
         #expect(results.count == 3)
 
-        let names = results.compactMap { $0.name }
+        let names = results.compactMap(\.name)
         #expect(names.contains("HierarchyParent"))
         #expect(names.contains("HierarchyChild"))
         #expect(names.contains("HierarchyGrandchild"))
@@ -302,7 +301,7 @@ struct GameObjectSearchTests {
 
     @Test("Search in specific GameObject subtree")
     func searchInSubtree() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let parent1 = GameObject(name: "Parent1")
         scene.addGameObject(parent1)
@@ -335,7 +334,7 @@ struct GameObjectSearchTests {
 
     @Test("Search with no matches returns empty")
     func searchNoMatches() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let obj = GameObject(name: "Object")
         obj.layer = .default

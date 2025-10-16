@@ -36,16 +36,17 @@ public class Volume {
             max: Vector3(
                 volumeCenter.x + (volumeSize.x / 2),
                 volumeCenter.y + (volumeSize.y / 2),
-                volumeCenter.z + (volumeSize.z / 2))
+                volumeCenter.z + (volumeSize.z / 2)
+            )
         )
     }
 }
 
 public func + (left: BoundingBox?, right: BoundingBox?) -> BoundingBox? {
-    guard let left = left else {
+    guard let left else {
         return right
     }
-    guard let right = right else {
+    guard let right else {
         return left
     }
     var add = left
@@ -70,12 +71,12 @@ public func * (left: BoundingBox, right: Float) -> BoundingBox {
     (min: left.min * right, max: left.max * right)
 }
 
-extension GameObject {
-    public func boundingBoxFromBoundingSphere(relativeTo gameObject: GameObject? = nil) -> BoundingBox? {
+public extension GameObject {
+    func boundingBoxFromBoundingSphere(relativeTo gameObject: GameObject? = nil) -> BoundingBox? {
         node.boundingBoxFromBoundingSphere(relativeTo: gameObject?.node)
     }
 
-    public func boundingBox(relativeTo gameObject: GameObject) -> BoundingBox? {
+    func boundingBox(relativeTo gameObject: GameObject) -> BoundingBox? {
         node.boundingBox(relativeTo: gameObject.node)
     }
 }
@@ -97,7 +98,7 @@ extension SCNNode {
         var boundingBox = childNodes
             .reduce(nil) { $0 + $1.boundingBox(relativeTo: node) }
 
-        guard let geometry = geometry,
+        guard let geometry,
               let source = geometry.sources(for: SCNGeometrySource.Semantic.vertex).first
         else { return boundingBox }
 
@@ -106,14 +107,15 @@ extension SCNNode {
         else { return boundingBox }
 
         boundingBox += vertices.reduce(
-            into: (min: first, max: first), { boundingBox, vertex in
-                boundingBox.min.x = min(boundingBox.min.x, vertex.x)
-                boundingBox.min.y = min(boundingBox.min.y, vertex.y)
-                boundingBox.min.z = min(boundingBox.min.z, vertex.z)
-                boundingBox.max.x = max(boundingBox.max.x, vertex.x)
-                boundingBox.max.y = max(boundingBox.max.y, vertex.y)
-                boundingBox.max.z = max(boundingBox.max.z, vertex.z)
-            })
+            into: (min: first, max: first))
+        { boundingBox, vertex in
+            boundingBox.min.x = min(boundingBox.min.x, vertex.x)
+            boundingBox.min.y = min(boundingBox.min.y, vertex.y)
+            boundingBox.min.z = min(boundingBox.min.z, vertex.z)
+            boundingBox.max.x = max(boundingBox.max.x, vertex.x)
+            boundingBox.max.y = max(boundingBox.max.y, vertex.y)
+            boundingBox.max.z = max(boundingBox.max.z, vertex.z)
+        }
 
         return boundingBox
     }

@@ -11,19 +11,20 @@ public enum CoroutineThread {
 }
 
 open class MonoBehaviour: Behaviour, Instantiable {
-    internal override var order: ComponentOrder {
+    override var order: ComponentOrder {
         return .monoBehaviour
     }
+
     private var queuedCoroutineInfo = [CoroutineInfo]()
     private var currentCoroutineInfo: CoroutineInfo?
     private var timePassed: TimeInterval = 0
-    public override var ignoreUpdates: Bool {
+    override public var ignoreUpdates: Bool {
         return false
     }
-    
-    open override func destroy() {
-        currentCoroutineInfo = nil
-        queuedCoroutineInfo.removeAll()
+
+    override open func destroy() {
+        self.currentCoroutineInfo = nil
+        self.queuedCoroutineInfo.removeAll()
         super.destroy()
     }
 
@@ -31,44 +32,37 @@ open class MonoBehaviour: Behaviour, Instantiable {
         return type(of: self).init()
     }
 
-    open override func onEnable() {
-    }
+    override open func onEnable() {}
 
-    open override func onDisable() {
-    }
+    override open func onDisable() {}
 
-    open func onCollisionEnter(_ collision: Collision) {
-    }
+    open func onCollisionEnter(_ collision: Collision) {}
 
-    open func onCollisionExit(_ collision: Collision) {
-    }
+    open func onCollisionExit(_ collision: Collision) {}
 
-    open func onTriggerEnter(_ collider: Collider) {
-    }
+    open func onTriggerEnter(_ collider: Collider) {}
 
-    open func onTriggerExit(_ collider: Collider) {
-    }
+    open func onTriggerExit(_ collider: Collider) {}
 
     override func internalUpdate() {
         guard let coroutineInfo = currentCoroutineInfo
-            else { return }
+        else { return }
 
-        timePassed += Time.deltaTime
+        self.timePassed += Time.deltaTime
 
-        let exit: Bool
-        if let exitCondition = coroutineInfo.coroutine.exitCondition {
-            exit = exitCondition(timePassed)
+        let exit: Bool = if let exitCondition = coroutineInfo.coroutine.exitCondition {
+            exitCondition(self.timePassed)
         } else {
-            exit = true
+            true
         }
         guard exit else { return }
 
-        queuedCoroutineInfo.removeFirst()
-        currentCoroutineInfo = nil
+        self.queuedCoroutineInfo.removeFirst()
+        self.currentCoroutineInfo = nil
 
         guard let next = nextCoroutineInfo() else { return }
 
-        executeCoroutine(next)
+        self.executeCoroutine(next)
     }
 
     public func startCoroutine(_ coroutine: CoroutineClosure, thread: CoroutineThread = .background) {
@@ -76,22 +70,23 @@ open class MonoBehaviour: Behaviour, Instantiable {
     }
 
     public func queueCoroutine(_ coroutine: Coroutine, thread: CoroutineThread = .main) {
-        queuedCoroutineInfo.append((coroutine: coroutine, thread: thread))
-        if queuedCoroutineInfo.count == 1,
-            let next = nextCoroutineInfo() {
-            executeCoroutine(next)
+        self.queuedCoroutineInfo.append((coroutine: coroutine, thread: thread))
+        if self.queuedCoroutineInfo.count == 1,
+           let next = nextCoroutineInfo()
+        {
+            self.executeCoroutine(next)
         }
     }
 
     private func nextCoroutineInfo() -> CoroutineInfo? {
         guard let first = queuedCoroutineInfo.first
-            else { return nil }
+        else { return nil }
         return first
     }
 
     private func executeCoroutine(_ coroutineInfo: CoroutineInfo) {
-        timePassed = 0
-        currentCoroutineInfo = coroutineInfo
+        self.timePassed = 0
+        self.currentCoroutineInfo = coroutineInfo
         switch coroutineInfo.thread {
         case .main:
             coroutineInfo.coroutine.execute()

@@ -1,21 +1,21 @@
-import SceneKit
 import Foundation
+import SceneKit
 
 public typealias Vector4 = SCNVector4
 public typealias Quaternion = SCNQuaternion
 
-extension Vector4 {
-    public static var zero: Vector4 {
+public extension Vector4 {
+    static var zero: Vector4 {
         SCNVector4Zero
     }
 }
 
-extension Quaternion {
-    public static func euler(_ x: Degree, _ y: Degree, _ z: Degree) -> Quaternion {
+public extension Quaternion {
+    static func euler(_ x: Degree, _ y: Degree, _ z: Degree) -> Quaternion {
         Vector3(x.degreesToRadians, y.degreesToRadians, z.degreesToRadians).toQuaternion()
     }
 
-    public func normalized() -> Quaternion {
+    func normalized() -> Quaternion {
         let n = x * x + y * y + z * z + w * w
 
         if n == 1 {
@@ -25,7 +25,7 @@ extension Quaternion {
         return self * (1.0 / sqrt(n))
     }
 
-    public func toEuler() -> Vector3 {
+    func toEuler() -> Vector3 {
         let d = 2.0 * (y * w - x * z)
 
         switch d {
@@ -40,14 +40,16 @@ extension Quaternion {
             let sqx = x * x
             let sqy = y * y
             let sqz = z * z
-            let result = Vector3(atan2(2.0 * (y * z + x * w), (-sqx - sqy + sqz + sqw)),
-                           asin(min(max(-1, d), 1)),
-                           atan2(2.0 * (x * y + z * w), (sqx - sqy - sqz + sqw)))
+            let result = Vector3(
+                atan2(2.0 * (y * z + x * w), -sqx - sqy + sqz + sqw),
+                asin(min(max(-1, d), 1)),
+                atan2(2.0 * (x * y + z * w), sqx - sqy - sqz + sqw)
+            )
             return result
         }
-     }
+    }
 
-    public static func difference(from: Vector3, to: Vector3) -> Quaternion {
+    static func difference(from: Vector3, to: Vector3) -> Quaternion {
         let v0 = from.normalized()
         let v1 = to.normalized()
 
@@ -75,7 +77,7 @@ extension Quaternion {
     /**
      * Spherically interpolates between two quaternions for smooth rotation
      */
-    public static func Slerp(_ a: Quaternion, _ b: Quaternion, _ t: Float) -> Quaternion {
+    static func Slerp(_ a: Quaternion, _ b: Quaternion, _ t: Float) -> Quaternion {
         let clampedT = max(0, min(1, t))
 
         var cosHalfTheta = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w
@@ -119,14 +121,14 @@ extension Quaternion {
     /**
      * Creates a rotation that looks along forward with the head upwards along upwards
      */
-    public static func LookRotation(_ forward: Vector3, _ up: Vector3 = Vector3.up) -> Quaternion {
+    static func LookRotation(_ forward: Vector3, _ up: Vector3 = Vector3.up) -> Quaternion {
         let forwardNorm = forward.normalized()
 
         // Handle case where forward and up are parallel
         if abs(forwardNorm.dot(up)) > 0.999 {
             // Use a different up vector
             let alternateUp = abs(up.y) > 0.999 ? Vector3.forward : Vector3.up
-            return LookRotation(forward, alternateUp)
+            return self.LookRotation(forward, alternateUp)
         }
 
         let right = up.cross(forwardNorm).normalized()
@@ -154,7 +156,7 @@ extension Quaternion {
                 (m10 - m01) / s,
                 0.25 * s
             ).normalized()
-        } else if m00 > m11 && m00 > m22 {
+        } else if m00 > m11, m00 > m22 {
             let s = sqrt(1.0 + m00 - m11 - m22) * 2
             return Quaternion(
                 0.25 * s,
@@ -184,7 +186,7 @@ extension Quaternion {
     /**
      * Returns the identity quaternion (no rotation)
      */
-    public static var identity: Quaternion {
+    static var identity: Quaternion {
         return Quaternion(0, 0, 0, 1)
     }
 }

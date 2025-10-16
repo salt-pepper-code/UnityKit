@@ -1,28 +1,28 @@
 import CoreGraphics
 import Foundation
 
-extension CGFloat {
-    public func toFloat() -> Float {
+public extension CGFloat {
+    func toFloat() -> Float {
         return Float(self)
     }
 
-    public func toDouble() -> Double {
+    func toDouble() -> Double {
         return Double(self)
     }
 }
 
-extension Float {
-    public func toDouble() -> Double {
+public extension Float {
+    func toDouble() -> Double {
         return Double(self)
     }
 
-    public func toCGFloat() -> CGFloat {
+    func toCGFloat() -> CGFloat {
         return CGFloat(self)
     }
 }
 
-extension Double {
-    public func toFloat() -> Float {
+public extension Double {
+    func toFloat() -> Float {
         return Float(self)
     }
 }

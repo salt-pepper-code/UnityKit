@@ -2,25 +2,25 @@ import Foundation
 import SceneKit
 
 public class GameObject: Object {
-    internal var task: DispatchWorkItem?
+    var task: DispatchWorkItem?
 
-    public override var name: String? {
+    override public var name: String? {
         didSet {
-            node.name = name
+            self.node.name = self.name
         }
     }
 
     public var layer: Layer {
         get {
-            return Layer(rawValue: node.categoryBitMask)
+            return Layer(rawValue: self.node.categoryBitMask)
         }
         set {
-            guard node.camera == nil,
-                  node.light == nil
+            guard self.node.camera == nil,
+                  self.node.light == nil
             else { return }
 
-            node.categoryBitMask = newValue.rawValue
-            let childrenCopy = children // Thread-safe read
+            self.node.categoryBitMask = newValue.rawValue
+            let childrenCopy = self.children // Thread-safe read
             childrenCopy.forEach { $0.layer = newValue }
         }
     }
@@ -36,40 +36,44 @@ public class GameObject: Object {
      */
     public var ignoreUpdates = true {
         didSet {
-            if !ignoreUpdates {
-                parent?.ignoreUpdates = false
+            if !self.ignoreUpdates {
+                self.parent?.ignoreUpdates = false
             }
         }
     }
 
-    private(set) public var transform: Transform!
-    private(set) public var renderer: Renderer?
+    public private(set) var transform: Transform!
+    public private(set) var renderer: Renderer?
 
     private var _children = [GameObject]()
-    private let childrenQueue = DispatchQueue(label: "com.unitykit.gameobject.children", qos: .userInitiated, attributes: .concurrent)
+    private let childrenQueue = DispatchQueue(
+        label: "com.unitykit.gameobject.children",
+        qos: .userInitiated,
+        attributes: .concurrent
+    )
 
-    internal var children: [GameObject] {
+    var children: [GameObject] {
         get {
-            childrenQueue.sync { _children }
+            self.childrenQueue.sync { self._children }
         }
         set {
-            childrenQueue.sync(flags: .barrier) { [weak self] in
+            self.childrenQueue.sync(flags: .barrier) { [weak self] in
                 self?._children = newValue
             }
         }
     }
 
-    private(set) public weak var parent: GameObject?
-    private(set) public weak var scene: Scene? {
+    public private(set) weak var parent: GameObject?
+    public private(set) weak var scene: Scene? {
         didSet {
-            guard oldValue != scene
+            guard oldValue != self.scene
             else { return }
 
-            if let parent = parent, let rootGameObject = oldValue?.rootGameObject, parent == rootGameObject {
-                scene?.rootGameObject.addChild(self)
+            if let parent, let rootGameObject = oldValue?.rootGameObject, parent == rootGameObject {
+                self.scene?.rootGameObject.addChild(self)
             }
 
-            movedToScene()
+            self.movedToScene()
         }
     }
 
@@ -77,24 +81,24 @@ public class GameObject: Object {
     private var didStart: Bool = false
     private var waitNextUpdate: Bool = true {
         didSet {
-            let childrenCopy = children // Thread-safe read
-            childrenCopy.forEach { $0.waitNextUpdate = waitNextUpdate }
+            let childrenCopy = self.children // Thread-safe read
+            childrenCopy.forEach { $0.waitNextUpdate = self.waitNextUpdate }
         }
     }
 
     public var activeInHierarchy: Bool {
-        if let parent = parent {
-            return activeSelf && parent.activeInHierarchy
+        if let parent {
+            return self.activeSelf && parent.activeInHierarchy
         }
-        return activeSelf
+        return self.activeSelf
     }
 
-    private(set) public var activeSelf: Bool {
+    public private(set) var activeSelf: Bool {
         get {
-            return !node.isHidden
+            return !self.node.isHidden
         }
         set {
-            node.isHidden = !newValue
+            self.node.isHidden = !newValue
 
             for component in components {
                 guard let behaviour = component as? Behaviour
@@ -107,19 +111,19 @@ public class GameObject: Object {
 
     public var enabled: Bool {
         get {
-            return activeSelf
+            return self.activeSelf
         }
         set {
-            activeSelf = newValue
+            self.activeSelf = newValue
         }
     }
 
     public var boundingBox: BoundingBox {
-        return node.boundingBox
+        return self.node.boundingBox
     }
 
     public var boundingSphere: BoundingSphere {
-        return node.boundingSphere
+        return self.node.boundingSphere
     }
 
     public convenience init?(
@@ -150,7 +154,7 @@ public class GameObject: Object {
 
         referenceNode.load()
 
-        if let nodeName = nodeName {
+        if let nodeName {
             guard let node = referenceNode.childNodes.filter({ $0.name == nodeName }).first
             else { return nil }
 
@@ -169,31 +173,31 @@ public class GameObject: Object {
     public init(_ node: SCNNode) {
         self.node = node
         super.init()
-        initialize()
+        self.initialize()
         Debug.debug("GameObject[\(self.name ?? "unnamed")].init(_:)")
-        awake()
+        self.awake()
     }
 
-    internal func initialize() {
-        self.name = node.name ?? "No name"
-        self.layer = .`default`
-        self.transform = addComponent(external: false, type: Transform.self)
+    func initialize() {
+        self.name = self.node.name ?? "No name"
+        self.layer = .default
+        self.transform = self.addComponent(external: false, type: Transform.self)
 
         if let geometry = node.geometry {
-            let meshFilter = addComponent(external: false, type: MeshFilter.self)
+            let meshFilter = self.addComponent(external: false, type: MeshFilter.self)
             meshFilter.mesh = Mesh(geometry)
 
-            self.renderer = addComponent(external: false, type: Renderer.self)
+            self.renderer = self.addComponent(external: false, type: Renderer.self)
 
             self.renderer?.materials = geometry.materials.map { Material($0) }
         }
 
         if let camera = node.camera {
-            addComponent(external: false, type: Camera.self).scnCamera = camera
+            self.addComponent(external: false, type: Camera.self).scnCamera = camera
         }
 
         if let light = node.light {
-            addComponent(external: false, type: Light.self).scnLight = light
+            self.addComponent(external: false, type: Light.self).scnLight = light
         }
 
         GameObject.convertAllChildToGameObjects(self)
@@ -203,47 +207,46 @@ public class GameObject: Object {
     public required init() {
         self.node = SCNNode()
         super.init()
-        self.transform = addComponent(external: false, type: Transform.self)
+        self.transform = self.addComponent(external: false, type: Transform.self)
         Debug.debug("GameObject[\(self.name ?? "unnamed")].init()")
-        awake()
+        self.awake()
     }
 
-
-    public override func destroy() {
+    override public func destroy() {
         super.destroy()
-        parent?.removeChild(self)
+        self.parent?.removeChild(self)
     }
 
     public func instantiate() -> GameObject {
-        let cloneNode = node.deepClone()
+        let cloneNode = self.node.deepClone()
         let clone = GameObject(cloneNode)
 
-        if let name = name {
+        if let name {
             clone.name = "\(name) Clone"
         }
 
-        clone.tag = tag
-        clone.layer = layer
+        clone.tag = self.tag
+        clone.layer = self.layer
 
-        components.forEach {
-            if let component = $0 as? Component & Instantiable {
+        for item in components {
+            if let component = item as? Component & Instantiable {
                 clone.addComponent(component.instantiate(gameObject: clone), gameObject: clone)
             }
         }
         return clone
     }
 
-    internal func shouldIgnoreUpdates() -> Bool {
+    func shouldIgnoreUpdates() -> Bool {
         return components.first(where: { !$0.ignoreUpdates }) == nil
     }
 
-    internal func setScene(_ scene: Scene) {
+    func setScene(_ scene: Scene) {
         self.scene = scene
-        let childrenCopy = children // Thread-safe read
+        let childrenCopy = self.children // Thread-safe read
         childrenCopy.forEach { $0.setScene(scene) }
     }
 
-    internal override func movedToScene() {
+    override func movedToScene() {
         components.forEach { $0.movedToScene() }
     }
 
@@ -253,57 +256,57 @@ public class GameObject: Object {
 
     //Update
 
-    public override func awake() {
-        guard !didAwake
+    override public func awake() {
+        guard !self.didAwake
         else { return }
 
         Debug.debug("GameObject[\(self.name ?? "unnamed")].awake()")
-        didAwake = true
+        self.didAwake = true
         components.forEach { $0.awake() }
-        let childrenCopy = children // Thread-safe read
+        let childrenCopy = self.children // Thread-safe read
         childrenCopy.forEach { $0.awake() }
     }
 
-    public override func start() {
-        guard didAwake,
-              !didStart,
-              activeSelf
+    override public func start() {
+        guard self.didAwake,
+              !self.didStart,
+              self.activeSelf
         else { return }
 
-        guard !waitNextUpdate else {
-            waitNextUpdate = false
+        guard !self.waitNextUpdate else {
+            self.waitNextUpdate = false
             return
         }
 
         Debug.debug("GameObject[\(self.name ?? "unnamed")].start()")
-        didStart = true
+        self.didStart = true
         components.forEach { $0.start() }
-        let childrenCopy = children // Thread-safe read
+        let childrenCopy = self.children // Thread-safe read
         childrenCopy.forEach { $0.start() }
-        setActive(true)
+        self.setActive(true)
     }
 
     override func internalUpdate() {
-        guard didAwake,
-              didStart,
-              activeSelf
+        guard self.didAwake,
+              self.didStart,
+              self.activeSelf
         else { return }
 
         components
             .compactMap { $0 as? MonoBehaviour }
-            .filter { $0.enabled }
+            .filter(\.enabled)
             .forEach { $0.internalUpdate() }
 
-        let childrenCopy = children // Thread-safe read
+        let childrenCopy = self.children // Thread-safe read
         childrenCopy
             .filter { !$0.ignoreUpdates }
             .forEach { $0.internalUpdate() }
     }
 
-    public override func preUpdate() {
-        guard didAwake,
-              didStart,
-              activeSelf
+    override public func preUpdate() {
+        guard self.didAwake,
+              self.didStart,
+              self.activeSelf
         else { return }
 
         Debug.debug("GameObject[\(self.name ?? "unnamed")].preUpdate()")
@@ -315,19 +318,19 @@ public class GameObject: Object {
             }
             .forEach { $0.preUpdate() }
 
-        let childrenCopy = children // Thread-safe read
+        let childrenCopy = self.children // Thread-safe read
         childrenCopy
             .filter { !$0.ignoreUpdates }
             .forEach { $0.preUpdate() }
     }
 
-    public override func update() {
-        guard didAwake,
-              activeSelf
+    override public func update() {
+        guard self.didAwake,
+              self.activeSelf
         else { return }
 
-        guard didStart else {
-            start()
+        guard self.didStart else {
+            self.start()
             return
         }
 
@@ -340,16 +343,16 @@ public class GameObject: Object {
             }
             .forEach { $0.update() }
 
-        let childrenCopy = children // Thread-safe read
+        let childrenCopy = self.children // Thread-safe read
         childrenCopy
             .filter { !$0.ignoreUpdates || !$0.didStart }
             .forEach { $0.update() }
     }
 
-    public override func fixedUpdate() {
-        guard didAwake,
-              didStart,
-              activeSelf
+    override public func fixedUpdate() {
+        guard self.didAwake,
+              self.didStart,
+              self.activeSelf
         else { return }
 
         Debug.debug("GameObject[\(self.name ?? "unnamed")].fixedUpdate()")
@@ -361,32 +364,43 @@ public class GameObject: Object {
             }
             .forEach { $0.fixedUpdate() }
 
-        let childrenCopy = children // Thread-safe read
+        let childrenCopy = self.children // Thread-safe read
         childrenCopy
             .filter { !$0.ignoreUpdates }
             .forEach { $0.fixedUpdate() }
     }
 
     public func removeFromParent() {
-        parent?.removeChild(self)
+        self.parent?.removeChild(self)
     }
 
     // Component
 
-    @discardableResult internal override func addComponent<T: Component>(
+    @discardableResult override func addComponent<T: Component>(
         _ component: T,
         gameObject: GameObject?
     ) -> T {
-        return super.addComponent(component, gameObject: gameObject)
+        let result = super.addComponent(component, gameObject: gameObject)
+
+        if self.didAwake, self.activeSelf {
+            component.awake()
+        }
+        
+        // If GameObject has already started, call start() on the new component
+        if self.didStart, self.activeSelf {
+            component.start()
+        }
+
+        return result
     }
 
-    @discardableResult public override func addComponent<T: Component>(_ type: T.Type) -> T {
+    @discardableResult override public func addComponent<T: Component>(_ type: T.Type) -> T {
         let component = super.addComponent(external: true, type: type, gameObject: self)
-        self.ignoreUpdates = shouldIgnoreUpdates()
+        self.ignoreUpdates = self.shouldIgnoreUpdates()
         return component
     }
 
-    @discardableResult internal override func addComponent<T: Component>(
+    @discardableResult override func addComponent<T: Component>(
         external: Bool = true,
         type: T.Type,
         gameObject: GameObject? = nil
@@ -395,12 +409,12 @@ public class GameObject: Object {
     }
 
     public func getComponentInChild<T: Component>(_ type: T.Type) -> T? {
-        for child in children {
+        for child in self.children {
             if let component = child.getComponent(type) {
                 return component
             }
         }
-        for child in children {
+        for child in self.children {
             if let component = child.getComponentInChild(type) {
                 return component
             }
@@ -409,7 +423,7 @@ public class GameObject: Object {
     }
 
     public func getComponentsInChild<T: Component>(_ type: T.Type) -> [T] {
-        return children.flatMap { (child) -> [T] in
+        return self.children.flatMap { child -> [T] in
             child.getComponents(type) + child.getComponentsInChild(type)
         }
     }
@@ -417,14 +431,14 @@ public class GameObject: Object {
     // Child
 
     public func addToScene(_ scene: Scene) {
-        setScene(scene)
-        parent = scene.rootGameObject
+        self.setScene(scene)
+        self.parent = scene.rootGameObject
 
         scene.rootGameObject.addChild(self)
     }
 
     public func addChild(_ child: GameObject) {
-        if let scene = scene {
+        if let scene {
             child.setScene(scene)
         }
         child.parent = self
@@ -432,38 +446,38 @@ public class GameObject: Object {
             self.ignoreUpdates = false
         }
 
-        childrenQueue.sync(flags: .barrier) {
-            if _children.first(where: { $0 == child }) == nil {
-                _children.append(child)
+        self.childrenQueue.sync(flags: .barrier) {
+            if self._children.first(where: { $0 == child }) == nil {
+                self._children.append(child)
             }
         }
 
-        if child.node.parent != node {
-            node.addChildNode(child.node)
+        if child.node.parent != self.node {
+            self.node.addChildNode(child.node)
         }
     }
 
     public func getChildren() -> [GameObject] {
-        return childrenQueue.sync { _children }
+        return self.childrenQueue.sync { self._children }
     }
 
-    internal func getChildNodes() -> [SCNNode] {
-        return node.childNodes
+    func getChildNodes() -> [SCNNode] {
+        return self.node.childNodes
     }
 
     public func getChild(_ index: Int) -> GameObject? {
-        return childrenQueue.sync {
-            guard index < _children.count else { return nil }
-            return _children[index]
+        return self.childrenQueue.sync {
+            guard index < self._children.count else { return nil }
+            return self._children[index]
         }
     }
 
     public func removeChild(_ child: GameObject) {
-        childrenQueue.sync(flags: .barrier) {
+        self.childrenQueue.sync(flags: .barrier) {
             if let index = _children.firstIndex(where: { $0 == child }) {
-                let gameObject = _children[index]
+                let gameObject = self._children[index]
                 gameObject.node.removeFromParentNode()
-                _children.remove(at: index)
+                self._children.remove(at: index)
             }
         }
     }

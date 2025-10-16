@@ -1,14 +1,14 @@
 import SpriteKit
 
-extension UI {
-    public class Slider: UIBehaviour {
+public extension UI {
+    class Slider: UIBehaviour {
         public var fillImage: Image?
         public var minValue: Float = 0
         public var maxValue: Float = 1
         public var value: Float = 0 {
             didSet {
-                value.clamp(minValue...maxValue)
-                updateValue()
+                self.value.clamp(self.minValue...self.maxValue)
+                self.updateValue()
             }
         }
 
@@ -25,7 +25,7 @@ extension UI {
         }
 
         private func updateValue() {
-            fillImage?.fillAmount = ((value - minValue) / (maxValue - minValue))
+            self.fillImage?.fillAmount = ((self.value - self.minValue) / (self.maxValue - self.minValue))
         }
     }
 }

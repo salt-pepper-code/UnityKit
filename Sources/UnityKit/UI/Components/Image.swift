@@ -1,7 +1,7 @@
 import SpriteKit
 
-extension UI {
-    public final class Image: UIBehaviour {
+public extension UI {
+    final class Image: UIBehaviour {
         public enum ImageType {
             case simple(Size)
             case filled(Size)
@@ -26,37 +26,37 @@ extension UI {
 
         public var type: ImageType = .filled(.zero) {
             didSet {
-                updateImage()
+                self.updateImage()
             }
         }
 
         public var sourceImage: UIImage? {
             didSet {
-                updateImage()
+                self.updateImage()
             }
         }
 
         public var color: Color = .white {
             didSet {
-                updateImage()
+                self.updateImage()
             }
         }
 
         public var fillMethod: FillMethod = .horizontal(.bottom) {
             didSet {
-                updateImage()
+                self.updateImage()
             }
         }
 
         public var fillAmount: Float = 1 {
             didSet {
-                updateImage()
+                self.updateImage()
             }
         }
 
         public var clockwise: Bool = false {
             didSet {
-                updateImage()
+                self.updateImage()
             }
         }
 
@@ -78,49 +78,49 @@ extension UI {
                 canvasObject.pause()
             }
 
-            spriteNode?.removeFromParent()
+            self.spriteNode?.removeFromParent()
 
-            guard let sourceImage = sourceImage
+            guard let sourceImage
             else { return }
 
             var displayImage = sourceImage
 
-            if color != .white {
-                displayImage = displayImage.replaceColor(with: color)
+            if self.color != .white {
+                displayImage = displayImage.replaceColor(with: self.color)
             }
 
             let texture: SKTexture
 
-            switch type {
-            case let .simple(size):
+            switch self.type {
+            case .simple(let size):
                 texture = SKTexture(image: displayImage.resize(to: size.toCGSize()))
 
-            case let .filled(size):
+            case .filled(let size):
                 if size == .zero {
                     displayImage = displayImage.resize(to: skScene.size)
                 } else {
                     displayImage = displayImage.resize(to: size.toCGSize())
                 }
 
-                switch fillMethod {
-                case let .radial360(fillOrigin):
-                    let to = fillAmount.clamp01() * 360
+                switch self.fillMethod {
+                case .radial360(let fillOrigin):
+                    let to = self.fillAmount.clamp01() * 360
                     displayImage = displayImage.fill(
                         fromAngle: 0,
                         toAngle: to,
                         fillOrigin: fillOrigin,
-                        clockwise: clockwise
+                        clockwise: self.clockwise
                     )
                 default:
                     break
                 }
                 texture = SKTexture(image: displayImage)
             }
-            
+
             let sprite = SKSpriteNode(texture: texture)
             sprite.anchorPoint = CGPoint(x: 0, y: 0)
             skScene.addChild(sprite)
-            spriteNode = sprite
+            self.spriteNode = sprite
         }
 
         public func loadImage(fileName: String, type: ImageType, color: Color = .white, bundle: Bundle = Bundle.main) {

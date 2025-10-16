@@ -37,7 +37,7 @@ public class Physics {
         layerMask: GameObject.Layer = .all,
         in scene: Scene? = Scene.shared
     ) -> RaycastHit? {
-        guard let scene = scene else { return nil }
+        guard let scene else { return nil }
 
         let normalizedDirection = direction.normalized()
         var closestHit: RaycastHit?
@@ -96,7 +96,7 @@ public class Physics {
         layerMask: GameObject.Layer = .all,
         in scene: Scene? = Scene.shared
     ) -> [RaycastHit] {
-        guard let scene = scene else { return [] }
+        guard let scene else { return [] }
 
         let normalizedDirection = direction.normalized()
         var results: [RaycastHit] = []
@@ -228,7 +228,7 @@ public class Physics {
         layerMask: GameObject.Layer = .all,
         in scene: Scene? = Scene.shared
     ) -> [Collider] {
-        guard let scene = scene
+        guard let scene
         else { return [] }
 
         let boundingSphere = (center: position, radius: radius)
@@ -246,7 +246,7 @@ public class Physics {
 
                 boundingBox = (min: min, max: max)
 
-                return boxIntersectsSphere(box: boundingBox, sphere: boundingSphere)
+                return self.boxIntersectsSphere(box: boundingBox, sphere: boundingSphere)
             }
 
         return colliders

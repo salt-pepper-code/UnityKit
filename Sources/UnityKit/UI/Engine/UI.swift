@@ -1,2 +1,1 @@
-public enum UI {
-}
+public enum UI {}

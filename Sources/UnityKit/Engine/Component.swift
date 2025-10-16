@@ -1,6 +1,6 @@
 import Foundation
 
-internal enum ComponentOrder: Int {
+enum ComponentOrder: Int {
     case transform
     case priority
     case renderer
@@ -21,23 +21,24 @@ open class Component: Object, Hashable {
     /**
      The game object this component is attached to. A component is always attached to a game object.
      */
-    internal(set) public weak var gameObject: GameObject?
-    internal var implementsPreUpdate = true
-    internal var implementsUpdate = true
-    internal var implementsFixedUpdate = true
-    internal var order: ComponentOrder {
+    public internal(set) weak var gameObject: GameObject?
+    var implementsPreUpdate = true
+    var implementsUpdate = true
+    var implementsFixedUpdate = true
+    var order: ComponentOrder {
         return .other
     }
+
     public var ignoreUpdates: Bool {
         return true
     }
 
     public var transform: Transform? {
-        return gameObject?.transform
+        return self.gameObject?.transform
     }
 
     /// Returns the ObjectIdentifier for this Component type, used for cache key
-    internal static var cacheKey: ObjectIdentifier {
+    static var cacheKey: ObjectIdentifier {
         return ObjectIdentifier(Self.self)
     }
 
@@ -51,24 +52,24 @@ open class Component: Object, Hashable {
         Debug.debug("\(Self.self).init()")
     }
 
-    open override func preUpdate() {
+    override open func preUpdate() {
         Debug.debug("\(Self.self).preUpdate()")
-        implementsPreUpdate = false
+        self.implementsPreUpdate = false
     }
 
-    open override func update() {
+    override open func update() {
         Debug.debug("\(Self.self).update()")
-        implementsUpdate = false
+        self.implementsUpdate = false
     }
 
-    open override func fixedUpdate() {
+    override open func fixedUpdate() {
         Debug.debug("\(Self.self).fixedUpdate()")
-        implementsFixedUpdate = false
+        self.implementsFixedUpdate = false
     }
 
-    open override func destroy() {
+    override open func destroy() {
         Debug.debug("\(Self.self).destroy()")
-        gameObject?.removeComponent(self)
+        self.gameObject?.removeComponent(self)
     }
 
     open func onDestroy() {
@@ -76,26 +77,26 @@ open class Component: Object, Hashable {
     }
 
     public func remove() {
-        gameObject?.removeComponent(self)
+        self.gameObject?.removeComponent(self)
     }
 
-    public override func removeComponent(_ component: Component) {
-        gameObject?.removeComponent(component)
+    override public func removeComponent(_ component: Component) {
+        self.gameObject?.removeComponent(component)
     }
 
-    public override func removeComponentsOfType(_ type: Component.Type) {
-        gameObject?.removeComponentsOfType(type)
+    override public func removeComponentsOfType(_ type: Component.Type) {
+        self.gameObject?.removeComponentsOfType(type)
     }
 
-    open override func getComponent<T: Component>(_ type: T.Type) -> T? {
-        return gameObject?.getComponent(type)
+    override open func getComponent<T: Component>(_ type: T.Type) -> T? {
+        return self.gameObject?.getComponent(type)
     }
 
-    open override func getComponents<T: Component>(_ type: T.Type) -> [T] {
-        return gameObject?.getComponents(type) ?? []
+    override open func getComponents<T: Component>(_ type: T.Type) -> [T] {
+        return self.gameObject?.getComponents(type) ?? []
     }
 
-    @discardableResult open override func addComponent<T: Component>(_ type: T.Type) -> T {
-        return (gameObject ?? GameObject()).addComponent(type)
+    @discardableResult override open func addComponent<T: Component>(_ type: T.Type) -> T {
+        return (self.gameObject ?? GameObject()).addComponent(type)
     }
 }

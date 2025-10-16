@@ -4,8 +4,8 @@ import SceneKit
  A sphere-shaped primitive collider.
  */
 public final class SphereCollider: Collider {
-    private(set) public var radius: Float?
-    private(set) public var center: Vector3?
+    public private(set) var radius: Float?
+    public private(set) var center: Vector3?
 
     @discardableResult public func set(radius: Float?) -> SphereCollider {
         self.radius = radius
@@ -31,7 +31,7 @@ public final class SphereCollider: Collider {
     }
 
     override func constructBody() {
-        guard let gameObject = gameObject,
+        guard let gameObject,
               let name = gameObject.name
         else { return }
 
@@ -42,7 +42,7 @@ public final class SphereCollider: Collider {
             boundingBox.max.y - boundingBox.min.y,
             boundingBox.max.z - boundingBox.min.z
         )
-        let calculatedRadius = radius ?? max(boundingSize.x, boundingSize.y, boundingSize.z) / 2.0
+        let calculatedRadius = self.radius ?? max(boundingSize.x, boundingSize.y, boundingSize.z) / 2.0
 
         // Create sphere geometry
         let sphere = SCNSphere(radius: CGFloat(calculatedRadius))
@@ -51,11 +51,11 @@ public final class SphereCollider: Collider {
         // Create physics shape with sphere geometry
         var options: [SCNPhysicsShape.Option: Any] = [
             .type: SCNPhysicsShape.ShapeType.boundingBox,
-            .scale: gameObject.transform.localScale.x
+            .scale: gameObject.transform.localScale.x,
         ]
 
         // Apply center offset if specified
-        if let center = center {
+        if let center {
             let centerOffset = SCNVector3(center.x, center.y, center.z)
             options[.collisionMargin] = centerOffset
         }

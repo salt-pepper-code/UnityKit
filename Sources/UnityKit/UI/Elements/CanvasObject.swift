@@ -1,8 +1,8 @@
-import SpriteKit
 import SceneKit
+import SpriteKit
 
 public class CanvasObject: GameObject {
-    internal var skScene: SKScene {
+    var skScene: SKScene {
         guard let scene = node.geometry?.firstMaterial?.diffuse.contents as? SKScene else {
             fatalError("Should have a scene")
         }
@@ -19,16 +19,16 @@ public class CanvasObject: GameObject {
             }
         let result = CanvasObject.makeCanvas(worldSize: worldSize, pixelPerUnit: pixelPerUnit)
         node = result.0
-        skView = result.1
-        pause()
+        self.skView = result.1
+        self.pause()
         return self
     }
 
     public required init(worldSize: Size, pixelPerUnit: Float = 50) {
         let result = CanvasObject.makeCanvas(worldSize: worldSize, pixelPerUnit: pixelPerUnit)
         super.init(result.0)
-        skView = result.1
-        pause()
+        self.skView = result.1
+        self.pause()
         addComponent(external: false, type: UI.Canvas.self, gameObject: self)
             .configure {
                 $0.worldSize = worldSize
@@ -37,19 +37,19 @@ public class CanvasObject: GameObject {
     }
 
     public func pixelSize() -> Size {
-        return skScene.size.toSize()
+        return self.skScene.size.toSize()
     }
 
     public required init() {
         fatalError("init() has not been implemented, use init(size:)")
     }
 
-    internal func pause() {
-        skView?.isPaused = true
+    func pause() {
+        self.skView?.isPaused = true
     }
 
-    internal func resume() {
-        skView?.isPaused = false
+    func resume() {
+        self.skView?.isPaused = false
     }
 
     private static func makeCanvas(worldSize: Size, pixelPerUnit: Float) -> (SCNNode, SKView) {

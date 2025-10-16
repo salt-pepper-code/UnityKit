@@ -4,8 +4,8 @@ import SceneKit
  A box-shaped primitive collider.
  */
 public final class BoxCollider: Collider {
-    private(set) public var size: Vector3Nullable?
-    private(set) public var center: Vector3Nullable?
+    public private(set) var size: Vector3Nullable?
+    public private(set) var center: Vector3Nullable?
 
     @discardableResult public func set(size: Vector3Nullable?) -> BoxCollider {
         self.size = size
@@ -31,7 +31,7 @@ public final class BoxCollider: Collider {
     }
 
     override func constructBody() {
-        guard let gameObject = gameObject,
+        guard let gameObject,
               let name = gameObject.name
         else { return }
 
@@ -51,7 +51,7 @@ public final class BoxCollider: Collider {
             boundingBox.max.z = boundingCenter.z + (z / 2)
         }
 
-        if let center = center {
+        if let center {
             boundingBox = Volume.moveCenter(boundingBox, center: center)
         }
 
@@ -63,7 +63,7 @@ public final class BoxCollider: Collider {
             Vector3(boundingBox.max.x, boundingBox.min.y, boundingBox.max.z),
             Vector3(boundingBox.max.x, boundingBox.max.y, boundingBox.max.z),
             Vector3(boundingBox.min.x, boundingBox.max.y, boundingBox.max.z),
-            Vector3(boundingBox.min.x, boundingBox.min.y, boundingBox.max.z)
+            Vector3(boundingBox.min.x, boundingBox.min.y, boundingBox.max.z),
         ]
 
         let indices: [Int16] = [
@@ -78,7 +78,7 @@ public final class BoxCollider: Collider {
             0, 7, 6,
             0, 6, 1,
             4, 5, 6,
-            4, 6, 7
+            4, 6, 7,
         ]
 
         let normals = [
@@ -89,7 +89,7 @@ public final class BoxCollider: Collider {
             Vector3(0, 0, 1),
             Vector3(0, 0, 1),
             Vector3(0, 0, 1),
-            Vector3(0, 0, 1)
+            Vector3(0, 0, 1),
         ]
 
         let vertexData = Data(bytes: vertices, count: vertices.count * MemoryLayout<Vector3>.size)
@@ -129,8 +129,10 @@ public final class BoxCollider: Collider {
 
         physicsShape = SCNPhysicsShape(
             geometry: geometry,
-            options: [.type: SCNPhysicsShape.ShapeType.boundingBox,
-                      .scale: gameObject.transform.localScale.x]
+            options: [
+                .type: SCNPhysicsShape.ShapeType.boundingBox,
+                .scale: gameObject.transform.localScale.x,
+            ]
         )
     }
 }

@@ -14,10 +14,10 @@ open class Scene: Identifiable, Equatable {
     private var lastTimeStamp: TimeInterval?
     public let scnScene: SCNScene
     public let rootGameObject: GameObject
-    internal let shadowCastingAllowed: Bool
+    let shadowCastingAllowed: Bool
     public let id: String
 
-    private(set) public static var shared: Scene?
+    public private(set) static var shared: Scene?
 
     public convenience init?(
         sceneName: String,
@@ -101,7 +101,7 @@ open class Scene: Identifiable, Equatable {
 
             let cameraComponent = cameraObject.addComponent(Camera.self)
             cameraObject.node.camera = cameraComponent.scnCamera
-            
+
             cameraObject.transform.position = Vector3(0, 10, 20)
         }
 
@@ -117,29 +117,30 @@ open class Scene: Identifiable, Equatable {
         }
     }
 
-    internal func disableCastsShadow(gameObject: GameObject) {
-        gameObject.getChildren().forEach {
-            $0.node.castsShadow = false
-            $0.node.light?.castsShadow = false
-            disableCastsShadow(gameObject: $0)
+    func disableCastsShadow(gameObject: GameObject) {
+        for getChild in gameObject.getChildren() {
+            getChild.node.castsShadow = false
+            getChild.node.light?.castsShadow = false
+            self.disableCastsShadow(gameObject: getChild)
         }
     }
+
     //
 
     public func getInstanceID() -> String {
-        id
+        self.id
     }
 
-    internal func preUpdate(updateAtTime time: TimeInterval) {
+    func preUpdate(updateAtTime time: TimeInterval) {
         guard let _ = lastTimeStamp else { return }
 
-        rootGameObject.preUpdate()
+        self.rootGameObject.preUpdate()
     }
 
-    internal func update(updateAtTime time: TimeInterval) {
-        guard let lastTimeStamp = lastTimeStamp else {
+    func update(updateAtTime time: TimeInterval) {
+        guard let lastTimeStamp else {
             self.lastTimeStamp = time
-            rootGameObject.start()
+            self.rootGameObject.start()
             return
         }
 
@@ -152,26 +153,26 @@ open class Scene: Identifiable, Equatable {
         Time.time += Time.deltaTime
         Time.frameCount += 1
 
-        rootGameObject.update()
-        rootGameObject.internalUpdate()
+        self.rootGameObject.update()
+        self.rootGameObject.internalUpdate()
         self.lastTimeStamp = time
     }
 
-    internal func fixedUpdate(updateAtTime time: TimeInterval) {
+    func fixedUpdate(updateAtTime time: TimeInterval) {
         guard let _ = lastTimeStamp else { return }
-        rootGameObject.fixedUpdate()
+        self.rootGameObject.fixedUpdate()
     }
 
     //
 
     public func clearScene() {
-        let copy = rootGameObject.getChildren()
+        let copy = self.rootGameObject.getChildren()
         copy.forEach { destroy($0) }
     }
 
     public func addGameObject(_ gameObject: GameObject) {
         gameObject.addToScene(self)
-        if shadowCastingAllowed == false {
+        if self.shadowCastingAllowed == false {
             gameObject.node.castsShadow = false
         }
     }
@@ -188,20 +189,20 @@ open class Scene: Identifiable, Equatable {
 // Debug
 extension Scene {
     public func printGameObjectsIgnoreUpdates() {
-        gameObjectCount = 0
-        ignoreUpdatesCount = 0
-        printGameObjectsIgnoreUpdates(for: rootGameObject)
-        Debug.info("ignoreUpdates count: \(ignoreUpdatesCount) / \(gameObjectCount)")
+        self.gameObjectCount = 0
+        self.ignoreUpdatesCount = 0
+        self.printGameObjectsIgnoreUpdates(for: self.rootGameObject)
+        Debug.info("ignoreUpdates count: \(self.ignoreUpdatesCount) / \(self.gameObjectCount)")
     }
 
     private func printGameObjectsIgnoreUpdates(for gameObject: GameObject) {
-        gameObject.getChildren().forEach {
-            gameObjectCount += 1
-            if $0.ignoreUpdates {
-                ignoreUpdatesCount += 1
+        for getChild in gameObject.getChildren() {
+            self.gameObjectCount += 1
+            if getChild.ignoreUpdates {
+                self.ignoreUpdatesCount += 1
             }
-            Debug.info("\($0.name ?? "No name") -> ignoreUpdates: \($0.ignoreUpdates)")
-            printGameObjectsIgnoreUpdates(for: $0)
+            Debug.info("\(getChild.name ?? "No name") -> ignoreUpdates: \(getChild.ignoreUpdates)")
+            self.printGameObjectsIgnoreUpdates(for: getChild)
         }
     }
 }

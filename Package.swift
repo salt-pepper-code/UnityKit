@@ -9,14 +9,24 @@ let package = Package(
         .library(name: "UnityKit", targets: ["UnityKit"]),
     ],
     dependencies: [
-
     ],
     targets: [
-        .target(name: "UnityKit", dependencies: [], path: "Sources"),
+        .target(
+            name: "UnityKit",
+            dependencies: [],
+            path: "Sources",
+            swiftSettings: [
+                .define("UNITYKIT_EXTERNAL"),
+            ]
+        ),
         .testTarget(
             name: "UnityKitTests",
             dependencies: ["UnityKit"],
-            path: "Tests"
+            path: "Tests",
+            exclude: ["TESTING_GUIDE.md"],
+            swiftSettings: [
+                .define("UNITYKIT_EXTERNAL"),
+            ]
         ),
     ]
 )

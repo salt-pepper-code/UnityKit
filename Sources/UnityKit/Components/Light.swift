@@ -5,10 +5,11 @@ import SceneKit
  Script interface for light components.
  */
 public final class Light: Component {
-    override internal var order: ComponentOrder {
+    override var order: ComponentOrder {
         .priority
     }
-    internal(set) public var scnLight = SCNLight()
+
+    public internal(set) var scnLight = SCNLight()
 
     /**
      Specifies the receiver's type.
@@ -16,8 +17,8 @@ public final class Light: Component {
      **Defaults to SCNLightTypeOmni on iOS 8 and later, and on macOS 10.10 and later (otherwise defaults to SCNLightTypeAmbient).**
      */
     public var type: SCNLight.LightType {
-        get { return scnLight.type }
-        set { scnLight.type = newValue }
+        get { return self.scnLight.type }
+        set { self.scnLight.type = newValue }
     }
 
     /**
@@ -26,8 +27,8 @@ public final class Light: Component {
      **The initial value is a NSColor. The renderer multiplies the light's color is by the color derived from the light's temperature.**
      */
     public var color: Any {
-        get { return scnLight.color }
-        set { scnLight.color = newValue }
+        get { return self.scnLight.color }
+        set { self.scnLight.color = newValue }
     }
 
     /**
@@ -36,8 +37,8 @@ public final class Light: Component {
      **This specifies the temperature of the light in Kelvin. The renderer multiplies the light's color by the color derived from the light's temperature. Defaults to 6500 (pure white). Animatable.**
      */
     public var temperature: CGFloat {
-        get { return scnLight.temperature }
-        set { scnLight.temperature = newValue }
+        get { return self.scnLight.temperature }
+        set { self.scnLight.temperature = newValue }
     }
 
     /**
@@ -46,16 +47,16 @@ public final class Light: Component {
      **This intensity is used to modulate the light color. When used with a physically-based material, this corresponds to the luminous flux of the light, expressed in lumens (lm). Defaults to 1000. Animatable.**
      */
     public var intensity: CGFloat {
-        get { return scnLight.intensity }
-        set { scnLight.intensity = newValue }
+        get { return self.scnLight.intensity }
+        set { self.scnLight.intensity = newValue }
     }
 
     /**
      Determines the name of the receiver.
      */
-    public override var name: String? {
+    override public var name: String? {
         didSet {
-            scnLight.name = name
+            self.scnLight.name = self.name
         }
     }
 
@@ -65,8 +66,8 @@ public final class Light: Component {
      **Shadows are only supported by spot and directional lights.**
      */
     public var castsShadow: Bool {
-        get { return scnLight.castsShadow }
-        set { scnLight.castsShadow = newValue }
+        get { return self.scnLight.castsShadow }
+        set { self.scnLight.castsShadow = newValue }
     }
 
     /**
@@ -75,16 +76,16 @@ public final class Light: Component {
      **On iOS 9 or earlier and macOS 10.11 or earlier, this defaults to black 50% transparent.**
      */
     public var shadowColor: Any {
-        get { return scnLight.shadowColor }
-        set { scnLight.shadowColor = newValue }
+        get { return self.scnLight.shadowColor }
+        set { self.scnLight.shadowColor = newValue }
     }
 
     /**
      Specifies the sample radius used to render the receiver’s shadow. Default value is 3.0. Animatable.
      */
     public var shadowRadius: CGFloat {
-        get { return scnLight.shadowRadius }
-        set { scnLight.shadowRadius = newValue }
+        get { return self.scnLight.shadowRadius }
+        set { self.scnLight.shadowRadius = newValue }
     }
 
     /**
@@ -93,8 +94,8 @@ public final class Light: Component {
      **The larger the shadow map is the more precise the shadows are but the slower the computation is. If set to {0,0} the size of the shadow map is automatically chosen. Defaults to {0,0}.**
      */
     public var shadowMapSize: CGSize {
-        get { return scnLight.shadowMapSize }
-        set { scnLight.shadowMapSize = newValue }
+        get { return self.scnLight.shadowMapSize }
+        set { self.scnLight.shadowMapSize = newValue }
     }
 
     /**
@@ -104,16 +105,16 @@ public final class Light: Component {
      On macOS 10.12, iOS 10 and greater, when the shadowSampleCount is set to 0, a default sample count is chosen depending on the platform.**
      */
     public var shadowSampleCount: Int {
-        get { return scnLight.shadowSampleCount }
-        set { scnLight.shadowSampleCount = newValue }
+        get { return self.scnLight.shadowSampleCount }
+        set { self.scnLight.shadowSampleCount = newValue }
     }
 
     /**
      Specified the mode to use to cast shadows. See above for the available modes and their description. Defaults to SCNShadowModeForward.
      */
     public var shadowMode: SCNShadowMode {
-        get { return scnLight.shadowMode }
-        set { scnLight.shadowMode = newValue }
+        get { return self.scnLight.shadowMode }
+        set { self.scnLight.shadowMode = newValue }
     }
 
     /**
@@ -121,23 +122,24 @@ public final class Light: Component {
      */
 
     public var shadowBias: CGFloat {
-        get { return scnLight.shadowBias }
-        set { scnLight.shadowBias = newValue }
+        get { return self.scnLight.shadowBias }
+        set { self.scnLight.shadowBias = newValue }
     }
+
     /**
      Specifies if the shadow map projection should be done automatically or manually by the user. Defaults to YES.
      */
     public var automaticallyAdjustsShadowProjection: Bool {
-        get { return scnLight.automaticallyAdjustsShadowProjection }
-        set { scnLight.automaticallyAdjustsShadowProjection = newValue }
+        get { return self.scnLight.automaticallyAdjustsShadowProjection }
+        set { self.scnLight.automaticallyAdjustsShadowProjection = newValue }
     }
 
     /**
      Specifies the maximum distance from the viewpoint from which the shadows for the receiver light won't be computed. Defaults to 100.0.
      */
     public var maximumShadowDistance: CGFloat {
-        get { return scnLight.maximumShadowDistance }
-        set { scnLight.maximumShadowDistance = newValue }
+        get { return self.scnLight.maximumShadowDistance }
+        set { self.scnLight.maximumShadowDistance = newValue }
     }
 
     /**
@@ -145,32 +147,32 @@ public final class Light: Component {
      This is a behavior change from previous releases.
      */
     public var forcesBackFaceCasters: Bool {
-        get { return scnLight.forcesBackFaceCasters }
-        set { scnLight.forcesBackFaceCasters = newValue }
+        get { return self.scnLight.forcesBackFaceCasters }
+        set { self.scnLight.forcesBackFaceCasters = newValue }
     }
 
     /**
      Use the sample distribution of the main rendering to better fit the shadow frusta. Defaults to NO.
      */
     public var sampleDistributedShadowMaps: Bool {
-        get { return scnLight.sampleDistributedShadowMaps }
-        set { scnLight.sampleDistributedShadowMaps = newValue }
+        get { return self.scnLight.sampleDistributedShadowMaps }
+        set { self.scnLight.sampleDistributedShadowMaps = newValue }
     }
 
     /**
      Specifies the number of distinct shadow maps that will be computed for the receiver light. Defaults to 1. Maximum is 4.
      */
     public var shadowCascadeCount: Int {
-        get { return scnLight.shadowCascadeCount }
-        set { scnLight.shadowCascadeCount = newValue }
+        get { return self.scnLight.shadowCascadeCount }
+        set { self.scnLight.shadowCascadeCount = newValue }
     }
 
     /**
      Specifies a factor to interpolate between linear splitting (0) and logarithmic splitting (1). Defaults to 0.15.
      */
     public var shadowCascadeSplittingFactor: CGFloat {
-        get { return scnLight.shadowCascadeSplittingFactor }
-        set { scnLight.shadowCascadeSplittingFactor = newValue }
+        get { return self.scnLight.shadowCascadeSplittingFactor }
+        set { self.scnLight.shadowCascadeSplittingFactor = newValue }
     }
 
     /**
@@ -179,15 +181,15 @@ public final class Light: Component {
      **This is only applicable for directional lights.**
      */
     public var orthographicScale: CGFloat {
-        get { return scnLight.orthographicScale }
-        set { scnLight.orthographicScale = newValue }
+        get { return self.scnLight.orthographicScale }
+        set { self.scnLight.orthographicScale = newValue }
     }
 
     public var zRange: ClosedRange<CGFloat> {
-        get { return scnLight.zNear...scnLight.zFar }
+        get { return self.scnLight.zNear...self.scnLight.zFar }
         set {
-            scnLight.zNear = newValue.lowerBound
-            scnLight.zFar = newValue.upperBound
+            self.scnLight.zNear = newValue.lowerBound
+            self.scnLight.zFar = newValue.upperBound
         }
     }
 
@@ -195,10 +197,10 @@ public final class Light: Component {
      The distance at which the attenuation starts and ends (Omni or Spot light types only). Animatable. Defaults to 0.
      */
     public var attenuationDistance: ClosedRange<CGFloat> {
-        get { return scnLight.attenuationStartDistance...scnLight.attenuationEndDistance }
+        get { return self.scnLight.attenuationStartDistance...self.scnLight.attenuationEndDistance }
         set {
-            scnLight.attenuationStartDistance = newValue.lowerBound
-            scnLight.attenuationEndDistance = newValue.upperBound
+            self.scnLight.attenuationStartDistance = newValue.lowerBound
+            self.scnLight.attenuationEndDistance = newValue.upperBound
         }
     }
 
@@ -206,18 +208,18 @@ public final class Light: Component {
      Specifies the attenuation between the start and end attenuation distances. 0 means a constant attenuation, 1 a linear attenuation and 2 a quadratic attenuation, but any positive value will work (Omni or Spot light types only). Animatable. Defaults to 2.
      */
     public var attenuationFalloffExponent: CGFloat {
-        get { return scnLight.attenuationFalloffExponent }
-        set { scnLight.attenuationFalloffExponent = newValue }
+        get { return self.scnLight.attenuationFalloffExponent }
+        set { self.scnLight.attenuationFalloffExponent = newValue }
     }
 
     /**
      The angle in degrees between the spot direction and the lit element below/after which the lighting is at full strength. Animatable. Inner defaults to 0. Outer defaults to 45 degrees.
      */
     public var spotAngle: (inner: CGFloat, outer: CGFloat) {
-        get { return (scnLight.spotInnerAngle, scnLight.spotOuterAngle) }
+        get { return (self.scnLight.spotInnerAngle, self.scnLight.spotOuterAngle) }
         set {
-            scnLight.spotInnerAngle = newValue.inner
-            scnLight.spotOuterAngle = newValue.outer
+            self.scnLight.spotInnerAngle = newValue.inner
+            self.scnLight.spotOuterAngle = newValue.outer
         }
     }
 
@@ -225,17 +227,17 @@ public final class Light: Component {
      Determines the node categories that will be lit by the receiver. Defaults to all bit set.
      */
     public var categoryBitMask: Int {
-        get { return scnLight.categoryBitMask }
-        set { scnLight.categoryBitMask = newValue }
+        get { return self.scnLight.categoryBitMask }
+        set { self.scnLight.categoryBitMask = newValue }
     }
 
-    public override var gameObject: GameObject? {
+    override public var gameObject: GameObject? {
         didSet {
             guard let node = gameObject?.node,
                   node.light != scnLight
             else { return }
 
-            node.light.map { scnLight = $0 }
+            node.light.map { self.scnLight = $0 }
         }
     }
 
@@ -252,11 +254,11 @@ public final class Light: Component {
         return self
     }
 
-    public override func awake() {
+    override public func awake() {
         guard let node = gameObject?.node,
               node.light == nil
         else { return }
 
-        node.light = scnLight
+        node.light = self.scnLight
     }
 }

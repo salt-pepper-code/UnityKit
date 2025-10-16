@@ -1,49 +1,65 @@
-import Testing
 import SceneKit
+import Testing
+import UIKit
 @testable import UnityKit
 
 @Suite("MonoBehaviour Coroutines", .serialized)
 struct CoroutineTests {
+    @MainActor
+    func createTestSceneWithView() -> (scene: Scene, window: UIWindow) {
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
 
-    func createTestScene() -> Scene {
-        return Scene(allocation: .instantiate)
+        let options = UI.Options(
+            rendersContinuously: true,
+            allocation: .instantiate
+        )
+
+        let view = UI.UIKitView.makeView(
+            on: window,
+            sceneName: nil,
+            options: options
+        )
+
+        window.makeKeyAndVisible()
+
+        return (view.sceneHolder!, window)
     }
 
     class TestBehaviour: MonoBehaviour {
         var executionLog: [String] = []
 
         func logExecution(_ message: String) {
-            executionLog.append(message)
+            self.executionLog.append(message)
         }
     }
 
     // MARK: - startCoroutine
 
     @Test("startCoroutine executes immediately")
+    @MainActor
     func startCoroutineExecutesImmediately() throws {
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
-        behaviour.startCoroutine({
+        behaviour.startCoroutine {
             executed = true
-        })
+        }
 
         #expect(executed == true)
     }
 
     @Test("startCoroutine with main thread")
+    @MainActor
     func startCoroutineMainThread() throws {
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
         behaviour.startCoroutine({
@@ -54,13 +70,13 @@ struct CoroutineTests {
     }
 
     @Test("startCoroutine with background thread")
+    @MainActor
     func startCoroutineBackgroundThread() async throws {
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
         behaviour.startCoroutine({
@@ -72,34 +88,14 @@ struct CoroutineTests {
 
     // MARK: - queueCoroutine Basic
 
-    @Test("queueCoroutine adds to queue")
-    func queueCoroutineAddsToQueue() throws {
-        let scene = createTestScene()
-        let obj = GameObject(name: "TestObject")
-        scene.addGameObject(obj)
-
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
-
-        let coroutine: Coroutine = (
-            execute: { },
-            exitCondition: nil
-        )
-
-        behaviour.queueCoroutine(coroutine)
-
-        // Coroutine should be queued (verified by no crash)
-        #expect(behaviour != nil)
-    }
-
     @Test("queueCoroutine executes first coroutine immediately")
+    @MainActor
     func queueCoroutineExecutesFirst() throws {
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
         let coroutine: Coroutine = (
@@ -113,15 +109,15 @@ struct CoroutineTests {
     }
 
     @Test("queueCoroutine with nil exit condition completes on next update")
-    func queueCoroutineNilExitCondition() throws {
+    @MainActor
+    func queueCoroutineNilExitCondition() async throws {
         Time.resetForTesting()
         Time.timeScale = 1.0
-        let scene = createTestScene()
+        let (scene, window) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
         let coroutine: Coroutine = (
@@ -132,25 +128,25 @@ struct CoroutineTests {
         behaviour.queueCoroutine(coroutine, thread: .main)
         #expect(executed == true)
 
-        // Simulate update cycle
-        scene.update(updateAtTime: 0.0)
-        behaviour.internalUpdate()
+        // Wait for render loop to process the coroutine queue
+        await TestHelpers.wait(.small)
 
-        // Coroutine should be complete after update
+        // Cleanup
+        window.isHidden = true
     }
 
     // MARK: - Exit Conditions
 
     @Test("queueCoroutine with exit condition based on time")
+    @MainActor
     func exitConditionBasedOnTime() throws {
         Time.resetForTesting()
         Time.timeScale = 1.0
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
         let coroutine: Coroutine = (
@@ -177,15 +173,15 @@ struct CoroutineTests {
     }
 
     @Test("queueCoroutine exit condition receives timePassed")
+    @MainActor
     func exitConditionReceivesTimePassed() throws {
         Time.resetForTesting()
         Time.timeScale = 1.0
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var receivedTime: TimeInterval = 0
         var executed = false
@@ -208,15 +204,15 @@ struct CoroutineTests {
     }
 
     @Test("queueCoroutine exit condition false keeps coroutine running")
+    @MainActor
     func exitConditionFalseKeepsRunning() throws {
         Time.resetForTesting()
         Time.timeScale = 1.0
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var updateCount = 0
         var executed = false
@@ -247,15 +243,15 @@ struct CoroutineTests {
     // MARK: - Multiple Coroutines
 
     @Test("queueCoroutine queues multiple coroutines")
+    @MainActor
     func queueMultipleCoroutines() throws {
         Time.resetForTesting()
         Time.timeScale = 1.0
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var execution1 = false
         var execution2 = false
@@ -287,15 +283,15 @@ struct CoroutineTests {
     }
 
     @Test("queueCoroutine processes queue in order")
+    @MainActor
     func processQueueInOrder() throws {
         Time.resetForTesting()
         Time.timeScale = 1.0
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executionOrder: [Int] = []
 
@@ -335,13 +331,13 @@ struct CoroutineTests {
     // MARK: - Thread Dispatch
 
     @Test("queueCoroutine main thread executes on main")
+    @MainActor
     func mainThreadExecution() throws {
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
         let coroutine: Coroutine = (
@@ -356,13 +352,13 @@ struct CoroutineTests {
     }
 
     @Test("queueCoroutine background thread executes async")
+    @MainActor
     func backgroundThreadExecution() async throws {
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
         let coroutine: Coroutine = (
@@ -383,21 +379,21 @@ struct CoroutineTests {
     // MARK: - Time Tracking
 
     @Test("timePassed resets for each coroutine")
+    @MainActor
     func timePassedResetsPerCoroutine() throws {
         Time.resetForTesting()
         Time.timeScale = 1.0
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var firstTime: TimeInterval = -1
         var secondTime: TimeInterval = -1
 
         let coroutine1: Coroutine = (
-            execute: { },
+            execute: {},
             exitCondition: { time in
                 firstTime = time
                 return true
@@ -405,7 +401,7 @@ struct CoroutineTests {
         )
 
         let coroutine2: Coroutine = (
-            execute: { },
+            execute: {},
             exitCondition: { time in
                 secondTime = time
                 return true
@@ -431,13 +427,13 @@ struct CoroutineTests {
     // MARK: - Cleanup
 
     @Test("destroy clears coroutine queue")
+    @MainActor
     func destroyClearsQueue() throws {
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
         let coroutine: Coroutine = (
@@ -453,7 +449,7 @@ struct CoroutineTests {
 
         // Further updates should not crash
         Time.resetForTesting()
-        let scene2 = createTestScene()
+        let (scene2, _) = self.createTestSceneWithView()
         scene2.update(updateAtTime: 0.0)
         behaviour.internalUpdate()
     }
@@ -461,13 +457,13 @@ struct CoroutineTests {
     // MARK: - Edge Cases
 
     @Test("queueCoroutine with no updates completes on exit")
+    @MainActor
     func noUpdatesCompletesOnExit() throws {
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var executed = false
         let coroutine: Coroutine = (
@@ -480,31 +476,16 @@ struct CoroutineTests {
         #expect(executed == true)
     }
 
-    @Test("internalUpdate with no coroutine does nothing")
-    func internalUpdateNoCoroutine() throws {
-        let scene = createTestScene()
-        let obj = GameObject(name: "TestObject")
-        scene.addGameObject(obj)
-
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
-
-        // Should not crash
-        behaviour.internalUpdate()
-
-        #expect(behaviour != nil)
-    }
-
     @Test("multiple queueCoroutine calls chain correctly")
+    @MainActor
     func multipleCallsChain() throws {
         Time.resetForTesting()
         Time.timeScale = 1.0
-        let scene = createTestScene()
+        let (scene, _) = self.createTestSceneWithView()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let behaviour = try #require(obj.addComponent(TestBehaviour.self))
-        behaviour.awake()
+        let behaviour = obj.addComponent(TestBehaviour.self)
 
         var count = 0
 

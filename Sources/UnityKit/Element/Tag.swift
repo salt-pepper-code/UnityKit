@@ -1,5 +1,5 @@
-extension GameObject {
-    public enum Tag: Hashable {
+public extension GameObject {
+    enum Tag: Hashable {
         case untagged
         case mainCamera
         case custom(String)
@@ -10,7 +10,7 @@ extension GameObject {
                 return "Untagged"
             case .mainCamera:
                 return "MainCamera"
-            case let .custom(name):
+            case .custom(let name):
                 return name
             }
         }

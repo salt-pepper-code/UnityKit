@@ -1,10 +1,9 @@
-import Testing
 import Foundation
+import Testing
 @testable import UnityKit
 
 @Suite("Input System", .serialized)
 struct InputTests {
-
     // MARK: - Keyboard Tests
 
     @Test("getKey returns false when key is not pressed")

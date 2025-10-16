@@ -1,6 +1,6 @@
 import Foundation
 
-public final class Debug {
+public enum Debug {
     public struct LogStyle: OptionSet {
         public let rawValue: Int
 
@@ -53,7 +53,7 @@ public final class Debug {
         _ line: Int = #line,
         _ column: Int = #column
     ) {
-        log(message, style: .warning, displayTime: displayTime, filepath, function, line, column)
+        self.log(message, style: .warning, displayTime: displayTime, filepath, function, line, column)
     }
 
     public static func error(
@@ -64,7 +64,7 @@ public final class Debug {
         _ line: Int = #line,
         _ column: Int = #column
     ) {
-        log(message, style: .error, displayTime: displayTime, filepath, function, line, column)
+        self.log(message, style: .error, displayTime: displayTime, filepath, function, line, column)
     }
 
     public static func debug(
@@ -75,7 +75,7 @@ public final class Debug {
         _ line: Int = #line,
         _ column: Int = #column
     ) {
-        log(message, style: .debug, displayTime: displayTime, filepath, function, line, column)
+        self.log(message, style: .debug, displayTime: displayTime, filepath, function, line, column)
     }
 
     public static func info(
@@ -86,7 +86,7 @@ public final class Debug {
         _ line: Int = #line,
         _ column: Int = #column
     ) {
-        log(message, style: .info, displayTime: displayTime, filepath, function, line, column)
+        self.log(message, style: .info, displayTime: displayTime, filepath, function, line, column)
     }
 
     public static func log(
@@ -98,7 +98,7 @@ public final class Debug {
         _ line: Int = #line,
         _ column: Int = #column
     ) {
-        guard !enabled.contains(.none)
+        guard !self.enabled.contains(.none)
         else { return }
 
         let time = displayTime ? Debug.dateFormatter.string(from: Date()) + " " : ""
@@ -127,7 +127,7 @@ public final class Debug {
         _ line: Int = #line,
         _ column: Int = #column
     ) {
-        log(items: items, style: .warning, displayTime: displayTime, filepath, function, line, column)
+        self.log(items: items, style: .warning, displayTime: displayTime, filepath, function, line, column)
     }
 
     public static func error(
@@ -138,7 +138,7 @@ public final class Debug {
         _ line: Int = #line,
         _ column: Int = #column
     ) {
-        log(items: items, style: .error, displayTime: displayTime, filepath, function, line, column)
+        self.log(items: items, style: .error, displayTime: displayTime, filepath, function, line, column)
     }
 
     public static func info(
@@ -149,7 +149,7 @@ public final class Debug {
         _ line: Int = #line,
         _ column: Int = #column
     ) {
-        log(items: items, style: .info, displayTime: displayTime, filepath, function, line, column)
+        self.log(items: items, style: .info, displayTime: displayTime, filepath, function, line, column)
     }
 
     public static func log(
@@ -161,7 +161,7 @@ public final class Debug {
         _ line: Int = #line,
         _ column: Int = #column
     ) {
-        guard !enabled.contains(.none)
+        guard !self.enabled.contains(.none)
         else { return }
 
         let time = displayTime ? Debug.dateFormatter.string(from: Date()) + " " : ""

@@ -4,20 +4,21 @@ import AVKit
  A representation of audio sources in 3D.
  */
 public class AudioSource: Component {
-    internal override var order: ComponentOrder {
+    override var order: ComponentOrder {
         .other
     }
+
     private var soundPlayer = AVAudioPlayerNode()
 
     public var volume: Float = 1 {
         didSet {
-            soundPlayer.volume = volume
+            self.soundPlayer.volume = self.volume
         }
     }
 
     public var customPosition: Vector3? {
         didSet {
-            soundPlayer.position = customPosition?.toAVAudio3DPoint() ?? soundPlayer.position
+            self.soundPlayer.position = self.customPosition?.toAVAudio3DPoint() ?? self.soundPlayer.position
         }
     }
 
@@ -25,31 +26,31 @@ public class AudioSource: Component {
         didSet {
             let engine = AudioEngine.sharedInstance
 
-            if let oldValue = oldValue {
-                engine.disconnectNodeOutput(soundPlayer, bus: oldValue.bus)
+            if let oldValue {
+                engine.disconnectNodeOutput(self.soundPlayer, bus: oldValue.bus)
             }
 
-            guard let clip = clip,
+            guard let clip,
                   let buffer = clip.buffer
             else { return }
 
-            engine.connect(soundPlayer, to: engine.environment, fromBus: 0, toBus: clip.bus, format: engine.format)
+            engine.connect(self.soundPlayer, to: engine.environment, fromBus: 0, toBus: clip.bus, format: engine.format)
             engine.startEngine()
 
             switch clip.playType {
             case .loop:
-                soundPlayer.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
+                self.soundPlayer.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
             case .playOnce:
-                soundPlayer.scheduleBuffer(buffer, at: nil)
+                self.soundPlayer.scheduleBuffer(buffer, at: nil)
             }
         }
     }
 
-    public override func awake() {
+    override public func awake() {
         let engine = AudioEngine.sharedInstance
-        engine.attach(soundPlayer)
+        engine.attach(self.soundPlayer)
     }
-    
+
     /**
      Configurable block that passes and returns itself.
 
@@ -78,20 +79,20 @@ public class AudioSource: Component {
         return self
     }
 
-    public override func onDestroy() {
-        stop()
+    override public func onDestroy() {
+        self.stop()
         let engine = AudioEngine.sharedInstance
-        if let clip = clip {
-            engine.disconnectNodeOutput(soundPlayer, bus: clip.bus)
+        if let clip {
+            engine.disconnectNodeOutput(self.soundPlayer, bus: clip.bus)
         }
-        engine.detach(soundPlayer)
+        engine.detach(self.soundPlayer)
     }
 
     public func play() {
-        soundPlayer.play()
+        self.soundPlayer.play()
     }
 
     public func stop() {
-        soundPlayer.stop()
+        self.soundPlayer.stop()
     }
 }

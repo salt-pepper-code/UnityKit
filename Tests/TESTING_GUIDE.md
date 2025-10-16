@@ -6,6 +6,8 @@ This document contains essential information for writing tests in UnityKit. Refe
 
 ### Creating a Test Scene
 
+**For Basic Tests (No Lifecycle Functions):**
+
 ```swift
 // ✅ CORRECT - Scene requires allocation parameter
 let scene = Scene(allocation: .instantiate)  // For tests, use .instantiate
@@ -15,6 +17,44 @@ let scene = Scene(allocation: .singleton)     // Alternative
 let scene = Scene(name: "TestScene")
 let scene = Scene()
 ```
+
+**For Tests Requiring Lifecycle Functions (awake, start, update, etc.):**
+
+```swift
+// ✅ CORRECT - Create scene with UIWindow for lifecycle testing
+@MainActor
+func createTestSceneWithView() -> (scene: Scene, window: UIWindow) {
+    let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+
+    let options = UI.Options(
+        rendersContinuously: true,
+        allocation: .instantiate
+    )
+
+    let view = UI.UIKitView.makeView(
+        on: window,
+        sceneName: nil,
+        options: options
+    )
+
+    window.makeKeyAndVisible()
+
+    return (view.sceneHolder!, window)
+}
+
+// Usage in tests
+@Test("My lifecycle test")
+@MainActor
+func testLifecycle() throws {
+    let (scene, window) = createTestSceneWithView()
+    // Test code here...
+
+    // Cleanup
+    window.isHidden = true
+}
+```
+
+**Important:** Lifecycle functions (awake, start, update, fixedUpdate, lateUpdate, preUpdate) require a full rendering context with UIWindow. Basic tests that don't test lifecycle behavior can use `Scene(allocation: .instantiate)` directly.
 
 ### Creating GameObjects
 
@@ -364,3 +404,55 @@ As of 2025-10-16, UnityKit has comprehensive test coverage for:
    - **Operations protected**: addChild, removeChild, getChild, getChildren, all update loops
 
 **Last Updated:** 2025-10-16
+
+---
+
+## Running Tests
+
+UnityKit uses UIKit and requires iOS simulator to run tests. **Do not use `swift test`** as it runs on macOS and will fail with UIKit import errors.
+
+### Run All Tests
+
+```bash
+xcodebuild test -scheme UnityKit -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+```
+
+### Run Specific Test Suite
+
+```bash
+xcodebuild test -scheme UnityKit -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:UnityKitTests/TransformTests
+```
+
+### Available Test Suites
+
+#### CRITICAL Tests (2025-10-16)
+- `TransformTests` - Transform component (position, rotation, scale, direction vectors, lookAt) - **✅ 25 tests**
+- `SceneTests` - Scene management (initialization, time management, GameObject management) - **✅ 21 tests** (serialized)
+- `GameObjectHierarchyTests` - GameObject hierarchy (active state, parent/child, instantiation) - **✅ 29 tests**
+- `MeshColliderTests` - MeshCollider (physics shapes, mesh assignment, convex hull) - **✅ 14 tests**
+- `PlaneColliderTests` - PlaneCollider (geometry generation, vertices, normals, indices) - **✅ 17 tests**
+- `CoroutineTests` - MonoBehaviour coroutines (queuing, execution, exit conditions, threading) - **✅ 18 tests** (serialized)
+
+#### HIGH Priority Component Tests (2025-10-16)
+- `LightTests` - Light component (25+ properties: shadows, attenuation, spot angles, etc.) - **✅ 45 tests**
+- `ParticleSystemTests` - ParticleSystem lifecycle (load, execute, destroy) - **✅ 13 tests**
+
+#### MEDIUM Priority Utility Tests (2025-10-16)
+- `Vector2Tests` - Vector2 math operations (arithmetic, conversions, distance, length) - **✅ 43 tests**
+- `VolumeTests` - Bounding box operations (size, center, addition, multiplication) - **✅ 27 tests**
+
+#### Core Framework Tests
+- `PhysicsTests` - Physics raycasting and overlap queries
+- `ColliderTests` - Box, Sphere, Capsule colliders
+- `GameObjectSearchTests` - GameObject search by layer/tag/name
+- `CameraTests` - Camera component properties
+- `InputTests` - Keyboard and mouse input
+- `LifecycleTests` - MonoBehaviour lifecycle methods
+- `RigidbodyTests` - Rigidbody properties and constraints
+- `TimeTests` - Time system and scaling
+- `Vector3Tests` - Vector3 math operations
+- `QuaternionTests` - Quaternion utilities
+
+**Note:** SceneTests and CoroutineTests use `.serialized` to avoid parallel execution issues with global state (Time singleton and coroutine queue management).
+
+**Total New Tests Added (2025-10-16):** 252 tests covering CRITICAL, HIGH, and MEDIUM priority framework functionality

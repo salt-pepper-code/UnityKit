@@ -17,14 +17,14 @@ public struct Size {
     }
 }
 
-extension Size {
-    public func toCGSize() -> CGSize {
-        return CGSize(width: width.toCGFloat(), height: height.toCGFloat())
+public extension Size {
+    func toCGSize() -> CGSize {
+        return CGSize(width: self.width.toCGFloat(), height: self.height.toCGFloat())
     }
 }
 
-extension CGSize {
-    public func toSize() -> Size {
+public extension CGSize {
+    func toSize() -> Size {
         return Size(width: width.toFloat(), height: height.toFloat())
     }
 }

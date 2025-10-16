@@ -1,10 +1,9 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("Scene Management", .serialized)
 struct SceneTests {
-
     // MARK: - Initialization
 
     @Test("Scene instantiate allocation doesn't set shared")
@@ -29,7 +28,7 @@ struct SceneTests {
         #expect(shared === scene)
 
         // Clean up: reset to nil for other tests
-        let _ = Scene(allocation: .instantiate)
+        _ = Scene(allocation: .instantiate)
     }
 
     @Test("Scene has root GameObject")
@@ -200,6 +199,7 @@ struct SceneTests {
     }
 
     // MARK: - Lifecycle
+
     // Note: Lifecycle propagation to MonoBehaviours is tested in LifecycleTests.swift
     // These Scene tests focus on time management and Scene-specific functionality
 

@@ -1,19 +1,19 @@
 import SpriteKit
 
-extension UI {
-    public class UIBehaviour: Behaviour {
+public extension UI {
+    class UIBehaviour: Behaviour {
         public var canvasObject: CanvasObject!
 
         public var skScene: SKScene {
-            canvasObject.skScene
+            self.canvasObject.skScene
         }
 
-        public override func awake() {
+        override public func awake() {
             var canvasFound = false
             var parent = gameObject
             while parent != nil {
                 if let object = parent as? CanvasObject {
-                    canvasObject = object
+                    self.canvasObject = object
                     canvasFound = true
                     break
                 }

@@ -67,23 +67,23 @@ public enum Ease {
         case .sineOut: return Ease._sineOut
         case .sineIn: return Ease._sineIn
         case .sineInOut: return Ease._sineInOut
-        case let .custom(function): return function
+        case .custom(let function): return function
         }
     }
 
-    static private var _linear: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _linear: ActionTimingFunction = { (n: Float) -> Float in
         return n
     }
 
-    static private var _quadIn: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _quadIn: ActionTimingFunction = { (n: Float) -> Float in
         return n * n
     }
 
-    static private var _quadOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _quadOut: ActionTimingFunction = { (n: Float) -> Float in
         return n * (2 - n)
     }
 
-    static private var _quadInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _quadInOut: ActionTimingFunction = { (n: Float) -> Float in
         var n = n * 2
         if n < 1 {
             return 0.5 * n * n * n
@@ -92,16 +92,16 @@ public enum Ease {
         return -0.5 * (n * (n - 2) - 1)
     }
 
-    static private var _cubicIn: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _cubicIn: ActionTimingFunction = { (n: Float) -> Float in
         return n * n * n
     }
 
-    static private var _cubicOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _cubicOut: ActionTimingFunction = { (n: Float) -> Float in
         let n = n - 1
         return n * n * n + 1
     }
 
-    static private var _cubicInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _cubicInOut: ActionTimingFunction = { (n: Float) -> Float in
         var n = n * 2
         if n < 1 {
             return 0.5 * n * n * n
@@ -110,15 +110,15 @@ public enum Ease {
         return 0.5 * (n * n * n + 2)
     }
 
-    static private var _quartIn: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _quartIn: ActionTimingFunction = { (n: Float) -> Float in
         return n * n * n * n
     }
 
-    static private var _quartOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _quartOut: ActionTimingFunction = { (n: Float) -> Float in
         return 1 - _quartIn(n - 1)
     }
 
-    static private var _quartInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _quartInOut: ActionTimingFunction = { (n: Float) -> Float in
         var n = n * 2
         if n < 1 {
             return 0.5 * _quartIn(n)
@@ -127,15 +127,15 @@ public enum Ease {
         return -0.5 * (_quartIn(n) - 2)
     }
 
-    static private var _quintIn: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _quintIn: ActionTimingFunction = { (n: Float) -> Float in
         return n * n * n * n * n
     }
 
-    static private var _quintOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _quintOut: ActionTimingFunction = { (n: Float) -> Float in
         return _quintIn(n - 1) + 1
     }
 
-    static private var _quintInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _quintInOut: ActionTimingFunction = { (n: Float) -> Float in
         var n = n * 2
         if n < 1 {
             return 0.5 * _quintIn(n)
@@ -144,27 +144,27 @@ public enum Ease {
         return 0.5 * (_quintIn(n) + 2)
     }
 
-    static private var _sineIn: ActionTimingFunction = { (n: Float) -> Float in
-        return 1 - cos(n * .pi / 2 )
+    private static var _sineIn: ActionTimingFunction = { (n: Float) -> Float in
+        return 1 - cos(n * .pi / 2)
     }
 
-    static private var _sineOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _sineOut: ActionTimingFunction = { (n: Float) -> Float in
         return sin(n * .pi / 2)
     }
 
-    static private var _sineInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _sineInOut: ActionTimingFunction = { (n: Float) -> Float in
         return 0.5 * (1 - cos(.pi * n))
     }
 
-    static private var _expoIn: ActionTimingFunction = { (n: Float) -> Float in
-        return 0 == n ? 0 : pow(1024, n - 1)
+    private static var _expoIn: ActionTimingFunction = { (n: Float) -> Float in
+        return n == 0 ? 0 : pow(1024, n - 1)
     }
 
-    static private var _expoOut: ActionTimingFunction = { (n: Float) -> Float in
-        return 1 == n ? n : 1 - pow(2, -10 * n)
+    private static var _expoOut: ActionTimingFunction = { (n: Float) -> Float in
+        return n == 1 ? n : 1 - pow(2, -10 * n)
     }
 
-    static private var _expoInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _expoInOut: ActionTimingFunction = { (n: Float) -> Float in
         if n == 0 {
             return 0
         }
@@ -178,16 +178,16 @@ public enum Ease {
         return 0.5 * (-pow(2, -10 * (n - 1)) + 2)
     }
 
-    static private var _circleIn: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _circleIn: ActionTimingFunction = { (n: Float) -> Float in
         return 1 - sqrt(1 - n * n)
     }
 
-    static private var _circleOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _circleOut: ActionTimingFunction = { (n: Float) -> Float in
         let n = n - 1
         return sqrt(1 - (n * n))
     }
 
-    static private var _circleInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _circleInOut: ActionTimingFunction = { (n: Float) -> Float in
         var n = n * 2
         if n < 1 {
             return -0.5 * (sqrt(1 - n * n) - 1)
@@ -196,18 +196,18 @@ public enum Ease {
         return 0.5 * (sqrt(1 - n * n) + 1)
     }
 
-    static private var _backIn: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _backIn: ActionTimingFunction = { (n: Float) -> Float in
         let s: Float = 1.70158
         return n * n * (((s + 1) * n) - s)
     }
 
-    static private var _backOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _backOut: ActionTimingFunction = { (n: Float) -> Float in
         let n = n - 1
         let s: Float = 1.70158
         return (n * n * (((s + 1) * n) + s)) + 1
     }
 
-    static private var _backInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _backInOut: ActionTimingFunction = { (n: Float) -> Float in
         var n = n * 2
         let s: Float = 1.70158 * 1.525
         if n < 1 {
@@ -217,11 +217,11 @@ public enum Ease {
         return 0.5 * (n * n * ((s + 1) * n + s) + 2)
     }
 
-    static private var _bounceIn: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _bounceIn: ActionTimingFunction = { (n: Float) -> Float in
         return 1 - _bounceOut(1 - n)
     }
 
-    static private var _bounceOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _bounceOut: ActionTimingFunction = { (n: Float) -> Float in
         var n = n
         if n < 1 / 2.75 {
             return 7.5625 * n * n
@@ -237,14 +237,14 @@ public enum Ease {
         }
     }
 
-    static private var _bounceInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _bounceInOut: ActionTimingFunction = { (n: Float) -> Float in
         if n < 0.5 {
             return _bounceIn(n * 2) * 0.5
         }
         return _bounceOut(n * 2 - 1) * 0.5 + 0.5
     }
 
-    static private var _elasticIn: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _elasticIn: ActionTimingFunction = { (n: Float) -> Float in
         if n == 0 {
             return 0
         }
@@ -258,7 +258,7 @@ public enum Ease {
         return -(a * pow(2, 10 * n) * sin((n - s) * (2 * .pi) / p))
     }
 
-    static private var _elasticOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _elasticOut: ActionTimingFunction = { (n: Float) -> Float in
         if n == 0 {
             return 0
         }
@@ -268,10 +268,10 @@ public enum Ease {
         let p: Float = 0.4
         let s: Float = p / 4
         let a: Float = 1
-        return (a * pow(2, -10 * n) * sin((n - s) * (2 * .pi) / p) + 1)
+        return a * pow(2, -10 * n) * sin((n - s) * (2 * .pi) / p) + 1
     }
 
-    static private var _elasticInOut: ActionTimingFunction = { (n: Float) -> Float in
+    private static var _elasticInOut: ActionTimingFunction = { (n: Float) -> Float in
         if n == 0 {
             return 0
         }

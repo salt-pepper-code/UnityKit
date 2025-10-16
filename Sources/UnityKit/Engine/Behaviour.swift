@@ -3,22 +3,19 @@ import Foundation
 open class Behaviour: Component {
     public var enabled: Bool = false {
         didSet {
-            guard enabled != oldValue else { return }
+            guard self.enabled != oldValue else { return }
 
-            if enabled {
-                onEnable()
+            if self.enabled {
+                self.onEnable()
             } else {
-                onDisable()
+                self.onDisable()
             }
         }
     }
 
-    internal func enableChanged() {
-    }
+    func enableChanged() {}
 
-    open func onEnable() {
-    }
+    open func onEnable() {}
 
-    open func onDisable() {
-    }
+    open func onDisable() {}
 }

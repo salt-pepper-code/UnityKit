@@ -1,20 +1,21 @@
 import SceneKit
 
 /**
-Script interface for Particle Systems.
-*/
+ Script interface for Particle Systems.
+ */
 public class ParticleSystem: Component {
-    internal override var order: ComponentOrder {
+    override var order: ComponentOrder {
         .other
     }
+
     public var scnParticleSystem: SCNParticleSystem?
 
-    public override func onDestroy() {
+    override public func onDestroy() {
         guard let particule = scnParticleSystem
-            else { return }
+        else { return }
 
         particule.reset()
-        scnParticleSystem = nil
+        self.scnParticleSystem = nil
         gameObject?.node.removeParticleSystem(particule)
     }
 
@@ -24,7 +25,7 @@ public class ParticleSystem: Component {
         loops: Bool
     ) -> ParticleSystem {
         guard let modelUrl = searchPathForResource(for: fileName, extension: nil, bundle: bundle)
-            else { return self }
+        else { return self }
 
         var path = modelUrl.relativePath
             .replacingOccurrences(of: bundle.bundlePath, with: "")
@@ -35,25 +36,31 @@ public class ParticleSystem: Component {
         }
 
         guard let particule = SCNParticleSystem(named: modelUrl.lastPathComponent, inDirectory: path)
-            else { return self }
+        else { return self }
 
         particule.colliderNodes = []
         particule.loops = loops
-        scnParticleSystem = particule
+        self.scnParticleSystem = particule
         gameObject?.node.addParticleSystem(particule)
 
         return self
     }
 
     @discardableResult public func execute(_ block: (SCNParticleSystem?) -> Void) -> ParticleSystem {
-        block(scnParticleSystem)
+        block(self.scnParticleSystem)
         return self
     }
 
-    @discardableResult public func executeAfter(milliseconds: Int, block: @escaping (SCNParticleSystem?) -> Void) -> ParticleSystem {
-        DispatchQueue.main.asyncAfter(deadline: .now() + DispatchTimeInterval.milliseconds(milliseconds)) { [weak scnParticleSystem] in
-            block(scnParticleSystem)
-        }
+    @discardableResult public func executeAfter(
+        milliseconds: Int,
+        block: @escaping (SCNParticleSystem?) -> Void
+    ) -> ParticleSystem {
+        DispatchQueue.main
+            .asyncAfter(deadline: .now() + DispatchTimeInterval
+                .milliseconds(milliseconds))
+            { [weak scnParticleSystem] in
+                block(scnParticleSystem)
+            }
         return self
     }
 }

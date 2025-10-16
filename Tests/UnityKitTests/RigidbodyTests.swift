@@ -3,7 +3,6 @@ import Testing
 
 @Suite("Rigidbody Properties")
 struct RigidbodyTests {
-
     @Test("Mass property getter and setter")
     func massProperty() {
         let rb = Rigidbody()

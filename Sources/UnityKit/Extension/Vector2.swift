@@ -10,20 +10,20 @@ public struct Vector2 {
     }
 }
 
-extension Vector2 {
-    public func toCGPoint() -> CGPoint {
+public extension Vector2 {
+    func toCGPoint() -> CGPoint {
         return CGPoint(x: self.x.toCGFloat(), y: self.y.toCGFloat())
     }
 }
 
-extension CGSize {
-    public func toVector2() -> Vector2 {
+public extension CGSize {
+    func toVector2() -> Vector2 {
         return Vector2(self.width.toFloat(), self.height.toFloat())
     }
 }
 
-extension CGPoint {
-    public func toVector2() -> Vector2 {
+public extension CGPoint {
+    func toVector2() -> Vector2 {
         return Vector2(self.x.toFloat(), self.y.toFloat())
     }
 }
@@ -34,34 +34,34 @@ extension Vector2: Equatable {
     }
 }
 
-extension Vector2 {
-    public static var zero: Vector2 {
+public extension Vector2 {
+    static var zero: Vector2 {
         return Vector2(0, 0)
     }
 
-    public static var one: Vector2 {
+    static var one: Vector2 {
         return Vector2(1, 1)
     }
 
     /**
      * Returns the length (magnitude) of the vector described by the Vector2
      */
-    public func length() -> Float {
+    func length() -> Float {
         return Vector2.length(self)
     }
 
-    public static func length(_ vector: Vector2) -> Float {
+    static func length(_ vector: Vector2) -> Float {
         return sqrtf(vector.x * vector.x + vector.y * vector.y)
     }
 
     /**
      * Returns the distance between a and b.
      */
-    public func distance(_ vector: Vector2) -> Float {
+    func distance(_ vector: Vector2) -> Float {
         return Vector2.distance(self, vector)
     }
 
-    public static func distance(_ a: Vector2, _ b: Vector2) -> Float {
+    static func distance(_ a: Vector2, _ b: Vector2) -> Float {
         return (b - a).length()
     }
 }
@@ -76,7 +76,7 @@ public func + (left: Vector2, right: Vector2) -> Vector2 {
 /**
  * Increments a Vector2 with the value of another.
  */
-public func += ( left: inout Vector2, right: Vector2) {
+public func += (left: inout Vector2, right: Vector2) {
     left = left + right
 }
 
@@ -90,7 +90,7 @@ public func - (left: Vector2, right: Vector2) -> Vector2 {
 /**
  * Decrements a Vector2 with the value of another.
  */
-public func -= ( left: inout Vector2, right: Vector2) {
+public func -= (left: inout Vector2, right: Vector2) {
     left = left - right
 }
 
@@ -115,6 +115,7 @@ public func *= (left: inout Vector2, right: Vector2) {
 public func * (vector: Vector2, scalar: Float) -> Vector2 {
     return Vector2(vector.x * scalar, vector.y * scalar)
 }
+
 public func * (scalar: Float, vector: Vector2) -> Vector2 {
     return Vector2(vector.x * scalar, vector.y * scalar)
 }
@@ -136,7 +137,7 @@ public func / (left: Vector2, right: Vector2) -> Vector2 {
 /**
  * Divides a Vector2 by another.
  */
-public func /= ( left: inout Vector2, right: Vector2) {
+public func /= (left: inout Vector2, right: Vector2) {
     left = left / right
 }
 
@@ -151,6 +152,6 @@ public func / (vector: Vector2, scalar: Float) -> Vector2 {
 /**
  * Divides the x, y and z of a Vector2 by the same scalar value.
  */
-public func /= ( vector: inout Vector2, scalar: Float) {
+public func /= (vector: inout Vector2, scalar: Float) {
     vector = vector / scalar
 }

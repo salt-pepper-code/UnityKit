@@ -1,11 +1,11 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("Physics Raycasting")
 struct PhysicsTests {
-
     // MARK: - Helper to create test scene
+
     func createTestScene() -> Scene {
         return Scene(allocation: .instantiate)
     }
@@ -20,8 +20,7 @@ struct PhysicsTests {
         box.layer = layer
         box.transform.position = position
         scene.addGameObject(box)
-        let collider = box.addComponent(BoxCollider.self)
-        collider.awake()
+        _ = box.addComponent(BoxCollider.self)
         return box
     }
 
@@ -29,8 +28,8 @@ struct PhysicsTests {
 
     @Test("Raycast hits box directly in front")
     func raycastHitsBoxInFront() throws {
-        let scene = createTestScene()
-        let box = addBox(name: "Box", position: Vector3(0, 0, 10), to: scene)
+        let scene = self.createTestScene()
+        let box = self.addBox(name: "Box", position: Vector3(0, 0, 10), to: scene)
 
         let hit = try #require(Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -44,8 +43,8 @@ struct PhysicsTests {
 
     @Test("Raycast misses box to the side")
     func raycastMissesBox() {
-        let scene = createTestScene()
-        _ = addBox(name: "Box", position: Vector3(10, 0, 10), to: scene)
+        let scene = self.createTestScene()
+        _ = self.addBox(name: "Box", position: Vector3(10, 0, 10), to: scene)
 
         let hit = Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -58,8 +57,8 @@ struct PhysicsTests {
 
     @Test("Raycast respects maxDistance")
     func raycastRespectsMaxDistance() throws {
-        let scene = createTestScene()
-        _ = addBox(name: "Box", position: Vector3(0, 0, 100), to: scene)
+        let scene = self.createTestScene()
+        _ = self.addBox(name: "Box", position: Vector3(0, 0, 100), to: scene)
 
         // Raycast with maxDistance too short
         let missHit = Physics.Raycast(
@@ -84,9 +83,9 @@ struct PhysicsTests {
 
     @Test("Raycast finds closest object when multiple in path")
     func raycastFindsClosest() throws {
-        let scene = createTestScene()
-        let nearBox = addBox(name: "NearBox", position: Vector3(0, 0, 10), to: scene)
-        _ = addBox(name: "FarBox", position: Vector3(0, 0, 20), to: scene)
+        let scene = self.createTestScene()
+        let nearBox = self.addBox(name: "NearBox", position: Vector3(0, 0, 10), to: scene)
+        _ = self.addBox(name: "FarBox", position: Vector3(0, 0, 20), to: scene)
 
         let hit = try #require(Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -102,10 +101,10 @@ struct PhysicsTests {
 
     @Test("RaycastAll returns all hits sorted by distance")
     func raycastAllReturnsSortedHits() {
-        let scene = createTestScene()
-        let box1 = addBox(name: "Box1", position: Vector3(0, 0, 30), to: scene)
-        let box2 = addBox(name: "Box2", position: Vector3(0, 0, 10), to: scene)
-        let box3 = addBox(name: "Box3", position: Vector3(0, 0, 20), to: scene)
+        let scene = self.createTestScene()
+        let box1 = self.addBox(name: "Box1", position: Vector3(0, 0, 30), to: scene)
+        let box2 = self.addBox(name: "Box2", position: Vector3(0, 0, 10), to: scene)
+        let box3 = self.addBox(name: "Box3", position: Vector3(0, 0, 20), to: scene)
 
         let hits = Physics.RaycastAll(
             origin: Vector3(0, 0, 0),
@@ -129,10 +128,10 @@ struct PhysicsTests {
 
     @Test("RaycastAll respects maxDistance")
     func raycastAllRespectsMaxDistance() {
-        let scene = createTestScene()
-        let box1 = addBox(name: "Box1", position: Vector3(0, 0, 10), to: scene)
-        let box2 = addBox(name: "Box2", position: Vector3(0, 0, 50), to: scene)
-        _ = addBox(name: "Box3", position: Vector3(0, 0, 100), to: scene)
+        let scene = self.createTestScene()
+        let box1 = self.addBox(name: "Box1", position: Vector3(0, 0, 10), to: scene)
+        let box2 = self.addBox(name: "Box2", position: Vector3(0, 0, 50), to: scene)
+        _ = self.addBox(name: "Box3", position: Vector3(0, 0, 100), to: scene)
 
         let hits = Physics.RaycastAll(
             origin: Vector3(0, 0, 0),
@@ -156,8 +155,8 @@ struct PhysicsTests {
 
     @Test("Raycast normalizes direction vector")
     func raycastNormalizesDirection() throws {
-        let scene = createTestScene()
-        let box = addBox(name: "Box", position: Vector3(0, 0, 10), to: scene)
+        let scene = self.createTestScene()
+        let box = self.addBox(name: "Box", position: Vector3(0, 0, 10), to: scene)
 
         let hit = try #require(Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -170,8 +169,8 @@ struct PhysicsTests {
 
     @Test("Raycast works in negative direction")
     func raycastNegativeDirection() throws {
-        let scene = createTestScene()
-        let box = addBox(name: "Box", position: Vector3(0, 0, -10), to: scene)
+        let scene = self.createTestScene()
+        let box = self.addBox(name: "Box", position: Vector3(0, 0, -10), to: scene)
 
         let hit = try #require(Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -184,8 +183,8 @@ struct PhysicsTests {
 
     @Test("Raycast works at 45 degree angle")
     func raycastDiagonal() throws {
-        let scene = createTestScene()
-        let box = addBox(name: "Box", position: Vector3(10, 10, 10), to: scene)
+        let scene = self.createTestScene()
+        let box = self.addBox(name: "Box", position: Vector3(10, 10, 10), to: scene)
 
         let hit = try #require(Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -200,8 +199,8 @@ struct PhysicsTests {
 
     @Test("RaycastHit contains correct information")
     func raycastHitInformation() throws {
-        let scene = createTestScene()
-        let box = addBox(name: "TestBox", position: Vector3(0, 0, 10), to: scene)
+        let scene = self.createTestScene()
+        let box = self.addBox(name: "TestBox", position: Vector3(0, 0, 10), to: scene)
 
         let hit = try #require(Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -217,8 +216,8 @@ struct PhysicsTests {
 
     @Test("RaycastHit normal points away from hit surface")
     func raycastHitNormal() throws {
-        let scene = createTestScene()
-        let box = addBox(name: "Box", position: Vector3(0, 0, 10), to: scene)
+        let scene = self.createTestScene()
+        let box = self.addBox(name: "Box", position: Vector3(0, 0, 10), to: scene)
 
         let hit = try #require(Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -235,8 +234,8 @@ struct PhysicsTests {
 
     @Test("Raycast from origin (0,0,0)")
     func raycastFromOrigin() throws {
-        let scene = createTestScene()
-        let box = addBox(name: "Box", position: Vector3(5, 0, 0), to: scene)
+        let scene = self.createTestScene()
+        let box = self.addBox(name: "Box", position: Vector3(5, 0, 0), to: scene)
 
         let hit = try #require(Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -249,7 +248,7 @@ struct PhysicsTests {
 
     @Test("Raycast with no colliders returns nil")
     func raycastEmptyScene() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let hit = Physics.Raycast(
             origin: Vector3(0, 0, 0),
@@ -273,7 +272,7 @@ struct PhysicsTests {
 
     @Test("RaycastAll with no colliders returns empty array")
     func raycastAllEmptyScene() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         let hits = Physics.RaycastAll(
             origin: Vector3(0, 0, 0),
@@ -288,13 +287,13 @@ struct PhysicsTests {
 
     @Test("Raycast respects layer mask")
     func raycastLayerMask() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         // Create box on default layer
-        let box1 = addBox(name: "Box1", position: Vector3(0, 0, 10), to: scene, layer: .default)
+        let box1 = self.addBox(name: "Box1", position: Vector3(0, 0, 10), to: scene, layer: .default)
 
         // Create box on player layer (closer)
-        _ = addBox(name: "Box2", position: Vector3(0, 0, 5), to: scene, layer: .player)
+        _ = self.addBox(name: "Box2", position: Vector3(0, 0, 5), to: scene, layer: .player)
 
         // Raycast with default layer only (should hit box1, not box2)
         let hit = try #require(Physics.Raycast(

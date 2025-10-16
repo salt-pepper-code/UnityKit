@@ -1,9 +1,9 @@
 import SpriteKit
 
-extension UI {
-    public class Canvas: UIBehaviour {
-        internal(set) public var worldSize: Size = .zero
-        internal(set) public var pixelPerUnit: Float = 10
+public extension UI {
+    class Canvas: UIBehaviour {
+        public internal(set) var worldSize: Size = .zero
+        public internal(set) var pixelPerUnit: Float = 10
 
         /**
          Configurable block that passes and returns itself.

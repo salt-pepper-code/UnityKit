@@ -1,19 +1,13 @@
 import CoreGraphics
 
-public protocol Getteable {
-}
+public protocol Getteable {}
 
-extension Bool: Getteable {
-}
+extension Bool: Getteable {}
 
-extension Float: Getteable {
-}
+extension Float: Getteable {}
 
-extension CGFloat: Getteable {
-}
+extension CGFloat: Getteable {}
 
-extension Vector3: Getteable {
-}
+extension Vector3: Getteable {}
 
-extension Vector4: Getteable {
-}
+extension Vector4: Getteable {}

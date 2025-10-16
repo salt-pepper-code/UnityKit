@@ -1,5 +1,5 @@
-import SceneKit
 import AVKit
+import SceneKit
 
 public typealias Vector3 = SCNVector3
 
@@ -15,36 +15,36 @@ public struct Vector3Nullable {
     }
 }
 
-extension Vector3 {
-    public static var zero: Vector3 {
+public extension Vector3 {
+    static var zero: Vector3 {
         return SCNVector3Zero
     }
 
-    public static var one: Vector3 {
+    static var one: Vector3 {
         return Vector3(1, 1, 1)
     }
 
-    public static var back: Vector3 {
+    static var back: Vector3 {
         return Vector3(0, 0, -1)
     }
 
-   public static var down: Vector3 {
+    static var down: Vector3 {
         return Vector3(0, -1, 0)
     }
 
-    public static var forward: Vector3 {
+    static var forward: Vector3 {
         return Vector3(0, 0, 1)
     }
 
-    public static var left: Vector3 {
+    static var left: Vector3 {
         return Vector3(-1, 0, 0)
     }
 
-    public static var right: Vector3 {
+    static var right: Vector3 {
         return Vector3(1, 0, 0)
     }
 
-    public static var up: Vector3 {
+    static var up: Vector3 {
         return Vector3(0, 1, 0)
     }
 
@@ -52,29 +52,29 @@ extension Vector3 {
      * Negates the vector described by Vector3 and returns
      * the result as a new Vector3.
      */
-    public func negated() -> Vector3 {
+    func negated() -> Vector3 {
         return self * -1
     }
 
     /**
      * Negates the vector described by Vector3
      */
-    mutating public func negate() {
-        self = negated()
+    mutating func negate() {
+        self = self.negated()
     }
 
     /**
      * Returns the length (magnitude) of the vector described by the Vector3
      */
-    public func length() -> Float {
+    func length() -> Float {
         return Vector3.length(self)
     }
 
-    public static func length(_ vector: Vector3) -> Float {
+    static func length(_ vector: Vector3) -> Float {
         return sqrtf(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
     }
 
-    public func magnitude() -> Float {
+    func magnitude() -> Float {
         return Vector3.length(self)
     }
 
@@ -82,95 +82,95 @@ extension Vector3 {
      * Normalizes the vector described by the Vector3 to length 1.0 and returns
      * the result as a new Vector3.
      */
-    public func normalized() -> Vector3 {
+    func normalized() -> Vector3 {
         return Vector3.normalized(self)
     }
 
-    public static func normalized(_ vector: Vector3) -> Vector3 {
+    static func normalized(_ vector: Vector3) -> Vector3 {
         let lenght = vector.length()
         guard lenght != 0
-            else { return .zero }
+        else { return .zero }
         return vector / lenght
     }
 
-    mutating public func normalize() {
-        self = normalized()
+    mutating func normalize() {
+        self = self.normalized()
     }
 
     /**
      * Returns the distance between a and b.
      */
-    public func distance(_ vector: Vector3) -> Float {
+    func distance(_ vector: Vector3) -> Float {
         return Vector3.distance(self, vector)
     }
 
-    public static func distance(_ a: Vector3, _ b: Vector3) -> Float {
+    static func distance(_ a: Vector3, _ b: Vector3) -> Float {
         return (b - a).length()
     }
 
     /**
      * Calculates the dot product between two Vector3.
      */
-    public func dot(_ vector: Vector3) -> Float {
+    func dot(_ vector: Vector3) -> Float {
         return Vector3.dot(self, vector)
     }
 
-    public static func dot(_ a: Vector3, _ b: Vector3) -> Float {
+    static func dot(_ a: Vector3, _ b: Vector3) -> Float {
         return (a.x * b.x) + (a.y * b.y) + (a.z * b.z)
     }
 
     /**
      * Projects a vector onto another vector.
      */
-    public func project(_ normal: Vector3) -> Vector3 {
+    func project(_ normal: Vector3) -> Vector3 {
         return Vector3.project(self, normal)
     }
 
-    public static func project(_ vector: Vector3, _ onNormal: Vector3) -> Vector3 {
+    static func project(_ vector: Vector3, _ onNormal: Vector3) -> Vector3 {
         return Vector3.scale(Vector3.dot(vector, onNormal) / Vector3.dot(onNormal, onNormal), onNormal)
     }
 
     /**
      * Cross Product of two vectors.
      */
-    public func cross(_ vector: Vector3) -> Vector3 {
+    func cross(_ vector: Vector3) -> Vector3 {
         return Vector3.cross(self, vector)
     }
 
-    public static func cross(_ a: Vector3, _ b: Vector3) -> Vector3 {
+    static func cross(_ a: Vector3, _ b: Vector3) -> Vector3 {
         return Vector3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
     }
 
-    public func degreesToRadians() -> Vector3 {
+    func degreesToRadians() -> Vector3 {
         return Vector3(x.degreesToRadians, y.degreesToRadians, z.degreesToRadians)
     }
 
-    public func radiansToDegrees() -> Vector3 {
+    func radiansToDegrees() -> Vector3 {
         return Vector3(x.radiansToDegrees, y.radiansToDegrees, z.radiansToDegrees)
     }
 
-    public func angleClamp() -> Vector3 {
+    func angleClamp() -> Vector3 {
         return Vector3(x.clampDegree(), y.clampDegree(), z.clampDegree())
     }
 
     /**
      * Multiplies two vectors component-wise.
      */
-    public static func scale(_ factor: Float, _ vector: Vector3) -> Vector3 {
+    static func scale(_ factor: Float, _ vector: Vector3) -> Vector3 {
         return factor * vector
     }
 
     /**
      * Calculates the SCNVector from lerping between two Vector3 vectors
      */
-    public static func lerp(from v0: Vector3, to v1: Vector3, time t: TimeInterval) -> Vector3 {
+    static func lerp(from v0: Vector3, to v1: Vector3, time t: TimeInterval) -> Vector3 {
         return Float(1 - t) * v0 + Float(t) * v1
     }
 
     /**
      * Linearly interpolates between two vectors (Unity-style API)
      */
-    public static func Lerp(_ a: Vector3, _ b: Vector3, _ t: Float) -> Vector3 {
+    static func Lerp(_ a: Vector3, _ b: Vector3, _ t: Float) -> Vector3 {
         let clampedT = max(0, min(1, t))
         return a + (b - a) * clampedT
     }
@@ -178,7 +178,7 @@ extension Vector3 {
     /**
      * Calculates the angle in degrees between two vectors
      */
-    public static func Angle(_ from: Vector3, _ to: Vector3) -> Float {
+    static func Angle(_ from: Vector3, _ to: Vector3) -> Float {
         let denominator = sqrt(from.length() * from.length() * to.length() * to.length())
         if denominator < 1e-15 {
             return 0
@@ -192,7 +192,7 @@ extension Vector3 {
     /**
      * Moves a point current towards target by maxDistanceDelta
      */
-    public static func MoveTowards(_ current: Vector3, _ target: Vector3, _ maxDistanceDelta: Float) -> Vector3 {
+    static func MoveTowards(_ current: Vector3, _ target: Vector3, _ maxDistanceDelta: Float) -> Vector3 {
         let direction = target - current
         let distance = direction.length()
 
@@ -206,7 +206,7 @@ extension Vector3 {
     /**
      * Returns a vector with the smallest components of the two vectors
      */
-    public static func Min(_ a: Vector3, _ b: Vector3) -> Vector3 {
+    static func Min(_ a: Vector3, _ b: Vector3) -> Vector3 {
         return Vector3(
             min(a.x, b.x),
             min(a.y, b.y),
@@ -217,7 +217,7 @@ extension Vector3 {
     /**
      * Returns a vector with the largest components of the two vectors
      */
-    public static func Max(_ a: Vector3, _ b: Vector3) -> Vector3 {
+    static func Max(_ a: Vector3, _ b: Vector3) -> Vector3 {
         return Vector3(
             max(a.x, b.x),
             max(a.y, b.y),
@@ -228,7 +228,7 @@ extension Vector3 {
     /**
      * Returns a copy of vector with its magnitude clamped to maxLength
      */
-    public static func ClampMagnitude(_ vector: Vector3, _ maxLength: Float) -> Vector3 {
+    static func ClampMagnitude(_ vector: Vector3, _ maxLength: Float) -> Vector3 {
         let length = vector.length()
         if length > maxLength {
             return vector.normalized() * maxLength
@@ -236,7 +236,7 @@ extension Vector3 {
         return vector
     }
 
-    public func toQuaternion() -> Quaternion {
+    func toQuaternion() -> Quaternion {
         var angle: Float = 0
 
         angle = x * 0.5
@@ -256,7 +256,8 @@ extension Vector3 {
         let cpsy = cp * sy
         let spsy = sp * sy
 
-        return Quaternion((sr * cpcy - cr * spsy), (cr * spcy + sr * cpsy), (cr * cpsy - sr * spcy), (cr * cpcy + sr * spsy)).normalized()
+        return Quaternion(sr * cpcy - cr * spsy, cr * spcy + sr * cpsy, cr * cpsy - sr * spcy, cr * cpcy + sr * spsy)
+            .normalized()
     }
 
     internal func toAVAudio3DPoint() -> AVAudio3DPoint {
@@ -284,7 +285,7 @@ public func + (left: Vector3, right: Vector3) -> Vector3 {
 /**
  * Increments a Vector3 with the value of another.
  */
-public func += ( left: inout Vector3, right: Vector3) {
+public func += (left: inout Vector3, right: Vector3) {
     left = left + right
 }
 
@@ -298,7 +299,7 @@ public func - (left: Vector3, right: Vector3) -> Vector3 {
 /**
  * Decrements a Vector3 with the value of another.
  */
-public func -= ( left: inout Vector3, right: Vector3) {
+public func -= (left: inout Vector3, right: Vector3) {
     left = left - right
 }
 
@@ -361,7 +362,7 @@ public func / (left: Vector3, right: Vector3) -> Vector3 {
 /**
  * Divides a Vector3 by another.
  */
-public func /= ( left: inout Vector3, right: Vector3) {
+public func /= (left: inout Vector3, right: Vector3) {
     left = left / right
 }
 
@@ -376,6 +377,6 @@ public func / (vector: Vector3, scalar: Float) -> Vector3 {
 /**
  * Divides the x, y and z of a Vector3 by the same scalar value.
  */
-public func /= ( vector: inout Vector3, scalar: Float) {
+public func /= (vector: inout Vector3, scalar: Float) {
     vector = vector / scalar
 }

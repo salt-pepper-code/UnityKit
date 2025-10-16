@@ -35,30 +35,32 @@ public struct RigidbodyConstraints: OptionSet {
  A common problem when starting out with Rigidbodies is that the game physics appears to run in "slow motion". This is actually due to the scale used for your models. The default gravity settings assume that one world unit corresponds to one metre of distance. With non-physical games, it doesn't make much difference if your models are all 100 units long but when using physics, they will be treated as very large objects. If a large scale is used for objects that are supposed to be small, they will appear to fall very slowly - the physics engine thinks they are very large objects falling over very large distances. With this in mind, be sure to keep your objects more or less at their scale in real life (so a car should be about 4 units = 4 metres, for example).
  */
 public final class Rigidbody: Component, Instantiable {
-    override internal var order: ComponentOrder {
+    override var order: ComponentOrder {
         return .rigidbody
     }
+
     public func instantiate(gameObject: GameObject) -> Rigidbody {
         let clone = type(of: self).init()
-        clone.isStatic = isStatic
-        clone.isKinematic = isKinematic
-        clone.useGravity = useGravity
+        clone.isStatic = self.isStatic
+        clone.isKinematic = self.isKinematic
+        clone.useGravity = self.useGravity
         clone.gameObject = gameObject
-        clone.constraints = constraints
+        clone.constraints = self.constraints
         return clone
     }
 
     public var constraints: RigidbodyConstraints = .none {
         didSet {
             func freezeAxe(_ value: Float) -> Float {
-                if value < -.pi/2 { return -.pi } else if value > .pi/2 { return .pi } else { return 0 }
+                if value < -.pi / 2 { return -.pi } else if value > .pi / 2 { return .pi } else { return 0 }
             }
 
-            if constraints.contains(.freezePositionX) ||
-                constraints.contains(.freezePositionY) ||
-                constraints.contains(.freezePositionZ) {
+            if self.constraints.contains(.freezePositionX) ||
+                self.constraints.contains(.freezePositionY) ||
+                self.constraints.contains(.freezePositionZ)
+            {
                 var factor = Vector3.one
-                if constraints.contains(.freezePositionX) {
+                if self.constraints.contains(.freezePositionX) {
                     factor.x = 0
                 }
                 if self.constraints.contains(.freezePositionY) {
@@ -70,11 +72,12 @@ public final class Rigidbody: Component, Instantiable {
                 self.velocityFactor = factor
             }
 
-            if constraints.contains(.freezeRotationX) ||
-                constraints.contains(.freezeRotationY) ||
-                constraints.contains(.freezeRotationZ) {
+            if self.constraints.contains(.freezeRotationX) ||
+                self.constraints.contains(.freezeRotationY) ||
+                self.constraints.contains(.freezeRotationZ)
+            {
                 var factor = Vector3.one
-                if constraints.contains(.freezeRotationX) {
+                if self.constraints.contains(.freezeRotationX) {
                     factor.x = 0
                 }
                 if self.constraints.contains(.freezeRotationY) {
@@ -102,13 +105,13 @@ public final class Rigidbody: Component, Instantiable {
 
     public var useGravity: Bool = true {
         didSet {
-            gameObject?.node.physicsBody?.isAffectedByGravity = useGravity
+            gameObject?.node.physicsBody?.isAffectedByGravity = self.useGravity
         }
     }
 
     public var isStatic: Bool = false {
         didSet {
-            if isStatic {
+            if self.isStatic {
                 gameObject?.node.movabilityHint = .fixed
             } else {
                 gameObject?.node.movabilityHint = .movable
@@ -123,10 +126,10 @@ public final class Rigidbody: Component, Instantiable {
     /// Mass of the rigidbody
     public var mass: Float {
         get {
-            return properties[.mass] as? Float ?? gameObject?.node.physicsBody?.mass.toFloat() ?? 1.0
+            return self.properties[.mass] as? Float ?? gameObject?.node.physicsBody?.mass.toFloat() ?? 1.0
         }
         set {
-            properties[.mass] = newValue
+            self.properties[.mass] = newValue
             gameObject?.node.physicsBody?.mass = newValue.toCGFloat()
         }
     }
@@ -134,10 +137,10 @@ public final class Rigidbody: Component, Instantiable {
     /// Bounciness of the rigidbody (0 = no bounce, 1 = perfect bounce)
     public var restitution: Float {
         get {
-            return properties[.restitution] as? Float ?? gameObject?.node.physicsBody?.restitution.toFloat() ?? 0.0
+            return self.properties[.restitution] as? Float ?? gameObject?.node.physicsBody?.restitution.toFloat() ?? 0.0
         }
         set {
-            properties[.restitution] = newValue
+            self.properties[.restitution] = newValue
             gameObject?.node.physicsBody?.restitution = newValue.toCGFloat()
         }
     }
@@ -145,10 +148,10 @@ public final class Rigidbody: Component, Instantiable {
     /// Friction coefficient
     public var friction: Float {
         get {
-            return properties[.friction] as? Float ?? gameObject?.node.physicsBody?.friction.toFloat() ?? 0.5
+            return self.properties[.friction] as? Float ?? gameObject?.node.physicsBody?.friction.toFloat() ?? 0.5
         }
         set {
-            properties[.friction] = newValue
+            self.properties[.friction] = newValue
             gameObject?.node.physicsBody?.friction = newValue.toCGFloat()
         }
     }
@@ -156,10 +159,11 @@ public final class Rigidbody: Component, Instantiable {
     /// Rolling friction coefficient
     public var rollingFriction: Float {
         get {
-            return properties[.rollingFriction] as? Float ?? gameObject?.node.physicsBody?.rollingFriction.toFloat() ?? 0.0
+            return self.properties[.rollingFriction] as? Float ?? gameObject?.node.physicsBody?.rollingFriction
+                .toFloat() ?? 0.0
         }
         set {
-            properties[.rollingFriction] = newValue
+            self.properties[.rollingFriction] = newValue
             gameObject?.node.physicsBody?.rollingFriction = newValue.toCGFloat()
         }
     }
@@ -167,10 +171,10 @@ public final class Rigidbody: Component, Instantiable {
     /// Linear damping coefficient
     public var damping: Float {
         get {
-            return properties[.damping] as? Float ?? gameObject?.node.physicsBody?.damping.toFloat() ?? 0.1
+            return self.properties[.damping] as? Float ?? gameObject?.node.physicsBody?.damping.toFloat() ?? 0.1
         }
         set {
-            properties[.damping] = newValue
+            self.properties[.damping] = newValue
             gameObject?.node.physicsBody?.damping = newValue.toCGFloat()
         }
     }
@@ -178,10 +182,11 @@ public final class Rigidbody: Component, Instantiable {
     /// Angular damping coefficient
     public var angularDamping: Float {
         get {
-            return properties[.angularDamping] as? Float ?? gameObject?.node.physicsBody?.angularDamping.toFloat() ?? 0.1
+            return self.properties[.angularDamping] as? Float ?? gameObject?.node.physicsBody?.angularDamping
+                .toFloat() ?? 0.1
         }
         set {
-            properties[.angularDamping] = newValue
+            self.properties[.angularDamping] = newValue
             gameObject?.node.physicsBody?.angularDamping = newValue.toCGFloat()
         }
     }
@@ -189,10 +194,10 @@ public final class Rigidbody: Component, Instantiable {
     /// Linear velocity
     public var velocity: Vector3 {
         get {
-            return properties[.velocity] as? Vector3 ?? gameObject?.node.physicsBody?.velocity ?? .zero
+            return self.properties[.velocity] as? Vector3 ?? gameObject?.node.physicsBody?.velocity ?? .zero
         }
         set {
-            properties[.velocity] = newValue
+            self.properties[.velocity] = newValue
             gameObject?.node.physicsBody?.velocity = newValue
         }
     }
@@ -200,10 +205,11 @@ public final class Rigidbody: Component, Instantiable {
     /// Angular velocity
     public var angularVelocity: Vector4 {
         get {
-            return properties[.angularVelocity] as? Vector4 ?? gameObject?.node.physicsBody?.angularVelocity ?? .zero
+            return self.properties[.angularVelocity] as? Vector4 ?? gameObject?.node.physicsBody?
+                .angularVelocity ?? .zero
         }
         set {
-            properties[.angularVelocity] = newValue
+            self.properties[.angularVelocity] = newValue
             gameObject?.node.physicsBody?.angularVelocity = newValue
         }
     }
@@ -211,10 +217,10 @@ public final class Rigidbody: Component, Instantiable {
     /// Velocity factor for axis-locking
     public var velocityFactor: Vector3 {
         get {
-            return properties[.velocityFactor] as? Vector3 ?? gameObject?.node.physicsBody?.velocityFactor ?? .one
+            return self.properties[.velocityFactor] as? Vector3 ?? gameObject?.node.physicsBody?.velocityFactor ?? .one
         }
         set {
-            properties[.velocityFactor] = newValue
+            self.properties[.velocityFactor] = newValue
             gameObject?.node.physicsBody?.velocityFactor = newValue
         }
     }
@@ -222,10 +228,11 @@ public final class Rigidbody: Component, Instantiable {
     /// Angular velocity factor for rotation-locking
     public var angularVelocityFactor: Vector3 {
         get {
-            return properties[.angularVelocityFactor] as? Vector3 ?? gameObject?.node.physicsBody?.angularVelocityFactor ?? .one
+            return self.properties[.angularVelocityFactor] as? Vector3 ?? gameObject?.node.physicsBody?
+                .angularVelocityFactor ?? .one
         }
         set {
-            properties[.angularVelocityFactor] = newValue
+            self.properties[.angularVelocityFactor] = newValue
             gameObject?.node.physicsBody?.angularVelocityFactor = newValue
         }
     }
@@ -233,10 +240,10 @@ public final class Rigidbody: Component, Instantiable {
     /// Whether the rigidbody can rest (sleep) when not moving
     public var allowsResting: Bool {
         get {
-            return properties[.allowsResting] as? Bool ?? gameObject?.node.physicsBody?.allowsResting ?? true
+            return self.properties[.allowsResting] as? Bool ?? gameObject?.node.physicsBody?.allowsResting ?? true
         }
         set {
-            properties[.allowsResting] = newValue
+            self.properties[.allowsResting] = newValue
             gameObject?.node.physicsBody?.allowsResting = newValue
         }
     }
@@ -273,44 +280,44 @@ public final class Rigidbody: Component, Instantiable {
         }
     }
 
-    internal var properties = [Properties.Getter: Any]()
+    var properties = [Properties.Getter: Any]()
 
     public func set(property: Properties.Setter) {
         let physicsBody = gameObject?.node.physicsBody
 
         switch property {
-        case let .mass(value):
-            properties[.mass] = value.toCGFloat()
+        case .mass(let value):
+            self.properties[.mass] = value.toCGFloat()
             physicsBody?.mass = value.toCGFloat()
-        case let .restitution(value):
-            properties[.restitution] = value.toCGFloat()
+        case .restitution(let value):
+            self.properties[.restitution] = value.toCGFloat()
             physicsBody?.restitution = value.toCGFloat()
-        case let .friction(value):
-            properties[.friction] = value.toCGFloat()
+        case .friction(let value):
+            self.properties[.friction] = value.toCGFloat()
             physicsBody?.friction = value.toCGFloat()
-        case let .rollingFriction(value):
-            properties[.rollingFriction] = value.toCGFloat()
+        case .rollingFriction(let value):
+            self.properties[.rollingFriction] = value.toCGFloat()
             physicsBody?.rollingFriction = value.toCGFloat()
-        case let .damping(value):
-            properties[.damping] = value.toCGFloat()
+        case .damping(let value):
+            self.properties[.damping] = value.toCGFloat()
             physicsBody?.damping = value.toCGFloat()
-        case let .angularDamping(value):
-            properties[.angularDamping] = value.toCGFloat()
+        case .angularDamping(let value):
+            self.properties[.angularDamping] = value.toCGFloat()
             physicsBody?.angularDamping = value.toCGFloat()
-        case let .velocity(value):
-            properties[.velocity] = value
+        case .velocity(let value):
+            self.properties[.velocity] = value
             physicsBody?.velocity = value
-        case let .angularVelocity(value):
-            properties[.angularVelocity] = value
+        case .angularVelocity(let value):
+            self.properties[.angularVelocity] = value
             physicsBody?.angularVelocity = value
-        case let .velocityFactor(value):
-            properties[.velocityFactor] = value
+        case .velocityFactor(let value):
+            self.properties[.velocityFactor] = value
             physicsBody?.velocityFactor = value
-        case let .angularVelocityFactor(value):
-            properties[.angularVelocityFactor] = value
+        case .angularVelocityFactor(let value):
+            self.properties[.angularVelocityFactor] = value
             physicsBody?.angularVelocityFactor = value
-        case let .allowsResting(value):
-            properties[.allowsResting] = value
+        case .allowsResting(let value):
+            self.properties[.allowsResting] = value
             physicsBody?.allowsResting = value
         }
     }
@@ -320,27 +327,27 @@ public final class Rigidbody: Component, Instantiable {
 
         switch property {
         case .mass:
-            return properties[.mass] as? T ?? physicsBody?.mass.toFloat() as? T
+            return self.properties[.mass] as? T ?? physicsBody?.mass.toFloat() as? T
         case .restitution:
-            return properties[.restitution] as? T ?? physicsBody?.restitution.toFloat() as? T
+            return self.properties[.restitution] as? T ?? physicsBody?.restitution.toFloat() as? T
         case .friction:
-            return properties[.friction] as? T ?? physicsBody?.friction.toFloat() as? T
+            return self.properties[.friction] as? T ?? physicsBody?.friction.toFloat() as? T
         case .rollingFriction:
-            return properties[.rollingFriction] as? T ?? physicsBody?.rollingFriction.toFloat() as? T
+            return self.properties[.rollingFriction] as? T ?? physicsBody?.rollingFriction.toFloat() as? T
         case .damping:
-            return properties[.damping] as? T ?? physicsBody?.damping.toFloat() as? T
+            return self.properties[.damping] as? T ?? physicsBody?.damping.toFloat() as? T
         case .angularDamping:
-            return properties[.angularDamping] as? T ?? physicsBody?.angularDamping.toFloat() as? T
+            return self.properties[.angularDamping] as? T ?? physicsBody?.angularDamping.toFloat() as? T
         case .velocity:
-            return properties[.velocity] as? T ?? physicsBody?.velocity as? T
+            return self.properties[.velocity] as? T ?? physicsBody?.velocity as? T
         case .angularVelocity:
-            return properties[.angularVelocity] as? T ?? physicsBody?.angularVelocity as? T
+            return self.properties[.angularVelocity] as? T ?? physicsBody?.angularVelocity as? T
         case .velocityFactor:
-            return properties[.velocityFactor] as? T ?? physicsBody?.velocityFactor as? T
+            return self.properties[.velocityFactor] as? T ?? physicsBody?.velocityFactor as? T
         case .angularVelocityFactor:
-            return properties[.angularVelocityFactor] as? T ?? physicsBody?.angularVelocityFactor as? T
+            return self.properties[.angularVelocityFactor] as? T ?? physicsBody?.angularVelocityFactor as? T
         case .allowsResting:
-            return properties[.allowsResting] as? T ?? physicsBody?.allowsResting as? T
+            return self.properties[.allowsResting] as? T ?? physicsBody?.allowsResting as? T
         }
     }
 
@@ -357,11 +364,11 @@ public final class Rigidbody: Component, Instantiable {
         return self
     }
 
-    public override func onDestroy() {
+    override public func onDestroy() {
         gameObject?.node.physicsBody = nil
     }
 
-    public override func start() {
+    override public func start() {
         if let _ = getComponent(Collider.self) {
             return
         }
@@ -402,7 +409,7 @@ public final class Rigidbody: Component, Instantiable {
         explosionRadius: Float,
         replacePosition: Vector3Nullable? = nil
     ) {
-        guard let gameObject = gameObject,
+        guard let gameObject,
               let transform = gameObject.transform,
               let physicsBody = gameObject.node.physicsBody
         else { return }

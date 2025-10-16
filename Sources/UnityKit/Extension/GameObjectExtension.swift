@@ -1,14 +1,14 @@
 import SceneKit
 
-extension GameObject {
+public extension GameObject {
     internal static func convertAllChildToGameObjects(_ gameObject: GameObject) {
-        gameObject.layer = .`default`
-        gameObject.getChildNodes().forEach {
-            gameObject.addChild(GameObject($0))
+        gameObject.layer = .default
+        for getChildNode in gameObject.getChildNodes() {
+            gameObject.addChild(GameObject(getChildNode))
         }
     }
 
-    public static func instantiate(original: GameObject, addToScene: Bool = true) -> GameObject {
+    static func instantiate(original: GameObject, addToScene: Bool = true) -> GameObject {
         let gameObject = original.instantiate()
 
         if addToScene {
@@ -19,7 +19,7 @@ extension GameObject {
         return gameObject
     }
 
-    public static func instantiate(original: GameObject, parent: Transform) -> GameObject {
+    static func instantiate(original: GameObject, parent: Transform) -> GameObject {
         let gameObject = original.instantiate()
 
         parent.gameObject?.addChild(gameObject)
@@ -27,13 +27,13 @@ extension GameObject {
         return gameObject
     }
 
-    public func setColor(_ color: Color, lightingModel: SCNMaterial.LightingModel = .phong) -> GameObject {
+    func setColor(_ color: Color, lightingModel: SCNMaterial.LightingModel = .phong) -> GameObject {
         renderer?.material = Material(color, lightingModel: lightingModel)
 
         return self
     }
 
-    public func setOpacity(_ opacity: Float, lightingModel: SCNMaterial.LightingModel = .phong) -> GameObject {
+    func setOpacity(_ opacity: Float, lightingModel: SCNMaterial.LightingModel = .phong) -> GameObject {
         node.opacity = opacity.toCGFloat()
 
         return self

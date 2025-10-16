@@ -3,7 +3,6 @@ import Testing
 
 @Suite("Vector3 Utilities")
 struct Vector3Tests {
-
     // MARK: - Lerp Tests
 
     @Test("Lerp at t=0 returns start vector")
