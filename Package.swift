@@ -14,19 +14,13 @@ let package = Package(
         .target(
             name: "UnityKit",
             dependencies: [],
-            path: "Sources",
-            swiftSettings: [
-                .define("UNITYKIT_EXTERNAL"),
-            ]
+            path: "Sources"
         ),
         .testTarget(
             name: "UnityKitTests",
             dependencies: ["UnityKit"],
             path: "Tests",
-            exclude: ["TESTING_GUIDE.md"],
-            swiftSettings: [
-                .define("UNITYKIT_EXTERNAL"),
-            ]
+            exclude: ["TESTING_GUIDE.md"]
         ),
     ]
 )

@@ -381,10 +381,6 @@ public class GameObject: Object {
     ) -> T {
         let result = super.addComponent(component, gameObject: gameObject)
 
-        if self.didAwake, self.activeSelf {
-            component.awake()
-        }
-
         // If GameObject has already started, call start() on the new component
         if self.didStart, self.activeSelf {
             component.start()

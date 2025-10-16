@@ -52,23 +52,17 @@ open class Component: Object, Hashable {
         Debug.debug("\(Self.self).init()")
     }
 
-#if !UNITYKIT_EXTERNAL
-    @available(*, deprecated, message: "DO NOT call this method directly. Override only. The framework calls this automatically.")
-#endif
+    @available(*, deprecated, message: "DO NOT call this method directly. Override only. Except in framework. The framework calls this automatically.")
     override open func preUpdate() {
         self.implementsPreUpdate = false
     }
 
-#if !UNITYKIT_EXTERNAL
-    @available(*, deprecated, message: "DO NOT call this method directly. Override only. The framework calls this automatically.")
-#endif
+    @available(*, deprecated, message: "DO NOT call this method directly. Override only. Except in framework. The framework calls this automatically.")
     override open func update() {
         self.implementsUpdate = false
     }
     
-#if !UNITYKIT_EXTERNAL
-    @available(*, deprecated, message: "DO NOT call this method directly. Override only. The framework calls this automatically.")
-#endif
+    @available(*, deprecated, message: "DO NOT call this method directly. Override only. Except in framework. The framework calls this automatically.")
     override open func fixedUpdate() {
         self.implementsFixedUpdate = false
     }
