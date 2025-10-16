@@ -13,7 +13,7 @@ extension GameObject {
         public static let projectile = Layer(rawValue: 1 << 4)
 
         public static var all: Layer {
-            return layers.values.dropFirst().reduce(`default`) { prev, layer -> Layer in
+            return layers.values.reduce(Layer(rawValue: 0)) { prev, layer in
                 [prev, layer]
             }
         }

@@ -259,4 +259,66 @@ public final class Camera: Component {
         transform?.lookAt(target)
         SCNTransaction.commit()
     }
+
+    // MARK: - Screen/World Coordinate Conversion
+
+    /**
+     * Converts a screen space point to a world space point
+     * - Parameters:
+     *   - screenPoint: The screen position (x, y) with z representing depth
+     *   - renderer: The SCNSceneRenderer (typically an SCNView) rendering this camera's scene
+     * - Returns: The world space position
+     *
+     * Note: The z component of screenPoint represents depth from camera.
+     * Use z=0 for near plane, z=1 for far plane, or a specific world z coordinate.
+     */
+    public func ScreenToWorldPoint(_ screenPoint: Vector3, renderer: SCNSceneRenderer) -> Vector3? {
+        // Convert screen point to SCNVector3
+        let scnScreenPoint = SCNVector3(screenPoint.x, screenPoint.y, screenPoint.z)
+
+        // Unproject from screen space to world space
+        let worldPoint = renderer.unprojectPoint(scnScreenPoint)
+
+        return Vector3(worldPoint.x, worldPoint.y, worldPoint.z)
+    }
+
+    /**
+     * Converts a world space point to screen space
+     * - Parameters:
+     *   - worldPoint: The world space position
+     *   - renderer: The SCNSceneRenderer (typically an SCNView) rendering this camera's scene
+     * - Returns: The screen space position (x, y, z) where z is the depth
+     */
+    public func WorldToScreenPoint(_ worldPoint: Vector3, renderer: SCNSceneRenderer) -> Vector3? {
+        guard let _ = gameObject?.node else { return nil }
+
+        // Convert world point to SCNVector3
+        let scnWorldPoint = SCNVector3(worldPoint.x, worldPoint.y, worldPoint.z)
+
+        // Project from world space to screen space
+        let screenPoint = renderer.projectPoint(scnWorldPoint)
+
+        return Vector3(screenPoint.x, screenPoint.y, screenPoint.z)
+    }
+
+    /**
+     * Converts a screen space point to a ray in world space
+     * - Parameters:
+     *   - screenPoint: The screen position (x, y)
+     *   - renderer: The SCNSceneRenderer (typically an SCNView) rendering this camera's scene
+     * - Returns: A tuple of (origin, direction) for the ray
+     *
+     * Useful for mouse picking and raycasting from screen coordinates
+     */
+    public func ScreenPointToRay(_ screenPoint: Vector2, renderer: SCNSceneRenderer) -> (origin: Vector3, direction: Vector3)? {
+        // Get points at near and far plane
+        guard let nearPoint = ScreenToWorldPoint(Vector3(screenPoint.x, screenPoint.y, 0), renderer: renderer),
+              let farPoint = ScreenToWorldPoint(Vector3(screenPoint.x, screenPoint.y, 1), renderer: renderer)
+        else { return nil }
+
+        let direction = (farPoint - nearPoint).normalized()
+
+        return (origin: nearPoint, direction: direction)
+    }
 }
+

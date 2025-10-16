@@ -67,7 +67,7 @@ public final class Rigidbody: Component, Instantiable {
                 if self.constraints.contains(.freezePositionZ) {
                     factor.z = 0
                 }
-                set(property: .velocityFactor(factor))
+                self.velocityFactor = factor
             }
 
             if constraints.contains(.freezeRotationX) ||
@@ -83,7 +83,7 @@ public final class Rigidbody: Component, Instantiable {
                 if self.constraints.contains(.freezeRotationZ) {
                     factor.z = 0
                 }
-                set(property: .angularVelocityFactor(factor))
+                self.angularVelocityFactor = factor
             }
         }
     }
@@ -117,6 +117,131 @@ public final class Rigidbody: Component, Instantiable {
     }
 
     public var isKinematic: Bool = true
+
+    // MARK: - Physics Properties
+
+    /// Mass of the rigidbody
+    public var mass: Float {
+        get {
+            return properties[.mass] as? Float ?? gameObject?.node.physicsBody?.mass.toFloat() ?? 1.0
+        }
+        set {
+            properties[.mass] = newValue
+            gameObject?.node.physicsBody?.mass = newValue.toCGFloat()
+        }
+    }
+
+    /// Bounciness of the rigidbody (0 = no bounce, 1 = perfect bounce)
+    public var restitution: Float {
+        get {
+            return properties[.restitution] as? Float ?? gameObject?.node.physicsBody?.restitution.toFloat() ?? 0.0
+        }
+        set {
+            properties[.restitution] = newValue
+            gameObject?.node.physicsBody?.restitution = newValue.toCGFloat()
+        }
+    }
+
+    /// Friction coefficient
+    public var friction: Float {
+        get {
+            return properties[.friction] as? Float ?? gameObject?.node.physicsBody?.friction.toFloat() ?? 0.5
+        }
+        set {
+            properties[.friction] = newValue
+            gameObject?.node.physicsBody?.friction = newValue.toCGFloat()
+        }
+    }
+
+    /// Rolling friction coefficient
+    public var rollingFriction: Float {
+        get {
+            return properties[.rollingFriction] as? Float ?? gameObject?.node.physicsBody?.rollingFriction.toFloat() ?? 0.0
+        }
+        set {
+            properties[.rollingFriction] = newValue
+            gameObject?.node.physicsBody?.rollingFriction = newValue.toCGFloat()
+        }
+    }
+
+    /// Linear damping coefficient
+    public var damping: Float {
+        get {
+            return properties[.damping] as? Float ?? gameObject?.node.physicsBody?.damping.toFloat() ?? 0.1
+        }
+        set {
+            properties[.damping] = newValue
+            gameObject?.node.physicsBody?.damping = newValue.toCGFloat()
+        }
+    }
+
+    /// Angular damping coefficient
+    public var angularDamping: Float {
+        get {
+            return properties[.angularDamping] as? Float ?? gameObject?.node.physicsBody?.angularDamping.toFloat() ?? 0.1
+        }
+        set {
+            properties[.angularDamping] = newValue
+            gameObject?.node.physicsBody?.angularDamping = newValue.toCGFloat()
+        }
+    }
+
+    /// Linear velocity
+    public var velocity: Vector3 {
+        get {
+            return properties[.velocity] as? Vector3 ?? gameObject?.node.physicsBody?.velocity ?? .zero
+        }
+        set {
+            properties[.velocity] = newValue
+            gameObject?.node.physicsBody?.velocity = newValue
+        }
+    }
+
+    /// Angular velocity
+    public var angularVelocity: Vector4 {
+        get {
+            return properties[.angularVelocity] as? Vector4 ?? gameObject?.node.physicsBody?.angularVelocity ?? .zero
+        }
+        set {
+            properties[.angularVelocity] = newValue
+            gameObject?.node.physicsBody?.angularVelocity = newValue
+        }
+    }
+
+    /// Velocity factor for axis-locking
+    public var velocityFactor: Vector3 {
+        get {
+            return properties[.velocityFactor] as? Vector3 ?? gameObject?.node.physicsBody?.velocityFactor ?? .one
+        }
+        set {
+            properties[.velocityFactor] = newValue
+            gameObject?.node.physicsBody?.velocityFactor = newValue
+        }
+    }
+
+    /// Angular velocity factor for rotation-locking
+    public var angularVelocityFactor: Vector3 {
+        get {
+            return properties[.angularVelocityFactor] as? Vector3 ?? gameObject?.node.physicsBody?.angularVelocityFactor ?? .one
+        }
+        set {
+            properties[.angularVelocityFactor] = newValue
+            gameObject?.node.physicsBody?.angularVelocityFactor = newValue
+        }
+    }
+
+    /// Whether the rigidbody can rest (sleep) when not moving
+    public var allowsResting: Bool {
+        get {
+            return properties[.allowsResting] as? Bool ?? gameObject?.node.physicsBody?.allowsResting ?? true
+        }
+        set {
+            properties[.allowsResting] = newValue
+            gameObject?.node.physicsBody?.allowsResting = newValue
+        }
+    }
+
+    // MARK: - Legacy Property Access (Deprecated)
 
     public enum Properties {
         public enum Setter {
