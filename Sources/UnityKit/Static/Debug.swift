@@ -39,7 +39,7 @@ public final class Debug {
         return formatter
     }
 
-    private static var enabled: LogStyle = .all
+    private static var enabled: LogStyle = .none
 
     public static func set(enable: LogStyle) {
         self.enabled = enable.contains(.none) ? .none : enable
@@ -65,6 +65,17 @@ public final class Debug {
         _ column: Int = #column
     ) {
         log(message, style: .error, displayTime: displayTime, filepath, function, line, column)
+    }
+
+    public static func debug(
+        _ message: String,
+        displayTime: Bool = false,
+        _ filepath: String = #file,
+        _ function: String = #function,
+        _ line: Int = #line,
+        _ column: Int = #column
+    ) {
+        log(message, style: .debug, displayTime: displayTime, filepath, function, line, column)
     }
 
     public static func info(

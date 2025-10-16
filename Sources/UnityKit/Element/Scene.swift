@@ -191,7 +191,7 @@ extension Scene {
         gameObjectCount = 0
         ignoreUpdatesCount = 0
         printGameObjectsIgnoreUpdates(for: rootGameObject)
-        Debug.log("ignoreUpdates count: \(ignoreUpdatesCount) / \(gameObjectCount)")
+        Debug.info("ignoreUpdates count: \(ignoreUpdatesCount) / \(gameObjectCount)")
     }
 
     private func printGameObjectsIgnoreUpdates(for gameObject: GameObject) {
@@ -200,7 +200,7 @@ extension Scene {
             if $0.ignoreUpdates {
                 ignoreUpdatesCount += 1
             }
-            Debug.log("\($0.name ?? "No name") -> ignoreUpdates: \($0.ignoreUpdates)")
+            Debug.info("\($0.name ?? "No name") -> ignoreUpdates: \($0.ignoreUpdates)")
             printGameObjectsIgnoreUpdates(for: $0)
         }
     }

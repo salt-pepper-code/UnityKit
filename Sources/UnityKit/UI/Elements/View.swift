@@ -115,7 +115,7 @@ extension UI {
                 preferredRenderingAPI: .openGLES2
             )
             shadowCastingAllowed = false
-            print("Shadows are disabled on the simulator for performance reason, prefer to use a device!")
+            Debug.warning("Shadows are disabled on the simulator for performance reason, prefer to use a device!")
 #else
             let options = options ?? Options(
                 antialiasingMode: SCNAntialiasingMode.multisampling4X,
