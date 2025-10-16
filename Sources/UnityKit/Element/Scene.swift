@@ -94,14 +94,14 @@ open class Scene: Identifiable, Equatable {
         if Camera.main(in: self) == nil {
             let cameraObject = GameObject()
 
-            let cameraComponent = cameraObject.addComponent(Camera.self)
-            cameraObject.node.camera = cameraComponent.scnCamera
-
             cameraObject.tag = .mainCamera
             cameraObject.name = cameraObject.tag.name
 
             self.rootGameObject.addChild(cameraObject)
 
+            let cameraComponent = cameraObject.addComponent(Camera.self)
+            cameraObject.node.camera = cameraComponent.scnCamera
+            
             cameraObject.transform.position = Vector3(0, 10, 20)
         }
 
@@ -143,7 +143,15 @@ open class Scene: Identifiable, Equatable {
             return
         }
 
-        Time.deltaTime = time - lastTimeStamp
+        // Calculate unscaled delta time
+        let realDelta = time - lastTimeStamp
+        Time.unscaledDeltaTime = realDelta
+
+        // Apply time scale and update scaled delta/time
+        Time.deltaTime = realDelta * Time.timeScale
+        Time.time += Time.deltaTime
+        Time.frameCount += 1
+
         rootGameObject.update()
         rootGameObject.internalUpdate()
         self.lastTimeStamp = time

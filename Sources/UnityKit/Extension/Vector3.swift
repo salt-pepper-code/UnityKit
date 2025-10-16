@@ -167,6 +167,75 @@ extension Vector3 {
         return Float(1 - t) * v0 + Float(t) * v1
     }
 
+    /**
+     * Linearly interpolates between two vectors (Unity-style API)
+     */
+    public static func Lerp(_ a: Vector3, _ b: Vector3, _ t: Float) -> Vector3 {
+        let clampedT = max(0, min(1, t))
+        return a + (b - a) * clampedT
+    }
+
+    /**
+     * Calculates the angle in degrees between two vectors
+     */
+    public static func Angle(_ from: Vector3, _ to: Vector3) -> Float {
+        let denominator = sqrt(from.length() * from.length() * to.length() * to.length())
+        if denominator < 1e-15 {
+            return 0
+        }
+
+        let dotProduct = Vector3.dot(from, to)
+        let clampedDot = max(-1, min(1, dotProduct / denominator))
+        return acos(clampedDot) * (180.0 / .pi)
+    }
+
+    /**
+     * Moves a point current towards target by maxDistanceDelta
+     */
+    public static func MoveTowards(_ current: Vector3, _ target: Vector3, _ maxDistanceDelta: Float) -> Vector3 {
+        let direction = target - current
+        let distance = direction.length()
+
+        if distance <= maxDistanceDelta || distance < 1e-15 {
+            return target
+        }
+
+        return current + direction / distance * maxDistanceDelta
+    }
+
+    /**
+     * Returns a vector with the smallest components of the two vectors
+     */
+    public static func Min(_ a: Vector3, _ b: Vector3) -> Vector3 {
+        return Vector3(
+            min(a.x, b.x),
+            min(a.y, b.y),
+            min(a.z, b.z)
+        )
+    }
+
+    /**
+     * Returns a vector with the largest components of the two vectors
+     */
+    public static func Max(_ a: Vector3, _ b: Vector3) -> Vector3 {
+        return Vector3(
+            max(a.x, b.x),
+            max(a.y, b.y),
+            max(a.z, b.z)
+        )
+    }
+
+    /**
+     * Returns a copy of vector with its magnitude clamped to maxLength
+     */
+    public static func ClampMagnitude(_ vector: Vector3, _ maxLength: Float) -> Vector3 {
+        let length = vector.length()
+        if length > maxLength {
+            return vector.normalized() * maxLength
+        }
+        return vector
+    }
+
     public func toQuaternion() -> Quaternion {
         var angle: Float = 0
 
@@ -195,7 +264,7 @@ extension Vector3 {
     }
 }
 
-extension Vector3: Equatable {
+extension Vector3: @retroactive Equatable {
     public static func == (left: Vector3, right: Vector3) -> Bool {
         return left.x == right.x && left.y == right.y && left.z == right.z
     }

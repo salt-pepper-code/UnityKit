@@ -70,90 +70,230 @@ public final class Touch {
 }
 
 public final class Input {
-    private static var touches: [Touch]?
-    private static var stackUpdates = [TouchPhase: [Touch]]()
-    private static var clearNextFrame = false
+    private struct State {
+        var touches: [Touch]?
+        var stackUpdates = [TouchPhase: [Touch]]()
+        var clearNextFrame = false
+        var keysPressed: Set<String> = []
+        var keysDown: Set<String> = []
+        var keysUp: Set<String> = []
+        var mouseButtons: [Bool] = [false, false, false]
+        var mouseButtonsDown: [Bool] = [false, false, false]
+        var mouseButtonsUp: [Bool] = [false, false, false]
+        var mousePosition: Vector2 = .zero
+    }
+
+    private static let state = Synchronized(State(), label: "com.unitykit.input")
+
+    public static var mousePosition: Vector2 {
+        get {
+            state.read { $0.mousePosition }
+        }
+        set {
+            state.write { state in
+                state.mousePosition = newValue
+            }
+        }
+    }
+
+    public static var anyKey: Bool {
+        state.read { !$0.keysPressed.isEmpty }
+    }
+
+    public static var anyKeyDown: Bool {
+        state.read { !$0.keysDown.isEmpty }
+    }
 
     public static var touchCount: Int {
-        guard let touches = touches
-            else { return 0 }
+        state.read { $0.touches?.count ?? 0 }
+    }
 
-        return touches.count
+    // MARK: - Keyboard Methods
+
+    /// Returns true while the user holds down the key identified by name
+    public static func getKey(_ key: String) -> Bool {
+        state.read { $0.keysPressed.contains(key.uppercased()) }
+    }
+
+    /// Returns true during the frame the user starts pressing down the key
+    public static func getKeyDown(_ key: String) -> Bool {
+        state.read { $0.keysDown.contains(key.uppercased()) }
+    }
+
+    /// Returns true during the frame the user releases the key
+    public static func getKeyUp(_ key: String) -> Bool {
+        state.read { $0.keysUp.contains(key.uppercased()) }
+    }
+
+    // MARK: - Mouse Methods
+
+    /// Returns whether the given mouse button is held down (0 = left, 1 = right, 2 = middle)
+    public static func getMouseButton(_ button: Int) -> Bool {
+        guard button >= 0 && button < 3 else { return false }
+        return state.read { $0.mouseButtons[button] }
+    }
+
+    /// Returns true during the frame the user pressed the given mouse button
+    public static func getMouseButtonDown(_ button: Int) -> Bool {
+        guard button >= 0 && button < 3 else { return false }
+        return state.read { $0.mouseButtonsDown[button] }
+    }
+
+    /// Returns true during the frame the user releases the given mouse button
+    public static func getMouseButtonUp(_ button: Int) -> Bool {
+        guard button >= 0 && button < 3 else { return false }
+        return state.read { $0.mouseButtonsUp[button] }
+    }
+
+    // MARK: - Internal Update Methods
+
+    internal static func setKeyDown(_ key: String) {
+        let upperKey = key.uppercased()
+        state.write {
+            $0.keysPressed.insert(upperKey)
+            $0.keysDown.insert(upperKey)
+        }
+    }
+
+    internal static func setKeyUp(_ key: String) {
+        let upperKey = key.uppercased()
+        state.write {
+            $0.keysPressed.remove(upperKey)
+            $0.keysUp.insert(upperKey)
+        }
+    }
+
+    internal static func setMouseButtonDown(_ button: Int) {
+        guard button >= 0 && button < 3 else { return }
+        state.write {
+            $0.mouseButtons[button] = true
+            $0.mouseButtonsDown[button] = true
+        }
+    }
+
+    internal static func setMouseButtonUp(_ button: Int) {
+        guard button >= 0 && button < 3 else { return }
+        state.write {
+            $0.mouseButtons[button] = false
+            $0.mouseButtonsUp[button] = true
+        }
+    }
+
+    internal static func setMousePosition(_ position: Vector2) {
+        mousePosition = position
     }
 
     internal static func update() {
-        guard !clearNextFrame else {
-            clear()
-            return
+        var shouldRecurse = false
+
+        state.write { s in
+            // Clear frame-specific input states
+            s.keysDown.removeAll()
+            s.keysUp.removeAll()
+            s.mouseButtonsDown = [false, false, false]
+            s.mouseButtonsUp = [false, false, false]
+
+            guard !s.clearNextFrame else {
+                clear(state: &s)
+                return
+            }
+
+            if let currentTouches = s.touches {
+                if let first = s.stackUpdates.first {
+                    s.stackUpdates.removeValue(forKey: first.key)
+
+                    currentTouches.enumerated().forEach { index, touch in
+                        let updatedTouch = first.value[index]
+                        touch.phase = first.key
+                        switch first.key {
+                        case .moved:
+                            touch.previousPosition = touch.position
+                        case .ended:
+                            touch.previousPosition = touch.position
+                            s.clearNextFrame = true
+                        case .cancelled:
+                            clear(state: &s)
+                        default:
+                            break
+                        }
+                        touch.updateTouch(updatedTouch)
+                    }
+                } else {
+                    currentTouches.forEach {
+                        $0.phase = .stationary
+                    }
+                }
+            } else if let first = s.stackUpdates.first,
+                first.value.first?.phase == .began {
+                s.touches = first.value
+                shouldRecurse = true
+            }
         }
 
-        if let touches = touches {
-            if let first = stackUpdates.first {
-                stackUpdates.removeValue(forKey: first.key)
-
-                touches.enumerated().forEach { index, touch in
-                    let updatedTouch = first.value[index]
-                    touch.phase = first.key
-                    switch first.key {
-                    case .moved:
-                        touch.previousPosition = touch.position
-                    case .ended:
-                        touch.previousPosition = touch.position
-                        clearNextFrame = true
-                    case .cancelled:
-                        clear()
-                    default:
-                        break
-                    }
-                    touch.updateTouch(updatedTouch)
-                }
-            } else {
-                touches.forEach {
-                    $0.phase = .stationary
-                }
-            }
-        } else if let first = stackUpdates.first,
-            first.value.first?.phase == .began {
-            setTouches(first.value)
+        // Handle recursive update call outside the synchronized block to avoid deadlock
+        if shouldRecurse {
             update()
         }
     }
 
     internal static func stackTouches(_ touches: [Touch], phase: TouchPhase) {
-        if let currentTouches = self.touches,
-            let currentFirst = currentTouches.first,
-            let first = touches.first {
-            if currentFirst.view != first.view {
-                currentTouches.forEach {
-                    $0.phase = .ended
+        state.write { s in
+            if let currentTouches = s.touches,
+                let currentFirst = currentTouches.first,
+                let first = touches.first {
+                if currentFirst.view != first.view {
+                    currentTouches.forEach {
+                        $0.phase = .ended
+                    }
+                    s.clearNextFrame = true
+                    return
                 }
-                clearNextFrame = true
-                return
             }
-        }
 
-        switch phase {
-        case .began:
-            if self.touches != nil || stackUpdates.count > 0 {
-                clear()
+            switch phase {
+            case .began:
+                if s.touches != nil || s.stackUpdates.count > 0 {
+                    clear(state: &s)
+                }
+            default:
+                break
             }
-        default:
-            break
+            s.stackUpdates[phase] = touches
         }
-        stackUpdates[phase] = touches
     }
 
     public static func getTouch(_ index: Int) -> Touch? {
-        return touches?[index]
+        state.read { s in
+            guard let touches = s.touches, index < touches.count else { return nil }
+            return touches[index]
+        }
     }
 
     internal static func clear() {
-        clearNextFrame = false
-        stackUpdates.removeAll()
-        touches = nil
+        state.write { s in clear(state: &s) }
+    }
+
+    private static func clear(state: inout State) {
+        state.clearNextFrame = false
+        state.stackUpdates.removeAll()
+        state.touches = nil
     }
 
     internal static func setTouches(_ touches: [Touch]) {
-        self.touches = touches
+        state.write { $0.touches = touches }
+    }
+
+    // MARK: - Testing Helpers
+    internal static func resetForTesting() {
+        state.write { s in
+            clear(state: &s)
+            s.keysPressed.removeAll()
+            s.keysDown.removeAll()
+            s.keysUp.removeAll()
+            s.mouseButtons = [false, false, false]
+            s.mouseButtonsDown = [false, false, false]
+            s.mouseButtonsUp = [false, false, false]
+            s.mousePosition = .zero
+        }
     }
 }

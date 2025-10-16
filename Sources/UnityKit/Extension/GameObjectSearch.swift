@@ -51,7 +51,7 @@ extension GameObject {
 
             return true
 
-        case let .layer(layer) where gameObject.layer == layer:
+        case let .layer(layerMask) where layerMask.contains(gameObject.layer):
             return true
 
         case let .camera(compareType):

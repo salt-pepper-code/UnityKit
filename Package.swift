@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.9
 
 import PackageDescription
 
@@ -13,5 +13,10 @@ let package = Package(
     ],
     targets: [
         .target(name: "UnityKit", dependencies: [], path: "Sources"),
+        .testTarget(
+            name: "UnityKitTests",
+            dependencies: ["UnityKit"],
+            path: "Tests"
+        ),
     ]
 )

@@ -5,13 +5,28 @@ public func destroy(_ gameObject: GameObject) {
 }
 
 open class Object: Identifiable, Equatable {
-    private static var cache = [Component: [Component]]()
+    private static var cache = [ObjectIdentifier: [Component]]()
+    private static let cacheQueue = DispatchQueue(label: "com.unitykit.object.cache", qos: .userInitiated)
+
     /**
      Determines the name of the receiver.
     */
     open var name: String?
 
-    private(set) internal var components = [Component]()
+    private var _components = [Component]()
+    private let componentsQueue = DispatchQueue(label: "com.unitykit.object.components", qos: .userInitiated, attributes: .concurrent)
+
+    internal var components: [Component] {
+        get {
+            componentsQueue.sync { _components }
+        }
+        set {
+            componentsQueue.sync(flags: .barrier) { [weak self] in
+                self?._components = newValue
+            }
+        }
+    }
+
     public let id: String
 
     /// Create a new instance
@@ -61,33 +76,42 @@ open class Object: Identifiable, Equatable {
     }
 
     internal func removeAllComponents() {
-        components.forEach { $0.remove() }
+        let comps = components // Thread-safe read
+        comps.forEach { $0.remove() }
     }
 
     /// Remove a component that matches the type.
     public func removeComponentsOfType(_ type: Component.Type) {
-        while let index = components.firstIndex(where: { $0.self === type }) {
-            components[index].remove()
+        componentsQueue.sync(flags: .barrier) {
+            while let index = _components.firstIndex(where: { $0.self === type }) {
+                _components[index].remove()
+            }
         }
     }
 
     /// Remove a component instance.
     public func removeComponent(_ component: Component) {
-        if let index = components.firstIndex(where: { $0 == component }) {
-            components[index].onDestroy()
-            components.remove(at: index)
-            Object.removeCache(component)
+        componentsQueue.sync(flags: .barrier) {
+            if let index = _components.firstIndex(where: { $0 == component }) {
+                _components[index].onDestroy()
+                _components.remove(at: index)
+                Object.removeCache(component)
+            }
         }
     }
 
     /// Returns the component of Type type if the game object has one attached, null if it doesn't.
     open func getComponent<T: Component>(_ type: T.Type) -> T? {
-        return components.first { $0 is T } as? T
+        return componentsQueue.sync {
+            _components.first { $0 is T } as? T
+        }
     }
 
     /// Returns all components of Type type in the GameObject.
     open func getComponents<T: Component>(_ type: T.Type) -> [T] {
-        return components.compactMap { $0 as? T }
+        return componentsQueue.sync {
+            _components.compactMap { $0 as? T }
+        }
     }
 
     /// Add a component to this GameObject.
@@ -103,8 +127,10 @@ open class Object: Identifiable, Equatable {
     }
 
     @discardableResult internal func addComponent<T: Component>(_ component: T, gameObject: GameObject? = nil) -> T {
-        components.append(component)
-        components.sort { $0.order.rawValue <= $1.order.rawValue }
+        componentsQueue.sync(flags: .barrier) {
+            _components.append(component)
+            _components.sort { $0.order.rawValue <= $1.order.rawValue }
+        }
         component.gameObject = gameObject
         component.awake()
         if let behaviour = component as? Behaviour {
@@ -115,37 +141,34 @@ open class Object: Identifiable, Equatable {
     }
 
     internal class func addCache<T: Component>(_ component: T) {
-        let key = Object.cache.keys.first(where: { $0 is T })
-        if let key = key, var components = Object.cache[key] {
-            components.append(component)
-            Object.cache[key] = components
-        } else {
-            Object.cache[T.init()] = [component]
+        cacheQueue.sync {
+            let key = T.cacheKey
+            if var components = Object.cache[key] {
+                components.append(component)
+                Object.cache[key] = components
+            } else {
+                Object.cache[key] = [component]
+            }
         }
     }
 
     internal class func removeCache<T: Component>(_ component: T) {
-        let keys = Object.cache.keys.filter ({ $0 is T })
-        guard keys.count > 0 else { return }
-        keys.forEach { key in
+        cacheQueue.sync {
+            let key = T.cacheKey
             var components = Object.cache[key]
             if let index = components?.firstIndex(where: { $0 == component }) {
                 components?.remove(at: index)
                 Object.cache[key] = components
-                return
             }
         }
     }
 
     internal class func cache<T: Component>(_ type: T.Type) -> [T]? {
-        let keys = Object.cache.keys.filter { $0 is T }
-        guard keys.count > 0 else { return nil }
-        let result: [T] = keys.reduce([T]()) { (prev, key) -> [T] in
-            if let cache = Object.cache[key]?.compactMap({ $0 as? T }) {
-                return prev + cache
-            }
-            return prev
+        return cacheQueue.sync {
+            let key = T.cacheKey
+            guard let components = Object.cache[key] else { return nil }
+            let result = components.compactMap { $0 as? T }
+            return result.isEmpty ? nil : result
         }
-        return result
     }
 }

@@ -126,11 +126,11 @@ public final class Material: Object {
     public func setTexture(_ name: BasicTextureShading, image: UIImage?) {
         switch name {
         case .diffuse:
-            scnMaterial.diffuse.contents = color
+            scnMaterial.diffuse.contents = image ?? color
         case .normal:
-            scnMaterial.normal.contents = color
+            scnMaterial.normal.contents = image ?? color
         case .reflective:
-            scnMaterial.reflective.contents = color
+            scnMaterial.reflective.contents = image ?? color
         case .unknown:
             break
         }

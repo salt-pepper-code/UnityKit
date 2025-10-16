@@ -36,6 +36,11 @@ open class Component: Object, Hashable {
         return gameObject?.transform
     }
 
+    /// Returns the ObjectIdentifier for this Component type, used for cache key
+    internal static var cacheKey: ObjectIdentifier {
+        return ObjectIdentifier(Self.self)
+    }
+
     public func hash(into hasher: inout Hasher) {
         hasher.combine(ObjectIdentifier(self))
     }
