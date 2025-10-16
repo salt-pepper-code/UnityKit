@@ -59,60 +59,40 @@ open class Object: Identifiable, Equatable {
 
     /// Awake is called when the script instance is being loaded.
     /// - Warning: DO NOT call this method directly. Override only. The framework calls this automatically.
-    #if !UNITYKIT_EXTERNAL
-        @available(
-            *,
-            deprecated,
-            message: "DO NOT call this method directly. Override only. The framework calls this automatically."
-        )
-    #endif
+#if !UNITYKIT_EXTERNAL
+    @available(*, deprecated, message: "DO NOT call this method directly. Override only. The framework calls this automatically.")
+#endif
     open func awake() {}
 
     /// Start is called on the frame when a script is enabled just before any of the Update methods are called the first
     /// time.
     /// - Warning: DO NOT call this method directly. Override only. The framework calls this automatically.
-    #if !UNITYKIT_EXTERNAL
-        @available(
-            *,
-            deprecated,
-            message: "DO NOT call this method directly. Override only. The framework calls this automatically."
-        )
-    #endif
+#if !UNITYKIT_EXTERNAL
+    @available(*, deprecated, message: "DO NOT call this method directly. Override only. The framework calls this automatically.")
+#endif
     open func start() {}
 
     /// preUpdate is called every frame, if the Object is enabled on willRenderScene.
     /// - Warning: DO NOT call this method directly. Override only. The framework calls this automatically.
-    #if !UNITYKIT_EXTERNAL
-        @available(
-            *,
-            deprecated,
-            message: "DO NOT call this method directly. Override only. The framework calls this automatically."
-        )
-    #endif
+#if !UNITYKIT_EXTERNAL
+    @available(*, deprecated, message: "DO NOT call this method directly. Override only. The framework calls this automatically.")
+#endif
     open func preUpdate() {}
 
     func internalUpdate() {}
 
     /// Update is called every frame, if the Object is enabled on didRenderScene.
     /// - Warning: DO NOT call this method directly. Override only. The framework calls this automatically.
-    #if !UNITYKIT_EXTERNAL
-        @available(
-            *,
-            deprecated,
-            message: "DO NOT call this method directly. Override only. The framework calls this automatically."
-        )
-    #endif
+#if !UNITYKIT_EXTERNAL
+    @available(*, deprecated, message: "DO NOT call this method directly. Override only. The framework calls this automatically.")
+#endif
     open func update() {}
 
     /// fixedUpdate is called every simulated physics frame, if the Object is enabled on didSimulatePhysicsAtTime.
     /// - Warning: DO NOT call this method directly. Override only. The framework calls this automatically.
-    #if !UNITYKIT_EXTERNAL
-        @available(
-            *,
-            deprecated,
-            message: "DO NOT call this method directly. Override only. The framework calls this automatically."
-        )
-    #endif
+#if !UNITYKIT_EXTERNAL
+    @available(*, deprecated, message: "DO NOT call this method directly. Override only. The framework calls this automatically.")
+#endif
     open func fixedUpdate() {}
 
     func movedToScene() {}

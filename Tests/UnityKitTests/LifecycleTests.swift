@@ -22,17 +22,14 @@ struct LifecycleTests {
         }
 
         override func preUpdate() {
-            super.preUpdate()
             self.callOrder.append("preUpdate")
         }
 
         override func update() {
-            super.update()
             self.callOrder.append("update")
         }
 
         override func fixedUpdate() {
-            super.fixedUpdate()
             self.callOrder.append("fixedUpdate")
         }
     }
