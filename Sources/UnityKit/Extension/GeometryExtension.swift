@@ -57,13 +57,13 @@ public enum PrimitiveType {
 }
 
 public extension GameObject {
-    static func createPrimitive(_ type: PrimitiveType) -> GameObject {
+    static func createPrimitive(_ type: PrimitiveType, name: String? = nil) -> GameObject {
         let geometry = SCNGeometry.createPrimitive(type)
         geometry.firstMaterial?.lightingModel = .phong
 
         let gameObject = GameObject(SCNNode(geometry: geometry))
 
-        gameObject.name = type.name
+        gameObject.name = name ?? type.name
 
         return gameObject
     }
