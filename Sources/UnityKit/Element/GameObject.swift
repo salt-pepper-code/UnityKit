@@ -331,17 +331,21 @@ public class GameObject: Object {
             return
         }
 
-        components
+        let filtered = components
             .filter {
                 if !$0.implementsUpdate { return false }
                 if let behaviour = $0 as? Behaviour { return behaviour.enabled }
                 return true
             }
+        
+        filtered
             .forEach { $0.update() }
 
         let childrenCopy = self.children // Thread-safe read
-        childrenCopy
+        let childrenFiltered = childrenCopy
             .filter { !$0.ignoreUpdates || !$0.didStart }
+        
+        childrenFiltered
             .forEach { $0.update() }
     }
 
