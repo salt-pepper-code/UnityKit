@@ -62,9 +62,7 @@ open class Object: Identifiable, Equatable {
             message: "DO NOT call this method directly. Override only. The framework calls this automatically."
         )
     #endif
-    open func awake() {
-        Debug.debug("\(Self.self).awake()")
-    }
+    open func awake() {}
 
     /// Start is called on the frame when a script is enabled just before any of the Update methods are called the first
     /// time.
@@ -76,9 +74,7 @@ open class Object: Identifiable, Equatable {
             message: "DO NOT call this method directly. Override only. The framework calls this automatically."
         )
     #endif
-    open func start() {
-        Debug.debug("\(Self.self).start()")
-    }
+    open func start() {}
 
     /// preUpdate is called every frame, if the Object is enabled on willRenderScene.
     /// - Warning: DO NOT call this method directly. Override only. The framework calls this automatically.

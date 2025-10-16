@@ -53,17 +53,14 @@ open class Component: Object, Hashable {
     }
 
     override open func preUpdate() {
-        Debug.debug("\(Self.self).preUpdate()")
         self.implementsPreUpdate = false
     }
 
     override open func update() {
-        Debug.debug("\(Self.self).update()")
         self.implementsUpdate = false
     }
 
     override open func fixedUpdate() {
-        Debug.debug("\(Self.self).fixedUpdate()")
         self.implementsFixedUpdate = false
     }
 
@@ -72,9 +69,7 @@ open class Component: Object, Hashable {
         self.gameObject?.removeComponent(self)
     }
 
-    open func onDestroy() {
-        Debug.debug("\(Self.self).onDestroy()")
-    }
+    open func onDestroy() {}
 
     public func remove() {
         self.gameObject?.removeComponent(self)

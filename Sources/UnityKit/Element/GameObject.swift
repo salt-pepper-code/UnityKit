@@ -260,7 +260,6 @@ public class GameObject: Object {
         guard !self.didAwake
         else { return }
 
-        Debug.debug("GameObject[\(self.name ?? "unnamed")].awake()")
         self.didAwake = true
         components.forEach { $0.awake() }
         let childrenCopy = self.children // Thread-safe read
@@ -278,7 +277,6 @@ public class GameObject: Object {
             return
         }
 
-        Debug.debug("GameObject[\(self.name ?? "unnamed")].start()")
         self.didStart = true
         components.forEach { $0.start() }
         let childrenCopy = self.children // Thread-safe read
@@ -309,7 +307,6 @@ public class GameObject: Object {
               self.activeSelf
         else { return }
 
-        Debug.debug("GameObject[\(self.name ?? "unnamed")].preUpdate()")
         components
             .filter {
                 if !$0.implementsPreUpdate { return false }
@@ -334,7 +331,6 @@ public class GameObject: Object {
             return
         }
 
-        Debug.debug("GameObject[\(self.name ?? "unnamed")].update()")
         components
             .filter {
                 if !$0.implementsUpdate { return false }
@@ -355,7 +351,6 @@ public class GameObject: Object {
               self.activeSelf
         else { return }
 
-        Debug.debug("GameObject[\(self.name ?? "unnamed")].fixedUpdate()")
         components
             .filter {
                 if !$0.implementsFixedUpdate { return false }
@@ -385,7 +380,7 @@ public class GameObject: Object {
         if self.didAwake, self.activeSelf {
             component.awake()
         }
-        
+
         // If GameObject has already started, call start() on the new component
         if self.didStart, self.activeSelf {
             component.start()
