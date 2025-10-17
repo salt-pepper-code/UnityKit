@@ -259,7 +259,7 @@ Camera testing has several constraints due to SceneKit's rendering requirements:
 4. **GameObject identity** - Use `===` for object identity checks, not `==`
 5. **Layer filtering bug** - Fixed in GameObjectSearch.swift to use `.contains()` instead of `==` for OptionSet
 6. **Tag values** - Only `.untagged`, `.mainCamera`, and `.custom(String)` exist - no predefined `.player` or `.enemy` tags
-7. **Lifecycle super calls** - **ALWAYS call `super.method()` first** when overriding lifecycle methods (awake, start, update, lateUpdate, preUpdate, fixedUpdate) in MonoBehaviour subclasses
+7. **Lifecycle super calls** - **DO NOT call super** for `update()`, `preUpdate()`, or `fixedUpdate()` - these should be overridden without calling super. **ONLY call `super.awake()` and `super.start()`** when overriding those specific methods
 8. **Scene default objects** - Scenes may create default objects (like cameras). Filter test results to only include objects you explicitly created:
    ```swift
    let results = GameObject.findGameObjects(.layer(.default), in: scene)

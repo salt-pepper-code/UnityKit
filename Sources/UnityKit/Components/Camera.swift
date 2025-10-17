@@ -1,10 +1,85 @@
 import Foundation
 import SceneKit
 
-/**
- A Camera is a device through which the player views the world.
- A world space point is defined in global coordinates (for example, Transform.position).
- */
+/// A camera component that controls how the scene is rendered to the display.
+///
+/// The `Camera` component is responsible for rendering the 3D scene from a specific viewpoint.
+/// It defines the viewing frustum, projection parameters, and culling behavior. A camera can use
+/// either perspective or orthographic projection and supports both HDR rendering and selective
+/// layer-based rendering through culling masks.
+///
+/// ## Overview
+///
+/// Cameras are essential components in any 3D scene, as they determine what the viewer sees.
+/// Each camera maintains its own projection settings, clipping planes, and can be configured
+/// to follow or look at specific game objects in the scene.
+///
+/// ## Topics
+///
+/// ### Creating a Camera
+///
+/// - ``init()``
+/// - ``configure(_:)``
+///
+/// ### Projection Settings
+///
+/// - ``fieldOfView``
+/// - ``orthographic``
+/// - ``orthographicSize``
+/// - ``zNear``
+/// - ``zFar``
+///
+/// ### Rendering Configuration
+///
+/// - ``allowHDR``
+/// - ``cullingMask``
+///
+/// ### Camera Targeting
+///
+/// - ``target``
+/// - ``followTarget(target:distanceRange:)``
+/// - ``lookAt(_:duration:)-5s6c9``
+/// - ``lookAt(_:duration:)-2ew3y``
+///
+/// ### Coordinate Conversion
+///
+/// - ``ScreenToWorldPoint(_:renderer:)``
+/// - ``WorldToScreenPoint(_:renderer:)``
+/// - ``ScreenPointToRay(_:renderer:)``
+///
+/// ### Finding Cameras
+///
+/// - ``main(in:)``
+///
+/// ### SceneKit Integration
+///
+/// - ``scnCamera``
+///
+/// ## Example Usage
+///
+/// ```swift
+/// // Create a perspective camera
+/// let camera = gameObject.addComponent(Camera.self)
+/// camera.fieldOfView = 75
+/// camera.zNear = 0.1
+/// camera.zFar = 1000
+///
+/// // Enable HDR rendering
+/// camera.allowHDR = true
+///
+/// // Set up camera to follow a target
+/// if let player = GameObject.find(.tag(.player), in: scene) {
+///     camera.followTarget(target: player, distanceRange: (5.0, 10.0))
+/// }
+///
+/// // Convert screen coordinates to world space
+/// if let worldPos = camera.ScreenToWorldPoint(
+///     Vector3(screenX, screenY, 10),
+///     renderer: sceneView
+/// ) {
+///     print("World position: \(worldPos)")
+/// }
+/// ```
 public final class Camera: Component {
     override var order: ComponentOrder {
         .priority
@@ -12,6 +87,11 @@ public final class Camera: Component {
 
     private var hFieldOfView: CGFloat = 60
 
+    /// The underlying SceneKit camera object used for rendering.
+    ///
+    /// This property provides direct access to the `SCNCamera` instance that handles
+    /// the actual rendering. Modifying this property updates the culling mask and
+    /// recalculates field of view settings.
     public internal(set) var scnCamera = SCNCamera() {
         didSet {
             self.cullingMask = GameObject.Layer.all
@@ -19,11 +99,16 @@ public final class Camera: Component {
         }
     }
 
-    /**
-      Determines the receiver's field of view (in degree). Animatable.
-
-      **Defaults to 60°.**
-     */
+    /// The camera's field of view in degrees.
+    ///
+    /// This property determines the vertical angle of the camera's view frustum when using
+    /// perspective projection. A larger field of view creates a wider viewing angle.
+    /// This property only applies when ``orthographic`` is `true`.
+    ///
+    /// - Note: The value is animatable through SceneKit's animation system.
+    /// - Returns: The field of view angle in degrees, or `0` if using orthographic projection.
+    ///
+    /// **Default value:** 60 degrees
     public var fieldOfView: CGFloat {
         get {
             guard self.orthographic
@@ -42,13 +127,15 @@ public final class Camera: Component {
         }
     }
 
-    /**
-     Determines the receiver's near value. Animatable.
-
-     The near value determines the minimal distance between the camera and a visible surface. If a surface is closer to the camera than this minimal distance, then the surface is clipped. The near value must be different than zero.
-
-     **Defaults to 1.**
-     */
+    /// The distance to the near clipping plane.
+    ///
+    /// This property determines the minimum distance from the camera at which objects are rendered.
+    /// Any geometry closer to the camera than this distance will be clipped and not rendered.
+    /// The value must be greater than zero.
+    ///
+    /// - Note: The value is animatable through SceneKit's animation system.
+    ///
+    /// **Default value:** 1.0
     public var zNear: Double {
         get {
             return self.scnCamera.zNear
@@ -58,13 +145,14 @@ public final class Camera: Component {
         }
     }
 
-    /**
-     Determines the receiver's far value. Animatable.
-
-     The far value determines the maximal distance between the camera and a visible surface. If a surface is further from the camera than this maximal distance, then the surface is clipped.
-
-     **Defaults to 100.**
-     */
+    /// The distance to the far clipping plane.
+    ///
+    /// This property determines the maximum distance from the camera at which objects are rendered.
+    /// Any geometry farther from the camera than this distance will be clipped and not rendered.
+    ///
+    /// - Note: The value is animatable through SceneKit's animation system.
+    ///
+    /// **Default value:** 100.0
     public var zFar: Double {
         get {
             return self.scnCamera.zFar
@@ -74,11 +162,13 @@ public final class Camera: Component {
         }
     }
 
-    /**
-     Determines whether the receiver uses an orthographic projection or not.
-
-     **Defaults to false.**
-     */
+    /// A Boolean value that determines whether the camera uses orthographic projection.
+    ///
+    /// When `true`, the camera uses orthographic projection where objects maintain their size
+    /// regardless of distance from the camera. When `false`, the camera uses perspective
+    /// projection where distant objects appear smaller.
+    ///
+    /// **Default value:** `false` (perspective projection)
     public var orthographic: Bool {
         get {
             return self.scnCamera.usesOrthographicProjection
@@ -88,13 +178,15 @@ public final class Camera: Component {
         }
     }
 
-    /**
-     Determines the receiver's orthographic scale value. Animatable.
-
-     This setting determines the size of the camera's visible area. This is only enabled when usesOrthographicProjection is set to true.
-
-     **Defaults to 1.**
-     */
+    /// The orthographic projection scale value.
+    ///
+    /// This property determines the size of the camera's visible area when using orthographic
+    /// projection. Higher values show a larger area of the scene. This property only has an
+    /// effect when ``orthographic`` is set to `true`.
+    ///
+    /// - Note: The value is animatable through SceneKit's animation system.
+    ///
+    /// **Default value:** 1.0
     public var orthographicSize: Double {
         get {
             return self.scnCamera.orthographicScale
@@ -104,11 +196,13 @@ public final class Camera: Component {
         }
     }
 
-    /**
-     Determines if the receiver has a high dynamic range.
-
-     **Defaults to false.**
-     */
+    /// A Boolean value that determines whether the camera renders with high dynamic range (HDR).
+    ///
+    /// When enabled, the camera can render scenes with a wider range of luminance values,
+    /// providing more realistic lighting and better color precision. This is particularly
+    /// useful for scenes with bright lights and dark shadows.
+    ///
+    /// **Default value:** `false`
     public var allowHDR: Bool {
         get {
             return self.scnCamera.wantsHDR
@@ -118,12 +212,15 @@ public final class Camera: Component {
         }
     }
 
-    /**
-     This is used to render parts of the scene selectively.
-
-     - important: If the GameObject's layerMask AND the camera's cullingMask is zero then the game object will be invisible from this camera.
-     See [Layer](GameObject/Layer.html) for more information.
-     */
+    /// The layer mask used for selective rendering of game objects.
+    ///
+    /// This property controls which game objects are visible to the camera based on their layer.
+    /// Only objects whose layer matches the culling mask will be rendered by this camera.
+    ///
+    /// - Important: A game object will be invisible to this camera if the bitwise AND of the
+    ///   object's layer mask and the camera's culling mask equals zero.
+    ///
+    /// See ``GameObject/Layer`` for more information about layers.
     public var cullingMask: GameObject.Layer {
         get {
             return GameObject.Layer(rawValue: self.scnCamera.categoryBitMask)
@@ -134,9 +231,10 @@ public final class Camera: Component {
         }
     }
 
-    /**
-     The game object this component is attached to. A component is always attached to a game object.
-     */
+    /// The game object this component is attached to.
+    ///
+    /// A component is always attached to a game object. When set, this property synchronizes
+    /// the camera with the game object's SceneKit node and recalculates field of view settings.
     override public var gameObject: GameObject? {
         didSet {
             guard let node = gameObject?.node,
@@ -148,26 +246,40 @@ public final class Camera: Component {
         }
     }
 
-    /**
-     The game object that it's follows.
-     */
+    /// The game object that this camera is currently following.
+    ///
+    /// This property is set automatically when ``followTarget(target:distanceRange:)`` is called.
+    /// It maintains a reference to the target game object for constraint-based following.
     public private(set) var target: GameObject?
 
-    /// Create a new instance
+    /// Creates a new camera component.
+    ///
+    /// The camera is initialized with default settings including a culling mask set to all layers
+    /// and field of view calculations applied.
     public required init() {
         super.init()
         self.cullingMask = GameObject.Layer.all
         self.calculateFieldOfViews()
     }
 
-    /**
-      Configurable block that passes and returns itself.
-
-      - parameters:
-         - configurationBlock: block that passes itself.
-
-      - returns: itself
-     */
+    /// Configures the camera using a closure.
+    ///
+    /// This method provides a convenient way to configure multiple camera properties
+    /// in a single call using a configuration closure.
+    ///
+    /// - Parameter configurationBlock: A closure that receives the camera instance for configuration.
+    /// - Returns: The camera instance for method chaining.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// let camera = gameObject.addComponent(Camera.self).configure { camera in
+    ///     camera.fieldOfView = 75
+    ///     camera.zNear = 0.1
+    ///     camera.zFar = 1000
+    ///     camera.allowHDR = true
+    /// }
+    /// ```
     @discardableResult public func configure(_ configurationBlock: (Camera) -> Void) -> Camera {
         configurationBlock(self)
         return self
@@ -185,14 +297,27 @@ public final class Camera: Component {
         self.fieldOfView = self.hFieldOfView
     }
 
-    /**
-      The primary Camera in the Scene. Returns nil if there is no such camera in the Scene. This property uses GameObject.find(.tag(.mainCamera)) internally and doesn't cache the result.
-      It is advised to cache the return value of Camera.main if it is used multiple times per frame.
-      - parameters:
-         - scene: Current scene.
-
-      - returns: The first enabled camera tagged "MainCamera".
-     */
+    /// Returns the primary camera in the scene.
+    ///
+    /// This method searches for the first enabled camera tagged with "MainCamera" in the specified scene.
+    /// The result is not cached, so it's recommended to store the return value if you need to access
+    /// the main camera multiple times per frame.
+    ///
+    /// - Parameter scene: The scene to search in. Defaults to ``Scene/shared``.
+    /// - Returns: The first enabled camera tagged "MainCamera", or `nil` if no such camera exists.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Get the main camera
+    /// if let mainCamera = Camera.main(in: scene) {
+    ///     mainCamera.fieldOfView = 90
+    /// }
+    ///
+    /// // Cache for multiple accesses
+    /// guard let mainCamera = Camera.main(in: scene) else { return }
+    /// // Use mainCamera multiple times...
+    /// ```
     public static func main(in scene: Scene? = Scene.shared) -> Camera? {
         guard let scene
         else { return nil }
@@ -200,12 +325,27 @@ public final class Camera: Component {
         return GameObject.find(.tag(.mainCamera), in: scene)?.getComponent(Camera.self)
     }
 
-    /**
-      Follow a target gameObject.
-      - parameters:
-         - target: Target gameObject to be followed
-         - distanceRange: minimum distance and maximum distance. If nil will keep current distance as constraints.
-     */
+    /// Configures the camera to follow a target game object.
+    ///
+    /// This method sets up SceneKit constraints to make the camera continuously look at and
+    /// optionally maintain a specific distance range from the target game object.
+    ///
+    /// - Parameters:
+    ///   - target: The game object to follow. Pass `nil` to clear the current target.
+    ///   - distanceRange: An optional tuple specifying the minimum and maximum distance from the target.
+    ///     If `nil`, the camera maintains its current distance.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Follow a player character with distance constraints
+    /// if let player = GameObject.find(.tag(.player), in: scene) {
+    ///     camera.followTarget(target: player, distanceRange: (5.0, 15.0))
+    /// }
+    ///
+    /// // Follow without distance constraints
+    /// camera.followTarget(target: targetObject)
+    /// ```
     public func followTarget(target: GameObject?, distanceRange: (minimum: Float, maximum: Float)? = nil) {
         self.target = target
 
@@ -236,22 +376,46 @@ public final class Camera: Component {
         return distanceConstraint
     }
 
-    /**
-      Look at target gameObject.
-      - parameters:
-         - target: Target gameObject to be followed
-         - duration: Duration of animation. If nil it will be instant.
-     */
+    /// Rotates the camera to look at a target game object.
+    ///
+    /// This method orients the camera to face the specified game object. The rotation can be
+    /// applied instantly or animated over a specified duration.
+    ///
+    /// - Parameters:
+    ///   - gameObject: The game object to look at.
+    ///   - duration: The animation duration in seconds. If `nil`, the rotation is applied instantly.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Instantly look at target
+    /// camera.lookAt(targetObject)
+    ///
+    /// // Smoothly look at target over 2 seconds
+    /// camera.lookAt(targetObject, duration: 2.0)
+    /// ```
     public func lookAt(_ gameObject: GameObject, duration: TimeInterval? = nil) {
         self.lookAt(gameObject.transform, duration: duration)
     }
 
-    /**
-      Look at target transform.
-      - parameters:
-         - target: Target transform to be followed
-         - duration: Duration of animation. If nil it will be instant.
-     */
+    /// Rotates the camera to look at a target transform.
+    ///
+    /// This method orients the camera to face the specified transform's position. The rotation
+    /// can be applied instantly or animated over a specified duration.
+    ///
+    /// - Parameters:
+    ///   - target: The transform to look at.
+    ///   - duration: The animation duration in seconds. If `nil`, the rotation is applied instantly.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Instantly look at a position
+    /// camera.lookAt(targetTransform)
+    ///
+    /// // Smoothly pan to look at position over 1.5 seconds
+    /// camera.lookAt(targetTransform, duration: 1.5)
+    /// ```
     public func lookAt(_ target: Transform, duration: TimeInterval? = nil) {
         self.gameObject?.node.constraints = nil
         guard let duration else {
@@ -267,16 +431,27 @@ public final class Camera: Component {
 
     // MARK: - Screen/World Coordinate Conversion
 
-    /**
-     * Converts a screen space point to a world space point
-     * - Parameters:
-     *   - screenPoint: The screen position (x, y) with z representing depth
-     *   - renderer: The SCNSceneRenderer (typically an SCNView) rendering this camera's scene
-     * - Returns: The world space position
-     *
-     * Note: The z component of screenPoint represents depth from camera.
-     * Use z=0 for near plane, z=1 for far plane, or a specific world z coordinate.
-     */
+    /// Converts a screen space point to a world space point.
+    ///
+    /// This method transforms a 2D screen coordinate into a 3D world coordinate using the
+    /// camera's projection settings. The z component of the screen point determines the depth
+    /// at which the world point is calculated.
+    ///
+    /// - Parameters:
+    ///   - screenPoint: The screen position with x and y in screen coordinates. The z component
+    ///     represents depth (0 for near plane, 1 for far plane).
+    ///   - renderer: The scene renderer (typically `SCNView`) that is rendering this camera's scene.
+    /// - Returns: The corresponding world space position, or `nil` if the conversion fails.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Convert a screen tap to a world position at depth 10
+    /// let screenPoint = Vector3(tapLocation.x, tapLocation.y, 10)
+    /// if let worldPos = camera.ScreenToWorldPoint(screenPoint, renderer: sceneView) {
+    ///     print("World position: \(worldPos)")
+    /// }
+    /// ```
     public func ScreenToWorldPoint(_ screenPoint: Vector3, renderer: SCNSceneRenderer) -> Vector3? {
         // Convert screen point to SCNVector3
         let scnScreenPoint = SCNVector3(screenPoint.x, screenPoint.y, screenPoint.z)
@@ -287,13 +462,28 @@ public final class Camera: Component {
         return Vector3(worldPoint.x, worldPoint.y, worldPoint.z)
     }
 
-    /**
-     * Converts a world space point to screen space
-     * - Parameters:
-     *   - worldPoint: The world space position
-     *   - renderer: The SCNSceneRenderer (typically an SCNView) rendering this camera's scene
-     * - Returns: The screen space position (x, y, z) where z is the depth
-     */
+    /// Converts a world space point to screen space.
+    ///
+    /// This method transforms a 3D world coordinate into a 2D screen coordinate using the
+    /// camera's projection settings. The resulting z component represents the depth of the point.
+    ///
+    /// - Parameters:
+    ///   - worldPoint: The world space position to convert.
+    ///   - renderer: The scene renderer (typically `SCNView`) that is rendering this camera's scene.
+    /// - Returns: The screen space position where x and y are screen coordinates and z is the depth,
+    ///   or `nil` if the camera has no associated game object.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Convert a game object's world position to screen coordinates
+    /// if let screenPos = camera.WorldToScreenPoint(
+    ///     targetObject.transform.position,
+    ///     renderer: sceneView
+    /// ) {
+    ///     print("Screen position: (\(screenPos.x), \(screenPos.y))")
+    /// }
+    /// ```
     public func WorldToScreenPoint(_ worldPoint: Vector3, renderer: SCNSceneRenderer) -> Vector3? {
         guard let _ = gameObject?.node else { return nil }
 
@@ -306,15 +496,31 @@ public final class Camera: Component {
         return Vector3(screenPoint.x, screenPoint.y, screenPoint.z)
     }
 
-    /**
-     * Converts a screen space point to a ray in world space
-     * - Parameters:
-     *   - screenPoint: The screen position (x, y)
-     *   - renderer: The SCNSceneRenderer (typically an SCNView) rendering this camera's scene
-     * - Returns: A tuple of (origin, direction) for the ray
-     *
-     * Useful for mouse picking and raycasting from screen coordinates
-     */
+    /// Converts a screen space point to a ray in world space.
+    ///
+    /// This method generates a ray starting from the camera's near plane and extending through
+    /// the specified screen coordinate into world space. This is useful for raycasting operations
+    /// such as mouse picking or touch-based object selection.
+    ///
+    /// - Parameters:
+    ///   - screenPoint: The screen position as a 2D coordinate.
+    ///   - renderer: The scene renderer (typically `SCNView`) that is rendering this camera's scene.
+    /// - Returns: A tuple containing the ray's origin point and normalized direction vector in world space,
+    ///   or `nil` if the conversion fails.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Cast a ray from a touch point to detect objects
+    /// let touchPoint = Vector2(tapLocation.x, tapLocation.y)
+    /// if let ray = camera.ScreenPointToRay(touchPoint, renderer: sceneView) {
+    ///     // Use ray.origin and ray.direction for hit testing
+    ///     let hitResults = scene.raycast(origin: ray.origin, direction: ray.direction)
+    ///     if let firstHit = hitResults.first {
+    ///         print("Hit object at: \(firstHit.worldCoordinates)")
+    ///     }
+    /// }
+    /// ```
     public func ScreenPointToRay(
         _ screenPoint: Vector2,
         renderer: SCNSceneRenderer

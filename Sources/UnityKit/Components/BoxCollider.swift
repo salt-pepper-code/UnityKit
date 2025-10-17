@@ -1,30 +1,126 @@
 import SceneKit
 
 /**
- A box-shaped primitive collider.
+ A box-shaped primitive collider for rectangular collision detection.
+
+ `BoxCollider` creates a rectangular collision volume that can be customized with specific dimensions
+ and center offsets. It's ideal for objects with box-like shapes such as crates, buildings, walls,
+ or any rectangular geometry.
+
+ ## Overview
+
+ Box colliders are one of the most commonly used primitive colliders due to their computational efficiency
+ and ability to approximate many real-world objects. The collider automatically calculates its bounds from
+ the attached GameObject's geometry, but you can override the size and center position as needed.
+
+ ## Usage
+
+ ```swift
+ // Create a box collider with default size (GameObject's bounding box)
+ let defaultBox = BoxCollider()
+
+ // Create a box collider with custom size
+ let customBox = BoxCollider()
+     .set(size: Vector3Nullable(x: 2.0, y: 1.0, z: 2.0))
+
+ // Create a box collider with custom size and offset center
+ let offsetBox = BoxCollider()
+     .set(size: Vector3Nullable(x: 3.0, y: 2.0, z: 1.5))
+     .set(center: Vector3Nullable(x: 0.0, y: 0.5, z: 0.0))
+
+ // Configure using the configure block
+ let configured = BoxCollider().configure { box in
+     box.set(size: Vector3Nullable(x: 1.0, y: 1.0, z: 1.0))
+     box.set(center: Vector3Nullable(y: 0.5))
+ }
+ ```
+
+ ## When to Use
+
+ - Buildings, crates, and boxes
+ - Walls and rectangular obstacles
+ - Furniture and rectangular props
+ - Simple character collision volumes
+ - Ground planes with thickness
+
+ - Note: Box colliders are more efficient than mesh colliders for simple rectangular shapes.
  */
 public final class BoxCollider: Collider {
+
+    /// The size of the box collider in local space.
+    ///
+    /// Defines the dimensions of the box along each axis. If not set, the collider uses the
+    /// GameObject's bounding box dimensions. Each component (x, y, z) can be set individually
+    /// or left as `nil` to use the default value from the bounding box.
+    ///
+    /// - Note: The size is measured in local space units before any transform scaling is applied.
     public private(set) var size: Vector3Nullable?
+
+    /// The center offset of the box collider in local space.
+    ///
+    /// Allows you to position the collider's center relative to the GameObject's origin.
+    /// This is useful when the collision volume needs to be offset from the visual geometry.
+    /// Each component (x, y, z) can be set individually or left as `nil` to use the default
+    /// center from the bounding box.
     public private(set) var center: Vector3Nullable?
 
+    /// Sets the size of the box collider.
+    ///
+    /// Use this method to define custom dimensions for the collision box. You can specify
+    /// all three dimensions or only the ones you want to override from the default bounding box.
+    ///
+    /// ```swift
+    /// // Set all dimensions
+    /// boxCollider.set(size: Vector3Nullable(x: 2.0, y: 1.5, z: 3.0))
+    ///
+    /// // Set only the height, keeping default width and depth
+    /// boxCollider.set(size: Vector3Nullable(y: 2.0))
+    /// ```
+    ///
+    /// - Parameter size: The desired size of the box collider, or `nil` to use default dimensions.
+    /// - Returns: The collider instance for method chaining.
     @discardableResult public func set(size: Vector3Nullable?) -> BoxCollider {
         self.size = size
         return self
     }
 
+    /// Sets the center offset of the box collider.
+    ///
+    /// Use this method to position the collider's center relative to the GameObject's origin.
+    /// This is particularly useful for adjusting collision volumes to match visual geometry
+    /// or creating offset collision boundaries.
+    ///
+    /// ```swift
+    /// // Center the box 1 unit above the origin
+    /// boxCollider.set(center: Vector3Nullable(y: 1.0))
+    ///
+    /// // Offset in multiple directions
+    /// boxCollider.set(center: Vector3Nullable(x: 0.5, y: 1.0, z: -0.5))
+    /// ```
+    ///
+    /// - Parameter center: The desired center offset, or `nil` to use the default center.
+    /// - Returns: The collider instance for method chaining.
     @discardableResult public func set(center: Vector3Nullable?) -> BoxCollider {
         self.center = center
         return self
     }
 
-    /**
-     Configurable block that passes and returns itself.
-
-     - parameters:
-     - configurationBlock: block that passes itself.
-
-     - returns: itself
-     */
+    /// Configures the box collider using a configuration block.
+    ///
+    /// This method provides a convenient way to configure multiple properties of the collider
+    /// in a single, organized code block. The configuration block receives the collider instance,
+    /// allowing you to call multiple setter methods.
+    ///
+    /// ```swift
+    /// let collider = BoxCollider().configure { box in
+    ///     box.set(size: Vector3Nullable(x: 2.0, y: 1.0, z: 2.0))
+    ///     box.set(center: Vector3Nullable(y: 0.5))
+    ///     box.isTrigger = true
+    /// }
+    /// ```
+    ///
+    /// - Parameter configurationBlock: A closure that receives the collider for configuration.
+    /// - Returns: The collider instance for method chaining.
     @discardableResult public func configure(_ configurationBlock: (BoxCollider) -> Void) -> BoxCollider {
         configurationBlock(self)
         return self

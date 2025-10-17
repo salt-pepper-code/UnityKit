@@ -1,8 +1,60 @@
 import SceneKit
 
+/// The current phase of a touch event.
+///
+/// This is an alias for `UITouch.Phase`, providing touch states like began, moved, ended, etc.
 public typealias TouchPhase = UITouch.Phase
+
+/// The type of touch input (direct, indirect, stylus, etc.).
+///
+/// This is an alias for `UITouch.TouchType`, identifying the touch input method.
 public typealias TouchType = UITouch.TouchType
 
+/// Represents a single touch input on the screen.
+///
+/// The `Touch` class encapsulates information about a touch event, including its position,
+/// phase, pressure, and movement over time. Use this to track individual fingers or stylus
+/// inputs for multi-touch interactions.
+///
+/// ## Overview
+///
+/// Touch objects are managed by the ``Input`` system and should be accessed through
+/// ``Input/getTouch(_:)`` rather than created directly.
+///
+/// ## Topics
+///
+/// ### Touch Properties
+/// - ``phase``
+/// - ``fingerId``
+/// - ``type``
+/// - ``tapCount``
+///
+/// ### Position and Movement
+/// - ``position``
+/// - ``deltaPosition``
+/// - ``position(in:)``
+///
+/// ### Timing
+/// - ``deltaTime``
+///
+/// ### Pressure and Stylus
+/// - ``pressure``
+/// - ``maximumPossiblePressure``
+/// - ``altitudeAngle``
+/// - ``azimuthAngle``
+/// - ``radius``
+/// - ``radiusVariance``
+///
+/// ## Example Usage
+///
+/// ```swift
+/// // Get the first touch
+/// if let touch = Input.getTouch(0) {
+///     print("Touch position: \(touch.position)")
+///     print("Touch phase: \(touch.phase)")
+///     print("Movement: \(touch.deltaPosition)")
+/// }
+/// ```
 public final class Touch {
     private var previousTime: TimeInterval?
     private var updatedTime: TimeInterval = 0
@@ -10,6 +62,19 @@ public final class Touch {
     var previousPosition: Vector2?
     var updatedPosition: Vector2 = .zero
 
+    /// The position delta since the last frame.
+    ///
+    /// Returns the change in touch position from the previous frame. This is useful for
+    /// implementing drag gestures and tracking finger movement.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// if let touch = Input.getTouch(0) {
+    ///     // Move camera based on touch drag
+    ///     camera.position += Vector3(touch.deltaPosition.x, touch.deltaPosition.y, 0)
+    /// }
+    /// ```
     public var deltaPosition: Vector2 {
         guard let previousPosition,
               let _ = phase
@@ -18,6 +83,9 @@ public final class Touch {
         return self.updatedPosition - previousPosition
     }
 
+    /// The time interval since the touch was last updated.
+    ///
+    /// Returns the time in seconds between touch updates.
     public internal(set) var deltaTime: TimeInterval {
         get {
             guard let previousTime
@@ -31,20 +99,117 @@ public final class Touch {
         }
     }
 
+    /// A unique identifier for this touch.
+    ///
+    /// This ID persists throughout the touch's lifetime (from began to ended/cancelled).
     public let fingerId: Int
+
+    /// The underlying UITouch object.
+    ///
+    /// Provides direct access to the native iOS touch for advanced use cases.
     public let uitouch: UITouch
+
+    /// The view in which the touch began.
+    ///
+    /// Returns the UIView where this touch originated.
     public var view: UIView? { return self.viewAtBegin }
     private weak var viewAtBegin: UIView?
 
+    /// The current phase of the touch.
+    ///
+    /// Indicates the touch state: `.began`, `.moved`, `.stationary`, `.ended`, or `.cancelled`.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// if let touch = Input.getTouch(0) {
+    ///     switch touch.phase {
+    ///     case .began:
+    ///         print("Touch started")
+    ///     case .moved:
+    ///         print("Touch moved")
+    ///     case .ended:
+    ///         print("Touch ended")
+    ///     default:
+    ///         break
+    ///     }
+    /// }
+    /// ```
     public var phase: TouchPhase?
+
+    /// The altitude angle of the stylus (in radians).
+    ///
+    /// For stylus input, returns the angle between the stylus and the screen surface.
+    /// A value of 0 indicates the stylus is parallel to the screen.
     public var altitudeAngle: Float { return self.uitouch.altitudeAngle.toFloat() }
+
+    /// The azimuth angle of the stylus (in radians).
+    ///
+    /// For stylus input, returns the direction of the stylus projection on the screen.
     public var azimuthAngle: Float { return self.uitouch.azimuthAngle(in: self.uitouch.view).toFloat() }
+
+    /// The maximum possible pressure for this touch device.
+    ///
+    /// Returns the maximum force value the device can detect. Compare with ``pressure``
+    /// to determine relative pressure.
     public var maximumPossiblePressure: Float { return self.uitouch.maximumPossibleForce.toFloat() }
+
+    /// The current position of the touch in screen coordinates.
+    ///
+    /// Returns the touch location in the view's coordinate system.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// if let touch = Input.getTouch(0) {
+    ///     print("Touch at: \(touch.position)")
+    /// }
+    /// ```
     public var position: Vector2 { return self.uitouch.location(in: self.uitouch.view).toVector2() }
+
+    /// The current pressure of the touch.
+    ///
+    /// For pressure-sensitive devices (like 3D Touch), returns the force applied.
+    /// Returns 0 for non-pressure-sensitive touches.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// if let touch = Input.getTouch(0) {
+    ///     let pressureRatio = touch.pressure / touch.maximumPossiblePressure
+    ///     print("Pressure: \(pressureRatio * 100)%")
+    /// }
+    /// ```
     public var pressure: Float { return self.uitouch.force.toFloat() }
+
+    /// The radius of the touch area.
+    ///
+    /// Returns an approximation of the touch contact area radius in points.
     public var radius: Float { return self.uitouch.majorRadius.toFloat() }
+
+    /// The variance in the radius measurement.
+    ///
+    /// Returns the tolerance of the ``radius`` measurement.
     public var radiusVariance: Float { return self.uitouch.majorRadiusTolerance.toFloat() }
+
+    /// The number of taps for this touch.
+    ///
+    /// Returns the tap count for recognizing single, double, or triple taps.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// if let touch = Input.getTouch(0), touch.phase == .ended {
+    ///     if touch.tapCount == 2 {
+    ///         print("Double tap detected")
+    ///     }
+    /// }
+    /// ```
     public var tapCount: Int { return self.uitouch.tapCount }
+
+    /// The type of touch input.
+    ///
+    /// Returns the touch type: `.direct` (finger), `.indirect` (trackpad), `.stylus`, etc.
     public var type: TouchType { return self.uitouch.type }
 
     init(_ uitouch: UITouch, index: Int) {
@@ -64,11 +229,82 @@ public final class Touch {
         self.updatedPosition = touch.position
     }
 
+    /// Returns the touch position in a specific view's coordinate system.
+    ///
+    /// - Parameter view: The view in which to locate the touch. Pass `nil` to use the window's coordinate system.
+    /// - Returns: The touch position as a ``Vector2`` in the specified view's coordinates.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// if let touch = Input.getTouch(0) {
+    ///     let posInWindow = touch.position(in: nil)
+    ///     let posInCustomView = touch.position(in: myCustomView)
+    /// }
+    /// ```
     public func position(in view: UIView?) -> Vector2 {
         return self.uitouch.location(in: view).toVector2()
     }
 }
 
+/// Provides access to keyboard, mouse, and touch input.
+///
+/// The `Input` enum offers static methods and properties to query the current state of input devices.
+/// Use this system to detect button presses, track touch events, and read mouse/keyboard input.
+///
+/// ## Overview
+///
+/// The Input system is updated automatically each frame by the game engine. All input state
+/// queries reflect the current frame's input status. Frame-specific events (like `getKeyDown`)
+/// only return true for a single frame when the event occurs.
+///
+/// ## Topics
+///
+/// ### Touch Input
+/// - ``Touch``
+/// - ``touchCount``
+/// - ``getTouch(_:)``
+/// - ``TouchPhase``
+/// - ``TouchType``
+///
+/// ### Keyboard Input
+/// - ``anyKey``
+/// - ``anyKeyDown``
+/// - ``getKey(_:)``
+/// - ``getKeyDown(_:)``
+/// - ``getKeyUp(_:)``
+///
+/// ### Mouse Input
+/// - ``mousePosition``
+/// - ``getMouseButton(_:)``
+/// - ``getMouseButtonDown(_:)``
+/// - ``getMouseButtonUp(_:)``
+///
+/// ## Example Usage
+///
+/// ```swift
+/// // Check for touch input
+/// if Input.touchCount > 0 {
+///     if let touch = Input.getTouch(0) {
+///         print("Touch at: \(touch.position)")
+///     }
+/// }
+///
+/// // Check for keyboard input
+/// if Input.getKeyDown("SPACE") {
+///     player.jump()
+/// }
+///
+/// // Check for mouse button
+/// if Input.getMouseButton(0) {
+///     print("Left mouse button held")
+/// }
+///
+/// // Detect any key press
+/// if Input.anyKeyDown {
+///     print("A key was pressed this frame")
+/// }
+/// ```
 public enum Input {
     private struct State {
         var touches: [Touch]?
@@ -85,6 +321,16 @@ public enum Input {
 
     private static let state = Synchronized(State(), label: "com.unitykit.input")
 
+    /// The current mouse position in screen coordinates.
+    ///
+    /// Returns the position of the mouse cursor or last touch location as a ``Vector2``.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// let mousePos = Input.mousePosition
+    /// print("Mouse at: \(mousePos)")
+    /// ```
     public static var mousePosition: Vector2 {
         get {
             state.read { $0.mousePosition }
@@ -96,50 +342,178 @@ public enum Input {
         }
     }
 
+    /// Returns `true` if any key is currently held down.
+    ///
+    /// This remains true for as long as at least one key is pressed.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// if Input.anyKey {
+    ///     print("At least one key is pressed")
+    /// }
+    /// ```
     public static var anyKey: Bool {
         state.read { !$0.keysPressed.isEmpty }
     }
 
+    /// Returns `true` during the frame when any key is first pressed.
+    ///
+    /// This only returns true for a single frame when a key is pressed down.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// if Input.anyKeyDown {
+    ///     dismissPauseScreen()
+    /// }
+    /// ```
     public static var anyKeyDown: Bool {
         state.read { !$0.keysDown.isEmpty }
     }
 
+    /// The number of active touches on the screen.
+    ///
+    /// Returns 0 when no touches are active. Use this to detect multi-touch scenarios.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// if Input.touchCount == 2 {
+    ///     // Handle pinch gesture
+    ///     let touch0 = Input.getTouch(0)
+    ///     let touch1 = Input.getTouch(1)
+    /// }
+    /// ```
     public static var touchCount: Int {
         state.read { $0.touches?.count ?? 0 }
     }
 
     // MARK: - Keyboard Methods
 
-    /// Returns true while the user holds down the key identified by name
+    /// Returns `true` while the specified key is held down.
+    ///
+    /// This continues to return true for as long as the key remains pressed. Key names are
+    /// case-insensitive.
+    ///
+    /// - Parameter key: The name of the key to check (e.g., "A", "Space", "Enter").
+    /// - Returns: `true` if the key is currently pressed, `false` otherwise.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Move player while key is held
+    /// if Input.getKey("W") {
+    ///     player.moveForward()
+    /// }
+    /// if Input.getKey("A") {
+    ///     player.moveLeft()
+    /// }
+    /// ```
     public static func getKey(_ key: String) -> Bool {
         self.state.read { $0.keysPressed.contains(key.uppercased()) }
     }
 
-    /// Returns true during the frame the user starts pressing down the key
+    /// Returns `true` during the frame when the specified key is first pressed.
+    ///
+    /// This only returns true for a single frame when the key is initially pressed down.
+    /// Key names are case-insensitive.
+    ///
+    /// - Parameter key: The name of the key to check (e.g., "Space", "Enter").
+    /// - Returns: `true` if the key was pressed this frame, `false` otherwise.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Jump when space is pressed (not held)
+    /// if Input.getKeyDown("SPACE") {
+    ///     player.jump()
+    /// }
+    /// ```
     public static func getKeyDown(_ key: String) -> Bool {
         self.state.read { $0.keysDown.contains(key.uppercased()) }
     }
 
-    /// Returns true during the frame the user releases the key
+    /// Returns `true` during the frame when the specified key is released.
+    ///
+    /// This only returns true for a single frame when the key is released. Key names are
+    /// case-insensitive.
+    ///
+    /// - Parameter key: The name of the key to check (e.g., "Space", "Shift").
+    /// - Returns: `true` if the key was released this frame, `false` otherwise.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Stop charging when key is released
+    /// if Input.getKeyUp("SPACE") {
+    ///     weapon.fire()
+    /// }
+    /// ```
     public static func getKeyUp(_ key: String) -> Bool {
         self.state.read { $0.keysUp.contains(key.uppercased()) }
     }
 
     // MARK: - Mouse Methods
 
-    /// Returns whether the given mouse button is held down (0 = left, 1 = right, 2 = middle)
+    /// Returns `true` while the specified mouse button is held down.
+    ///
+    /// Button indices: 0 = left, 1 = right, 2 = middle. This continues to return true for
+    /// as long as the button remains pressed.
+    ///
+    /// - Parameter button: The mouse button index (0-2).
+    /// - Returns: `true` if the button is currently pressed, `false` otherwise.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Continuous fire while left mouse button is held
+    /// if Input.getMouseButton(0) {
+    ///     weapon.fire()
+    /// }
+    /// ```
     public static func getMouseButton(_ button: Int) -> Bool {
         guard button >= 0, button < 3 else { return false }
         return self.state.read { $0.mouseButtons[button] }
     }
 
-    /// Returns true during the frame the user pressed the given mouse button
+    /// Returns `true` during the frame when the specified mouse button is first pressed.
+    ///
+    /// Button indices: 0 = left, 1 = right, 2 = middle. This only returns true for a single
+    /// frame when the button is initially pressed.
+    ///
+    /// - Parameter button: The mouse button index (0-2).
+    /// - Returns: `true` if the button was pressed this frame, `false` otherwise.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Single shot on left mouse button press
+    /// if Input.getMouseButtonDown(0) {
+    ///     weapon.fireSingleShot()
+    /// }
+    /// ```
     public static func getMouseButtonDown(_ button: Int) -> Bool {
         guard button >= 0, button < 3 else { return false }
         return self.state.read { $0.mouseButtonsDown[button] }
     }
 
-    /// Returns true during the frame the user releases the given mouse button
+    /// Returns `true` during the frame when the specified mouse button is released.
+    ///
+    /// Button indices: 0 = left, 1 = right, 2 = middle. This only returns true for a single
+    /// frame when the button is released.
+    ///
+    /// - Parameter button: The mouse button index (0-2).
+    /// - Returns: `true` if the button was released this frame, `false` otherwise.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Release slingshot on mouse button release
+    /// if Input.getMouseButtonUp(0) {
+    ///     slingshot.release()
+    /// }
+    /// ```
     public static func getMouseButtonUp(_ button: Int) -> Bool {
         guard button >= 0, button < 3 else { return false }
         return self.state.read { $0.mouseButtonsUp[button] }
@@ -264,6 +638,34 @@ public enum Input {
         }
     }
 
+    /// Returns the touch at the specified index.
+    ///
+    /// Touch indices range from 0 to ``touchCount`` - 1. Use this to access individual touches
+    /// for multi-touch interactions.
+    ///
+    /// - Parameter index: The zero-based index of the touch to retrieve.
+    /// - Returns: The ``Touch`` object at the specified index, or `nil` if the index is invalid.
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // Single touch input
+    /// if Input.touchCount > 0 {
+    ///     if let touch = Input.getTouch(0) {
+    ///         handleTouch(touch)
+    ///     }
+    /// }
+    ///
+    /// // Multi-touch (pinch gesture)
+    /// if Input.touchCount == 2 {
+    ///     let touch0 = Input.getTouch(0)
+    ///     let touch1 = Input.getTouch(1)
+    ///     if let t0 = touch0, let t1 = touch1 {
+    ///         let distance = (t0.position - t1.position).magnitude
+    ///         handlePinch(distance: distance)
+    ///     }
+    /// }
+    /// ```
     public static func getTouch(_ index: Int) -> Touch? {
         self.state.read { s in
             guard let touches = s.touches, index < touches.count else { return nil }
