@@ -1,10 +1,9 @@
-import Testing
 import Foundation
+import Testing
 @testable import UnityKit
 
 @Suite("Time System", .serialized)
 struct TimeTests {
-
     @Test("Time properties have correct initial values")
     func initialValues() {
         Time.resetForTesting()

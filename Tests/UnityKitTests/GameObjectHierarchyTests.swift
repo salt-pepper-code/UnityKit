@@ -1,10 +1,9 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("GameObject Hierarchy")
 struct GameObjectHierarchyTests {
-
     func createTestScene() -> Scene {
         return Scene(allocation: .instantiate)
     }
@@ -13,7 +12,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject activeSelf reflects active state")
     func activeSelfProperty() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -31,7 +30,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject setActive changes activeSelf")
     func setActiveChangesActiveSelf() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -44,7 +43,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject enabled property mirrors activeSelf")
     func enabledMirrorsActiveSelf() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -59,7 +58,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject activeInHierarchy with no parent")
     func activeInHierarchyNoParent() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -72,7 +71,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject activeInHierarchy cascades from parent")
     func activeInHierarchyCascades() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -96,7 +95,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject activeInHierarchy with inactive child of active parent")
     func activeInHierarchyInactiveChild() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -112,7 +111,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject activeInHierarchy with multiple levels")
     func activeInHierarchyMultipleLevels() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let grandparent = GameObject(name: "Grandparent")
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
@@ -139,7 +138,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject addChild sets parent reference")
     func addChildSetsParent() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -151,7 +150,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject addChild adds to children array")
     func addChildAddsToArray() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -165,7 +164,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject addChild multiple children")
     func addMultipleChildren() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child1 = GameObject(name: "Child1")
         let child2 = GameObject(name: "Child2")
@@ -185,7 +184,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject addChild prevents duplicates")
     func addChildPreventsDuplicates() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -199,7 +198,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject addChild propagates scene")
     func addChildPropagatesScene() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -212,7 +211,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject getChild returns correct child by index")
     func getChildByIndex() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child1 = GameObject(name: "Child1")
         let child2 = GameObject(name: "Child2")
@@ -230,7 +229,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject getChild returns nil for invalid index")
     func getChildInvalidIndex() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         scene.addGameObject(parent)
 
@@ -243,7 +242,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject removeChild removes from children array")
     func removeChildFromArray() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -259,7 +258,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject removeChild removes specific child")
     func removeSpecificChild() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child1 = GameObject(name: "Child1")
         let child2 = GameObject(name: "Child2")
@@ -277,7 +276,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject removeChild when child not present")
     func removeNonExistentChild() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
         let unrelated = GameObject(name: "Unrelated")
@@ -297,7 +296,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject instantiate creates a copy")
     func instantiateCreatesClone() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let original = GameObject(name: "Original")
         scene.addGameObject(original)
 
@@ -309,7 +308,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject instantiate preserves tag")
     func instantiatePreservesTag() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let original = GameObject(name: "Original")
         original.tag = .custom("TestTag")
         scene.addGameObject(original)
@@ -321,7 +320,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject instantiate preserves layer")
     func instantiatePreservesLayer() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let original = GameObject(name: "Original")
         original.layer = .player
         scene.addGameObject(original)
@@ -333,7 +332,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject static instantiate with addToScene")
     func staticInstantiateAddsToScene() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let original = GameObject(name: "Original")
         scene.addGameObject(original)
 
@@ -345,7 +344,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject static instantiate without addToScene")
     func staticInstantiateWithoutScene() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let original = GameObject(name: "Original")
         scene.addGameObject(original)
 
@@ -358,7 +357,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject static instantiate with parent")
     func staticInstantiateWithParent() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let original = GameObject(name: "Original")
         let parent = GameObject(name: "Parent")
         scene.addGameObject(original)
@@ -372,7 +371,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject instantiate with children copies hierarchy")
     func instantiateWithChildren() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
         scene.addGameObject(parent)
@@ -439,7 +438,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject hierarchy maintains consistency after multiple operations")
     func hierarchyConsistency() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child1 = GameObject(name: "Child1")
         let child2 = GameObject(name: "Child2")
@@ -463,7 +462,7 @@ struct GameObjectHierarchyTests {
 
     @Test("GameObject layer propagates to children on set")
     func layerPropagationToChildren() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 

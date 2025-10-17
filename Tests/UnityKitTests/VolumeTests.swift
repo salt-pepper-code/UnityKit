@@ -1,10 +1,9 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("Volume Utilities")
 struct VolumeTests {
-
     // MARK: - Bounding Size
 
     @Test("boundingSize calculates dimensions correctly")

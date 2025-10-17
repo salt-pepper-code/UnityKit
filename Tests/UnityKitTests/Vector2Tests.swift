@@ -1,10 +1,9 @@
-import Testing
 import CoreGraphics
+import Testing
 @testable import UnityKit
 
 @Suite("Vector2")
 struct Vector2Tests {
-
     // MARK: - Initialization
 
     @Test("Vector2 initializes with x and y")

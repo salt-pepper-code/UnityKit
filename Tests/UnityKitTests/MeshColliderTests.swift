@@ -1,10 +1,9 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("MeshCollider Component")
 struct MeshColliderTests {
-
     func createTestScene() -> Scene {
         return Scene(allocation: .instantiate)
     }
@@ -23,12 +22,11 @@ struct MeshColliderTests {
 
     @Test("MeshCollider can be added to GameObject")
     func canBeAddedToGameObject() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
         #expect(collider.gameObject === obj)
         #expect(obj.getComponent(MeshCollider.self) != nil)
@@ -36,26 +34,24 @@ struct MeshColliderTests {
 
     @Test("MeshCollider mesh property defaults to nil")
     func meshDefaultsToNil() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
         #expect(collider.mesh == nil)
     }
 
     @Test("MeshCollider set mesh updates mesh property")
     func setMeshUpdatesProperty() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
-        let boxMesh = createBoxMesh()
+        let boxMesh = self.createBoxMesh()
         collider.set(mesh: boxMesh)
 
         #expect(collider.mesh != nil)
@@ -64,14 +60,13 @@ struct MeshColliderTests {
 
     @Test("MeshCollider set mesh returns self for chaining")
     func setMeshReturnselfForChaining() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
-        let boxMesh = createBoxMesh()
+        let boxMesh = self.createBoxMesh()
         let result = collider.set(mesh: boxMesh)
 
         #expect(result === collider)
@@ -79,14 +74,13 @@ struct MeshColliderTests {
 
     @Test("MeshCollider can be set to nil mesh")
     func canSetMeshToNil() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
-        let boxMesh = createBoxMesh()
+        let boxMesh = self.createBoxMesh()
         collider.set(mesh: boxMesh)
         #expect(collider.mesh != nil)
 
@@ -98,14 +92,13 @@ struct MeshColliderTests {
 
     @Test("MeshCollider configure method works")
     func configureMethodWorks() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
-        let boxMesh = createBoxMesh()
+        let boxMesh = self.createBoxMesh()
 
         var configBlockCalled = false
         collider.configure { mc in
@@ -119,12 +112,11 @@ struct MeshColliderTests {
 
     @Test("MeshCollider configure returns self for chaining")
     func configureReturnselfForChaining() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
         let result = collider.configure { _ in }
 
@@ -135,14 +127,13 @@ struct MeshColliderTests {
 
     @Test("MeshCollider constructs physics shape from mesh")
     func constructsPhysicsShapeFromMesh() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
-        let boxMesh = createBoxMesh()
+        let boxMesh = self.createBoxMesh()
         collider.set(mesh: boxMesh)
         collider.constructBody()
 
@@ -152,17 +143,16 @@ struct MeshColliderTests {
 
     @Test("MeshCollider physics shape respects GameObject scale")
     func physicsShapeRespectsScale() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
         // Set scale before adding collider
         obj.transform.localScale = Vector3(2, 2, 2)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
-        let boxMesh = createBoxMesh()
+        let boxMesh = self.createBoxMesh()
         collider.set(mesh: boxMesh)
         collider.constructBody()
 
@@ -172,34 +162,32 @@ struct MeshColliderTests {
 
     @Test("MeshCollider works with different mesh types")
     func worksWithDifferentMeshTypes() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
         // Test with box mesh
-        let boxMesh = createBoxMesh()
+        let boxMesh = self.createBoxMesh()
         collider.set(mesh: boxMesh)
         #expect(collider.mesh === boxMesh)
 
         // Test with sphere mesh
-        let sphereMesh = createSphereMesh()
+        let sphereMesh = self.createSphereMesh()
         collider.set(mesh: sphereMesh)
         #expect(collider.mesh === sphereMesh)
     }
 
     @Test("MeshCollider creates convex hull physics shape")
     func createsConvexHullShape() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
-        let boxMesh = createBoxMesh()
+        let boxMesh = self.createBoxMesh()
         collider.set(mesh: boxMesh)
         collider.constructBody()
 
@@ -211,12 +199,11 @@ struct MeshColliderTests {
 
     @Test("MeshCollider constructBody without mesh does not crash")
     func constructBodyWithoutMesh() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
         // Should not crash
         collider.constructBody()
@@ -227,19 +214,18 @@ struct MeshColliderTests {
 
     @Test("MeshCollider can change mesh after construction")
     func canChangeMeshAfterConstruction() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
-        let boxMesh = createBoxMesh()
+        let boxMesh = self.createBoxMesh()
         collider.set(mesh: boxMesh)
         collider.constructBody()
 
         // Change to different mesh
-        let sphereMesh = createSphereMesh()
+        let sphereMesh = self.createSphereMesh()
         collider.set(mesh: sphereMesh)
 
         #expect(collider.mesh === sphereMesh)
@@ -251,15 +237,14 @@ struct MeshColliderTests {
 
     @Test("MeshCollider multiple configure calls")
     func multipleConfigureCalls() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(MeshCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(MeshCollider.self)
 
-        let boxMesh = createBoxMesh()
-        let sphereMesh = createSphereMesh()
+        let boxMesh = self.createBoxMesh()
+        let sphereMesh = self.createSphereMesh()
 
         collider
             .configure { $0.set(mesh: boxMesh) }

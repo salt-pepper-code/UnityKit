@@ -17,7 +17,7 @@ enum TestHelpers {
         }
 
         var seconds: TimeInterval {
-            return TimeInterval(nanoseconds) / 1_000_000_000
+            return TimeInterval(self.nanoseconds) / 1_000_000_000
         }
     }
 

@@ -1,10 +1,9 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("Light Component")
 struct LightTests {
-
     func createTestScene() -> Scene {
         return Scene(allocation: .instantiate)
     }
@@ -13,12 +12,11 @@ struct LightTests {
 
     @Test("Light component can be added to GameObject")
     func lightComponentCanBeAdded() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.gameObject === obj)
         #expect(obj.node.light != nil)
@@ -26,14 +24,12 @@ struct LightTests {
 
     @Test("Light component creates SCNLight")
     func lightCreatesScnLight() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
-        #expect(light.scnLight != nil)
         #expect(obj.node.light === light.scnLight)
     }
 
@@ -41,24 +37,22 @@ struct LightTests {
 
     @Test("Light type defaults to omni")
     func lightTypeDefaultsToOmni() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.type == .omni)
     }
 
     @Test("Light type can be set to directional")
     func lightTypeCanBeSetToDirectional() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.type = .directional
 
         #expect(light.type == .directional)
@@ -67,12 +61,11 @@ struct LightTests {
 
     @Test("Light type can be set to spot")
     func lightTypeCanBeSetToSpot() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.type = .spot
 
         #expect(light.type == .spot)
@@ -81,12 +74,11 @@ struct LightTests {
 
     @Test("Light type can be set to ambient")
     func lightTypeCanBeSetToAmbient() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.type = .ambient
 
         #expect(light.type == .ambient)
@@ -97,12 +89,11 @@ struct LightTests {
 
     @Test("Light intensity can be set")
     func lightIntensityCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.intensity = 2000
 
         #expect(light.intensity == 2000)
@@ -111,24 +102,22 @@ struct LightTests {
 
     @Test("Light intensity defaults to 1000")
     func lightIntensityDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.intensity == 1000)
     }
 
     @Test("Light temperature can be set")
     func lightTemperatureCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.temperature = 5000
 
         #expect(light.temperature == 5000)
@@ -137,24 +126,22 @@ struct LightTests {
 
     @Test("Light temperature defaults to 6500")
     func lightTemperatureDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.temperature == 6500)
     }
 
     @Test("Light name can be set")
     func lightNameCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.name = "MainLight"
 
         #expect(light.name == "MainLight")
@@ -165,24 +152,22 @@ struct LightTests {
 
     @Test("Light castsShadow defaults to false")
     func castsShadowDefaultsToFalse() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.castsShadow == false)
     }
 
     @Test("Light castsShadow can be enabled")
     func castsShadowCanBeEnabled() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.castsShadow = true
 
         #expect(light.castsShadow == true)
@@ -191,12 +176,11 @@ struct LightTests {
 
     @Test("Light shadowRadius can be set")
     func shadowRadiusCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.shadowRadius = 5.0
 
         #expect(light.shadowRadius == 5.0)
@@ -205,24 +189,22 @@ struct LightTests {
 
     @Test("Light shadowRadius defaults to 3.0")
     func shadowRadiusDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.shadowRadius == 3.0)
     }
 
     @Test("Light shadowMapSize can be set")
     func shadowMapSizeCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.shadowMapSize = CGSize(width: 1024, height: 1024)
 
         #expect(light.shadowMapSize == CGSize(width: 1024, height: 1024))
@@ -231,12 +213,11 @@ struct LightTests {
 
     @Test("Light shadowSampleCount can be set")
     func shadowSampleCountCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.shadowSampleCount = 32
 
         #expect(light.shadowSampleCount == 32)
@@ -245,12 +226,11 @@ struct LightTests {
 
     @Test("Light shadowMode can be set")
     func shadowModeCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.shadowMode = .deferred
 
         #expect(light.shadowMode == .deferred)
@@ -259,12 +239,11 @@ struct LightTests {
 
     @Test("Light shadowBias can be set")
     func shadowBiasCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.shadowBias = 2.0
 
         #expect(light.shadowBias == 2.0)
@@ -273,12 +252,11 @@ struct LightTests {
 
     @Test("Light shadowBias defaults to 1.0")
     func shadowBiasDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.shadowBias == 1.0)
     }
@@ -287,24 +265,22 @@ struct LightTests {
 
     @Test("Light automaticallyAdjustsShadowProjection defaults to true")
     func automaticallyAdjustsShadowProjectionDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.automaticallyAdjustsShadowProjection == true)
     }
 
     @Test("Light automaticallyAdjustsShadowProjection can be disabled")
     func automaticallyAdjustsShadowProjectionCanBeDisabled() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.automaticallyAdjustsShadowProjection = false
 
         #expect(light.automaticallyAdjustsShadowProjection == false)
@@ -313,12 +289,11 @@ struct LightTests {
 
     @Test("Light maximumShadowDistance can be set")
     func maximumShadowDistanceCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.maximumShadowDistance = 200.0
 
         #expect(light.maximumShadowDistance == 200.0)
@@ -327,36 +302,33 @@ struct LightTests {
 
     @Test("Light maximumShadowDistance defaults to 100.0")
     func maximumShadowDistanceDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.maximumShadowDistance == 100.0)
     }
 
     @Test("Light forcesBackFaceCasters defaults to false")
     func forcesBackFaceCastersDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.forcesBackFaceCasters == false)
     }
 
     @Test("Light forcesBackFaceCasters can be enabled")
     func forcesBackFaceCastersCanBeEnabled() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.forcesBackFaceCasters = true
 
         #expect(light.forcesBackFaceCasters == true)
@@ -365,24 +337,22 @@ struct LightTests {
 
     @Test("Light sampleDistributedShadowMaps defaults to false")
     func sampleDistributedShadowMapsDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.sampleDistributedShadowMaps == false)
     }
 
     @Test("Light sampleDistributedShadowMaps can be enabled")
     func sampleDistributedShadowMapsCanBeEnabled() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.sampleDistributedShadowMaps = true
 
         #expect(light.sampleDistributedShadowMaps == true)
@@ -391,24 +361,22 @@ struct LightTests {
 
     @Test("Light shadowCascadeCount defaults to 1")
     func shadowCascadeCountDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.shadowCascadeCount == 1)
     }
 
     @Test("Light shadowCascadeCount can be set")
     func shadowCascadeCountCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.shadowCascadeCount = 4
 
         #expect(light.shadowCascadeCount == 4)
@@ -417,12 +385,11 @@ struct LightTests {
 
     @Test("Light shadowCascadeSplittingFactor defaults to 0.15")
     func shadowCascadeSplittingFactorDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         // Allow for floating point precision
         #expect(abs(light.shadowCascadeSplittingFactor - 0.15) < 0.001)
@@ -430,12 +397,11 @@ struct LightTests {
 
     @Test("Light shadowCascadeSplittingFactor can be set")
     func shadowCascadeSplittingFactorCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.shadowCascadeSplittingFactor = 0.5
 
         #expect(light.shadowCascadeSplittingFactor == 0.5)
@@ -446,24 +412,22 @@ struct LightTests {
 
     @Test("Light orthographicScale defaults to 1")
     func orthographicScaleDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.orthographicScale == 1.0)
     }
 
     @Test("Light orthographicScale can be set")
     func orthographicScaleCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.orthographicScale = 2.5
 
         #expect(light.orthographicScale == 2.5)
@@ -472,12 +436,11 @@ struct LightTests {
 
     @Test("Light zRange can be set")
     func zRangeCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.zRange = 1...1000
 
         #expect(light.zRange.lowerBound == 1)
@@ -488,12 +451,11 @@ struct LightTests {
 
     @Test("Light attenuationDistance defaults to 0...0")
     func attenuationDistanceDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.attenuationDistance.lowerBound == 0)
         #expect(light.attenuationDistance.upperBound == 0)
@@ -501,12 +463,11 @@ struct LightTests {
 
     @Test("Light attenuationDistance can be set")
     func attenuationDistanceCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.attenuationDistance = 10...100
 
         #expect(light.attenuationDistance.lowerBound == 10)
@@ -517,24 +478,22 @@ struct LightTests {
 
     @Test("Light attenuationFalloffExponent defaults to 2")
     func attenuationFalloffExponentDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.attenuationFalloffExponent == 2.0)
     }
 
     @Test("Light attenuationFalloffExponent can be set")
     func attenuationFalloffExponentCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.attenuationFalloffExponent = 1.5
 
         #expect(light.attenuationFalloffExponent == 1.5)
@@ -545,12 +504,11 @@ struct LightTests {
 
     @Test("Light spotAngle defaults to inner:0 outer:45")
     func spotAngleDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         #expect(light.spotAngle.inner == 0)
         #expect(light.spotAngle.outer == 45)
@@ -558,12 +516,11 @@ struct LightTests {
 
     @Test("Light spotAngle can be set")
     func spotAngleCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.spotAngle = (inner: 10, outer: 60)
 
         #expect(light.spotAngle.inner == 10)
@@ -576,12 +533,11 @@ struct LightTests {
 
     @Test("Light categoryBitMask defaults to all bits set")
     func categoryBitMaskDefaults() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         // Default should be -1 (all bits set)
         #expect(light.categoryBitMask == -1)
@@ -589,12 +545,11 @@ struct LightTests {
 
     @Test("Light categoryBitMask can be set")
     func categoryBitMaskCanBeSet() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
         light.categoryBitMask = 0b0001
 
         #expect(light.categoryBitMask == 0b0001)
@@ -605,12 +560,11 @@ struct LightTests {
 
     @Test("Light configure pattern works")
     func configurePatternWorks() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         let result = light.configure { light in
             light.type = .directional
@@ -628,7 +582,7 @@ struct LightTests {
 
     @Test("Light uses existing SCNLight if GameObject already has one")
     func usesExistingScnLight() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "LightObject")
         scene.addGameObject(obj)
 
@@ -637,8 +591,7 @@ struct LightTests {
         existingLight.intensity = 5000
         obj.node.light = existingLight
 
-        let light = try #require(obj.addComponent(Light.self))
-        light.awake()
+        let light = obj.addComponent(Light.self)
 
         // Should use the existing light
         #expect(light.scnLight === existingLight)

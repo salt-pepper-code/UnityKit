@@ -1,10 +1,9 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("Transform Component")
 struct TransformTests {
-
     func createTestScene() -> Scene {
         return Scene(allocation: .instantiate)
     }
@@ -13,7 +12,7 @@ struct TransformTests {
 
     @Test("Transform has correct parent reference")
     func parentReference() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -30,7 +29,7 @@ struct TransformTests {
 
     @Test("Transform children list reflects hierarchy")
     func childrenList() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child1 = GameObject(name: "Child1")
         let child2 = GameObject(name: "Child2")
@@ -47,7 +46,7 @@ struct TransformTests {
 
     @Test("Transform childCount reflects number of children")
     func childCount() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
 
         scene.addGameObject(parent)
@@ -64,7 +63,7 @@ struct TransformTests {
 
     @Test("Position getter and setter work correctly")
     func positionProperty() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -79,7 +78,7 @@ struct TransformTests {
 
     @Test("LocalPosition getter and setter work correctly")
     func localPositionProperty() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -101,7 +100,7 @@ struct TransformTests {
 
     @Test("Orientation getter and setter work correctly")
     func orientationProperty() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -117,7 +116,7 @@ struct TransformTests {
 
     @Test("LocalOrientation getter and setter work correctly")
     func localOrientationProperty() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -131,7 +130,7 @@ struct TransformTests {
 
     @Test("LocalRotation getter and setter work correctly")
     func localRotationProperty() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -146,7 +145,7 @@ struct TransformTests {
 
     @Test("LocalEulerAngles getter and setter work correctly")
     func localEulerAnglesProperty() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -162,7 +161,7 @@ struct TransformTests {
 
     @Test("LocalScale getter and setter work correctly")
     func localScaleProperty() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -177,7 +176,7 @@ struct TransformTests {
 
     @Test("LossyScale returns correct value without parent")
     func lossyScaleNoParent() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -191,7 +190,7 @@ struct TransformTests {
 
     @Test("LossyScale accumulates parent scale")
     func lossyScaleWithParent() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
 
@@ -209,7 +208,7 @@ struct TransformTests {
 
     @Test("LossyScale accumulates through multiple parents")
     func lossyScaleMultipleLevels() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let grandparent = GameObject(name: "Grandparent")
         let parent = GameObject(name: "Parent")
         let child = GameObject(name: "Child")
@@ -232,7 +231,7 @@ struct TransformTests {
 
     @Test("Forward direction vector defaults correctly")
     func forwardDirection() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -243,7 +242,7 @@ struct TransformTests {
 
     @Test("Back direction is negated forward")
     func backDirection() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -257,7 +256,7 @@ struct TransformTests {
 
     @Test("Up direction vector works correctly")
     func upDirection() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -267,7 +266,7 @@ struct TransformTests {
 
     @Test("Bottom direction is negated up")
     func bottomDirection() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -281,7 +280,7 @@ struct TransformTests {
 
     @Test("Right direction vector works correctly")
     func rightDirection() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -291,7 +290,7 @@ struct TransformTests {
 
     @Test("Left direction is negated right")
     func leftDirection() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -305,7 +304,7 @@ struct TransformTests {
 
     @Test("Direction vectors update when rotation changes")
     func directionVectorsUpdateWithRotation() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -324,7 +323,7 @@ struct TransformTests {
 
     @Test("LookAt points transform toward target")
     func lookAtTarget() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let source = GameObject(name: "Source")
         let target = GameObject(name: "Target")
 
@@ -343,14 +342,14 @@ struct TransformTests {
 
         // Check that forward aligns with direction to target (allowing some tolerance)
         let dot = forward.x * directionToTarget.x +
-                  forward.y * directionToTarget.y +
-                  forward.z * directionToTarget.z
+            forward.y * directionToTarget.y +
+            forward.z * directionToTarget.z
         #expect(abs(dot) > 0.9) // Should be close to 1 or -1 (aligned)
     }
 
     @Test("LookAt works with different positions")
     func lookAtDifferentPositions() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let source = GameObject(name: "Source")
         let target = GameObject(name: "Target")
 
@@ -382,7 +381,7 @@ struct TransformTests {
 
     @Test("Multiple property changes are independent")
     func multiplePropertiesIndependent() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
@@ -405,7 +404,7 @@ struct TransformTests {
 
     @Test("Transform preserves values through parent changes")
     func transformPreservesValuesWithParentChanges() {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let parent1 = GameObject(name: "Parent1")
         let parent2 = GameObject(name: "Parent2")
         let child = GameObject(name: "Child")

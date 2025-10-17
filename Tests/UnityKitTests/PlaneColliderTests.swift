@@ -1,10 +1,9 @@
-import Testing
 import SceneKit
+import Testing
 @testable import UnityKit
 
 @Suite("PlaneCollider Component")
 struct PlaneColliderTests {
-
     func createTestScene() -> Scene {
         return Scene(allocation: .instantiate)
     }
@@ -13,12 +12,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider can be added to GameObject")
     func canBeAddedToGameObject() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         #expect(collider.gameObject === obj)
         #expect(obj.getComponent(PlaneCollider.self) != nil)
@@ -26,12 +24,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider creates physics shape on construction")
     func createsPhysicsShape() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
 
@@ -42,12 +39,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider configure method works")
     func configureMethodWorks() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         var configBlockCalled = false
         collider.configure { _ in
@@ -59,12 +55,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider configure returns self for chaining")
     func configureReturnselfForChaining() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         let result = collider.configure { _ in }
 
@@ -75,12 +70,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider generates geometry from bounding box")
     func generatesGeometryFromBoundingBox() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         // Construct should create geometry based on bounding box
         collider.constructBody()
@@ -90,15 +84,14 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider physics shape respects GameObject scale")
     func physicsShapeRespectsScale() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
         // Set scale before constructing
         obj.transform.localScale = Vector3(3, 3, 3)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
 
@@ -108,12 +101,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider creates 4 vertices for plane")
     func createsFourVertices() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
 
@@ -123,12 +115,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider creates 2 triangles (6 indices)")
     func createsTwoTriangles() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
 
@@ -138,12 +129,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider normals point upward")
     func normalsPointUpward() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
 
@@ -156,12 +146,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider can be reconstructed")
     func canBeReconstructed() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
         let firstShape = collider.physicsShape
@@ -176,12 +165,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider reconstruction with different scale")
     func reconstructionWithDifferentScale() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         obj.transform.localScale = Vector3(1, 1, 1)
         collider.constructBody()
@@ -197,12 +185,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider works with zero-sized bounding box")
     func worksWithZeroSizedBoundingBox() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         // Even with default (potentially zero) bounding box, should not crash
         collider.constructBody()
@@ -213,12 +200,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider multiple configure calls")
     func multipleConfigureCalls() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         var callCount = 0
         collider
@@ -232,7 +218,7 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider vertex positions are based on bounding box")
     func vertexPositionsFromBoundingBox() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
 
         // Create object with specific size
         let boxGeometry = SCNBox(width: 2, height: 2, length: 2, chamferRadius: 0)
@@ -240,8 +226,7 @@ struct PlaneColliderTests {
         let obj = GameObject(node)
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
 
@@ -251,12 +236,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider indices create correct triangle winding")
     func indicesCreateCorrectWinding() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
 
@@ -267,12 +251,11 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider all normals are identical")
     func allNormalsIdentical() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
 
@@ -283,15 +266,14 @@ struct PlaneColliderTests {
 
     @Test("PlaneCollider with non-uniform scale")
     func nonUniformScale() throws {
-        let scene = createTestScene()
+        let scene = self.createTestScene()
         let obj = GameObject(name: "TestObject")
         scene.addGameObject(obj)
 
         // Non-uniform scale
         obj.transform.localScale = Vector3(2, 1, 3)
 
-        let collider = try #require(obj.addComponent(PlaneCollider.self))
-        collider.awake()
+        let collider = obj.addComponent(PlaneCollider.self)
 
         collider.constructBody()
 

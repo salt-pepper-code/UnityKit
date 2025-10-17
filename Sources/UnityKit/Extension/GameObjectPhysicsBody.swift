@@ -12,7 +12,7 @@ extension GameObject {
 
         let result = layers.reduce(Layer(rawValue: 0)) { prev, layer -> Layer in
             guard prev != layer
-                else { return layer }
+            else { return layer }
 
             let new: Layer = [prev, layer]
             return new
@@ -27,7 +27,7 @@ extension GameObject {
 
         let result = layers.reduce(Layer(rawValue: 0)) { prev, layer -> Layer in
             guard prev != layer
-                else { return layer }
+            else { return layer }
 
             let new: Layer = [prev, layer]
             return new
@@ -36,25 +36,24 @@ extension GameObject {
         return result.rawValue == 0 ? nil : result
     }
 
-    internal func updateBitMask(_ physicsBody: SCNPhysicsBody? = nil) {
-        let body: SCNPhysicsBody?
-        if let physicsBody = physicsBody {
-            body = physicsBody
+    func updateBitMask(_ physicsBody: SCNPhysicsBody? = nil) {
+        let body: SCNPhysicsBody? = if let physicsBody {
+            physicsBody
         } else if let physicsBody = node.physicsBody {
-            body = physicsBody
+            physicsBody
         } else {
-            body = nil
+            nil
         }
 
         guard let physicsBody = body,
-            layer != .ground
-            else { return }
+              layer != .ground
+        else { return }
 
-        getCollisionLayer().map { physicsBody.collisionBitMask = $0.rawValue }
-        getContactLayer().map { physicsBody.contactTestBitMask = $0.rawValue }
+        self.getCollisionLayer().map { physicsBody.collisionBitMask = $0.rawValue }
+        self.getContactLayer().map { physicsBody.contactTestBitMask = $0.rawValue }
     }
 
-    internal func updatePhysicsBody() {
+    func updatePhysicsBody() {
         var physicsShape: SCNPhysicsShape?
         var useGravity: Bool
         var bodyType: SCNPhysicsBodyType = .kinematic
@@ -69,7 +68,7 @@ extension GameObject {
 
         if let rigidBody = getComponent(Rigidbody.self) {
             useGravity = rigidBody.useGravity
-            bodyType = rigidBody.isStatic ? .`static` : rigidBody.isKinematic ? .kinematic : .dynamic
+            bodyType = rigidBody.isStatic ? .static : rigidBody.isKinematic ? .kinematic : .dynamic
         } else {
             useGravity = false
             bodyType = .dynamic
@@ -80,7 +79,7 @@ extension GameObject {
         physicsBody.categoryBitMask = layer.rawValue
         physicsBody.isAffectedByGravity = useGravity
 
-        updateBitMask(physicsBody)
+        self.updateBitMask(physicsBody)
 
         let rigidBody = getComponent(Rigidbody.self)
 

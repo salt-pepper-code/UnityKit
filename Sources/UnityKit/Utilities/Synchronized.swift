@@ -13,7 +13,7 @@ public final class Synchronized<Value> {
 
     /// Perform a read operation (allows concurrent reads)
     public func read<T>(_ block: (Value) -> T) -> T {
-        return queue.sync {
+        return self.queue.sync {
             return block(self.value)
         }
     }
@@ -21,7 +21,7 @@ public final class Synchronized<Value> {
     /// Perform a write operation (exclusive access via barrier)
     /// Synchronous to ensure writes complete before returning (Unity pattern: main thread writes)
     public func write(_ block: (inout Value) -> Void) {
-        queue.sync(flags: .barrier) {
+        self.queue.sync(flags: .barrier) {
             block(&self.value)
         }
     }

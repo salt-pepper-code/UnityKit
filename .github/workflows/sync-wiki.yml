@@ -1,0 +1,368 @@
+name: Sync Documentation to Wiki
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - 'API_REFERENCE.md'
+      - 'README.md'
+      - 'TESTING_GUIDE.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout Wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: wiki
+
+      - name: Sync Documentation Files
+        run: |
+          # Copy main documentation files to wiki
+          cp API_REFERENCE.md wiki/API-Reference.md
+          cp README.md wiki/Home.md
+          cp Tests/TESTING_GUIDE.md wiki/Testing-Guide.md
+
+          # Create a navigation sidebar
+          cat > wiki/_Sidebar.md << 'EOF'
+          ## UnityKit Documentation
+
+          ### Getting Started
+          - [Home](Home)
+          - [Installation & Setup](Home#installation)
+          - [Quick Start](Home#quick-start)
+
+          ### API Documentation
+          - [API Reference](API-Reference)
+          - [Core Architecture](API-Reference#core-architecture)
+          - [Component System](API-Reference#component-system)
+          - [Transform & Hierarchy](API-Reference#transform--hierarchy)
+          - [Physics System](API-Reference#physics-system)
+          - [Graphics & Rendering](API-Reference#graphics--rendering)
+          - [Input System](API-Reference#input-system)
+          - [Math & Vectors](API-Reference#math--vectors)
+
+          ### Development
+          - [Testing Guide](Testing-Guide)
+          - [Best Practices](API-Reference#best-practices)
+          - [Contributing](Contributing)
+
+          ### Examples
+          - [Common Patterns](API-Reference#common-patterns)
+          - [Code Examples](Examples)
+          EOF
+
+          # Create a footer
+          cat > wiki/_Footer.md << 'EOF'
+          ---
+          **UnityKit** | [GitHub](https://github.com/${{ github.repository }}) | [Issues](https://github.com/${{ github.repository }}/issues)
+          EOF
+
+      - name: Generate Examples Page
+        run: |
+          cat > wiki/Examples.md << 'EOF'
+          # UnityKit Examples
+
+          This page contains practical examples for common UnityKit tasks.
+
+          ## Creating a Player Controller
+
+          ```swift
+          class PlayerController: MonoBehaviour {
+              var speed: Float = 5.0
+              var jumpForce: Float = 10.0
+
+              private var rigidbody: Rigidbody!
+              private var isGrounded = false
+
+              override func awake() {
+                  super.awake()
+                  rigidbody = getComponent(Rigidbody.self)
+              }
+
+              override func update() {
+                  // Movement
+                  var movement = Vector3.zero
+                  if Input.getKey(.w) { movement.z += 1 }
+                  if Input.getKey(.s) { movement.z -= 1 }
+                  if Input.getKey(.a) { movement.x -= 1 }
+                  if Input.getKey(.d) { movement.x += 1 }
+
+                  if movement.magnitude() > 0 {
+                      movement = movement.normalized()
+                      transform?.position += movement * speed * Float(Time.deltaTime)
+                  }
+
+                  // Jump
+                  if Input.getKeyDown(.space) && isGrounded {
+                      rigidbody.addForce(Vector3(0, jumpForce, 0))
+                      isGrounded = false
+                  }
+              }
+
+              override func onCollisionEnter(_ collision: Collision) {
+                  if collision.gameObjectB?.layer == .ground {
+                      isGrounded = true
+                  }
+              }
+          }
+          ```
+
+          ## Setting Up a Scene
+
+          ```swift
+          import UnityKit
+
+          class GameScene {
+              var scene: Scene!
+
+              func setup() {
+                  // Create scene
+                  let scnScene = SCNScene()
+                  scene = Scene(scnScene, allocation: .dynamic, shadowCastingAllowed: true)
+
+                  // Add camera
+                  let cameraObj = GameObject(name: "MainCamera")
+                  cameraObj.tag = .mainCamera
+                  let camera = cameraObj.addComponent(Camera.self)
+                  camera.fieldOfView = 60
+                  cameraObj.transform.position = Vector3(0, 5, -10)
+                  cameraObj.addToScene(scene)
+
+                  // Add light
+                  let lightObj = GameObject(name: "Sun")
+                  let light = lightObj.addComponent(Light.self)
+                  light.type = .directional
+                  light.intensity = 1000
+                  light.castsShadow = true
+                  lightObj.transform.localEulerAngles = Vector3(-45, 30, 0)
+                  lightObj.addToScene(scene)
+
+                  // Add player
+                  let player = GameObject(name: "Player")
+                  player.layer = .player
+                  player.addComponent(PlayerController.self)
+                  let rb = player.addComponent(Rigidbody.self)
+                  rb.mass = 1.5
+                  rb.constraints = .freezeRotation
+                  let collider = player.addComponent(CapsuleCollider.self)
+                  player.transform.position = Vector3(0, 2, 0)
+                  player.addToScene(scene)
+              }
+          }
+          ```
+
+          ## Raycasting for Object Interaction
+
+          ```swift
+          class InteractionSystem: MonoBehaviour {
+              var maxDistance: Float = 10.0
+
+              override func update() {
+                  if Input.getMouseButtonDown(0) {
+                      guard let camera = GameObject.find(.tag(.mainCamera), in: scene)?.getComponent(Camera.self),
+                            let transform = camera.transform else { return }
+
+                      let origin = transform.position
+                      let direction = transform.forward
+
+                      if let hit = Physics.Raycast(
+                          origin: origin,
+                          direction: direction,
+                          maxDistance: maxDistance,
+                          layerMask: [.default, .environment],
+                          in: scene
+                      ) {
+                          // Interact with object
+                          if let interactable = hit.gameObject?.getComponent(Interactable.self) {
+                              interactable.interact()
+                          }
+
+                          Debug.info("Hit \(hit.gameObject?.name ?? "unknown") at distance \(hit.distance)")
+                      }
+                  }
+              }
+          }
+          ```
+
+          ## Creating Physics Objects
+
+          ```swift
+          func createPhysicsObject(at position: Vector3) -> GameObject {
+              let obj = GameObject(name: "PhysicsObject")
+
+              // Add visual representation
+              obj.node.geometry = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0)
+
+              // Add physics
+              let rigidbody = obj.addComponent(Rigidbody.self)
+              rigidbody.mass = 2.0
+              rigidbody.useGravity = true
+              rigidbody.restitution = 0.6  // Bouncy
+
+              let collider = obj.addComponent(BoxCollider.self)
+
+              obj.transform.position = position
+              obj.addToScene(scene)
+
+              return obj
+          }
+          ```
+
+          ## Audio System
+
+          ```swift
+          class SoundManager: MonoBehaviour {
+              private var backgroundMusic: AudioSource!
+              private var sfxSource: AudioSource!
+
+              override func awake() {
+                  super.awake()
+
+                  // Background music
+                  let musicClip = AudioClip(fileName: "background_music.mp3", playType: .loop)
+                  backgroundMusic = gameObject?.addComponent(AudioSource.self)
+                  backgroundMusic.clip = musicClip
+                  backgroundMusic.volume = 0.5
+                  backgroundMusic.spatialBlend = 0.0  // 2D audio
+                  backgroundMusic.play()
+
+                  // Sound effects
+                  sfxSource = gameObject?.addComponent(AudioSource.self)
+                  sfxSource.spatialBlend = 0.0
+              }
+
+              func playSound(_ fileName: String, volume: Float = 1.0) {
+                  if let clip = AudioClip(fileName: fileName, playType: .playOnce) {
+                      sfxSource.clip = clip
+                      sfxSource.volume = volume
+                      sfxSource.play()
+                  }
+              }
+          }
+          ```
+
+          ## Coroutines for Delayed Actions
+
+          ```swift
+          class DelayedActions: MonoBehaviour {
+              override func start() {
+                  super.start()
+
+                  // Execute after 2 seconds
+                  queueCoroutine((
+                      execute: {
+                          print("2 seconds have passed!")
+                      },
+                      exitCondition: { elapsed in
+                          return elapsed >= 2.0
+                      }
+                  ))
+
+                  // Chain multiple actions
+                  queueCoroutine((
+                      execute: { print("First action") },
+                      exitCondition: { $0 >= 1.0 }
+                  ))
+
+                  queueCoroutine((
+                      execute: { print("Second action") },
+                      exitCondition: { $0 >= 1.0 }
+                  ))
+              }
+          }
+          ```
+
+          For more examples, see the [API Reference](API-Reference#quick-reference).
+          EOF
+
+      - name: Generate Contributing Guide
+        run: |
+          cat > wiki/Contributing.md << 'EOF'
+          # Contributing to UnityKit
+
+          Thank you for your interest in contributing to UnityKit!
+
+          ## Getting Started
+
+          1. Fork the repository
+          2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/UnityKit.git`
+          3. Create a branch: `git checkout -b feature/your-feature`
+          4. Make your changes
+          5. Run tests: `swift test`
+          6. Commit and push
+          7. Open a Pull Request
+
+          ## Code Style
+
+          - Follow Swift API Design Guidelines
+          - Document all public APIs with DocC markup
+          - Include code examples in documentation
+          - Write tests for new features
+
+          ## Documentation Standards
+
+          All public APIs must be documented using Swift DocC format:
+
+          ```swift
+          /// Brief description of the method.
+          ///
+          /// Detailed explanation of what the method does and when to use it.
+          ///
+          /// - Parameters:
+          ///   - param1: Description of first parameter
+          ///   - param2: Description of second parameter
+          /// - Returns: Description of return value
+          ///
+          /// ## Example
+          ///
+          /// ```swift
+          /// let result = myMethod(param1: value1, param2: value2)
+          /// ```
+          public func myMethod(param1: Type1, param2: Type2) -> ReturnType {
+              // Implementation
+          }
+          ```
+
+          ## Testing
+
+          See the [Testing Guide](Testing-Guide) for detailed information on:
+          - Writing tests
+          - Running tests
+          - Test coverage
+          - Common patterns
+
+          ## Pull Request Process
+
+          1. Ensure all tests pass
+          2. Update documentation for any API changes
+          3. Add examples for new features
+          4. Update CHANGELOG if applicable
+          5. Request review from maintainers
+
+          ## Questions?
+
+          Open an issue or start a discussion on GitHub.
+          EOF
+
+      - name: Commit and Push to Wiki
+        working-directory: wiki
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-sync documentation from repository"
+            git push
+          fi

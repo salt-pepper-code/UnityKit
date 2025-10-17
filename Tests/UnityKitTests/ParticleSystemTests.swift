@@ -1,36 +1,54 @@
-import Testing
 import SceneKit
+import Testing
+import UIKit
 @testable import UnityKit
 
 @Suite("ParticleSystem Component")
 struct ParticleSystemTests {
-
     func createTestScene() -> Scene {
         return Scene(allocation: .instantiate)
+    }
+
+    @MainActor
+    func createTestSceneWithView() -> (scene: Scene, window: UIWindow) {
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+
+        let options = UI.Options(
+            rendersContinuously: true,
+            allocation: .instantiate
+        )
+
+        let view = UI.UIKitView.makeView(
+            on: window,
+            sceneName: nil,
+            options: options
+        )
+
+        window.makeKeyAndVisible()
+
+        return (view.sceneHolder!, window)
     }
 
     // MARK: - Basic Setup
 
     @Test("ParticleSystem component can be added to GameObject")
-    func particleSystemCanBeAdded() throws {
-        let scene = createTestScene()
+    func particleSystemCanBeAdded() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         #expect(particleSystem.gameObject === obj)
     }
 
     @Test("ParticleSystem starts with nil scnParticleSystem")
-    func particleSystemStartsNil() throws {
-        let scene = createTestScene()
+    func particleSystemStartsNil() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         #expect(particleSystem.scnParticleSystem == nil)
     }
@@ -38,13 +56,12 @@ struct ParticleSystemTests {
     // MARK: - Execute Block
 
     @Test("execute block is called with scnParticleSystem")
-    func executeBlockCalled() throws {
-        let scene = createTestScene()
+    func executeBlockCalled() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         var blockCalled = false
         particleSystem.execute { system in
@@ -56,13 +73,12 @@ struct ParticleSystemTests {
     }
 
     @Test("execute block returns self for chaining")
-    func executeBlockReturnsChaining() throws {
-        let scene = createTestScene()
+    func executeBlockReturnsChaining() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         let result = particleSystem.execute { _ in }
 
@@ -70,13 +86,12 @@ struct ParticleSystemTests {
     }
 
     @Test("execute block can be chained")
-    func executeBlockCanBeChained() throws {
-        let scene = createTestScene()
+    func executeBlockCanBeChained() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         var count = 0
         particleSystem
@@ -90,13 +105,13 @@ struct ParticleSystemTests {
     // MARK: - Execute After
 
     @Test("executeAfter block is called after delay")
+    @MainActor
     func executeAfterBlockCalled() async throws {
-        let scene = createTestScene()
+        let (scene, window) = self.createTestSceneWithView()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         var blockCalled = false
         particleSystem.executeAfter(milliseconds: 10) { system in
@@ -110,16 +125,18 @@ struct ParticleSystemTests {
         await TestHelpers.wait(.long)
 
         #expect(blockCalled == true)
+
+        // Cleanup
+        window.isHidden = true
     }
 
     @Test("executeAfter returns self for chaining")
-    func executeAfterReturnsChaining() throws {
-        let scene = createTestScene()
+    func executeAfterReturnsChaining() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         let result = particleSystem.executeAfter(milliseconds: 10) { _ in }
 
@@ -129,13 +146,12 @@ struct ParticleSystemTests {
     // MARK: - onDestroy
 
     @Test("onDestroy clears scnParticleSystem")
-    func onDestroyClearsSystem() throws {
-        let scene = createTestScene()
+    func onDestroyClearsSystem() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         // Create a mock particle system
         let scnSystem = SCNParticleSystem()
@@ -151,13 +167,12 @@ struct ParticleSystemTests {
     }
 
     @Test("onDestroy removes particle system from node")
-    func onDestoryRemovesFromNode() throws {
-        let scene = createTestScene()
+    func onDestoryRemovesFromNode() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         // Create a mock particle system
         let scnSystem = SCNParticleSystem()
@@ -173,13 +188,12 @@ struct ParticleSystemTests {
     }
 
     @Test("onDestroy with nil scnParticleSystem does not crash")
-    func onDestroyWithNilDoesNotCrash() throws {
-        let scene = createTestScene()
+    func onDestroyWithNilDoesNotCrash() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         #expect(particleSystem.scnParticleSystem == nil)
 
@@ -192,13 +206,12 @@ struct ParticleSystemTests {
     // MARK: - Load (Limited Testing)
 
     @Test("load with invalid file returns self")
-    func loadInvalidFileReturnsSelf() throws {
-        let scene = createTestScene()
+    func loadInvalidFileReturnsSelf() {
+        let scene = self.createTestScene()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         let result = particleSystem.load(
             fileName: "NonExistentFile.scnp",
@@ -212,13 +225,13 @@ struct ParticleSystemTests {
     // MARK: - Integration
 
     @Test("Execute and executeAfter can be chained")
+    @MainActor
     func executeAndExecuteAfterChain() async throws {
-        let scene = createTestScene()
+        let (scene, window) = self.createTestSceneWithView()
         let obj = GameObject(name: "ParticleObject")
         scene.addGameObject(obj)
 
-        let particleSystem = try #require(obj.addComponent(ParticleSystem.self))
-        particleSystem.awake()
+        let particleSystem = obj.addComponent(ParticleSystem.self)
 
         var immediateExecuted = false
         var delayedExecuted = false
@@ -233,20 +246,21 @@ struct ParticleSystemTests {
         await TestHelpers.wait(.long)
 
         #expect(delayedExecuted == true)
+
+        // Cleanup
+        window.isHidden = true
     }
 
     @Test("Multiple components work independently")
-    func multipleComponentsIndependent() throws {
-        let scene = createTestScene()
+    func multipleComponentsIndependent() {
+        let scene = self.createTestScene()
         let obj1 = GameObject(name: "Particle1")
         let obj2 = GameObject(name: "Particle2")
         scene.addGameObject(obj1)
         scene.addGameObject(obj2)
 
-        let ps1 = try #require(obj1.addComponent(ParticleSystem.self))
-        let ps2 = try #require(obj2.addComponent(ParticleSystem.self))
-        ps1.awake()
-        ps2.awake()
+        let ps1 = obj1.addComponent(ParticleSystem.self)
+        let ps2 = obj2.addComponent(ParticleSystem.self)
 
         let system1 = SCNParticleSystem()
         let system2 = SCNParticleSystem()

@@ -8,10 +8,10 @@ extension SCNNode {
             clone.geometry = geometry
         }
         let copy = clone.childNodes
-        copy.forEach {
-            $0.name = clone.name
-            clone.addChildNode(deepClone($0))
-            $0.removeFromParentNode()
+        for item in copy {
+            item.name = clone.name
+            clone.addChildNode(self.deepClone(item))
+            item.removeFromParentNode()
         }
         return clone
     }

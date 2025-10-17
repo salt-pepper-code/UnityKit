@@ -1,10 +1,9 @@
-import Testing
 import Foundation
+import Testing
 @testable import UnityKit
 
 @Suite("Quaternion Utilities")
 struct QuaternionTests {
-
     // MARK: - Slerp Tests
 
     @Test("Slerp at t=0 returns start quaternion")
@@ -30,7 +29,7 @@ struct QuaternionTests {
         let bNorm = b.normalized()
 
         let dotProduct = resultNorm.x * bNorm.x + resultNorm.y * bNorm.y +
-                        resultNorm.z * bNorm.z + resultNorm.w * bNorm.w
+            resultNorm.z * bNorm.z + resultNorm.w * bNorm.w
 
         // Check if quaternions are equivalent (dot product close to 1 or -1)
         #expect(abs(abs(dotProduct) - 1.0) < 0.01)
@@ -103,7 +102,7 @@ struct QuaternionTests {
         // Should create a valid rotation
         let normalized = rotation.normalized()
         let magnitude = sqrt(normalized.x * normalized.x + normalized.y * normalized.y +
-                           normalized.z * normalized.z + normalized.w * normalized.w)
+            normalized.z * normalized.z + normalized.w * normalized.w)
 
         #expect(abs(magnitude - 1.0) < 0.01)
     }
@@ -118,7 +117,7 @@ struct QuaternionTests {
 
         let normalized = rotation.normalized()
         let magnitude = sqrt(normalized.x * normalized.x + normalized.y * normalized.y +
-                           normalized.z * normalized.z + normalized.w * normalized.w)
+            normalized.z * normalized.z + normalized.w * normalized.w)
 
         #expect(abs(magnitude - 1.0) < 0.01)
     }
