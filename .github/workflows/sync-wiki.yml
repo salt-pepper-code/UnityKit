@@ -35,7 +35,6 @@ jobs:
           # Copy main documentation files to wiki
           cp API_REFERENCE.md wiki/API-Reference.md
           cp README.md wiki/Home.md
-          cp Tests/TESTING_GUIDE.md wiki/Testing-Guide.md
 
           # Create a navigation sidebar
           cat > wiki/_Sidebar.md << 'EOF'
@@ -57,7 +56,6 @@ jobs:
           - [Math & Vectors](API-Reference#math--vectors)
 
           ### Development
-          - [Testing Guide](Testing-Guide)
           - [Best Practices](API-Reference#best-practices)
           - [Contributing](Contributing)
 
