@@ -3,7 +3,7 @@
 [![Swift Version](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org)
 [![Platform](https://img.shields.io/badge/platform-iOS%2013.0+-lightgrey.svg)](https://developer.apple.com/ios/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-400%20passing-brightgreen.svg)](#testing)
+[![Tests](https://img.shields.io/badge/tests-399%20passing-brightgreen.svg)](#testing)
 
 A Swift framework that brings Unity3D's familiar API and coding patterns to iOS development. Built on top of SceneKit, UnityKit allows developers experienced with Unity to write iOS games using the same concepts, components, and lifecycle methods they already know.
 
@@ -13,7 +13,7 @@ A Swift framework that brings Unity3D's familiar API and coding patterns to iOS 
 - **Follow C# Tutorials**: Take Unity tutorials written in C# and implement them in Swift with minimal translation
 - **SceneKit Foundation**: Built on Apple's SceneKit for high-performance 3D rendering
 - **Multiple Scenes**: Run multiple scenes simultaneously - something Unity can't do on iOS
-- **Production Ready**: Comprehensive test suite with 400+ tests covering critical functionality
+- **Production Ready**: Comprehensive test suite with 399 tests covering critical functionality
 - **Modern Swift**: Written in Swift 5.9+ with a clean, type-safe API
 
 ## Requirements
@@ -37,7 +37,7 @@ Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/salt-pepper-code/UnityKit.git", from: "1.1.0")
+    .package(url: "https://github.com/salt-pepper-code/UnityKit.git", from: "1.1.2")
 ]
 ```
 
@@ -457,7 +457,7 @@ UnityKit includes these built-in components:
 
 UnityKit has a comprehensive test suite to ensure reliability and stability:
 
-- **400+ Tests** across 20 test suites
+- **399 Tests** across 20 test suites
 - **Critical Framework Tests**: Transform, Scene, GameObject hierarchy, Colliders, Coroutines
 - **Component Tests**: Light, ParticleSystem, Rigidbody, Camera
 - **System Tests**: Physics, Input, Time, Lifecycle
@@ -474,8 +474,6 @@ xcodebuild test -scheme UnityKit -destination 'platform=iOS Simulator,name=iPhon
 # Run specific test suite
 xcodebuild test -scheme UnityKit -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:UnityKitTests/TransformTests
 ```
-
-See [TESTING_GUIDE.md](Tests/TESTING_GUIDE.md) for detailed testing documentation.
 
 ## Example Project
 
@@ -560,7 +558,7 @@ Most Unity concepts translate directly to UnityKit!
 
 ## Documentation
 
-- **[TESTING_GUIDE.md](Tests/TESTING_GUIDE.md)** - Comprehensive testing guide with examples and best practices
+- **[GitHub Wiki](https://github.com/salt-pepper-code/UnityKit/wiki)** - Complete API documentation, examples, and guides
 - **API Documentation** - Use Xcode's Quick Help (⌥ + Click) for inline documentation
 
 ## Contributing
