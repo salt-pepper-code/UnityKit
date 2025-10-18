@@ -1,15 +1,20 @@
 name: Sync Documentation to Wiki
 
+# NOTE: This workflow requires the Wiki to be enabled first!
+# Go to: Settings → General → Features → Enable "Wikis"
+# Then create the first Wiki page to initialize the Wiki repository
+
 on:
-  push:
-    branches:
-      - master
-      - main
-    paths:
-      - 'API_REFERENCE.md'
-      - 'README.md'
-      - 'TESTING_GUIDE.md'
-      - 'docs/**'
+  # Disabled by default - uncomment when Wiki is enabled
+  # push:
+  #   branches:
+  #     - master
+  #     - main
+  #   paths:
+  #     - 'API_REFERENCE.md'
+  #     - 'README.md'
+  #     - 'TESTING_GUIDE.md'
+  #     - 'docs/**'
   workflow_dispatch:
 
 jobs:
