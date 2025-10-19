@@ -19,8 +19,7 @@ let package = Package(
         .testTarget(
             name: "UnityKitTests",
             dependencies: ["UnityKit"],
-            path: "Tests",
-            exclude: ["TESTING_GUIDE.md"]
+            path: "Tests"
         ),
     ]
 )
