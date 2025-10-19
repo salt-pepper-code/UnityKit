@@ -15,6 +15,7 @@ import Foundation
 ///
 /// ### Configuration
 /// - ``set(enable:)``
+/// - ``silenceInternalLogs``
 /// - ``LogStyle``
 ///
 /// ### Logging Methods
@@ -32,6 +33,9 @@ import Foundation
 ///
 /// // Enable specific log levels
 /// Debug.set(enable: [.warning, .error])
+///
+/// // Silence UnityKit's internal logs while keeping your own app logs
+/// Debug.silenceInternalLogs = true
 ///
 /// // Log messages at different levels
 /// Debug.debug("Player position updated")
@@ -126,6 +130,33 @@ public enum Debug {
     }
 
     private static var enabled: LogStyle = .none
+
+    /// When `true`, silences all internal UnityKit framework logs while allowing consumer app logs.
+    ///
+    /// Set this property to `true` to prevent UnityKit's internal debug messages from appearing
+    /// in your console, while still allowing your own application's Debug calls to work normally.
+    /// This is useful in production builds where you want to see your app's logs but not the
+    /// framework's internal logging.
+    ///
+    /// Internal logs are identified by their source file path containing "/UnityKit/".
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // In your app initialization
+    /// Debug.set(enable: .all)
+    /// Debug.silenceInternalLogs = true
+    ///
+    /// // Your app's logs will still appear
+    /// Debug.info("App started successfully")  // ✅ This will print
+    ///
+    /// // But UnityKit's internal logs will be silenced
+    /// // (GameObject initialization, Scene updates, etc. won't print)
+    /// ```
+    ///
+    /// - Note: This only affects logs originating from UnityKit framework files.
+    ///   Your application's Debug calls will continue to work as configured by ``set(enable:)``.
+    public static var silenceInternalLogs: Bool = false
 
     /// Configures which log levels should be displayed.
     ///
@@ -306,6 +337,11 @@ public enum Debug {
         guard !self.enabled.contains(.none)
         else { return }
 
+        // Check if we should silence internal UnityKit logs
+        if silenceInternalLogs && filepath.contains("/UnityKit/") {
+            return
+        }
+
         let time = displayTime ? Debug.dateFormatter.string(from: Date()) + " " : ""
 
         switch style {
@@ -437,6 +473,11 @@ public enum Debug {
     ) {
         guard !self.enabled.contains(.none)
         else { return }
+
+        // Check if we should silence internal UnityKit logs
+        if silenceInternalLogs && filepath.contains("/UnityKit/") {
+            return
+        }
 
         let time = displayTime ? Debug.dateFormatter.string(from: Date()) + " " : ""
 
