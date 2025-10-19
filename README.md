@@ -37,7 +37,7 @@ Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/salt-pepper-code/UnityKit.git", from: "1.1.2")
+    .package(url: "https://github.com/salt-pepper-code/UnityKit.git", from: "1.1.3")
 ]
 ```
 

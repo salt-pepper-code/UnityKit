@@ -99,10 +99,10 @@ public final class PlaneCollider: Collider {
         ]
 
         let normals = [
-            Vector3(0, 1, 1),
-            Vector3(0, 1, 1),
-            Vector3(0, 1, 1),
-            Vector3(0, 1, 1),
+            Vector3(0, 1, 0),
+            Vector3(0, 1, 0),
+            Vector3(0, 1, 0),
+            Vector3(0, 1, 0),
         ]
 
         let vertexData = Data(bytes: vertices, count: vertices.count * MemoryLayout<Vector3>.size)

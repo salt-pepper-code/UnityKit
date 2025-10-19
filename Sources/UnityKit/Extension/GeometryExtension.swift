@@ -89,28 +89,36 @@ public enum PrimitiveType {
 
     /// A flat rectangular plane primitive geometry.
     ///
-    /// Creates a 2D plane in 3D space, oriented in the XY plane and centered at the origin.
-    /// The plane is single-sided by default.
+    /// Creates a 2D plane in 3D space, oriented **vertically** in the XY plane (like a wall).
+    /// The plane is single-sided by default with its normal pointing along the positive Z-axis.
+    ///
+    /// For horizontal ground planes, use ``floor(width:length:name:)`` instead, or rotate this plane
+    /// -90 degrees around the X-axis using: `transform.localEulerAngles = Vector3(-90, 0, 0)`
     ///
     /// - Parameters:
-    ///   - width: The width of the plane along the X-axis.
-    ///   - height: The height of the plane along the Y-axis.
+    ///   - width: The width of the plane along the X-axis (horizontal extent).
+    ///   - height: The height of the plane along the Y-axis (vertical extent, upward).
     ///   - name: An optional name for the primitive. Defaults to "Plane" if not provided.
+    ///
+    /// - Note: This matches SceneKit's default SCNPlane orientation. For ground planes aligned with
+    ///   the XZ plane (horizontal), prefer using ``floor(width:length:name:)`` which is already oriented correctly.
     case plane(
         width: Float,
         height: Float,
         name: String? = nil
     )
 
-    /// A horizontal floor plane that extends infinitely.
+    /// A horizontal floor plane centered at the origin.
     ///
     /// Creates a horizontal plane with defined dimensions, typically used for ground surfaces.
-    /// Unlike a regular plane, floors are optimized for large horizontal surfaces.
+    /// The floor is automatically centered on the XZ plane (horizontal) with its anchor point at the origin.
     ///
     /// - Parameters:
-    ///   - width: The width of the floor along the X-axis.
-    ///   - length: The length of the floor along the Z-axis.
+    ///   - width: The width of the floor along the X-axis (centered).
+    ///   - length: The length of the floor along the Z-axis (centered).
     ///   - name: An optional name for the primitive. Defaults to "Floor" if not provided.
+    ///
+    /// - Note: The floor is centered at (0, 0, 0), unlike SCNFloor which extends from a corner.
     case floor(
         width: Float,
         length: Float,
@@ -181,6 +189,10 @@ public extension GameObject {
 
         gameObject.name = name ?? type.name
 
+        if case .floor = type {
+            gameObject.transform.localEulerAngles = Vector3(-90, 0, 0)
+        }
+
         return gameObject
     }
 }
@@ -211,10 +223,7 @@ extension SCNGeometry {
             geometry = SCNPlane(width: x.toCGFloat(), height: y.toCGFloat())
 
         case .floor(let x, let z, _):
-            let floor = SCNFloor()
-            floor.width = x.toCGFloat()
-            floor.length = z.toCGFloat()
-            geometry = floor
+            geometry = SCNPlane(width: x.toCGFloat(), height: z.toCGFloat())
         }
 
         return geometry

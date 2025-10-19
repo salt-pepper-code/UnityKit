@@ -172,7 +172,6 @@ public final class CapsuleCollider: Collider {
               let name = gameObject.name
         else { return }
 
-        // Calculate dimensions from bounding box if not specified
         let boundingBox = gameObject.node.boundingBox
         let boundingSize = Vector3(
             boundingBox.max.x - boundingBox.min.x,
@@ -183,17 +182,14 @@ public final class CapsuleCollider: Collider {
         let calculatedRadius = self.radius ?? max(boundingSize.x, boundingSize.z) / 2.0
         let calculatedHeight = self.height ?? boundingSize.y
 
-        // Create capsule geometry (oriented along Y axis by default)
         let capsule = SCNCapsule(capRadius: CGFloat(calculatedRadius), height: CGFloat(calculatedHeight))
         capsule.name = name + "CapsuleCollider"
 
-        // Create physics shape with capsule geometry
         var options: [SCNPhysicsShape.Option: Any] = [
             .type: SCNPhysicsShape.ShapeType.convexHull,
             .scale: gameObject.transform.localScale.x,
         ]
 
-        // Apply center offset if specified
         if let center {
             let centerOffset = SCNVector3(center.x, center.y, center.z)
             options[.collisionMargin] = centerOffset
